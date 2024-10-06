@@ -25,7 +25,7 @@
 
 
 //---------
-#include "tiny_imageformat/tinyimageformat_bits.h"
+#include "tinyimageformat_bits.h"
 #include "formatgen_func.h"
 #include "formatgen_macros.h"
 

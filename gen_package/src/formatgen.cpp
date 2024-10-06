@@ -3,7 +3,7 @@
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
-#include "al2o3_vfile/vfile.h"
+#include "utils.h"
 #include "formatgen.h"
 /*
  * Implementation Details

@@ -5,8 +5,8 @@
 #include <inttypes.h>
 #include <cfloat>
 #include <cmath>
-#include "al2o3_vfile/vfile.h"
-#include "../include/tiny_imageformat/tinyimageformat_bits.h"
+#include "utils.h"
+#include "tinyimageformat_bits.h"
 #include "formatgen.h"
 
 void GenEnums(VFile_Handle file) {
