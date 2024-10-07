@@ -50,4 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-build_*/
+gen_ackage/build/
+test_ackage/build/
+build/

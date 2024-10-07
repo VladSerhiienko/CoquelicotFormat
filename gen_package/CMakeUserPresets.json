@@ -4,6 +4,6 @@
         "conan": {}
     },
     "include": [
-        "build_msvc_amd64\\CMakePresets.json"
+        "build\\generators\\CMakePresets.json"
     ]
 }

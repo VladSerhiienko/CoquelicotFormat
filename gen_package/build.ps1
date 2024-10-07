@@ -1,11 +1,19 @@
 
-New-Item -ItemType Directory -Force -Path "build_msvc_amd64"
-Set-Location -Path "build_msvc_amd64"
+conan install . --build=missing --profile:host=../profiles/msvc_amd64 --profile:build=../profiles/msvc_amd64 -s build_type=Debug
+conan install . --build=missing --profile:host=../profiles/msvc_amd64 --profile:build=../profiles/msvc_amd64 -s build_type=Release
+conan build . --build=missing --profile:host=../profiles/msvc_amd64 --profile:build=../profiles/msvc_amd64 -s build_type=Debug
+conan build . --build=missing --profile:host=../profiles/msvc_amd64 --profile:build=../profiles/msvc_amd64 -s build_type=Release
 
-conan install .. --build=missing --profile:host=../../profiles/msvc_amd64 --profile:build=../../profiles/msvc_amd64 -s build_type=Debug
-conan install .. --build=missing --profile:host=../../profiles/msvc_amd64 --profile:build=../../profiles/msvc_amd64 -s build_type=Release
-cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake"
-cmake --build . --config Release
-./Release/CoquelicotFormatGen.exe
+./build/Release/CoquelicotFormatGen.exe
 
-Set-Location -Path ".."
+$currentDir = Get-Location
+$includeDir = Join-Path -Path $currentDir -ChildPath "../include/coquelicot"
+
+Write-Output $currentDir
+Write-Output $includeDir
+
+# Find all files that match the pattern "format*.h" in the current directory
+Get-ChildItem -Path $currentDir -Filter "tinyimageformat*.h" | ForEach-Object {
+    Write-Output $_.FullName
+    Copy-Item -Path $_.FullName -Destination $includeDir -Force
+}
