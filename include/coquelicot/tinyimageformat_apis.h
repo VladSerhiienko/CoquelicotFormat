@@ -1810,6 +1810,6 @@ inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat f
 	case TIF_MTLPixelFormatInvalid: return false;
 	}
 }
-	#undef TIF_CONSTEXPR
+	#undef CQ_FMT_CONSTEXPR
 #endif // TINYIMAGEFORMAT_APIS_H_
 

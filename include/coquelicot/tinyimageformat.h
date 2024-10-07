@@ -231,9 +231,9 @@
  */
 
 #if __cplusplus > 201402L
-#define TIF_CONSTEXPR constexpr extern "C"
+#define CQ_FMT_CONSTEXPR constexpr extern "C"
 #else
-#define TIF_CONSTEXPR
+#define CQ_FMT_CONSTEXPR
 #endif
 #ifndef  TinyImageFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
@@ -739,7 +739,7 @@ typedef struct TinyImageFormat_EncodeOutput {
 
 #if !defined(TINYIMAGEFORMAT_QUERY_H_)
 #define TINYIMAGEFORMAT_QUERY_H_ 1
-TIF_CONSTEXPR inline uint64_t TinyImageFormat_Code(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint64_t TinyImageFormat_Code(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0x0000000000000000;
 		case TinyImageFormat_R1_UNORM: return 0x0000D9000000C000;
@@ -949,7 +949,7 @@ TIF_CONSTEXPR inline uint64_t TinyImageFormat_Code(TinyImageFormat const fmt) {
 
 #define TinyImageFormat_MaxPixelCountOfBlock 144U 
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsDepthOnly(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsDepthOnly(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_D16_UNORM: return true;
 		case TinyImageFormat_X8_D24_UNORM: return true;
@@ -958,14 +958,14 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsDepthOnly(TinyImageFormat const fmt)
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsStencilOnly(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsStencilOnly(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_S8_UINT: return true;
 		default: return false;
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsDepthAndStencil(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsDepthAndStencil(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_D16_UNORM_S8_UINT: return true;
 		case TinyImageFormat_D24_UNORM_S8_UINT: return true;
@@ -974,7 +974,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsDepthAndStencil(TinyImageFormat cons
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsCLUT(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsCLUT(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_CLUT_P4: return true;
 		case TinyImageFormat_CLUT_P4A4: return true;
@@ -984,7 +984,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsCLUT(TinyImageFormat const fmt) {
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsFloat(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsFloat(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R16_SFLOAT: return true;
 		case TinyImageFormat_R16_SBFLOAT: return true;
@@ -1012,7 +1012,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsFloat(TinyImageFormat const fmt) {
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM: return true;
 		case TinyImageFormat_R2_UNORM: return true;
@@ -1148,7 +1148,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fmt
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsSigned(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsSigned(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R8_SNORM: return true;
 		case TinyImageFormat_R8_SINT: return true;
@@ -1215,7 +1215,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsSigned(TinyImageFormat const fmt) {
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsSRGB(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsSRGB(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R8_SRGB: return true;
 		case TinyImageFormat_R8G8_SRGB: return true;
@@ -1253,7 +1253,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsSRGB(TinyImageFormat const fmt) {
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsCompressed(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsCompressed(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_DXBC1_RGB_UNORM: return true;
 		case TinyImageFormat_DXBC1_RGB_SRGB: return true;
@@ -1321,7 +1321,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsCompressed(TinyImageFormat const fmt
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_IsHomogenous(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsHomogenous(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return false;
 		case TinyImageFormat_B2G3R3_UNORM: return false;
@@ -1433,7 +1433,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_IsHomogenous(TinyImageFormat const fmt
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isDepthOnly(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isDepthOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM: return true;
 		case Format::X8_D24_UNORM: return true;
@@ -1444,7 +1444,7 @@ TIF_CONSTEXPR inline bool isDepthOnly(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isStencilOnly(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isStencilOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::S8_UINT: return true;
 		default: return false;
@@ -1453,7 +1453,7 @@ TIF_CONSTEXPR inline bool isStencilOnly(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isDepthAndStencil(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isDepthAndStencil(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM_S8_UINT: return true;
 		case Format::D24_UNORM_S8_UINT: return true;
@@ -1464,7 +1464,7 @@ TIF_CONSTEXPR inline bool isDepthAndStencil(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isCLUT(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isCLUT(Format const fmt) {
 	switch(fmt) {
 		case Format::CLUT_P4: return true;
 		case Format::CLUT_P4A4: return true;
@@ -1476,7 +1476,7 @@ TIF_CONSTEXPR inline bool isCLUT(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isFloat(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isFloat(Format const fmt) {
 	switch(fmt) {
 		case Format::R16_SFLOAT: return true;
 		case Format::R16_SBFLOAT: return true;
@@ -1506,7 +1506,7 @@ TIF_CONSTEXPR inline bool isFloat(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isNormalised(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isNormalised(Format const fmt) {
 	switch(fmt) {
 		case Format::R1_UNORM: return true;
 		case Format::R2_UNORM: return true;
@@ -1644,7 +1644,7 @@ TIF_CONSTEXPR inline bool isNormalised(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isSigned(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isSigned(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SNORM: return true;
 		case Format::R8_SINT: return true;
@@ -1713,7 +1713,7 @@ TIF_CONSTEXPR inline bool isSigned(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isSRGB(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isSRGB(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SRGB: return true;
 		case Format::R8G8_SRGB: return true;
@@ -1753,7 +1753,7 @@ TIF_CONSTEXPR inline bool isSRGB(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isCompressed(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isCompressed(Format const fmt) {
 	switch(fmt) {
 		case Format::DXBC1_RGB_UNORM: return true;
 		case Format::DXBC1_RGB_SRGB: return true;
@@ -1823,7 +1823,7 @@ TIF_CONSTEXPR inline bool isCompressed(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline bool isHomogenous(Format const fmt) {
+CQ_FMT_CONSTEXPR inline bool isHomogenous(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return false;
 		case Format::B2G3R3_UNORM: return false;
@@ -1935,7 +1935,7 @@ TIF_CONSTEXPR inline bool isHomogenous(Format const fmt) {
 }
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_WidthOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_WidthOfBlock(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0;
 		case TinyImageFormat_R1_UNORM: return 8;
@@ -2008,7 +2008,7 @@ TIF_CONSTEXPR inline uint32_t TinyImageFormat_WidthOfBlock(TinyImageFormat const
 	}
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_HeightOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_HeightOfBlock(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0;
 		case TinyImageFormat_DXBC1_RGB_UNORM: return 4;
@@ -2077,14 +2077,14 @@ TIF_CONSTEXPR inline uint32_t TinyImageFormat_HeightOfBlock(TinyImageFormat cons
 	}
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_DepthOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_DepthOfBlock(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0;
 		default: return 1;
 	}
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_BitSizeOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_BitSizeOfBlock(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0;
 		case TinyImageFormat_R1_UNORM: return 8;
@@ -2247,7 +2247,7 @@ TIF_CONSTEXPR inline uint32_t TinyImageFormat_BitSizeOfBlock(TinyImageFormat con
 	}
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelCount(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelCount(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return 0;
 		case TinyImageFormat_R1_UNORM: return 1;
@@ -2350,7 +2350,7 @@ TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelCount(TinyImageFormat const
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getWidthOfBlock(Format const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t getWidthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 8;
@@ -2425,7 +2425,7 @@ TIF_CONSTEXPR inline uint32_t getWidthOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getHeightOfBlock(Format const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t getHeightOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::DXBC1_RGB_UNORM: return 4;
@@ -2496,7 +2496,7 @@ TIF_CONSTEXPR inline uint32_t getHeightOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getDepthOfBlock(Format const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t getDepthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		default: return 1;
@@ -2505,7 +2505,7 @@ TIF_CONSTEXPR inline uint32_t getDepthOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getBitSizeOfBlock(Format const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t getBitSizeOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 8;
@@ -2670,7 +2670,7 @@ TIF_CONSTEXPR inline uint32_t getBitSizeOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 1;
@@ -2773,7 +2773,7 @@ TIF_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
 }
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidthAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidthAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
 	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case TinyImageFormat_UNDEFINED: return 0;
@@ -3307,7 +3307,7 @@ TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidthAtPhysical(TinyImag
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::UNDEFINED: return 0;
@@ -3841,7 +3841,7 @@ TIF_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fmt, Phy
 }
 }
 
-TIF_CONSTEXPR inline double TinyImageFormat_MinAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
+CQ_FMT_CONSTEXPR inline double TinyImageFormat_MinAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
 	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case TinyImageFormat_R8_SNORM: return -1.000000;
@@ -4025,7 +4025,7 @@ TIF_CONSTEXPR inline double TinyImageFormat_MinAtPhysical(TinyImageFormat const 
 	return 0.0;
 }
 
-TIF_CONSTEXPR inline double TinyImageFormat_MaxAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
+CQ_FMT_CONSTEXPR inline double TinyImageFormat_MaxAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
 	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case TinyImageFormat_UNDEFINED: return 0.000000;
@@ -4390,7 +4390,7 @@ TIF_CONSTEXPR inline double TinyImageFormat_MaxAtPhysical(TinyImageFormat const 
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::R8_SNORM: return -1.000000;
@@ -4576,7 +4576,7 @@ TIF_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalChannel c
 }
 
 namespace coquelicot {
-TIF_CONSTEXPR inline double getMaxAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline double getMaxAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::UNDEFINED: return 0.000000;
@@ -4941,7 +4941,7 @@ TIF_CONSTEXPR inline double getMaxAtPhysical(Format const fmt, PhysicalChannel c
 }
 }
 
-TIF_CONSTEXPR inline TinyImageFormat_LogicalChannel TinyImageFormat_PhysicalChannelToLogical(TinyImageFormat const fmt, int8_t const channel) {
+CQ_FMT_CONSTEXPR inline TinyImageFormat_LogicalChannel TinyImageFormat_PhysicalChannelToLogical(TinyImageFormat const fmt, int8_t const channel) {
 	 TinyImageFormat_ASSERT(channel != TinyImageFormat_PC_CONST_0);
 	 TinyImageFormat_ASSERT(channel != TinyImageFormat_PC_CONST_1);
 	if(channel == TinyImageFormat_PC_0) {
@@ -5293,7 +5293,7 @@ TIF_CONSTEXPR inline TinyImageFormat_LogicalChannel TinyImageFormat_PhysicalChan
 	return TinyImageFormat_LC_0;
 }
 
-TIF_CONSTEXPR inline int8_t TinyImageFormat_LogicalChannelToPhysical(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline int8_t TinyImageFormat_LogicalChannelToPhysical(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
 	 TinyImageFormat_ASSERT(channel != TinyImageFormat_LC_0);
 	 TinyImageFormat_ASSERT(channel != TinyImageFormat_LC_1);
 	if(channel == TinyImageFormat_LC_Red) {
@@ -5645,7 +5645,7 @@ TIF_CONSTEXPR inline int8_t TinyImageFormat_LogicalChannelToPhysical(TinyImageFo
 	return TinyImageFormat_PC_CONST_0;
 }
 
-TIF_CONSTEXPR inline char const * const TinyImageFormat_Name(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline char const * const TinyImageFormat_Name(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_UNDEFINED: return "UNDEFINED";
 		case TinyImageFormat_R1_UNORM: return "R1_UNORM";
@@ -6067,19 +6067,19 @@ inline TinyImageFormat TinyImageFormat_FromName(char const* p) {
 
 
 // Helpers
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_PixelCountOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_PixelCountOfBlock(TinyImageFormat const fmt) {
 	return TinyImageFormat_WidthOfBlock(fmt) * TinyImageFormat_HeightOfBlock(fmt) * TinyImageFormat_DepthOfBlock(fmt);
 }
 
-TIF_CONSTEXPR inline double TinyImageFormat_Min(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline double TinyImageFormat_Min(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
 	return TinyImageFormat_MinAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-TIF_CONSTEXPR inline double TinyImageFormat_Max(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline double TinyImageFormat_Max(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
 	return TinyImageFormat_MaxAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-TIF_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidth(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
+CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidth(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
 	return TinyImageFormat_ChannelBitWidthAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
@@ -6356,7 +6356,7 @@ inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-TIF_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
+CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
 	switch(lookup) {
 		case 0: return 0.00000000f;
 		case 1: return 0.00030353f;
@@ -6618,7 +6618,7 @@ TIF_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM: return true;
 		case TinyImageFormat_R2_UNORM: return true;
@@ -6744,7 +6744,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageForma
 		}
 	}
 
-TIF_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -8046,7 +8046,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat c
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT: return true;
 		case TinyImageFormat_R64_SINT: return true;
@@ -8064,7 +8064,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageForma
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -8510,7 +8510,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat11AsUint(float v) {
 	return ei.v;
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM: return true;
 		case TinyImageFormat_R2_UNORM: return true;
@@ -8632,7 +8632,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageForma
 		}
 	}
 
-TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat const fmt, float const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat const fmt, float const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -9886,7 +9886,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT: return true;
 		case TinyImageFormat_R64_SINT: return true;
@@ -9904,7 +9904,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageForma
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat const fmt, double const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat const fmt, double const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -11891,6 +11891,6 @@ inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat f
 }
 	#endif // TINYIMAGEFORMAT_APIS_H_
 
-#undef TIF_CONSTEXPR
+#undef CQ_FMT_CONSTEXPR
 #endif // TINYIMAGEFORMAT_H_
 

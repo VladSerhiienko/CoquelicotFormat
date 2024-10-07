@@ -6,9 +6,9 @@
 #include "tinyimageformat_base.h"
 
 #if __cplusplus > 201402L
-#define TIF_CONSTEXPR constexpr extern "C"
+#define CQ_FMT_CONSTEXPR constexpr extern "C"
 #else
-#define TIF_CONSTEXPR
+#define CQ_FMT_CONSTEXPR
 #endif
 #ifndef  TinyImageFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
@@ -332,7 +332,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat11AsUint(float v) {
 	return ei.v;
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM: return true;
 		case TinyImageFormat_R2_UNORM: return true;
@@ -454,7 +454,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageForma
 		}
 	}
 
-TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat const fmt, float const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat const fmt, float const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case TinyImageFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -1708,7 +1708,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat c
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageFormat const fmt) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT: return true;
 		case TinyImageFormat_R64_SINT: return true;
@@ -1726,7 +1726,7 @@ TIF_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageForma
 	}
 }
 
-TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat const fmt, double const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat const fmt, double const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case TinyImageFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -1901,6 +1901,6 @@ TIF_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat c
 	}
 }
 
-#undef TIF_CONSTEXPR
+#undef CQ_FMT_CONSTEXPR
 #endif // TINYIMAGEFORMAT_ENCODE_H_
 
