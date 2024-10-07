@@ -47,6 +47,7 @@
 */
 
 void GenEnums(VFile_Handle file);
+void GenEnumClasses(VFile_Handle file);
 void GenStructs(VFile_Handle file);
 void GenCount(VFile_Handle file);
 void GenQuerys(VFile_Handle file);
@@ -148,6 +149,7 @@ int main(int argc, char const *argv[]) {
 		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_BASE_H_", "TINYIMAGEFORMAT_BASE_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenEnums(file);
+		GenEnumClasses(file);
 		GenCount(file);
 		GenStructs(file);
 		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_BASE_H_");
@@ -196,6 +198,7 @@ int main(int argc, char const *argv[]) {
 			IncludeDocs(file);
 
 			GenEnums(file);
+			GenEnumClasses(file);
 			GenCount(file);
 			GenStructs(file);
 

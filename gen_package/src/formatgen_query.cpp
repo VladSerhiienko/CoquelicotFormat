@@ -1192,6 +1192,31 @@ void GenBoolFunc(VFile_Handle file,
 #include "formatgen.h"
 }
 
+void GenBoolFunc2(VFile_Handle file, const char *testname, bool defaultval, bool (*func)(char const *, uint64_t)) {
+    char buffer[2048];
+    char const isPrefixF[] =
+        "namespace coquelicot {\n"
+        "TIF_CONSTEXPR inline bool is%s(Format const fmt) {\n\tswitch(fmt) {\n";
+    char const switchPostfixF[] = "\t\tdefault: return %s;\n\t}\n}\n}\n\n";
+
+    char prefix[2048];
+    sprintf(prefix, isPrefixF, testname + 2);
+
+#define TinyImageFormat_START_MACRO \
+    {                               \
+        VFile_Write(file, prefix, strlen(prefix));
+#define TinyImageFormat_MOD_MACRO(x, y)                                                                     \
+    if (func(#x, y) != defaultval) {                                                                        \
+        sprintf(buffer, "\t\tcase %s: return %s;\n", "Format::" #x, defaultval ? "false" : "true"); \
+        VFile_Write(file, buffer, strlen(buffer));                                                          \
+    };
+#define TinyImageFormat_END_MACRO                                   \
+    sprintf(buffer, switchPostfixF, defaultval ? "true" : "false"); \
+    VFile_Write(file, buffer, strlen(buffer));                      \
+    }
+#include "formatgen.h"
+}
+
 void GenU32Func(VFile_Handle file,
 											 const char *testname,
 											 uint32_t defaultval,
@@ -1208,6 +1233,37 @@ void GenU32Func(VFile_Handle file,
 #define  TinyImageFormat_MOD_MACRO(x, y) { auto f = func(#x, y); if(f != defaultval) { sprintf(buffer, "\t\tcase %s: return %d;\n", "TinyImageFormat_"#x, f); \
                                                                VFile_Write(file, buffer, strlen(buffer)); } };
 #define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF, defaultval); VFile_Write(file, buffer, strlen(buffer)); }
+#include "formatgen.h"
+}
+
+void GenU32Func2(VFile_Handle file,
+                 const char *testname,
+                 uint32_t defaultval,
+                 uint32_t (*func)(char const *, uint64_t)) {
+    char buffer[2048];
+    char const isPrefixF[] =
+        "namespace coquelicot {\n"
+        "TIF_CONSTEXPR inline uint32_t get%s(Format const fmt) {\n\tswitch(fmt) {\n";
+    char const switchPostfixF[] = "\t\tdefault: return %d;\n\t}\n}\n}\n\n";
+
+    char prefix[2048];
+    sprintf(prefix, isPrefixF, testname);
+
+#define TinyImageFormat_START_MACRO \
+    {                               \
+        VFile_Write(file, prefix, strlen(prefix));
+#define TinyImageFormat_MOD_MACRO(x, y)                                             \
+    {                                                                               \
+        auto f = func(#x, y);                                                       \
+        if (f != defaultval) {                                                      \
+            sprintf(buffer, "\t\tcase %s: return %d;\n", "Format::" #x, f); \
+            VFile_Write(file, buffer, strlen(buffer));                              \
+        }                                                                           \
+    };
+#define TinyImageFormat_END_MACRO                \
+    sprintf(buffer, switchPostfixF, defaultval); \
+    VFile_Write(file, buffer, strlen(buffer));   \
+    }
 #include "formatgen.h"
 }
 
@@ -1280,6 +1336,47 @@ void GenU32PerChanFunc(VFile_Handle file,
 	char const closerF[] = "\n\t TinyImageFormat_ASSERT(false);\n\treturn 0;\n}\n\n";
 	VFile_Write(file, closerF, strlen(closerF));
 }
+
+void GenU32PerChanFunc2(VFile_Handle file,
+                        const char *testname,
+                        uint32_t defaultval,
+                        uint32_t (*func)(char const *, uint64_t, uint32_t)) {
+    char buffer[2048];
+
+    char const *const isPrefixF[] = {
+        "namespace coquelicot {\n"
+        "TIF_CONSTEXPR inline uint32_t get%sAtPhysical(Format const fmt, PhysicalChannel const channel) {\n"
+        "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
+        "\telse if(channel == PhysicalChannel::_%d) {\n\t\tswitch(fmt) { \n"};
+
+    char const switchPostfixF[] = "\t\t\tdefault: return %d;\n\t\t}\n\t}";
+
+    for (auto i = 0u; i < 4; ++i) {
+        char prefix[2048];
+
+        if (i == 0)
+            sprintf(prefix, isPrefixF[0], testname);
+        else
+            sprintf(prefix, isPrefixF[1], i);
+
+#define TinyImageFormat_START_MACRO \
+    {                               \
+        VFile_Write(file, prefix, strlen(prefix));
+#define TinyImageFormat_MOD_MACRO(x, y)                                                \
+    if (func(#x, y, i) != defaultval) {                                                \
+        sprintf(buffer, "\t\t\tcase %s: return %d;\n", "Format::" #x, func(#x, y, i)); \
+        VFile_Write(file, buffer, strlen(buffer));                                     \
+    };
+#define TinyImageFormat_END_MACRO                \
+    sprintf(buffer, switchPostfixF, defaultval); \
+    VFile_Write(file, buffer, strlen(buffer));   \
+    }
+#include "formatgen.h"
+    }
+    char const closerF[] = "\n\t TinyImageFormat_ASSERT(false);\n\treturn 0;\n}\n}\n\n";
+    VFile_Write(file, closerF, strlen(closerF));
+}
+
 void GenPhysicalChannelToLogicalPerChanFunc(VFile_Handle file) {
 	static char const *const lnames[6] = {
 			"TinyImageFormat_LC_1",
@@ -1462,6 +1559,45 @@ void GenDoublePerChanFunc(VFile_Handle file,
 	VFile_Write(file, closerF, strlen(closerF));
 }
 
+void GenDoublePerChanFunc2(VFile_Handle file,
+                           const char *testname,
+                           double defaultval,
+                           double (*func)(char const *, uint64_t, uint32_t)) {
+    char buffer[2048];
+    char const *const isPrefixF[] = {
+				"namespace coquelicot {\n"
+				"TIF_CONSTEXPR inline double get%sAtPhysical(Format const fmt, PhysicalChannel const channel) "
+        "{\n"
+        "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
+        "\telse if(channel == PhysicalChannel::_%d) {\n\t\tswitch(fmt) { \n"};
+    char const switchPostfixF[] = "\t\t\tdefault: return %f;\n\t\t}\n\t}";
+
+    for (auto i = 0u; i < 4; ++i) {
+        char prefix[2048];
+
+        if (i == 0)
+            sprintf(prefix, isPrefixF[0], testname);
+        else
+            sprintf(prefix, isPrefixF[1], i);
+#define TinyImageFormat_START_MACRO \
+    {                               \
+        VFile_Write(file, prefix, strlen(prefix));
+#define TinyImageFormat_MOD_MACRO(x, y)                                                        \
+    if (fabs(func(#x, y, i) - defaultval) > 1e-10) {                                           \
+        sprintf(buffer, "\t\t\tcase %s: return %f;\n", "Format::" #x, func(#x, y, i)); \
+        VFile_Write(file, buffer, strlen(buffer));                                             \
+    };
+#define TinyImageFormat_END_MACRO                \
+    sprintf(buffer, switchPostfixF, defaultval); \
+    VFile_Write(file, buffer, strlen(buffer));   \
+    }
+#include "formatgen.h"
+    }
+
+    char const closerF[] = "\n\t TinyImageFormat_ASSERT(false);\n\treturn 0.0;\n}\n}\n\n";
+    VFile_Write(file, closerF, strlen(closerF));
+}
+
 void IncludeQueryHelpers(VFile_Handle file) {
 #define RAW_INCLUDE_START(x) x
 	char const *otherEnums =
@@ -1482,9 +1618,16 @@ void IncludeQueryHelpers(VFile_Handle file) {
 }
 
 #define GEN_BOOL_FUNC(f, d, t) GenBoolFunc(f, #t, d, &t)
+#define GEN_BOOL_FUNC2(f, d, t) GenBoolFunc2(f, #t, d, &t)
+
 #define GEN_U32_FUNC(f, d, t) GenU32Func(f, #t, d, &t)
+#define GEN_U32_FUNC2(f, d, t) GenU32Func2(f, #t, d, &t)
+
 #define GEN_U32PERCHAN_FUNC(f, d, t) GenU32PerChanFunc(f, #t, d, &t)
+#define GEN_U32PERCHAN_FUNC2(f, d, t) GenU32PerChanFunc2(f, #t, d, &t)
+
 #define GEN_DBLPERCHAN_FUNC(f, d, t) GenDoublePerChanFunc(f, #t, d, &t)
+#define GEN_DBLPERCHAN_FUNC2(f, d, t) GenDoublePerChanFunc2(f, #t, d, &t)
 
 void GenQuerys(VFile_Handle file) {
 
@@ -1502,15 +1645,37 @@ void GenQuerys(VFile_Handle file) {
 	GEN_BOOL_FUNC(file, false, IsCompressed);
 	GEN_BOOL_FUNC(file, true,  IsHomogenous);
 
+	GEN_BOOL_FUNC2(file, false, IsDepthOnly);
+	GEN_BOOL_FUNC2(file, false, IsStencilOnly);
+	GEN_BOOL_FUNC2(file, false, IsDepthAndStencil);
+	GEN_BOOL_FUNC2(file, false, IsCLUT);
+	GEN_BOOL_FUNC2(file, false, IsFloat);
+	GEN_BOOL_FUNC2(file, false, IsNormalised);
+	GEN_BOOL_FUNC2(file, false, IsSigned);
+	GEN_BOOL_FUNC2(file, false, IsSRGB);
+	GEN_BOOL_FUNC2(file, false, IsCompressed);
+	GEN_BOOL_FUNC2(file, true, IsHomogenous);
+
 	GEN_U32_FUNC(file, 1, WidthOfBlock);
 	GEN_U32_FUNC(file, 1, HeightOfBlock);
 	GEN_U32_FUNC(file, 1, DepthOfBlock);
 	GEN_U32_FUNC(file, 32, BitSizeOfBlock);
 	GEN_U32_FUNC(file, 4, ChannelCount);
+
+	GEN_U32_FUNC2(file, 1, WidthOfBlock);
+	GEN_U32_FUNC2(file, 1, HeightOfBlock);
+	GEN_U32_FUNC2(file, 1, DepthOfBlock);
+	GEN_U32_FUNC2(file, 32, BitSizeOfBlock);
+	GEN_U32_FUNC2(file, 4, ChannelCount);
+
 	GEN_U32PERCHAN_FUNC(file, 8, ChannelBitWidth);
+	GEN_U32PERCHAN_FUNC2(file, 8, ChannelBitWidth);
+
 	GEN_DBLPERCHAN_FUNC(file, 0.0, Min);
 	GEN_DBLPERCHAN_FUNC(file, 1.0, Max);
 
+	GEN_DBLPERCHAN_FUNC2(file, 0.0, Min);
+	GEN_DBLPERCHAN_FUNC2(file, 1.0, Max);
 
 	GenPhysicalChannelToLogicalPerChanFunc(file);
 	GenLogicalToPhysicalChannelPerChanFunc(file);

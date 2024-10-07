@@ -9,6 +9,62 @@
 #include "tinyimageformat_bits.h"
 #include "formatgen.h"
 
+void GenEnumClasses(VFile_Handle file) {
+    char const cppstart[] = "#ifdef __cplusplus\n";
+    char const nsstart[] = "namespace coquelicot {\n";
+    char const ifstartmacro[] = "enum class Format {\n";
+    char const ifmodmacro[] = "\t%s = %d,\n";
+    char const ifendmacro[] = "};\n\n";
+    char const nsend[] = "}\n\n";
+    char const cppend[] = "#endif\n\n";
+    char buffer[2048];
+
+#define TinyImageFormat_START_MACRO                            \
+    {                                                          \
+        VFile_Write(file, ifstartmacro, strlen(ifstartmacro)); \
+        uint32_t count = 0;
+
+#define TinyImageFormat_MOD_MACRO(x, y)       \
+    sprintf(buffer, ifmodmacro, #x, count++); \
+    VFile_Write(file, buffer, strlen(buffer));
+
+#define TinyImageFormat_END_MACRO                      \
+    VFile_Write(file, ifendmacro, strlen(ifendmacro)); \
+    }
+
+	VFile_Write(file, cppstart, strlen(cppstart));
+	VFile_Write(file, nsstart, strlen(nsstart));
+
+#include "formatgen.h"
+
+    char const logiEnum[] =
+        "enum class LogicalChannel {\n"
+        "\tRed = 0,\n"
+        "\tGreen = 1,\n"
+        "\tBlue = 2,\n"
+        "\tAlpha = 3,\n"
+        "\tDepth = 0,\n"
+        "\tStencil = 1,\n"
+        "\t_0 = -1,\n"
+        "\t_1 = -2,\n"
+        "};\n\n";
+    VFile_Write(file, logiEnum, strlen(logiEnum));
+
+    char const physEnum[] =
+        "enum PhysicalChannel {\n"
+        "\t_0 = 0,\n"
+        "\t_1 = 1,\n"
+        "\t_2 = 2,\n"
+        "\t_3 = 3,\n"
+        "\tCONST_0 = -1,\n"
+        "\tCONST_1 = -2,\n"
+        "};\n\n";
+    VFile_Write(file, physEnum, strlen(physEnum));
+
+    VFile_Write(file, nsend, strlen(nsend));
+	VFile_Write(file, cppend, strlen(cppend));
+}
+
 void GenEnums(VFile_Handle file) {
 	char const ifstartmacro[] = "typedef enum TinyImageFormat {\n";
 	char const ifmodmacro[] = "\tTinyImageFormat_%s = %d,\n";
