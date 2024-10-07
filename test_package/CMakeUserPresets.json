@@ -1,0 +1,9 @@
+{
+    "version": 4,
+    "vendor": {
+        "conan": {}
+    },
+    "include": [
+        "build_msvc_amd64\\CMakePresets.json"
+    ]
+}

@@ -1,9 +1,12 @@
-#include "al2o3_platform/platform.h"
-#include "al2o3_catch2/catch2.hpp"
+#include "coquelicot/tinyimageformat_base.h"
+#include "coquelicot/tinyimageformat_query.h"
+#include "utils.h"
 
-#include "tiny_imageformat/tinyimageformat_base.h"
-#include "tiny_imageformat/tinyimageformat_query.h"
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
 #include <float.h>
+
+using Catch::Approx;
 
 TEST_CASE("Format Cracker IsDepthOnly (C)", "[Image]") {
 

@@ -1,0 +1,15 @@
+[settings]
+os=Android
+os.api_level=26
+compiler=clang
+compiler.version=17
+compiler.libcxx=c++_static
+compiler.cppstd=20
+
+[conf]
+tools.android:ndk_path={{ os.getenv("ANDROID_NDK") }}
+tools.cmake.cmaketoolchain:generator=Ninja
+
+[tool_requires]
+ninja/[*]
+automake/1.16.5
