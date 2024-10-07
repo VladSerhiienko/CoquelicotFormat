@@ -1,281 +1,281 @@
 #pragma once
 
-typedef enum TinyImageFormat_Namespace {
-	TinyImageFormat_NAMESPACE_PACK = 0ULL,
-	TinyImageFormat_NAMESPACE_DEPTH_STENCIL = 1ULL,
-	TinyImageFormat_NAMESPACE_DXTC = 2ULL,
-	TinyImageFormat_NAMESPACE_PVRTC = 3ULL,
-	TinyImageFormat_NAMESPACE_ETC = 4ULL,
-	TinyImageFormat_NAMESPACE_ASTC = 5ULL,
-	TinyImageFormat_NAMESPACE_CLUT = 6ULL,
-} TinyImageFormat_Namespace;
+typedef enum CqFormat_Namespace {
+	CqFormat_NAMESPACE_PACK = 0ULL,
+	CqFormat_NAMESPACE_DEPTH_STENCIL = 1ULL,
+	CqFormat_NAMESPACE_DXTC = 2ULL,
+	CqFormat_NAMESPACE_PVRTC = 3ULL,
+	CqFormat_NAMESPACE_ETC = 4ULL,
+	CqFormat_NAMESPACE_ASTC = 5ULL,
+	CqFormat_NAMESPACE_CLUT = 6ULL,
+} CqFormat_Namespace;
 
-typedef enum TinyImageFormat_Pack_Special {
-	TinyImageFormat_PACK_SPECIAL_NONE = 0ULL,
-	TinyImageFormat_PACK_SPECIAL_PACK = 1ULL,
-	TinyImageFormat_PACK_SPECIAL_MULTI2 = 2ULL,
-	TinyImageFormat_PACK_SPECIAL_MULTI4 = 3ULL,
-	TinyImageFormat_PACK_SPECIAL_MULTI8 = 4ULL,
-} TinyImageFormat_Pack_Special;
+typedef enum CqFormat_Pack_Special {
+	CqFormat_PACK_SPECIAL_NONE = 0ULL,
+	CqFormat_PACK_SPECIAL_PACK = 1ULL,
+	CqFormat_PACK_SPECIAL_MULTI2 = 2ULL,
+	CqFormat_PACK_SPECIAL_MULTI4 = 3ULL,
+	CqFormat_PACK_SPECIAL_MULTI8 = 4ULL,
+} CqFormat_Pack_Special;
 
-typedef enum TinyImageFormat_Pack_Bits {
-	TinyImageFormat_PACK_BITS_0 = 0ULL,
-	TinyImageFormat_PACK_BITS_1 = 1ULL,
-	TinyImageFormat_PACK_BITS_2 = 2ULL,
-	TinyImageFormat_PACK_BITS_3 = 3ULL,
-	TinyImageFormat_PACK_BITS_4 = 4ULL,
-	TinyImageFormat_PACK_BITS_5 = 5ULL,
-	TinyImageFormat_PACK_BITS_6 = 6ULL,
-	TinyImageFormat_PACK_BITS_7 = 7ULL,
-	TinyImageFormat_PACK_BITS_8 = 8ULL,
-	TinyImageFormat_PACK_BITS_9 = 9ULL,
-	TinyImageFormat_PACK_BITS_10 = 10ULL,
-	TinyImageFormat_PACK_BITS_11 = 11ULL,
-	TinyImageFormat_PACK_BITS_12 = 12ULL,
-	TinyImageFormat_PACK_BITS_16 = 13ULL,
-	TinyImageFormat_PACK_BITS_24 = 14ULL,
-	TinyImageFormat_PACK_BITS_32 = 15ULL,
-	TinyImageFormat_PACK_BITS_64 = 16ULL,
-} TinyImageFormat_Pack_Bits;
+typedef enum CqFormat_Pack_Bits {
+	CqFormat_PACK_BITS_0 = 0ULL,
+	CqFormat_PACK_BITS_1 = 1ULL,
+	CqFormat_PACK_BITS_2 = 2ULL,
+	CqFormat_PACK_BITS_3 = 3ULL,
+	CqFormat_PACK_BITS_4 = 4ULL,
+	CqFormat_PACK_BITS_5 = 5ULL,
+	CqFormat_PACK_BITS_6 = 6ULL,
+	CqFormat_PACK_BITS_7 = 7ULL,
+	CqFormat_PACK_BITS_8 = 8ULL,
+	CqFormat_PACK_BITS_9 = 9ULL,
+	CqFormat_PACK_BITS_10 = 10ULL,
+	CqFormat_PACK_BITS_11 = 11ULL,
+	CqFormat_PACK_BITS_12 = 12ULL,
+	CqFormat_PACK_BITS_16 = 13ULL,
+	CqFormat_PACK_BITS_24 = 14ULL,
+	CqFormat_PACK_BITS_32 = 15ULL,
+	CqFormat_PACK_BITS_64 = 16ULL,
+} CqFormat_Pack_Bits;
 
-typedef enum TinyImageFormat_Pack_Swizzle {
-	TinyImageFormat_PACK_SWIZZLE_R = 0ULL,
-	TinyImageFormat_PACK_SWIZZLE_G = 1ULL,
-	TinyImageFormat_PACK_SWIZZLE_B = 2ULL,
-	TinyImageFormat_PACK_SWIZZLE_A = 3ULL,
-	TinyImageFormat_PACK_SWIZZLE_0 = 4ULL,
-	TinyImageFormat_PACK_SWIZZLE_1 = 5ULL,
-} TinyImageFormat_Pack_Swizzle;
+typedef enum CqFormat_Pack_Swizzle {
+	CqFormat_PACK_SWIZZLE_R = 0ULL,
+	CqFormat_PACK_SWIZZLE_G = 1ULL,
+	CqFormat_PACK_SWIZZLE_B = 2ULL,
+	CqFormat_PACK_SWIZZLE_A = 3ULL,
+	CqFormat_PACK_SWIZZLE_0 = 4ULL,
+	CqFormat_PACK_SWIZZLE_1 = 5ULL,
+} CqFormat_Pack_Swizzle;
 
-typedef enum TinyImageFormat_Pack_Type {
-	TinyImageFormat_PACK_TYPE_NONE = 0ULL,
-	TinyImageFormat_PACK_TYPE_UNORM = 1ULL,
-	TinyImageFormat_PACK_TYPE_SNORM = 2ULL,
-	TinyImageFormat_PACK_TYPE_UINT = 3ULL,
-	TinyImageFormat_PACK_TYPE_SINT = 4ULL,
-	TinyImageFormat_PACK_TYPE_UFLOAT = 5ULL,
-	TinyImageFormat_PACK_TYPE_SFLOAT = 6ULL,
-	TinyImageFormat_PACK_TYPE_SRGB = 7ULL,
-	TinyImageFormat_PACK_TYPE_SBFLOAT = 8ULL,
-} TinyImageFormat_Pack_Type;
+typedef enum CqFormat_Pack_Type {
+	CqFormat_PACK_TYPE_NONE = 0ULL,
+	CqFormat_PACK_TYPE_UNORM = 1ULL,
+	CqFormat_PACK_TYPE_SNORM = 2ULL,
+	CqFormat_PACK_TYPE_UINT = 3ULL,
+	CqFormat_PACK_TYPE_SINT = 4ULL,
+	CqFormat_PACK_TYPE_UFLOAT = 5ULL,
+	CqFormat_PACK_TYPE_SFLOAT = 6ULL,
+	CqFormat_PACK_TYPE_SRGB = 7ULL,
+	CqFormat_PACK_TYPE_SBFLOAT = 8ULL,
+} CqFormat_Pack_Type;
 
-typedef enum TinyImageFormat_DepthStencil_Total_Size {
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_8 = 0ULL,
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_16 = 1ULL,
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_32 = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_64 = 3ULL,
-} TinyImageFormat_DepthStencil_Total_Size;
+typedef enum CqFormat_DepthStencil_Total_Size {
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_8 = 0ULL,
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_16 = 1ULL,
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_32 = 2ULL,
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_64 = 3ULL,
+} CqFormat_DepthStencil_Total_Size;
 
-typedef enum TinyImageFormat_DepthStencil_Bits {
-	TinyImageFormat_DEPTH_STENCIL_BITS_0 = 0ULL,
-	TinyImageFormat_DEPTH_STENCIL_BITS_8 = 1ULL,
-	TinyImageFormat_DEPTH_STENCIL_BITS_16 = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_BITS_24 = 3ULL,
-	TinyImageFormat_DEPTH_STENCIL_BITS_32 = 4ULL,
-} TinyImageFormat_DepthStencil_Bits;
+typedef enum CqFormat_DepthStencil_Bits {
+	CqFormat_DEPTH_STENCIL_BITS_0 = 0ULL,
+	CqFormat_DEPTH_STENCIL_BITS_8 = 1ULL,
+	CqFormat_DEPTH_STENCIL_BITS_16 = 2ULL,
+	CqFormat_DEPTH_STENCIL_BITS_24 = 3ULL,
+	CqFormat_DEPTH_STENCIL_BITS_32 = 4ULL,
+} CqFormat_DepthStencil_Bits;
 
-typedef enum TinyImageFormat_DepthStencil_Swizzle {
-	TinyImageFormat_DEPTH_STENCIL_SWIZZLE_D = 0ULL,
-	TinyImageFormat_DEPTH_STENCIL_SWIZZLE_S = 1ULL,
-	TinyImageFormat_DEPTH_STENCIL_SWIZZLE_0 = 2ULL,
-} TinyImageFormat_DepthStencil_Swizzle;
+typedef enum CqFormat_DepthStencil_Swizzle {
+	CqFormat_DEPTH_STENCIL_SWIZZLE_D = 0ULL,
+	CqFormat_DEPTH_STENCIL_SWIZZLE_S = 1ULL,
+	CqFormat_DEPTH_STENCIL_SWIZZLE_0 = 2ULL,
+} CqFormat_DepthStencil_Swizzle;
 
-typedef enum TinyImageFormat_DepthStencil_Type {
-	TinyImageFormat_DEPTH_STENCIL_TYPE_NONE = 0ULL,
-	TinyImageFormat_DEPTH_STENCIL_TYPE_UNORM = 1ULL,
-	TinyImageFormat_DEPTH_STENCIL_TYPE_UINT = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_TYPE_SFLOAT = 3ULL,
-} TinyImageFormat_DepthStencil_Type;
+typedef enum CqFormat_DepthStencil_Type {
+	CqFormat_DEPTH_STENCIL_TYPE_NONE = 0ULL,
+	CqFormat_DEPTH_STENCIL_TYPE_UNORM = 1ULL,
+	CqFormat_DEPTH_STENCIL_TYPE_UINT = 2ULL,
+	CqFormat_DEPTH_STENCIL_TYPE_SFLOAT = 3ULL,
+} CqFormat_DepthStencil_Type;
 
-typedef enum TinyImageFormat_DXTC_Alpha {
-	TinyImageFormat_DXTC_ALPHA_NONE = 0ULL,
-	TinyImageFormat_DXTC_ALPHA_PUNCHTHROUGH = 1ULL,
-	TinyImageFormat_DXTC_ALPHA_BLOCK = 2ULL,
-	TinyImageFormat_DXTC_ALPHA_FULL = 3ULL,
-} TinyImageFormat_DXTC_Alpha;
+typedef enum CqFormat_DXTC_Alpha {
+	CqFormat_DXTC_ALPHA_NONE = 0ULL,
+	CqFormat_DXTC_ALPHA_PUNCHTHROUGH = 1ULL,
+	CqFormat_DXTC_ALPHA_BLOCK = 2ULL,
+	CqFormat_DXTC_ALPHA_FULL = 3ULL,
+} CqFormat_DXTC_Alpha;
 
-typedef enum TinyImageFormat_DXTC_Type {
-	TinyImageFormat_DXTC_TYPE_UNORM = 0ULL,
-	TinyImageFormat_DXTC_TYPE_SNORM = 1ULL,
-	TinyImageFormat_DXTC_TYPE_SRGB = 2ULL,
-	TinyImageFormat_DXTC_TYPE_SFLOAT = 3ULL,
-	TinyImageFormat_DXTC_TYPE_UFLOAT = 4ULL,
-} TinyImageFormat_DXTC_Type;
+typedef enum CqFormat_DXTC_Type {
+	CqFormat_DXTC_TYPE_UNORM = 0ULL,
+	CqFormat_DXTC_TYPE_SNORM = 1ULL,
+	CqFormat_DXTC_TYPE_SRGB = 2ULL,
+	CqFormat_DXTC_TYPE_SFLOAT = 3ULL,
+	CqFormat_DXTC_TYPE_UFLOAT = 4ULL,
+} CqFormat_DXTC_Type;
 
-typedef enum TinyImageFormat_DXTC_BlockBytes {
-	TinyImageFormat_DXTC_BLOCKBYTES_8 = 0ULL,
-	TinyImageFormat_DXTC_BLOCKBYTES_16 = 1ULL,
-} TinyImageFormat_DXTC_BlockBytes;
+typedef enum CqFormat_DXTC_BlockBytes {
+	CqFormat_DXTC_BLOCKBYTES_8 = 0ULL,
+	CqFormat_DXTC_BLOCKBYTES_16 = 1ULL,
+} CqFormat_DXTC_BlockBytes;
 
-typedef enum TinyImageFormat_DXTC_ChannelCount {
-	TinyImageFormat_DXTC_CHANNELCOUNT_1 = 0ULL,
-	TinyImageFormat_DXTC_CHANNELCOUNT_2 = 1ULL,
-	TinyImageFormat_DXTC_CHANNELCOUNT_3 = 2ULL,
-	TinyImageFormat_DXTC_CHANNELCOUNT_4 = 3ULL,
-} TinyImageFormat_DXTC_ChannelCount;
+typedef enum CqFormat_DXTC_ChannelCount {
+	CqFormat_DXTC_CHANNELCOUNT_1 = 0ULL,
+	CqFormat_DXTC_CHANNELCOUNT_2 = 1ULL,
+	CqFormat_DXTC_CHANNELCOUNT_3 = 2ULL,
+	CqFormat_DXTC_CHANNELCOUNT_4 = 3ULL,
+} CqFormat_DXTC_ChannelCount;
 
-typedef enum TinyImageFormat_DXTC_ModeCount {
-	TinyImageFormat_DXTC_MODECOUNT_1 = 0ULL,
-	TinyImageFormat_DXTC_MODECOUNT_8 = 1ULL,
-	TinyImageFormat_DXTC_MODECOUNT_14 = 2ULL,
-} TinyImageFormat_DXTC_ModeCount;
+typedef enum CqFormat_DXTC_ModeCount {
+	CqFormat_DXTC_MODECOUNT_1 = 0ULL,
+	CqFormat_DXTC_MODECOUNT_8 = 1ULL,
+	CqFormat_DXTC_MODECOUNT_14 = 2ULL,
+} CqFormat_DXTC_ModeCount;
 
-typedef enum TinyImageFormat_PVRTC_Version {
-	TinyImageFormat_PVRTC_VERSION_V1 = 0ULL,
-	TinyImageFormat_PVRTC_VERSION_V2 = 1ULL,
-} TinyImageFormat_PVRTC_Version;
+typedef enum CqFormat_PVRTC_Version {
+	CqFormat_PVRTC_VERSION_V1 = 0ULL,
+	CqFormat_PVRTC_VERSION_V2 = 1ULL,
+} CqFormat_PVRTC_Version;
 
-typedef enum TinyImageFormat_PVRTC_Bits {
-	TinyImageFormat_PVRTC_BITS_2 = 0ULL,
-	TinyImageFormat_PVRTC_BITS_4 = 1ULL,
-} TinyImageFormat_PVRTC_Bits;
+typedef enum CqFormat_PVRTC_Bits {
+	CqFormat_PVRTC_BITS_2 = 0ULL,
+	CqFormat_PVRTC_BITS_4 = 1ULL,
+} CqFormat_PVRTC_Bits;
 
-typedef enum TinyImageFormat_PVRTC_Type {
-	TinyImageFormat_PVRTC_TYPE_UNORM = 0ULL,
-	TinyImageFormat_PVRTC_TYPE_SRGB = 1ULL,
-} TinyImageFormat_PVRTC_Type;
+typedef enum CqFormat_PVRTC_Type {
+	CqFormat_PVRTC_TYPE_UNORM = 0ULL,
+	CqFormat_PVRTC_TYPE_SRGB = 1ULL,
+} CqFormat_PVRTC_Type;
 
-typedef enum TinyImageFormat_ETC_Bits {
-	TinyImageFormat_ETC_BITS_8 = 0ULL,
-	TinyImageFormat_ETC_BITS_11 = 1ULL,
-} TinyImageFormat_ETC_Bits;
+typedef enum CqFormat_ETC_Bits {
+	CqFormat_ETC_BITS_8 = 0ULL,
+	CqFormat_ETC_BITS_11 = 1ULL,
+} CqFormat_ETC_Bits;
 
-typedef enum TinyImageFormat_ETC_Alpha {
-	TinyImageFormat_ETC_ALPHA_NONE = 0ULL,
-	TinyImageFormat_ETC_ALPHA_PUNCHTHROUGH = 1ULL,
-	TinyImageFormat_ETC_ALPHA_BLOCK = 2ULL,
-} TinyImageFormat_ETC_Alpha;
+typedef enum CqFormat_ETC_Alpha {
+	CqFormat_ETC_ALPHA_NONE = 0ULL,
+	CqFormat_ETC_ALPHA_PUNCHTHROUGH = 1ULL,
+	CqFormat_ETC_ALPHA_BLOCK = 2ULL,
+} CqFormat_ETC_Alpha;
 
-typedef enum TinyImageFormat_ETC_Type {
-	TinyImageFormat_ETC_TYPE_UNORM = 0ULL,
-	TinyImageFormat_ETC_TYPE_SNORM = 1ULL,
-	TinyImageFormat_ETC_TYPE_SRGB = 2ULL,
-} TinyImageFormat_ETC_Type;
+typedef enum CqFormat_ETC_Type {
+	CqFormat_ETC_TYPE_UNORM = 0ULL,
+	CqFormat_ETC_TYPE_SNORM = 1ULL,
+	CqFormat_ETC_TYPE_SRGB = 2ULL,
+} CqFormat_ETC_Type;
 
-typedef enum TinyImageFormat_ETC_ChannelCount {
-	TinyImageFormat_ETC_CHANNELCOUNT_1 = 0ULL,
-	TinyImageFormat_ETC_CHANNELCOUNT_2 = 1ULL,
-	TinyImageFormat_ETC_CHANNELCOUNT_3 = 2ULL,
-	TinyImageFormat_ETC_CHANNELCOUNT_4 = 3ULL,
-} TinyImageFormat_ETC_ChannelCount;
+typedef enum CqFormat_ETC_ChannelCount {
+	CqFormat_ETC_CHANNELCOUNT_1 = 0ULL,
+	CqFormat_ETC_CHANNELCOUNT_2 = 1ULL,
+	CqFormat_ETC_CHANNELCOUNT_3 = 2ULL,
+	CqFormat_ETC_CHANNELCOUNT_4 = 3ULL,
+} CqFormat_ETC_ChannelCount;
 
-typedef enum TinyImageFormat_ASTC_Size {
-	TinyImageFormat_ASTC_SIZE_1 = 0ULL,
-	TinyImageFormat_ASTC_SIZE_4 = 2ULL,
-	TinyImageFormat_ASTC_SIZE_5 = 3ULL,
-	TinyImageFormat_ASTC_SIZE_6 = 4ULL,
-	TinyImageFormat_ASTC_SIZE_8 = 5ULL,
-	TinyImageFormat_ASTC_SIZE_10 = 6ULL,
-	TinyImageFormat_ASTC_SIZE_12 = 7ULL,
-} TinyImageFormat_ASTC_Size;
+typedef enum CqFormat_ASTC_Size {
+	CqFormat_ASTC_SIZE_1 = 0ULL,
+	CqFormat_ASTC_SIZE_4 = 2ULL,
+	CqFormat_ASTC_SIZE_5 = 3ULL,
+	CqFormat_ASTC_SIZE_6 = 4ULL,
+	CqFormat_ASTC_SIZE_8 = 5ULL,
+	CqFormat_ASTC_SIZE_10 = 6ULL,
+	CqFormat_ASTC_SIZE_12 = 7ULL,
+} CqFormat_ASTC_Size;
 
-typedef enum TinyImageFormat_ASTC_Type {
-	TinyImageFormat_ASTC_TYPE_UNORM = 0ULL,
-	TinyImageFormat_ASTC_TYPE_SRGB = 1ULL,
-} TinyImageFormat_ASTC_Type;
+typedef enum CqFormat_ASTC_Type {
+	CqFormat_ASTC_TYPE_UNORM = 0ULL,
+	CqFormat_ASTC_TYPE_SRGB = 1ULL,
+} CqFormat_ASTC_Type;
 
-typedef enum TinyImageFormat_CLUT_BlockSize {
-	TinyImageFormat_CLUT_BLOCKSIZE_1 = 0ULL,
-	TinyImageFormat_CLUT_BLOCKSIZE_2 = 1ULL,
-	TinyImageFormat_CLUT_BLOCKSIZE_4 = 2ULL,
-	TinyImageFormat_CLUT_BLOCKSIZE_8 = 3ULL,
-} TinyImageFormat_CLUT_BlockSize;
+typedef enum CqFormat_CLUT_BlockSize {
+	CqFormat_CLUT_BLOCKSIZE_1 = 0ULL,
+	CqFormat_CLUT_BLOCKSIZE_2 = 1ULL,
+	CqFormat_CLUT_BLOCKSIZE_4 = 2ULL,
+	CqFormat_CLUT_BLOCKSIZE_8 = 3ULL,
+} CqFormat_CLUT_BlockSize;
 
-typedef enum TinyImageFormat_CLUT_Bits {
-	TinyImageFormat_CLUT_BITS_0 = 0ULL,
-	TinyImageFormat_CLUT_BITS_1 = 1ULL,
-	TinyImageFormat_CLUT_BITS_2 = 2ULL,
-	TinyImageFormat_CLUT_BITS_4 = 3ULL,
-	TinyImageFormat_CLUT_BITS_8 = 4ULL,
-} TinyImageFormat_CLUT_Bits;
+typedef enum CqFormat_CLUT_Bits {
+	CqFormat_CLUT_BITS_0 = 0ULL,
+	CqFormat_CLUT_BITS_1 = 1ULL,
+	CqFormat_CLUT_BITS_2 = 2ULL,
+	CqFormat_CLUT_BITS_4 = 3ULL,
+	CqFormat_CLUT_BITS_8 = 4ULL,
+} CqFormat_CLUT_Bits;
 
-typedef enum TinyImageFormat_CLUT_Type {
-	TinyImageFormat_CLUT_TYPE_NONE = 0ULL,
-	TinyImageFormat_CLUT_TYPE_RGB = 1ULL,
-	TinyImageFormat_CLUT_TYPE_SINGLE = 2ULL,
-	TinyImageFormat_CLUT_TYPE_EXPLICIT_ALPHA = 3ULL,
-} TinyImageFormat_CLUT_Type;
+typedef enum CqFormat_CLUT_Type {
+	CqFormat_CLUT_TYPE_NONE = 0ULL,
+	CqFormat_CLUT_TYPE_RGB = 1ULL,
+	CqFormat_CLUT_TYPE_SINGLE = 2ULL,
+	CqFormat_CLUT_TYPE_EXPLICIT_ALPHA = 3ULL,
+} CqFormat_CLUT_Type;
 
-typedef enum TinyImageFormat_Bits {
-	TinyImageFormat_NAMESPACE_REQUIRED_BITS = 12ULL,
-	TinyImageFormat_NAMESPACE_MASK = (1 << TinyImageFormat_NAMESPACE_REQUIRED_BITS) - 1,
+typedef enum CqFormat_Bits {
+	CqFormat_NAMESPACE_REQUIRED_BITS = 12ULL,
+	CqFormat_NAMESPACE_MASK = (1 << CqFormat_NAMESPACE_REQUIRED_BITS) - 1,
 
-	TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS = 3ULL,
-	TinyImageFormat_PACK_BITS_REQUIRED_BITS = 5ULL,
-	TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS = 3ULL,
+	CqFormat_PACK_SPECIAL_REQUIRED_BITS = 3ULL,
+	CqFormat_PACK_BITS_REQUIRED_BITS = 5ULL,
+	CqFormat_PACK_SWIZZLE_REQUIRED_BITS = 3ULL,
 
-	TinyImageFormat_PACK_TYPE_REQUIRED_BITS = 4ULL,
-	TinyImageFormat_PACK_NUM_CHANNELS = 4ULL,
+	CqFormat_PACK_TYPE_REQUIRED_BITS = 4ULL,
+	CqFormat_PACK_NUM_CHANNELS = 4ULL,
 
-	TinyImageFormat_PACK_SPECIAL_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_PACK_BITS_SHIFT = (TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS + TinyImageFormat_PACK_SPECIAL_SHIFT),
-	TinyImageFormat_PACK_SWIZZLE_SHIFT =
-	((TinyImageFormat_PACK_BITS_REQUIRED_BITS * TinyImageFormat_PACK_NUM_CHANNELS) + TinyImageFormat_PACK_BITS_SHIFT),
-	TinyImageFormat_PACK_TYPE_SHIFT = ((TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS * TinyImageFormat_PACK_NUM_CHANNELS)
-			+ TinyImageFormat_PACK_SWIZZLE_SHIFT),
+	CqFormat_PACK_SPECIAL_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_PACK_BITS_SHIFT = (CqFormat_PACK_SPECIAL_REQUIRED_BITS + CqFormat_PACK_SPECIAL_SHIFT),
+	CqFormat_PACK_SWIZZLE_SHIFT =
+	((CqFormat_PACK_BITS_REQUIRED_BITS * CqFormat_PACK_NUM_CHANNELS) + CqFormat_PACK_BITS_SHIFT),
+	CqFormat_PACK_TYPE_SHIFT = ((CqFormat_PACK_SWIZZLE_REQUIRED_BITS * CqFormat_PACK_NUM_CHANNELS)
+			+ CqFormat_PACK_SWIZZLE_SHIFT),
 
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS = 3ULL,
-	TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS = 2ULL,
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS = 2ULL,
+	CqFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS = 3ULL,
+	CqFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS = 2ULL,
+	CqFormat_DEPTH_STENCIL_TYPE_REQUIRED_BITS = 2ULL,
+	CqFormat_DEPTH_STENCIL_NUM_CHANNELS = 2ULL,
 
-	TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_DEPTH_STENCIL_BITS_SHIFT =
-	((TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS) + TinyImageFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT),
-	TinyImageFormat_DEPTH_STENCIL_SWIZZLE_SHIFT =
-	((TinyImageFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS * TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS)
-			+ TinyImageFormat_DEPTH_STENCIL_BITS_SHIFT),
-	TinyImageFormat_DEPTH_STENCIL_TYPE_SHIFT =
-	((TinyImageFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS * TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS)
-			+ TinyImageFormat_DEPTH_STENCIL_SWIZZLE_SHIFT),
+	CqFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_DEPTH_STENCIL_BITS_SHIFT =
+	((CqFormat_DEPTH_STENCIL_TOTAL_SIZE_REQUIRED_BITS) + CqFormat_DEPTH_STENCIL_TOTAL_SIZE_SHIFT),
+	CqFormat_DEPTH_STENCIL_SWIZZLE_SHIFT =
+	((CqFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS * CqFormat_DEPTH_STENCIL_NUM_CHANNELS)
+			+ CqFormat_DEPTH_STENCIL_BITS_SHIFT),
+	CqFormat_DEPTH_STENCIL_TYPE_SHIFT =
+	((CqFormat_DEPTH_STENCIL_SWIZZLE_REQUIRED_BITS * CqFormat_DEPTH_STENCIL_NUM_CHANNELS)
+			+ CqFormat_DEPTH_STENCIL_SWIZZLE_SHIFT),
 
-	TinyImageFormat_DXTC_ALPHA_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DXTC_TYPE_REQUIRED_BITS = 3ULL,
-	TinyImageFormat_DXTC_BLOCKBYTES_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_DXTC_MODECOUNT_REQUIRED_BITS = 3ULL,
+	CqFormat_DXTC_ALPHA_REQUIRED_BITS = 2ULL,
+	CqFormat_DXTC_TYPE_REQUIRED_BITS = 3ULL,
+	CqFormat_DXTC_BLOCKBYTES_REQUIRED_BITS = 2ULL,
+	CqFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS = 2ULL,
+	CqFormat_DXTC_MODECOUNT_REQUIRED_BITS = 3ULL,
 
-	TinyImageFormat_DXTC_ALPHA_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_DXTC_TYPE_SHIFT = (TinyImageFormat_DXTC_ALPHA_REQUIRED_BITS + TinyImageFormat_DXTC_ALPHA_SHIFT),
-	TinyImageFormat_DXTC_BLOCKBYTES_SHIFT = (TinyImageFormat_DXTC_TYPE_REQUIRED_BITS + TinyImageFormat_DXTC_TYPE_SHIFT),
-	TinyImageFormat_DXTC_CHANNELCOUNT_SHIFT =
-	(TinyImageFormat_DXTC_BLOCKBYTES_REQUIRED_BITS + TinyImageFormat_DXTC_BLOCKBYTES_SHIFT),
-	TinyImageFormat_DXTC_MODECOUNT_SHIFT =
-	(TinyImageFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS + TinyImageFormat_DXTC_CHANNELCOUNT_SHIFT),
+	CqFormat_DXTC_ALPHA_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_DXTC_TYPE_SHIFT = (CqFormat_DXTC_ALPHA_REQUIRED_BITS + CqFormat_DXTC_ALPHA_SHIFT),
+	CqFormat_DXTC_BLOCKBYTES_SHIFT = (CqFormat_DXTC_TYPE_REQUIRED_BITS + CqFormat_DXTC_TYPE_SHIFT),
+	CqFormat_DXTC_CHANNELCOUNT_SHIFT =
+	(CqFormat_DXTC_BLOCKBYTES_REQUIRED_BITS + CqFormat_DXTC_BLOCKBYTES_SHIFT),
+	CqFormat_DXTC_MODECOUNT_SHIFT =
+	(CqFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS + CqFormat_DXTC_CHANNELCOUNT_SHIFT),
 
-	TinyImageFormat_PVRTC_VERSION_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_PVRTC_BITS_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_PVRTC_TYPE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_PVRTC_VERSION_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_PVRTC_BITS_SHIFT =
-	(TinyImageFormat_PVRTC_VERSION_REQUIRED_BITS + TinyImageFormat_PVRTC_VERSION_SHIFT),
-	TinyImageFormat_PVRTC_TYPE_SHIFT = (TinyImageFormat_PVRTC_BITS_REQUIRED_BITS + TinyImageFormat_PVRTC_BITS_SHIFT),
+	CqFormat_PVRTC_VERSION_REQUIRED_BITS = 2ULL,
+	CqFormat_PVRTC_BITS_REQUIRED_BITS = 2ULL,
+	CqFormat_PVRTC_TYPE_REQUIRED_BITS = 2ULL,
+	CqFormat_PVRTC_VERSION_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_PVRTC_BITS_SHIFT =
+	(CqFormat_PVRTC_VERSION_REQUIRED_BITS + CqFormat_PVRTC_VERSION_SHIFT),
+	CqFormat_PVRTC_TYPE_SHIFT = (CqFormat_PVRTC_BITS_REQUIRED_BITS + CqFormat_PVRTC_BITS_SHIFT),
 
-	TinyImageFormat_ETC_BITS_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_ETC_ALPHA_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_ETC_TYPE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_ETC_CHANNELCOUNT_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_ETC_BITS_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_ETC_ALPHA_SHIFT = (TinyImageFormat_ETC_BITS_REQUIRED_BITS + TinyImageFormat_ETC_BITS_SHIFT),
-	TinyImageFormat_ETC_TYPE_SHIFT = (TinyImageFormat_ETC_ALPHA_REQUIRED_BITS + TinyImageFormat_ETC_ALPHA_SHIFT),
-	TinyImageFormat_ETC_CHANNELCOUNT_SHIFT = (TinyImageFormat_ETC_TYPE_REQUIRED_BITS + TinyImageFormat_ETC_TYPE_SHIFT),
+	CqFormat_ETC_BITS_REQUIRED_BITS = 2ULL,
+	CqFormat_ETC_ALPHA_REQUIRED_BITS = 2ULL,
+	CqFormat_ETC_TYPE_REQUIRED_BITS = 2ULL,
+	CqFormat_ETC_CHANNELCOUNT_REQUIRED_BITS = 2ULL,
+	CqFormat_ETC_BITS_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_ETC_ALPHA_SHIFT = (CqFormat_ETC_BITS_REQUIRED_BITS + CqFormat_ETC_BITS_SHIFT),
+	CqFormat_ETC_TYPE_SHIFT = (CqFormat_ETC_ALPHA_REQUIRED_BITS + CqFormat_ETC_ALPHA_SHIFT),
+	CqFormat_ETC_CHANNELCOUNT_SHIFT = (CqFormat_ETC_TYPE_REQUIRED_BITS + CqFormat_ETC_TYPE_SHIFT),
 
-	TinyImageFormat_ASTC_SIZE_REQUIRED_BITS = 3,
-	TinyImageFormat_ASTC_TYPE_REQUIRED_BITS = 2ULL,
-	TinyImageFormat_ASTC_NUM_DIMS = 3,
-	TinyImageFormat_ASTC_SIZE_SHIFT = (TinyImageFormat_NAMESPACE_REQUIRED_BITS),
-	TinyImageFormat_ASTC_TYPE_SHIFT =
-			((TinyImageFormat_ASTC_SIZE_REQUIRED_BITS * TinyImageFormat_ASTC_NUM_DIMS) + TinyImageFormat_ASTC_SIZE_SHIFT),
+	CqFormat_ASTC_SIZE_REQUIRED_BITS = 3,
+	CqFormat_ASTC_TYPE_REQUIRED_BITS = 2ULL,
+	CqFormat_ASTC_NUM_DIMS = 3,
+	CqFormat_ASTC_SIZE_SHIFT = (CqFormat_NAMESPACE_REQUIRED_BITS),
+	CqFormat_ASTC_TYPE_SHIFT =
+			((CqFormat_ASTC_SIZE_REQUIRED_BITS * CqFormat_ASTC_NUM_DIMS) + CqFormat_ASTC_SIZE_SHIFT),
 
-	TinyImageFormat_CLUT_BLOCKSIZE_REQUIRED_BITS = 2,
-	TinyImageFormat_CLUT_BITS_REQUIRED_BITS = 3,
-	TinyImageFormat_CLUT_TYPE_REQUIRED_BITS = 2,
-	TinyImageFormat_CLUT_NUM_CHANNELS = 2,
+	CqFormat_CLUT_BLOCKSIZE_REQUIRED_BITS = 2,
+	CqFormat_CLUT_BITS_REQUIRED_BITS = 3,
+	CqFormat_CLUT_TYPE_REQUIRED_BITS = 2,
+	CqFormat_CLUT_NUM_CHANNELS = 2,
 
-	TinyImageFormat_CLUT_BLOCKSIZE_SHIFT = TinyImageFormat_NAMESPACE_REQUIRED_BITS,
-	TinyImageFormat_CLUT_BITS_SHIFT = TinyImageFormat_CLUT_BLOCKSIZE_REQUIRED_BITS + TinyImageFormat_CLUT_BLOCKSIZE_SHIFT,
-	TinyImageFormat_CLUT_TYPE_SHIFT =
-				((TinyImageFormat_CLUT_BITS_REQUIRED_BITS * TinyImageFormat_CLUT_NUM_CHANNELS) + TinyImageFormat_CLUT_BITS_SHIFT),
+	CqFormat_CLUT_BLOCKSIZE_SHIFT = CqFormat_NAMESPACE_REQUIRED_BITS,
+	CqFormat_CLUT_BITS_SHIFT = CqFormat_CLUT_BLOCKSIZE_REQUIRED_BITS + CqFormat_CLUT_BLOCKSIZE_SHIFT,
+	CqFormat_CLUT_TYPE_SHIFT =
+				((CqFormat_CLUT_BITS_REQUIRED_BITS * CqFormat_CLUT_NUM_CHANNELS) + CqFormat_CLUT_BITS_SHIFT),
 
-} TinyImageFormat_Bits;
+} CqFormat_Bits;

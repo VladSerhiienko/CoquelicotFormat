@@ -1,7 +1,7 @@
 RAW_INCLUDE_START( R"=====( )
 
 
-inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
+inline void CqFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union
 	{
@@ -30,7 +30,7 @@ inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4
 }
 
 //HalfToFloat from Rygorous public domain code
-inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
+inline float CqFormat_HalfAsUintToFloat(uint16_t h_) {
 
 	const uint32_t shifted_exp = 0x7c00 << 13; // exponent mask after shift
 	union {
@@ -77,7 +77,7 @@ inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
+inline float CqFormat_BFloatAsUintToFloat(uint16_t h_) {
 	union {
 		struct {
 			uint16_t x;
@@ -92,7 +92,7 @@ inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat6AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -134,7 +134,7 @@ inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat7AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -176,7 +176,7 @@ inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat10AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -222,7 +222,7 @@ inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat11AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {

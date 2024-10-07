@@ -15,83 +15,83 @@ uint32_t ChannelCount(char const *name, uint64_t v);
 uint32_t ChannelWidth(char const *name, uint64_t const v, uint32_t chan) {
 
 	if(IsInPacked(name, v)) {
-		uint64_t vbc = v >> TinyImageFormat_PACK_BITS_SHIFT;
-		vbc = vbc >> (chan * TinyImageFormat_PACK_BITS_REQUIRED_BITS);
+		uint64_t vbc = v >> CqFormat_PACK_BITS_SHIFT;
+		vbc = vbc >> (chan * CqFormat_PACK_BITS_REQUIRED_BITS);
 
-		auto bits = (TinyImageFormat_Pack_Bits const) (vbc & Mask(TinyImageFormat_PACK_BITS_REQUIRED_BITS));
+		auto bits = (CqFormat_Pack_Bits const) (vbc & Mask(CqFormat_PACK_BITS_REQUIRED_BITS));
 		switch (bits) {
-		case TinyImageFormat_PACK_BITS_0: return 0;
-		case TinyImageFormat_PACK_BITS_1: return 1;
-		case TinyImageFormat_PACK_BITS_2: return 2;
-		case TinyImageFormat_PACK_BITS_3: return 3;
-		case TinyImageFormat_PACK_BITS_4: return 4;
-		case TinyImageFormat_PACK_BITS_5: return 5;
-		case TinyImageFormat_PACK_BITS_6: return 6;
-		case TinyImageFormat_PACK_BITS_7: return 7;
-		case TinyImageFormat_PACK_BITS_8: return 8;
-		case TinyImageFormat_PACK_BITS_9: return 9;
-		case TinyImageFormat_PACK_BITS_10: return 10;
-		case TinyImageFormat_PACK_BITS_11: return 11;
-		case TinyImageFormat_PACK_BITS_12: return 12;
-		case TinyImageFormat_PACK_BITS_16: return 16;
-		case TinyImageFormat_PACK_BITS_24: return 24;
-		case TinyImageFormat_PACK_BITS_32: return 32;
-		case TinyImageFormat_PACK_BITS_64: return 64;
+		case CqFormat_PACK_BITS_0: return 0;
+		case CqFormat_PACK_BITS_1: return 1;
+		case CqFormat_PACK_BITS_2: return 2;
+		case CqFormat_PACK_BITS_3: return 3;
+		case CqFormat_PACK_BITS_4: return 4;
+		case CqFormat_PACK_BITS_5: return 5;
+		case CqFormat_PACK_BITS_6: return 6;
+		case CqFormat_PACK_BITS_7: return 7;
+		case CqFormat_PACK_BITS_8: return 8;
+		case CqFormat_PACK_BITS_9: return 9;
+		case CqFormat_PACK_BITS_10: return 10;
+		case CqFormat_PACK_BITS_11: return 11;
+		case CqFormat_PACK_BITS_12: return 12;
+		case CqFormat_PACK_BITS_16: return 16;
+		case CqFormat_PACK_BITS_24: return 24;
+		case CqFormat_PACK_BITS_32: return 32;
+		case CqFormat_PACK_BITS_64: return 64;
 		}
 	}
 
 	if(IsInDepthStencil(name, v)) {
-		uint64_t vbc = v >> TinyImageFormat_DEPTH_STENCIL_BITS_SHIFT;
-		if(chan >= TinyImageFormat_DEPTH_STENCIL_NUM_CHANNELS) return 0;
-		vbc = vbc >> (chan * TinyImageFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS);
-		auto bits = (TinyImageFormat_DepthStencil_Bits const) (vbc & Mask(TinyImageFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS));
+		uint64_t vbc = v >> CqFormat_DEPTH_STENCIL_BITS_SHIFT;
+		if(chan >= CqFormat_DEPTH_STENCIL_NUM_CHANNELS) return 0;
+		vbc = vbc >> (chan * CqFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS);
+		auto bits = (CqFormat_DepthStencil_Bits const) (vbc & Mask(CqFormat_DEPTH_STENCIL_BITS_REQUIRED_BITS));
 		switch(bits) {
-		case TinyImageFormat_DEPTH_STENCIL_BITS_0: return 0;
-		case TinyImageFormat_DEPTH_STENCIL_BITS_8: return 8;
-		case TinyImageFormat_DEPTH_STENCIL_BITS_16: return 16;
-		case TinyImageFormat_DEPTH_STENCIL_BITS_24: return 24;
-		case TinyImageFormat_DEPTH_STENCIL_BITS_32: return 32;
+		case CqFormat_DEPTH_STENCIL_BITS_0: return 0;
+		case CqFormat_DEPTH_STENCIL_BITS_8: return 8;
+		case CqFormat_DEPTH_STENCIL_BITS_16: return 16;
+		case CqFormat_DEPTH_STENCIL_BITS_24: return 24;
+		case CqFormat_DEPTH_STENCIL_BITS_32: return 32;
 		}
 	}
 
 	if(IsInCLUT(name,v)) {
-		uint64_t vbc = v >> TinyImageFormat_CLUT_BITS_SHIFT;
+		uint64_t vbc = v >> CqFormat_CLUT_BITS_SHIFT;
 
-		if(chan >= TinyImageFormat_CLUT_NUM_CHANNELS) return 0;
-		vbc = vbc >> (chan * TinyImageFormat_CLUT_BITS_REQUIRED_BITS);
-		auto bits = (TinyImageFormat_CLUT_Bits const) (vbc & Mask(TinyImageFormat_CLUT_BITS_REQUIRED_BITS));
+		if(chan >= CqFormat_CLUT_NUM_CHANNELS) return 0;
+		vbc = vbc >> (chan * CqFormat_CLUT_BITS_REQUIRED_BITS);
+		auto bits = (CqFormat_CLUT_Bits const) (vbc & Mask(CqFormat_CLUT_BITS_REQUIRED_BITS));
 		switch(bits) {
 
-		case TinyImageFormat_CLUT_BITS_0: return 0;
-		case TinyImageFormat_CLUT_BITS_1: return 1;
-		case TinyImageFormat_CLUT_BITS_2: return 2;
-		case TinyImageFormat_CLUT_BITS_4: return 4;
-		case TinyImageFormat_CLUT_BITS_8: return 8;
+		case CqFormat_CLUT_BITS_0: return 0;
+		case CqFormat_CLUT_BITS_1: return 1;
+		case CqFormat_CLUT_BITS_2: return 2;
+		case CqFormat_CLUT_BITS_4: return 4;
+		case CqFormat_CLUT_BITS_8: return 8;
 		}
 	}
 	if(IsInDXTC(name,v)) {
-		uint64_t vt = v >> TinyImageFormat_DXTC_TYPE_SHIFT;
-		uint64_t vcc = v >> TinyImageFormat_DXTC_CHANNELCOUNT_SHIFT;
-		uint32_t const channelCount = (uint32_t const)(vcc & Mask(TinyImageFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
+		uint64_t vt = v >> CqFormat_DXTC_TYPE_SHIFT;
+		uint64_t vcc = v >> CqFormat_DXTC_CHANNELCOUNT_SHIFT;
+		uint32_t const channelCount = (uint32_t const)(vcc & Mask(CqFormat_DXTC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
 		if(chan >= channelCount) return 0;
-		auto type = (TinyImageFormat_DXTC_Type const) (vt & Mask(TinyImageFormat_DXTC_TYPE_REQUIRED_BITS));
+		auto type = (CqFormat_DXTC_Type const) (vt & Mask(CqFormat_DXTC_TYPE_REQUIRED_BITS));
 		switch(type) {
-		case TinyImageFormat_DXTC_TYPE_UNORM:
-		case TinyImageFormat_DXTC_TYPE_SNORM:
-		case TinyImageFormat_DXTC_TYPE_SRGB: return 8; // this is wrong but good enough imho
-		case TinyImageFormat_DXTC_TYPE_SFLOAT:
-		case TinyImageFormat_DXTC_TYPE_UFLOAT:return 16;
+		case CqFormat_DXTC_TYPE_UNORM:
+		case CqFormat_DXTC_TYPE_SNORM:
+		case CqFormat_DXTC_TYPE_SRGB: return 8; // this is wrong but good enough imho
+		case CqFormat_DXTC_TYPE_SFLOAT:
+		case CqFormat_DXTC_TYPE_UFLOAT:return 16;
 		}
 	}
 	if(IsInETC(name,v)) {
-		uint64_t vb = v >> TinyImageFormat_ETC_BITS_SHIFT;
-		uint64_t vcc = v >> TinyImageFormat_ETC_CHANNELCOUNT_SHIFT;
-		uint32_t const channelCount = (uint32_t const)(vcc & Mask(TinyImageFormat_ETC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
+		uint64_t vb = v >> CqFormat_ETC_BITS_SHIFT;
+		uint64_t vcc = v >> CqFormat_ETC_CHANNELCOUNT_SHIFT;
+		uint32_t const channelCount = (uint32_t const)(vcc & Mask(CqFormat_ETC_CHANNELCOUNT_REQUIRED_BITS)) + 1;
 		if(chan >= channelCount) return 0;
-		auto bits = (TinyImageFormat_ETC_Bits const) (vb & Mask(TinyImageFormat_ETC_BITS_REQUIRED_BITS));
+		auto bits = (CqFormat_ETC_Bits const) (vb & Mask(CqFormat_ETC_BITS_REQUIRED_BITS));
 		switch(bits) {
-		case TinyImageFormat_ETC_BITS_8:return 8;
-		case TinyImageFormat_ETC_BITS_11:return 11;
+		case CqFormat_ETC_BITS_8:return 8;
+		case CqFormat_ETC_BITS_11:return 11;
 		}
 	}
 
@@ -120,21 +120,21 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 		outputCast = outputCastTable[1];
 
 	// easy not packed formats
-	uint64_t vt = v >> TinyImageFormat_PACK_TYPE_SHIFT;
-	uint64_t vs = v >> TinyImageFormat_PACK_SWIZZLE_SHIFT;
+	uint64_t vt = v >> CqFormat_PACK_TYPE_SHIFT;
+	uint64_t vs = v >> CqFormat_PACK_SWIZZLE_SHIFT;
 
 	// unpacked are sort of homogenous same bit size per channel, even if
 	// type varies (not currently do) but this is okay for the pointer increment
 	char typeStringBuf[2048];
 
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
-		TinyImageFormat_Pack_Swizzle
-				swiz = (TinyImageFormat_Pack_Swizzle) (vs & Mask(TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS));
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
+		CqFormat_Pack_Swizzle
+				swiz = (CqFormat_Pack_Swizzle) (vs & Mask(CqFormat_PACK_SWIZZLE_REQUIRED_BITS));
 
 		int32_t swizzle = PhysicalChannelToLogical(name, v, i);
 
-		TinyImageFormat_Pack_Type
-				type = (TinyImageFormat_Pack_Type) (vt & Mask(TinyImageFormat_PACK_TYPE_REQUIRED_BITS));
+		CqFormat_Pack_Type
+				type = (CqFormat_Pack_Type) (vt & Mask(CqFormat_PACK_TYPE_REQUIRED_BITS));
 		double const maxFactor = MaxActual(name, v, i, true);
 		double const normalFactor = 1.0 / maxFactor;
 
@@ -153,17 +153,17 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 
 			char const *typeStringFmt = "ERROR";
 			switch (type) {
-			case TinyImageFormat_PACK_TYPE_SNORM:
-			case TinyImageFormat_PACK_TYPE_SINT:
+			case CqFormat_PACK_TYPE_SNORM:
+			case CqFormat_PACK_TYPE_SINT:
 				typeStringFmt = "int%d_t";
 				break;
-			case TinyImageFormat_PACK_TYPE_UNORM:
-			case TinyImageFormat_PACK_TYPE_SRGB:
-			case TinyImageFormat_PACK_TYPE_UINT:
+			case CqFormat_PACK_TYPE_UNORM:
+			case CqFormat_PACK_TYPE_SRGB:
+			case CqFormat_PACK_TYPE_UINT:
 				typeStringFmt = "uint%d_t";
 				break;
-			case TinyImageFormat_PACK_TYPE_UFLOAT:
-			case TinyImageFormat_PACK_TYPE_SFLOAT:
+			case CqFormat_PACK_TYPE_UFLOAT:
+			case CqFormat_PACK_TYPE_SFLOAT:
 				if (chanBitWidth == 16) {
 					typeStringFmt = "uint16_t"; // special needs decoder
 				} else if (chanBitWidth == 32) {
@@ -174,20 +174,20 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 					ASSERT(false);
 				}
 				break;
-			case TinyImageFormat_PACK_TYPE_SBFLOAT:
+			case CqFormat_PACK_TYPE_SBFLOAT:
 				if (chanBitWidth == 16) {
 					typeStringFmt = "uint16_t"; // special needs decoder
 				} else {
 					ASSERT(false);
 				}
 				break;
-			case TinyImageFormat_PACK_TYPE_NONE: continue;
+			case CqFormat_PACK_TYPE_NONE: continue;
 			}
 
 			sprintf(typeStringBuf, typeStringFmt, chanBitWidth);
 			switch (type) {
-			case TinyImageFormat_PACK_TYPE_UNORM:
-			case TinyImageFormat_PACK_TYPE_SNORM:
+			case CqFormat_PACK_TYPE_UNORM:
+			case CqFormat_PACK_TYPE_SNORM:
 				sprintf(output,
 								"%s\t\t\t\tout[%d] = ((%s)((%s const *)in->pixel)[%d]) * (%s)%1.8f;\n",
 								output,
@@ -198,10 +198,10 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 								outputCast,
 								normalFactor);
 				break;
-			case TinyImageFormat_PACK_TYPE_SFLOAT:
+			case CqFormat_PACK_TYPE_SFLOAT:
 				if (chanBitWidth == 16) {
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_HalfAsUintToFloat((((%s const *)in->pixel))[%d]);\n",
+									"%s\t\t\t\tout[%d] = (%s)CqFormat_HalfAsUintToFloat((((%s const *)in->pixel))[%d]);\n",
 									output,
 									swizzle,
 									outputCast,
@@ -218,17 +218,17 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 									i);
 				}
 				break;
-			case TinyImageFormat_PACK_TYPE_SBFLOAT:
+			case CqFormat_PACK_TYPE_SBFLOAT:
 				sprintf(output,
-								"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_BFloatAsUintToFloat((((%s const *)in->pixel))[%d]);\n",
+								"%s\t\t\t\tout[%d] = (%s)CqFormat_BFloatAsUintToFloat((((%s const *)in->pixel))[%d]);\n",
 								output,
 								swizzle,
 								outputCast,
 								typeStringBuf,
 								i);
 				break;
-			case TinyImageFormat_PACK_TYPE_UINT:
-			case TinyImageFormat_PACK_TYPE_SINT:
+			case CqFormat_PACK_TYPE_UINT:
+			case CqFormat_PACK_TYPE_SINT:
 				sprintf(output,
 								"%s\t\t\t\tout[%d] = (%s)(((%s const *)in->pixel)[%d]);\n",
 								output,
@@ -237,27 +237,27 @@ bool FetchLogicalPixelsPackedNotSpecial(char const *name,
 								typeStringBuf,
 								i);
 				break;
-			case TinyImageFormat_PACK_TYPE_SRGB:
+			case CqFormat_PACK_TYPE_SRGB:
 				sprintf(output,
-								"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_LookupSRGB(((%s const *)in->pixel)[%d]);\n",
+								"%s\t\t\t\tout[%d] = (%s)CqFormat_LookupSRGB(((%s const *)in->pixel)[%d]);\n",
 								output,
 								swizzle,
 								outputCast,
 								typeStringBuf,
 								i);
 				break;
-			case TinyImageFormat_PACK_TYPE_UFLOAT:
-			case TinyImageFormat_PACK_TYPE_NONE: ASSERT(false);
+			case CqFormat_PACK_TYPE_UFLOAT:
+			case CqFormat_PACK_TYPE_NONE: ASSERT(false);
 			}
 		}
-		vt = vt >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
-		vs = vs >> TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS;
+		vt = vt >> CqFormat_PACK_TYPE_REQUIRED_BITS;
+		vs = vs >> CqFormat_PACK_SWIZZLE_REQUIRED_BITS;
 	}
 
 	int8_t l2p[4];
 	LogicalToPhysicalChannels(name, v, l2p);
 
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 		if (l2p[i] < 0) {
 			sprintf(output,
 							"%s\t\t\t\tout[%d] = (%s)%1.8f;\n",
@@ -280,7 +280,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 																		 uint64_t const v,
 																		 uint32_t const outputFloatWidth,
 																		 char *output,
-																		 TinyImageFormat_Pack_Special const special) {
+																		 CqFormat_Pack_Special const special) {
 	char const *const outputCastTable[2] = {
 			"float",
 			"double"
@@ -291,20 +291,20 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 
 	// how wide is the total pixel format we fetch that and then break out each channel
 	uint32_t bitWidth = 0;
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 		bitWidth += ChannelWidth(name, v, i);
 	}
 	uint32_t repeat = 1;
 	switch (special) {
-	case TinyImageFormat_PACK_SPECIAL_NONE:repeat = 1;
+	case CqFormat_PACK_SPECIAL_NONE:repeat = 1;
 		break;
-	case TinyImageFormat_PACK_SPECIAL_PACK:repeat = 1;
+	case CqFormat_PACK_SPECIAL_PACK:repeat = 1;
 		break;
-	case TinyImageFormat_PACK_SPECIAL_MULTI2:repeat = 2;
+	case CqFormat_PACK_SPECIAL_MULTI2:repeat = 2;
 		break;
-	case TinyImageFormat_PACK_SPECIAL_MULTI4:repeat = 4;
+	case CqFormat_PACK_SPECIAL_MULTI4:repeat = 4;
 		break;
-	case TinyImageFormat_PACK_SPECIAL_MULTI8:repeat = 8;
+	case CqFormat_PACK_SPECIAL_MULTI8:repeat = 8;
 		break;
 	}
 	bitWidth *= repeat;
@@ -335,45 +335,45 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 
 	uint64_t shifter = 0;
 	for (uint32_t j = 0; j < repeat; j++) {
-		uint64_t vt = v >> TinyImageFormat_PACK_TYPE_SHIFT;
-		uint64_t vs = v >> TinyImageFormat_PACK_SWIZZLE_SHIFT;
+		uint64_t vt = v >> CqFormat_PACK_TYPE_SHIFT;
+		uint64_t vs = v >> CqFormat_PACK_SWIZZLE_SHIFT;
 
-		for (int i = TinyImageFormat_PACK_NUM_CHANNELS - 1; i >= 0; --i) {
-			uint32_t const chanBitWidth = ChannelWidth(name, v, TinyImageFormat_PACK_NUM_CHANNELS - i - 1);
+		for (int i = CqFormat_PACK_NUM_CHANNELS - 1; i >= 0; --i) {
+			uint32_t const chanBitWidth = ChannelWidth(name, v, CqFormat_PACK_NUM_CHANNELS - i - 1);
 
-			auto swiz = (TinyImageFormat_Pack_Swizzle const) (vs & Mask(TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS));
+			auto swiz = (CqFormat_Pack_Swizzle const) (vs & Mask(CqFormat_PACK_SWIZZLE_REQUIRED_BITS));
 
 			int32_t swizzle = -1;
 			switch (swiz) {
-			case TinyImageFormat_PACK_SWIZZLE_R: swizzle = 0;
+			case CqFormat_PACK_SWIZZLE_R: swizzle = 0;
 				break;
-			case TinyImageFormat_PACK_SWIZZLE_G: swizzle = 1;
+			case CqFormat_PACK_SWIZZLE_G: swizzle = 1;
 				break;
-			case TinyImageFormat_PACK_SWIZZLE_B: swizzle = 2;
+			case CqFormat_PACK_SWIZZLE_B: swizzle = 2;
 				break;
-			case TinyImageFormat_PACK_SWIZZLE_A: swizzle = 3;
+			case CqFormat_PACK_SWIZZLE_A: swizzle = 3;
 				break;
-			case TinyImageFormat_PACK_SWIZZLE_0: swizzle = -1;
+			case CqFormat_PACK_SWIZZLE_0: swizzle = -1;
 				break;
-			case TinyImageFormat_PACK_SWIZZLE_1: swizzle = -2;
+			case CqFormat_PACK_SWIZZLE_1: swizzle = -2;
 				break;
 			}
 
-			double const maxFactor = MaxActual(name, v, TinyImageFormat_PACK_NUM_CHANNELS - i - 1, true);
-			auto type = (TinyImageFormat_Pack_Type) (vt & Mask(TinyImageFormat_PACK_TYPE_REQUIRED_BITS));
+			double const maxFactor = MaxActual(name, v, CqFormat_PACK_NUM_CHANNELS - i - 1, true);
+			auto type = (CqFormat_Pack_Type) (vt & Mask(CqFormat_PACK_TYPE_REQUIRED_BITS));
 
 			if (swizzle >= 0) {
 
 				double normalFactor = 1.0 / maxFactor;
 
 				// pretty up 1 bit channels by removed the 1.0 multiplier
-				if (type == TinyImageFormat_PACK_TYPE_UNORM && fabs(normalFactor - 1.0) < 1e-10f)
-					type = TinyImageFormat_PACK_TYPE_UINT;
+				if (type == CqFormat_PACK_TYPE_UNORM && fabs(normalFactor - 1.0) < 1e-10f)
+					type = CqFormat_PACK_TYPE_UINT;
 
 				switch (type) {
 
-				case TinyImageFormat_PACK_TYPE_UNORM:
-				case TinyImageFormat_PACK_TYPE_SNORM:
+				case CqFormat_PACK_TYPE_UNORM:
+				case CqFormat_PACK_TYPE_SNORM:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f);\n",
 									output,
@@ -384,8 +384,8 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									outputCast,
 									normalFactor);
 					break;
-				case TinyImageFormat_PACK_TYPE_UINT:
-				case TinyImageFormat_PACK_TYPE_SINT:
+				case CqFormat_PACK_TYPE_UINT:
+				case CqFormat_PACK_TYPE_SINT:
 					sprintf(output,
 									"%s\t\t\t\tout[%d] = (%s)((val >> %lld) & 0x%llx);\n",
 									output,
@@ -394,19 +394,19 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 									shifter,
 									Mask(chanBitWidth));
 					break;
-				case TinyImageFormat_PACK_TYPE_SRGB:
+				case CqFormat_PACK_TYPE_SRGB:
 					sprintf(output,
-									"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_LookupSRGB((val >> %lld) & 0x%llx);\n",
+									"%s\t\t\t\tout[%d] = (%s)CqFormat_LookupSRGB((val >> %lld) & 0x%llx);\n",
 									output,
 									j * 4 + swizzle,
 									outputCast,
 									shifter,
 									Mask(chanBitWidth));
 					break;
-				case TinyImageFormat_PACK_TYPE_UFLOAT:
+				case CqFormat_PACK_TYPE_UFLOAT:
 					if (chanBitWidth == 10) {
 						sprintf(output,
-										"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_UFloat10AsUintToFloat((val >> %lld) & 0x%llx);\n",
+										"%s\t\t\t\tout[%d] = (%s)CqFormat_UFloat10AsUintToFloat((val >> %lld) & 0x%llx);\n",
 										output,
 										j * 4 + swizzle,
 										outputCast,
@@ -414,7 +414,7 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 										Mask(chanBitWidth));
 					} else if (chanBitWidth == 11) {
 						sprintf(output,
-										"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_UFloat11AsUintToFloat((val >> %lld) & 0x%llx);\n",
+										"%s\t\t\t\tout[%d] = (%s)CqFormat_UFloat11AsUintToFloat((val >> %lld) & 0x%llx);\n",
 										output,
 										j * 4 + swizzle,
 										outputCast,
@@ -424,10 +424,10 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 						ASSERT(false);
 					}
 					break;
-				case TinyImageFormat_PACK_TYPE_SFLOAT:
+				case CqFormat_PACK_TYPE_SFLOAT:
 					if (chanBitWidth == 16) {
 						sprintf(output,
-										"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_HalfAsUintToFloat((val >> %lld) & 0x%llx);\n",
+										"%s\t\t\t\tout[%d] = (%s)CqFormat_HalfAsUintToFloat((val >> %lld) & 0x%llx);\n",
 										output,
 										j * 4 + swizzle,
 										outputCast,
@@ -437,10 +437,10 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 						ASSERT(false);
 					}
 					break;
-				case TinyImageFormat_PACK_TYPE_SBFLOAT:
+				case CqFormat_PACK_TYPE_SBFLOAT:
 					if (chanBitWidth == 16) {
 						sprintf(output,
-										"%s\t\t\t\tout[%d] = (%s)TinyImageFormat_BFloatAsUintToFloat((val >> %lld) & 0x%llx);\n",
+										"%s\t\t\t\tout[%d] = (%s)CqFormat_BFloatAsUintToFloat((val >> %lld) & 0x%llx);\n",
 										output,
 										j * 4 + swizzle,
 										outputCast,
@@ -450,19 +450,19 @@ bool FetchLogicalPixelsPackedSpecial(char const *name,
 						ASSERT(false);
 					}
 					break;
-				case TinyImageFormat_PACK_TYPE_NONE: ASSERT(false);
+				case CqFormat_PACK_TYPE_NONE: ASSERT(false);
 				}
 
 			}
 			shifter += chanBitWidth;
-			vt = vt >> TinyImageFormat_PACK_TYPE_REQUIRED_BITS;
-			vs = vs >> TinyImageFormat_PACK_SWIZZLE_REQUIRED_BITS;
+			vt = vt >> CqFormat_PACK_TYPE_REQUIRED_BITS;
+			vs = vs >> CqFormat_PACK_SWIZZLE_REQUIRED_BITS;
 		}
 
 		int8_t l2p[4];
 		LogicalToPhysicalChannels(name, v, l2p);
 
-		for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+		for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 			if (l2p[i] < 0) {
 				sprintf(output, "%s\t\t\t\tout[%d] = (%s)%1.8f;\n", output, j * 4 + i, outputCast, (double) ((-l2p[i]) - 1));
 			}
@@ -477,7 +477,7 @@ bool FetchLogicalPixelsPacked(char const *name, uint64_t const v, uint32_t const
 
 	sprintf(output, "\n");
 	uint32_t maxChanWidth = 0;
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 		uint32_t chanWidth = ChannelWidth(name, v, i);
 		if (chanWidth > maxChanWidth)
 			maxChanWidth = chanWidth;
@@ -488,9 +488,9 @@ bool FetchLogicalPixelsPacked(char const *name, uint64_t const v, uint32_t const
 	}
 
 	// special case
-	if (v == (uint64_t)TinyImageFormat::E5B9G9R9_UFLOAT) {
+	if (v == (uint64_t)CqFormat::E5B9G9R9_UFLOAT) {
 		if (outputFloatWidth == 32) {
-			char const decoder[] = "\n\t\t\t\tTinyImageFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);\n"
+			char const decoder[] = "\n\t\t\t\tCqFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);\n"
 														 "\t\t\t\tin->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);\n"
 														 "\t\t\t\tout += 4;\n";
 			sprintf(output, decoder);
@@ -500,10 +500,10 @@ bool FetchLogicalPixelsPacked(char const *name, uint64_t const v, uint32_t const
 		}
 	}
 
-	uint64_t vspec = v >> TinyImageFormat_PACK_SPECIAL_SHIFT;
+	uint64_t vspec = v >> CqFormat_PACK_SPECIAL_SHIFT;
 
-	auto special = (TinyImageFormat_Pack_Special const) (vspec & Mask(TinyImageFormat_PACK_SPECIAL_REQUIRED_BITS));
-	if (special == TinyImageFormat_PACK_SPECIAL_NONE) {
+	auto special = (CqFormat_Pack_Special const) (vspec & Mask(CqFormat_PACK_SPECIAL_REQUIRED_BITS));
+	if (special == CqFormat_PACK_SPECIAL_NONE) {
 		return FetchLogicalPixelsPackedNotSpecial(name, v, outputFloatWidth, output);
 	} else {
 		return FetchLogicalPixelsPackedSpecial(name, v, outputFloatWidth, output, special);
@@ -522,7 +522,7 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 
 	uint32_t maxChanWidth = 0;
 	uint32_t totalChanWidth = 0;
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 		uint32_t chanWidth = ChannelWidth(name, v, i);
 		totalChanWidth += chanWidth;
 		if (chanWidth > maxChanWidth)
@@ -530,15 +530,15 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 	}
 	ASSERT(totalChanWidth <= 64);
 
-	uint64_t vbs = v >> TinyImageFormat_CLUT_BLOCKSIZE_SHIFT;
+	uint64_t vbs = v >> CqFormat_CLUT_BLOCKSIZE_SHIFT;
 
-	auto blockSize = (TinyImageFormat_CLUT_BlockSize const )(vbs & Mask( TinyImageFormat_CLUT_BLOCKSIZE_REQUIRED_BITS));
+	auto blockSize = (CqFormat_CLUT_BlockSize const )(vbs & Mask( CqFormat_CLUT_BLOCKSIZE_REQUIRED_BITS));
 	uint32_t repeat = 1;
 	switch(blockSize) {
-	case TinyImageFormat_CLUT_BLOCKSIZE_1: repeat = 1; break;
-	case TinyImageFormat_CLUT_BLOCKSIZE_2: repeat = 2; break;
-	case TinyImageFormat_CLUT_BLOCKSIZE_4: repeat = 4; break;
-	case TinyImageFormat_CLUT_BLOCKSIZE_8: repeat = 8; break;
+	case CqFormat_CLUT_BLOCKSIZE_1: repeat = 1; break;
+	case CqFormat_CLUT_BLOCKSIZE_2: repeat = 2; break;
+	case CqFormat_CLUT_BLOCKSIZE_4: repeat = 4; break;
+	case CqFormat_CLUT_BLOCKSIZE_8: repeat = 8; break;
 	}
 	uint64_t vt;
 
@@ -556,27 +556,27 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 
 	uint64_t shifter = 0;
 	for (uint32_t j = 0; j < repeat; j++) {
-		vt = v >> TinyImageFormat_CLUT_TYPE_SHIFT;
+		vt = v >> CqFormat_CLUT_TYPE_SHIFT;
 		bool explicitAlpha = false;
-		for (int i = 0; i < TinyImageFormat_CLUT_NUM_CHANNELS; ++i) {
-			auto type = (TinyImageFormat_CLUT_Type const)(vt & Mask(TinyImageFormat_CLUT_TYPE_REQUIRED_BITS));
-			if(type == TinyImageFormat_CLUT_TYPE_EXPLICIT_ALPHA) {
+		for (int i = 0; i < CqFormat_CLUT_NUM_CHANNELS; ++i) {
+			auto type = (CqFormat_CLUT_Type const)(vt & Mask(CqFormat_CLUT_TYPE_REQUIRED_BITS));
+			if(type == CqFormat_CLUT_TYPE_EXPLICIT_ALPHA) {
 				explicitAlpha = true;
 				break;
 			}
-			vt >>= TinyImageFormat_CLUT_TYPE_REQUIRED_BITS;
+			vt >>= CqFormat_CLUT_TYPE_REQUIRED_BITS;
 		}
 
-		vt = v >> TinyImageFormat_CLUT_TYPE_SHIFT;
-		for (int i = 0; i < TinyImageFormat_CLUT_NUM_CHANNELS; ++i) {
+		vt = v >> CqFormat_CLUT_TYPE_SHIFT;
+		for (int i = 0; i < CqFormat_CLUT_NUM_CHANNELS; ++i) {
 			uint32_t const chanBitWidth = ChannelWidth(name, v, i);
-			auto type = (TinyImageFormat_CLUT_Type const)(vt & Mask(TinyImageFormat_CLUT_TYPE_REQUIRED_BITS));
+			auto type = (CqFormat_CLUT_Type const)(vt & Mask(CqFormat_CLUT_TYPE_REQUIRED_BITS));
 
 			double const normalFactor = 1.0 / MaxActual(name, v, i, true);
 
 			switch(type) {
-			case TinyImageFormat_CLUT_TYPE_NONE:break;
-			case TinyImageFormat_CLUT_TYPE_RGB:
+			case CqFormat_CLUT_TYPE_NONE:break;
+			case CqFormat_CLUT_TYPE_RGB:
 				sprintf(output,
 								"%s\t\t\t\tuint32_t v%d = lut[((val >> %lld) & 0x%llx)];\n",
 								output,
@@ -597,9 +597,9 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 									normalFactor);
 				}
 				break;
-			case TinyImageFormat_CLUT_TYPE_SINGLE: ASSERT(false);// TODO
+			case CqFormat_CLUT_TYPE_SINGLE: ASSERT(false);// TODO
 				break;
-			case TinyImageFormat_CLUT_TYPE_EXPLICIT_ALPHA:
+			case CqFormat_CLUT_TYPE_EXPLICIT_ALPHA:
 				sprintf(output,
 								"%s\t\t\t\tout[3] = ((%s)((val >> %lld) & 0x%llx)) * ((%s)%1.8f);\n",
 								output,
@@ -612,7 +612,7 @@ bool FetchLogicalPixelsCLUT(char const *name, uint64_t const v,
 			}
 
 			shifter += chanBitWidth;
-			vt >>= TinyImageFormat_CLUT_TYPE_REQUIRED_BITS;
+			vt >>= CqFormat_CLUT_TYPE_REQUIRED_BITS;
 		}
 	}
 	sprintf(output, "%s\t\t\t\tin->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);\n", output);
@@ -624,7 +624,7 @@ bool DecodeLogicalPixelsD(char const *name, uint64_t const v, char *output) {
 		return false;
 
 	uint32_t maxChanWidth = 0;
-	for (int i = 0; i < TinyImageFormat_PACK_NUM_CHANNELS; ++i) {
+	for (int i = 0; i < CqFormat_PACK_NUM_CHANNELS; ++i) {
 		uint32_t chanWidth = ChannelWidth(name, v, i);
 		if (chanWidth > maxChanWidth)
 			maxChanWidth = chanWidth;
@@ -661,16 +661,16 @@ static void GenCanDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {\n"
+			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s: return true;\n";
 	char const switchPostfixF[] = "\t\tdefault: return false;\n\t\t}\n\t}\n\n";
 
 	char output[2048];
-#define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
-#define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
+#define  CqFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
+#define  CqFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "CqFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  CqFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 
 }
@@ -679,16 +679,16 @@ static void GenCanDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {\n"
+			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
-	char const switchPostfixF[] = "\t\tdefault: return TinyImageFormat_CanDecodeLogicalPixelsF(fmt);\n"
+	char const switchPostfixF[] = "\t\tdefault: return CqFormat_CanDecodeLogicalPixelsF(fmt);\n"
 																"\t}\n}\n\n";
 
 	char output[2048];
-#define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, "\t\tcase %s: return true;\n", "TinyImageFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
-#define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
+#define  CqFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
+#define  CqFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, "\t\tcase %s: return true;\n", "CqFormat_"#x); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  CqFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 
 }
@@ -697,7 +697,7 @@ void GenDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {\n"
+			"CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {\n"
 			"\tswitch(fmt) {\n";
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
 													 "%s"
@@ -706,9 +706,9 @@ void GenDecodeLogicalPixelsF(VFile_Handle file) {
 	char const switchPostfixF[] = "\t\tdefault: return false;\n\t}\n}\n\n";
 
 	char output[2048];
-#define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
-#define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
+#define  CqFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
+#define  CqFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsF(#x, y, output); if(okay) { sprintf(buffer, body, "CqFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  CqFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 }
 
@@ -716,7 +716,7 @@ void GenDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {\n"
+			"CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
@@ -726,20 +726,20 @@ void GenDecodeLogicalPixelsD(VFile_Handle file) {
 	char const switchPostfixF[] = "\t\tdefault:\n"
 																"\t\t{\n\t\t\tfloat outF[4] = {0, 0, 0, 0}; bool ret = true;\n"
 																"\t\t\tfor(uint32_t w = 0; w < width && ret; ++w) {\n"
-																"\t\t\t\tret = TinyImageFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);\n"
+																"\t\t\t\tret = CqFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);\n"
 																"\t\t\t\tout[0] = outF[0]; out[1] = outF[1]; out[2] = outF[2]; out[3] = outF[3]; out += 4;\n\t\t\t\t}\n"
 																"\t\t\treturn ret;\n\t\t}\n\t}\n}\n\n";
 
 	char output[2048];
-#define  TinyImageFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
-#define  TinyImageFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, body, "TinyImageFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
-#define  TinyImageFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
+#define  CqFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
+#define  CqFormat_MOD_MACRO(x, y) { bool okay = DecodeLogicalPixelsD(#x, y, output); if(okay) { sprintf(buffer, body, "CqFormat_"#x, output); VFile_Write(file, buffer, strlen(buffer)); } }
+#define  CqFormat_END_MACRO sprintf(buffer, switchPostfixF); VFile_Write(file, buffer, strlen(buffer));
 #include "formatgen.h"
 }
 
 static void GetSRGBTableFuncton(VFile_Handle file) {
 	char const *const prefix =
-			"CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {\n"
+			"CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {\n"
 			"\tswitch(lookup) {\n";
 	char const *const body = "\t\tcase %d: return %1.8ff;\n";
 	char const *const postfix = "\t\tdefault: return 1.0;\n\t}\n}\n\n";

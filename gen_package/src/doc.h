@@ -1,5 +1,5 @@
 RAW_INCLUDE_START( R"=====( )
-/* TinyImageFormat is a library about the encodings of pixels typically
+/* CqFormat is a library about the encodings of pixels typically
  * encountered in real time graphics.
  *
  * Like modern graphics API it is enumeration based but it also provides an API
@@ -63,12 +63,12 @@ RAW_INCLUDE_START( R"=====( )
  * Its may not be addressable directly but as blocks of related pixels.
  * When decode/encoding pixels are presented to the API as 4 floats or doubles.
  *
- * Logical Channels (TinyImageFormat_LogicalChannel)
+ * Logical Channels (CqFormat_LogicalChannel)
  * Logical channel are the usual way you would ask for a particular channel,
  * so asking about LC_Red while get you data for the red channel, however its
  * actually physically encoded in the data.
  *
- * Physical Channels (TinyImageFormat_PhysicalChannel)
+ * Physical Channels (CqFormat_PhysicalChannel)
  * Physical channels are the inverse of logical channels, that have no meaning
  * beyond the position in the data itself.
  *
@@ -86,21 +86,21 @@ RAW_INCLUDE_START( R"=====( )
  *
  * API
  * ---
- * The primary enumeration is simply TinyImageFormat, everything else supports
+ * The primary enumeration is simply CqFormat, everything else supports
  * this enum.
- * All functions, enums etc. are prefixed with TinyImageFormat_, All functions
+ * All functions, enums etc. are prefixed with CqFormat_, All functions
  * also take the format as first parameter. These are often removed in the api
  * docs to save space.
  *
  * Defines
  * -------
- * TinyImageFormat_Count - how many formats in total
- * TinyImageFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
+ * CqFormat_Count - how many formats in total
+ * CqFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
  * 									- for any format (for static decode buffer allocation)
  *
  * Enums
  * -----
- * TinyImageFormat - Count entries, one for each format supported
+ * CqFormat - Count entries, one for each format supported
  * LogicalChannel - values for logical channel or constants
  * 						- LC_Red - Red channel is specified
  * 						- LC_Green - Green channel is specified
@@ -120,11 +120,11 @@ RAW_INCLUDE_START( R"=====( )
  *
  * Structs
  * -------
- * TinyImageFormat_DecodeInput
+ * CqFormat_DecodeInput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *   - lut or pixelPlane1 - Look Up Table ptr for CLUT formats or pixel plane 1
  *	 - pixelPlane2 to pixelPlane 9 - 7 more planes ptrs
- * TinyImageFormat_EncodeOutput
+ * CqFormat_EncodeOutput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *	 - pixelPlane2 to pixelPlane 9 - 8 more planes ptrs
 

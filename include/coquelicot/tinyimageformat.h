@@ -3,7 +3,7 @@
 #if !defined(TINYIMAGEFORMAT_IMAGEFORMAT_H)
 #define TINYIMAGEFORMAT_IMAGEFORMAT_H 1
 
-/* TinyImageFormat is a library about the encodings of pixels typically
+/* CqFormat is a library about the encodings of pixels typically
  * encountered in real time graphics.
  *
  * Like modern graphics API it is enumeration based but it also provides an API
@@ -67,12 +67,12 @@
  * Its may not be addressable directly but as blocks of related pixels.
  * When decode/encoding pixels are presented to the API as 4 floats or doubles.
  *
- * Logical Channels (TinyImageFormat_LogicalChannel)
+ * Logical Channels (CqFormat_LogicalChannel)
  * Logical channel are the usual way you would ask for a particular channel,
  * so asking about LC_Red while get you data for the red channel, however its
  * actually physically encoded in the data.
  *
- * Physical Channels (TinyImageFormat_PhysicalChannel)
+ * Physical Channels (CqFormat_PhysicalChannel)
  * Physical channels are the inverse of logical channels, that have no meaning
  * beyond the position in the data itself.
  *
@@ -90,21 +90,21 @@
  *
  * API
  * ---
- * The primary enumeration is simply TinyImageFormat, everything else supports
+ * The primary enumeration is simply CqFormat, everything else supports
  * this enum.
- * All functions, enums etc. are prefixed with TinyImageFormat_, All functions
+ * All functions, enums etc. are prefixed with CqFormat_, All functions
  * also take the format as first parameter. These are often removed in the api
  * docs to save space.
  *
  * Defines
  * -------
- * TinyImageFormat_Count - how many formats in total
- * TinyImageFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
+ * CqFormat_Count - how many formats in total
+ * CqFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
  * 									- for any format (for static decode buffer allocation)
  *
  * Enums
  * -----
- * TinyImageFormat - Count entries, one for each format supported
+ * CqFormat - Count entries, one for each format supported
  * LogicalChannel - values for logical channel or constants
  * 						- LC_Red - Red channel is specified
  * 						- LC_Green - Green channel is specified
@@ -124,11 +124,11 @@
  *
  * Structs
  * -------
- * TinyImageFormat_DecodeInput
+ * CqFormat_DecodeInput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *   - lut or pixelPlane1 - Look Up Table ptr for CLUT formats or pixel plane 1
  *	 - pixelPlane2 to pixelPlane 9 - 7 more planes ptrs
- * TinyImageFormat_EncodeOutput
+ * CqFormat_EncodeOutput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *	 - pixelPlane2 to pixelPlane 9 - 8 more planes ptrs
 
@@ -235,246 +235,246 @@
 #else
 #define CQ_FMT_CONSTEXPR
 #endif
-#ifndef  TinyImageFormat_HAVE_UINTXX_T
+#ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
 #endif
-#ifndef  TinyImageFormat_HAVE_BOOL
+#ifndef  CqFormat_HAVE_BOOL
 #include <stdbool.h>	// for bool
 #endif
-#ifndef  TinyImageFormat_HAVE_POWF
+#ifndef  CqFormat_HAVE_POWF
 #include <math.h>	// for powf
 #endif
-//TinyImageFormat_ASSERT needs to be constexpr on some platforms
-#ifndef  TinyImageFormat_ASSERT
-#define  TinyImageFormat_ASSERT(x)
+//CqFormat_ASSERT needs to be constexpr on some platforms
+#ifndef  CqFormat_ASSERT
+#define  CqFormat_ASSERT(x)
 #endif
 
 #if !defined(TINYIMAGEFORMAT_BASE_H_)
 #define TINYIMAGEFORMAT_BASE_H_ 1
-typedef enum TinyImageFormat {
-	TinyImageFormat_UNDEFINED = 0,
-	TinyImageFormat_R1_UNORM = 1,
-	TinyImageFormat_R2_UNORM = 2,
-	TinyImageFormat_R4_UNORM = 3,
-	TinyImageFormat_R4G4_UNORM = 4,
-	TinyImageFormat_G4R4_UNORM = 5,
-	TinyImageFormat_A8_UNORM = 6,
-	TinyImageFormat_R8_UNORM = 7,
-	TinyImageFormat_R8_SNORM = 8,
-	TinyImageFormat_R8_UINT = 9,
-	TinyImageFormat_R8_SINT = 10,
-	TinyImageFormat_R8_SRGB = 11,
-	TinyImageFormat_B2G3R3_UNORM = 12,
-	TinyImageFormat_R4G4B4A4_UNORM = 13,
-	TinyImageFormat_R4G4B4X4_UNORM = 14,
-	TinyImageFormat_B4G4R4A4_UNORM = 15,
-	TinyImageFormat_B4G4R4X4_UNORM = 16,
-	TinyImageFormat_A4R4G4B4_UNORM = 17,
-	TinyImageFormat_X4R4G4B4_UNORM = 18,
-	TinyImageFormat_A4B4G4R4_UNORM = 19,
-	TinyImageFormat_X4B4G4R4_UNORM = 20,
-	TinyImageFormat_R5G6B5_UNORM = 21,
-	TinyImageFormat_B5G6R5_UNORM = 22,
-	TinyImageFormat_R5G5B5A1_UNORM = 23,
-	TinyImageFormat_B5G5R5A1_UNORM = 24,
-	TinyImageFormat_A1B5G5R5_UNORM = 25,
-	TinyImageFormat_A1R5G5B5_UNORM = 26,
-	TinyImageFormat_R5G5B5X1_UNORM = 27,
-	TinyImageFormat_B5G5R5X1_UNORM = 28,
-	TinyImageFormat_X1R5G5B5_UNORM = 29,
-	TinyImageFormat_X1B5G5R5_UNORM = 30,
-	TinyImageFormat_B2G3R3A8_UNORM = 31,
-	TinyImageFormat_R8G8_UNORM = 32,
-	TinyImageFormat_R8G8_SNORM = 33,
-	TinyImageFormat_G8R8_UNORM = 34,
-	TinyImageFormat_G8R8_SNORM = 35,
-	TinyImageFormat_R8G8_UINT = 36,
-	TinyImageFormat_R8G8_SINT = 37,
-	TinyImageFormat_R8G8_SRGB = 38,
-	TinyImageFormat_R16_UNORM = 39,
-	TinyImageFormat_R16_SNORM = 40,
-	TinyImageFormat_R16_UINT = 41,
-	TinyImageFormat_R16_SINT = 42,
-	TinyImageFormat_R16_SFLOAT = 43,
-	TinyImageFormat_R16_SBFLOAT = 44,
-	TinyImageFormat_R8G8B8_UNORM = 45,
-	TinyImageFormat_R8G8B8_SNORM = 46,
-	TinyImageFormat_R8G8B8_UINT = 47,
-	TinyImageFormat_R8G8B8_SINT = 48,
-	TinyImageFormat_R8G8B8_SRGB = 49,
-	TinyImageFormat_B8G8R8_UNORM = 50,
-	TinyImageFormat_B8G8R8_SNORM = 51,
-	TinyImageFormat_B8G8R8_UINT = 52,
-	TinyImageFormat_B8G8R8_SINT = 53,
-	TinyImageFormat_B8G8R8_SRGB = 54,
-	TinyImageFormat_R8G8B8A8_UNORM = 55,
-	TinyImageFormat_R8G8B8A8_SNORM = 56,
-	TinyImageFormat_R8G8B8A8_UINT = 57,
-	TinyImageFormat_R8G8B8A8_SINT = 58,
-	TinyImageFormat_R8G8B8A8_SRGB = 59,
-	TinyImageFormat_B8G8R8A8_UNORM = 60,
-	TinyImageFormat_B8G8R8A8_SNORM = 61,
-	TinyImageFormat_B8G8R8A8_UINT = 62,
-	TinyImageFormat_B8G8R8A8_SINT = 63,
-	TinyImageFormat_B8G8R8A8_SRGB = 64,
-	TinyImageFormat_R8G8B8X8_UNORM = 65,
-	TinyImageFormat_B8G8R8X8_UNORM = 66,
-	TinyImageFormat_R16G16_UNORM = 67,
-	TinyImageFormat_G16R16_UNORM = 68,
-	TinyImageFormat_R16G16_SNORM = 69,
-	TinyImageFormat_G16R16_SNORM = 70,
-	TinyImageFormat_R16G16_UINT = 71,
-	TinyImageFormat_R16G16_SINT = 72,
-	TinyImageFormat_R16G16_SFLOAT = 73,
-	TinyImageFormat_R16G16_SBFLOAT = 74,
-	TinyImageFormat_R32_UINT = 75,
-	TinyImageFormat_R32_SINT = 76,
-	TinyImageFormat_R32_SFLOAT = 77,
-	TinyImageFormat_A2R10G10B10_UNORM = 78,
-	TinyImageFormat_A2R10G10B10_UINT = 79,
-	TinyImageFormat_A2R10G10B10_SNORM = 80,
-	TinyImageFormat_A2R10G10B10_SINT = 81,
-	TinyImageFormat_A2B10G10R10_UNORM = 82,
-	TinyImageFormat_A2B10G10R10_UINT = 83,
-	TinyImageFormat_A2B10G10R10_SNORM = 84,
-	TinyImageFormat_A2B10G10R10_SINT = 85,
-	TinyImageFormat_R10G10B10A2_UNORM = 86,
-	TinyImageFormat_R10G10B10A2_UINT = 87,
-	TinyImageFormat_R10G10B10A2_SNORM = 88,
-	TinyImageFormat_R10G10B10A2_SINT = 89,
-	TinyImageFormat_B10G10R10A2_UNORM = 90,
-	TinyImageFormat_B10G10R10A2_UINT = 91,
-	TinyImageFormat_B10G10R10A2_SNORM = 92,
-	TinyImageFormat_B10G10R10A2_SINT = 93,
-	TinyImageFormat_B10G11R11_UFLOAT = 94,
-	TinyImageFormat_E5B9G9R9_UFLOAT = 95,
-	TinyImageFormat_R16G16B16_UNORM = 96,
-	TinyImageFormat_R16G16B16_SNORM = 97,
-	TinyImageFormat_R16G16B16_UINT = 98,
-	TinyImageFormat_R16G16B16_SINT = 99,
-	TinyImageFormat_R16G16B16_SFLOAT = 100,
-	TinyImageFormat_R16G16B16_SBFLOAT = 101,
-	TinyImageFormat_R16G16B16A16_UNORM = 102,
-	TinyImageFormat_R16G16B16A16_SNORM = 103,
-	TinyImageFormat_R16G16B16A16_UINT = 104,
-	TinyImageFormat_R16G16B16A16_SINT = 105,
-	TinyImageFormat_R16G16B16A16_SFLOAT = 106,
-	TinyImageFormat_R16G16B16A16_SBFLOAT = 107,
-	TinyImageFormat_R32G32_UINT = 108,
-	TinyImageFormat_R32G32_SINT = 109,
-	TinyImageFormat_R32G32_SFLOAT = 110,
-	TinyImageFormat_R32G32B32_UINT = 111,
-	TinyImageFormat_R32G32B32_SINT = 112,
-	TinyImageFormat_R32G32B32_SFLOAT = 113,
-	TinyImageFormat_R32G32B32A32_UINT = 114,
-	TinyImageFormat_R32G32B32A32_SINT = 115,
-	TinyImageFormat_R32G32B32A32_SFLOAT = 116,
-	TinyImageFormat_R64_UINT = 117,
-	TinyImageFormat_R64_SINT = 118,
-	TinyImageFormat_R64_SFLOAT = 119,
-	TinyImageFormat_R64G64_UINT = 120,
-	TinyImageFormat_R64G64_SINT = 121,
-	TinyImageFormat_R64G64_SFLOAT = 122,
-	TinyImageFormat_R64G64B64_UINT = 123,
-	TinyImageFormat_R64G64B64_SINT = 124,
-	TinyImageFormat_R64G64B64_SFLOAT = 125,
-	TinyImageFormat_R64G64B64A64_UINT = 126,
-	TinyImageFormat_R64G64B64A64_SINT = 127,
-	TinyImageFormat_R64G64B64A64_SFLOAT = 128,
-	TinyImageFormat_D16_UNORM = 129,
-	TinyImageFormat_X8_D24_UNORM = 130,
-	TinyImageFormat_D32_SFLOAT = 131,
-	TinyImageFormat_S8_UINT = 132,
-	TinyImageFormat_D16_UNORM_S8_UINT = 133,
-	TinyImageFormat_D24_UNORM_S8_UINT = 134,
-	TinyImageFormat_D32_SFLOAT_S8_UINT = 135,
-	TinyImageFormat_DXBC1_RGB_UNORM = 136,
-	TinyImageFormat_DXBC1_RGB_SRGB = 137,
-	TinyImageFormat_DXBC1_RGBA_UNORM = 138,
-	TinyImageFormat_DXBC1_RGBA_SRGB = 139,
-	TinyImageFormat_DXBC2_UNORM = 140,
-	TinyImageFormat_DXBC2_SRGB = 141,
-	TinyImageFormat_DXBC3_UNORM = 142,
-	TinyImageFormat_DXBC3_SRGB = 143,
-	TinyImageFormat_DXBC4_UNORM = 144,
-	TinyImageFormat_DXBC4_SNORM = 145,
-	TinyImageFormat_DXBC5_UNORM = 146,
-	TinyImageFormat_DXBC5_SNORM = 147,
-	TinyImageFormat_DXBC6H_UFLOAT = 148,
-	TinyImageFormat_DXBC6H_SFLOAT = 149,
-	TinyImageFormat_DXBC7_UNORM = 150,
-	TinyImageFormat_DXBC7_SRGB = 151,
-	TinyImageFormat_PVRTC1_2BPP_UNORM = 152,
-	TinyImageFormat_PVRTC1_4BPP_UNORM = 153,
-	TinyImageFormat_PVRTC2_2BPP_UNORM = 154,
-	TinyImageFormat_PVRTC2_4BPP_UNORM = 155,
-	TinyImageFormat_PVRTC1_2BPP_SRGB = 156,
-	TinyImageFormat_PVRTC1_4BPP_SRGB = 157,
-	TinyImageFormat_PVRTC2_2BPP_SRGB = 158,
-	TinyImageFormat_PVRTC2_4BPP_SRGB = 159,
-	TinyImageFormat_ETC2_R8G8B8_UNORM = 160,
-	TinyImageFormat_ETC2_R8G8B8_SRGB = 161,
-	TinyImageFormat_ETC2_R8G8B8A1_UNORM = 162,
-	TinyImageFormat_ETC2_R8G8B8A1_SRGB = 163,
-	TinyImageFormat_ETC2_R8G8B8A8_UNORM = 164,
-	TinyImageFormat_ETC2_R8G8B8A8_SRGB = 165,
-	TinyImageFormat_ETC2_EAC_R11_UNORM = 166,
-	TinyImageFormat_ETC2_EAC_R11_SNORM = 167,
-	TinyImageFormat_ETC2_EAC_R11G11_UNORM = 168,
-	TinyImageFormat_ETC2_EAC_R11G11_SNORM = 169,
-	TinyImageFormat_ASTC_4x4_UNORM = 170,
-	TinyImageFormat_ASTC_4x4_SRGB = 171,
-	TinyImageFormat_ASTC_5x4_UNORM = 172,
-	TinyImageFormat_ASTC_5x4_SRGB = 173,
-	TinyImageFormat_ASTC_5x5_UNORM = 174,
-	TinyImageFormat_ASTC_5x5_SRGB = 175,
-	TinyImageFormat_ASTC_6x5_UNORM = 176,
-	TinyImageFormat_ASTC_6x5_SRGB = 177,
-	TinyImageFormat_ASTC_6x6_UNORM = 178,
-	TinyImageFormat_ASTC_6x6_SRGB = 179,
-	TinyImageFormat_ASTC_8x5_UNORM = 180,
-	TinyImageFormat_ASTC_8x5_SRGB = 181,
-	TinyImageFormat_ASTC_8x6_UNORM = 182,
-	TinyImageFormat_ASTC_8x6_SRGB = 183,
-	TinyImageFormat_ASTC_8x8_UNORM = 184,
-	TinyImageFormat_ASTC_8x8_SRGB = 185,
-	TinyImageFormat_ASTC_10x5_UNORM = 186,
-	TinyImageFormat_ASTC_10x5_SRGB = 187,
-	TinyImageFormat_ASTC_10x6_UNORM = 188,
-	TinyImageFormat_ASTC_10x6_SRGB = 189,
-	TinyImageFormat_ASTC_10x8_UNORM = 190,
-	TinyImageFormat_ASTC_10x8_SRGB = 191,
-	TinyImageFormat_ASTC_10x10_UNORM = 192,
-	TinyImageFormat_ASTC_10x10_SRGB = 193,
-	TinyImageFormat_ASTC_12x10_UNORM = 194,
-	TinyImageFormat_ASTC_12x10_SRGB = 195,
-	TinyImageFormat_ASTC_12x12_UNORM = 196,
-	TinyImageFormat_ASTC_12x12_SRGB = 197,
-	TinyImageFormat_CLUT_P4 = 198,
-	TinyImageFormat_CLUT_P4A4 = 199,
-	TinyImageFormat_CLUT_P8 = 200,
-	TinyImageFormat_CLUT_P8A8 = 201,
-} TinyImageFormat;
+typedef enum CqFormat {
+	CqFormat_UNDEFINED = 0,
+	CqFormat_R1_UNORM = 1,
+	CqFormat_R2_UNORM = 2,
+	CqFormat_R4_UNORM = 3,
+	CqFormat_R4G4_UNORM = 4,
+	CqFormat_G4R4_UNORM = 5,
+	CqFormat_A8_UNORM = 6,
+	CqFormat_R8_UNORM = 7,
+	CqFormat_R8_SNORM = 8,
+	CqFormat_R8_UINT = 9,
+	CqFormat_R8_SINT = 10,
+	CqFormat_R8_SRGB = 11,
+	CqFormat_B2G3R3_UNORM = 12,
+	CqFormat_R4G4B4A4_UNORM = 13,
+	CqFormat_R4G4B4X4_UNORM = 14,
+	CqFormat_B4G4R4A4_UNORM = 15,
+	CqFormat_B4G4R4X4_UNORM = 16,
+	CqFormat_A4R4G4B4_UNORM = 17,
+	CqFormat_X4R4G4B4_UNORM = 18,
+	CqFormat_A4B4G4R4_UNORM = 19,
+	CqFormat_X4B4G4R4_UNORM = 20,
+	CqFormat_R5G6B5_UNORM = 21,
+	CqFormat_B5G6R5_UNORM = 22,
+	CqFormat_R5G5B5A1_UNORM = 23,
+	CqFormat_B5G5R5A1_UNORM = 24,
+	CqFormat_A1B5G5R5_UNORM = 25,
+	CqFormat_A1R5G5B5_UNORM = 26,
+	CqFormat_R5G5B5X1_UNORM = 27,
+	CqFormat_B5G5R5X1_UNORM = 28,
+	CqFormat_X1R5G5B5_UNORM = 29,
+	CqFormat_X1B5G5R5_UNORM = 30,
+	CqFormat_B2G3R3A8_UNORM = 31,
+	CqFormat_R8G8_UNORM = 32,
+	CqFormat_R8G8_SNORM = 33,
+	CqFormat_G8R8_UNORM = 34,
+	CqFormat_G8R8_SNORM = 35,
+	CqFormat_R8G8_UINT = 36,
+	CqFormat_R8G8_SINT = 37,
+	CqFormat_R8G8_SRGB = 38,
+	CqFormat_R16_UNORM = 39,
+	CqFormat_R16_SNORM = 40,
+	CqFormat_R16_UINT = 41,
+	CqFormat_R16_SINT = 42,
+	CqFormat_R16_SFLOAT = 43,
+	CqFormat_R16_SBFLOAT = 44,
+	CqFormat_R8G8B8_UNORM = 45,
+	CqFormat_R8G8B8_SNORM = 46,
+	CqFormat_R8G8B8_UINT = 47,
+	CqFormat_R8G8B8_SINT = 48,
+	CqFormat_R8G8B8_SRGB = 49,
+	CqFormat_B8G8R8_UNORM = 50,
+	CqFormat_B8G8R8_SNORM = 51,
+	CqFormat_B8G8R8_UINT = 52,
+	CqFormat_B8G8R8_SINT = 53,
+	CqFormat_B8G8R8_SRGB = 54,
+	CqFormat_R8G8B8A8_UNORM = 55,
+	CqFormat_R8G8B8A8_SNORM = 56,
+	CqFormat_R8G8B8A8_UINT = 57,
+	CqFormat_R8G8B8A8_SINT = 58,
+	CqFormat_R8G8B8A8_SRGB = 59,
+	CqFormat_B8G8R8A8_UNORM = 60,
+	CqFormat_B8G8R8A8_SNORM = 61,
+	CqFormat_B8G8R8A8_UINT = 62,
+	CqFormat_B8G8R8A8_SINT = 63,
+	CqFormat_B8G8R8A8_SRGB = 64,
+	CqFormat_R8G8B8X8_UNORM = 65,
+	CqFormat_B8G8R8X8_UNORM = 66,
+	CqFormat_R16G16_UNORM = 67,
+	CqFormat_G16R16_UNORM = 68,
+	CqFormat_R16G16_SNORM = 69,
+	CqFormat_G16R16_SNORM = 70,
+	CqFormat_R16G16_UINT = 71,
+	CqFormat_R16G16_SINT = 72,
+	CqFormat_R16G16_SFLOAT = 73,
+	CqFormat_R16G16_SBFLOAT = 74,
+	CqFormat_R32_UINT = 75,
+	CqFormat_R32_SINT = 76,
+	CqFormat_R32_SFLOAT = 77,
+	CqFormat_A2R10G10B10_UNORM = 78,
+	CqFormat_A2R10G10B10_UINT = 79,
+	CqFormat_A2R10G10B10_SNORM = 80,
+	CqFormat_A2R10G10B10_SINT = 81,
+	CqFormat_A2B10G10R10_UNORM = 82,
+	CqFormat_A2B10G10R10_UINT = 83,
+	CqFormat_A2B10G10R10_SNORM = 84,
+	CqFormat_A2B10G10R10_SINT = 85,
+	CqFormat_R10G10B10A2_UNORM = 86,
+	CqFormat_R10G10B10A2_UINT = 87,
+	CqFormat_R10G10B10A2_SNORM = 88,
+	CqFormat_R10G10B10A2_SINT = 89,
+	CqFormat_B10G10R10A2_UNORM = 90,
+	CqFormat_B10G10R10A2_UINT = 91,
+	CqFormat_B10G10R10A2_SNORM = 92,
+	CqFormat_B10G10R10A2_SINT = 93,
+	CqFormat_B10G11R11_UFLOAT = 94,
+	CqFormat_E5B9G9R9_UFLOAT = 95,
+	CqFormat_R16G16B16_UNORM = 96,
+	CqFormat_R16G16B16_SNORM = 97,
+	CqFormat_R16G16B16_UINT = 98,
+	CqFormat_R16G16B16_SINT = 99,
+	CqFormat_R16G16B16_SFLOAT = 100,
+	CqFormat_R16G16B16_SBFLOAT = 101,
+	CqFormat_R16G16B16A16_UNORM = 102,
+	CqFormat_R16G16B16A16_SNORM = 103,
+	CqFormat_R16G16B16A16_UINT = 104,
+	CqFormat_R16G16B16A16_SINT = 105,
+	CqFormat_R16G16B16A16_SFLOAT = 106,
+	CqFormat_R16G16B16A16_SBFLOAT = 107,
+	CqFormat_R32G32_UINT = 108,
+	CqFormat_R32G32_SINT = 109,
+	CqFormat_R32G32_SFLOAT = 110,
+	CqFormat_R32G32B32_UINT = 111,
+	CqFormat_R32G32B32_SINT = 112,
+	CqFormat_R32G32B32_SFLOAT = 113,
+	CqFormat_R32G32B32A32_UINT = 114,
+	CqFormat_R32G32B32A32_SINT = 115,
+	CqFormat_R32G32B32A32_SFLOAT = 116,
+	CqFormat_R64_UINT = 117,
+	CqFormat_R64_SINT = 118,
+	CqFormat_R64_SFLOAT = 119,
+	CqFormat_R64G64_UINT = 120,
+	CqFormat_R64G64_SINT = 121,
+	CqFormat_R64G64_SFLOAT = 122,
+	CqFormat_R64G64B64_UINT = 123,
+	CqFormat_R64G64B64_SINT = 124,
+	CqFormat_R64G64B64_SFLOAT = 125,
+	CqFormat_R64G64B64A64_UINT = 126,
+	CqFormat_R64G64B64A64_SINT = 127,
+	CqFormat_R64G64B64A64_SFLOAT = 128,
+	CqFormat_D16_UNORM = 129,
+	CqFormat_X8_D24_UNORM = 130,
+	CqFormat_D32_SFLOAT = 131,
+	CqFormat_S8_UINT = 132,
+	CqFormat_D16_UNORM_S8_UINT = 133,
+	CqFormat_D24_UNORM_S8_UINT = 134,
+	CqFormat_D32_SFLOAT_S8_UINT = 135,
+	CqFormat_DXBC1_RGB_UNORM = 136,
+	CqFormat_DXBC1_RGB_SRGB = 137,
+	CqFormat_DXBC1_RGBA_UNORM = 138,
+	CqFormat_DXBC1_RGBA_SRGB = 139,
+	CqFormat_DXBC2_UNORM = 140,
+	CqFormat_DXBC2_SRGB = 141,
+	CqFormat_DXBC3_UNORM = 142,
+	CqFormat_DXBC3_SRGB = 143,
+	CqFormat_DXBC4_UNORM = 144,
+	CqFormat_DXBC4_SNORM = 145,
+	CqFormat_DXBC5_UNORM = 146,
+	CqFormat_DXBC5_SNORM = 147,
+	CqFormat_DXBC6H_UFLOAT = 148,
+	CqFormat_DXBC6H_SFLOAT = 149,
+	CqFormat_DXBC7_UNORM = 150,
+	CqFormat_DXBC7_SRGB = 151,
+	CqFormat_PVRTC1_2BPP_UNORM = 152,
+	CqFormat_PVRTC1_4BPP_UNORM = 153,
+	CqFormat_PVRTC2_2BPP_UNORM = 154,
+	CqFormat_PVRTC2_4BPP_UNORM = 155,
+	CqFormat_PVRTC1_2BPP_SRGB = 156,
+	CqFormat_PVRTC1_4BPP_SRGB = 157,
+	CqFormat_PVRTC2_2BPP_SRGB = 158,
+	CqFormat_PVRTC2_4BPP_SRGB = 159,
+	CqFormat_ETC2_R8G8B8_UNORM = 160,
+	CqFormat_ETC2_R8G8B8_SRGB = 161,
+	CqFormat_ETC2_R8G8B8A1_UNORM = 162,
+	CqFormat_ETC2_R8G8B8A1_SRGB = 163,
+	CqFormat_ETC2_R8G8B8A8_UNORM = 164,
+	CqFormat_ETC2_R8G8B8A8_SRGB = 165,
+	CqFormat_ETC2_EAC_R11_UNORM = 166,
+	CqFormat_ETC2_EAC_R11_SNORM = 167,
+	CqFormat_ETC2_EAC_R11G11_UNORM = 168,
+	CqFormat_ETC2_EAC_R11G11_SNORM = 169,
+	CqFormat_ASTC_4x4_UNORM = 170,
+	CqFormat_ASTC_4x4_SRGB = 171,
+	CqFormat_ASTC_5x4_UNORM = 172,
+	CqFormat_ASTC_5x4_SRGB = 173,
+	CqFormat_ASTC_5x5_UNORM = 174,
+	CqFormat_ASTC_5x5_SRGB = 175,
+	CqFormat_ASTC_6x5_UNORM = 176,
+	CqFormat_ASTC_6x5_SRGB = 177,
+	CqFormat_ASTC_6x6_UNORM = 178,
+	CqFormat_ASTC_6x6_SRGB = 179,
+	CqFormat_ASTC_8x5_UNORM = 180,
+	CqFormat_ASTC_8x5_SRGB = 181,
+	CqFormat_ASTC_8x6_UNORM = 182,
+	CqFormat_ASTC_8x6_SRGB = 183,
+	CqFormat_ASTC_8x8_UNORM = 184,
+	CqFormat_ASTC_8x8_SRGB = 185,
+	CqFormat_ASTC_10x5_UNORM = 186,
+	CqFormat_ASTC_10x5_SRGB = 187,
+	CqFormat_ASTC_10x6_UNORM = 188,
+	CqFormat_ASTC_10x6_SRGB = 189,
+	CqFormat_ASTC_10x8_UNORM = 190,
+	CqFormat_ASTC_10x8_SRGB = 191,
+	CqFormat_ASTC_10x10_UNORM = 192,
+	CqFormat_ASTC_10x10_SRGB = 193,
+	CqFormat_ASTC_12x10_UNORM = 194,
+	CqFormat_ASTC_12x10_SRGB = 195,
+	CqFormat_ASTC_12x12_UNORM = 196,
+	CqFormat_ASTC_12x12_SRGB = 197,
+	CqFormat_CLUT_P4 = 198,
+	CqFormat_CLUT_P4A4 = 199,
+	CqFormat_CLUT_P8 = 200,
+	CqFormat_CLUT_P8A8 = 201,
+} CqFormat;
 
-typedef enum TinyImageFormat_LogicalChannel {
-	TinyImageFormat_LC_Red = 0,
-	TinyImageFormat_LC_Green = 1,
-	TinyImageFormat_LC_Blue = 2,
-	TinyImageFormat_LC_Alpha = 3,
-	TinyImageFormat_LC_Depth = 0,
-	TinyImageFormat_LC_Stencil = 1,
-	TinyImageFormat_LC_0 = -1,
-	TinyImageFormat_LC_1 = -2,
-} TinyImageFormat_LogicalChannel;
+typedef enum CqFormat_LogicalChannel {
+	CqFormat_LC_Red = 0,
+	CqFormat_LC_Green = 1,
+	CqFormat_LC_Blue = 2,
+	CqFormat_LC_Alpha = 3,
+	CqFormat_LC_Depth = 0,
+	CqFormat_LC_Stencil = 1,
+	CqFormat_LC_0 = -1,
+	CqFormat_LC_1 = -2,
+} CqFormat_LogicalChannel;
 
-typedef enum TinyImageFormat_PhysicalChannel {
-	TinyImageFormat_PC_0 = 0,
-	TinyImageFormat_PC_1 = 1,
-	TinyImageFormat_PC_2 = 2,
-	TinyImageFormat_PC_3 = 3,
-	TinyImageFormat_PC_CONST_0 = -1,
-	TinyImageFormat_PC_CONST_1 = -2,
-} TinyImageFormat_PhysicalChannel;
+typedef enum CqFormat_PhysicalChannel {
+	CqFormat_PC_0 = 0,
+	CqFormat_PC_1 = 1,
+	CqFormat_PC_2 = 2,
+	CqFormat_PC_3 = 3,
+	CqFormat_PC_CONST_0 = -1,
+	CqFormat_PC_CONST_1 = -2,
+} CqFormat_PhysicalChannel;
 
 #ifdef __cplusplus
 namespace coquelicot {
@@ -707,9 +707,9 @@ enum PhysicalChannel {
 
 #endif
 
-#define TinyImageFormat_Count 202U 
+#define CqFormat_Count 202U 
 
-typedef struct TinyImageFormat_DecodeInput {
+typedef struct CqFormat_DecodeInput {
 	union { void const* pixel; void const* pixelPlane0; };
 	union { void const* lut; void const* pixelPlane1; };
 	void const* pixelPlane2;
@@ -720,9 +720,9 @@ typedef struct TinyImageFormat_DecodeInput {
 	void const* pixelPlane7;
 	void const* pixelPlane8;
 	void const* pixelPlane9;
-} TinyImageFormat_FetchInput;
+} CqFormat_FetchInput;
 
-typedef struct TinyImageFormat_EncodeOutput {
+typedef struct CqFormat_EncodeOutput {
 	union { void * pixel; void * pixelPlane0; };
 	void * pixelPlane1;
 	void * pixelPlane2;
@@ -733,701 +733,701 @@ typedef struct TinyImageFormat_EncodeOutput {
 	void * pixelPlane7;
 	void * pixelPlane8;
 	void * pixelPlane9;
-} TinyImageFormat_EncodeOutput;
+} CqFormat_EncodeOutput;
 
 #endif // TINYIMAGEFORMAT_BASE_H_
 
 #if !defined(TINYIMAGEFORMAT_QUERY_H_)
 #define TINYIMAGEFORMAT_QUERY_H_ 1
-CQ_FMT_CONSTEXPR inline uint64_t TinyImageFormat_Code(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint64_t CqFormat_Code(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0x0000000000000000;
-		case TinyImageFormat_R1_UNORM: return 0x0000D9000000C000;
-		case TinyImageFormat_R2_UNORM: return 0x0000D90000013000;
-		case TinyImageFormat_R4_UNORM: return 0x0000D90000022000;
-		case TinyImageFormat_R4G4_UNORM: return 0x0008D84000421000;
-		case TinyImageFormat_G4R4_UNORM: return 0x0008D80800421000;
-		case TinyImageFormat_A8_UNORM: return 0x0000C91800040000;
-		case TinyImageFormat_R8_UNORM: return 0x0000D90000040000;
-		case TinyImageFormat_R8_SNORM: return 0x0001590000040000;
-		case TinyImageFormat_R8_UINT: return 0x0001D90000040000;
-		case TinyImageFormat_R8_SINT: return 0x0002590000040000;
-		case TinyImageFormat_R8_SRGB: return 0x0003D90000040000;
-		case TinyImageFormat_B2G3R3_UNORM: return 0x0088D05006311000;
-		case TinyImageFormat_R4G4B4A4_UNORM: return 0x0888B44108421000;
-		case TinyImageFormat_R4G4B4X4_UNORM: return 0x0888D44108421000;
-		case TinyImageFormat_B4G4R4A4_UNORM: return 0x0888B05108421000;
-		case TinyImageFormat_B4G4R4X4_UNORM: return 0x0888D05108421000;
-		case TinyImageFormat_A4R4G4B4_UNORM: return 0x0888A21908421000;
-		case TinyImageFormat_X4R4G4B4_UNORM: return 0x0889A22908421000;
-		case TinyImageFormat_A4B4G4R4_UNORM: return 0x0888829908421000;
-		case TinyImageFormat_X4B4G4R4_UNORM: return 0x088982A908421000;
-		case TinyImageFormat_R5G6B5_UNORM: return 0x0088D4400A629000;
-		case TinyImageFormat_B5G6R5_UNORM: return 0x0088D0500A629000;
-		case TinyImageFormat_R5G5B5A1_UNORM: return 0x0888B4404A529000;
-		case TinyImageFormat_B5G5R5A1_UNORM: return 0x0888B0504A529000;
-		case TinyImageFormat_A1B5G5R5_UNORM: return 0x088882994A509000;
-		case TinyImageFormat_A1R5G5B5_UNORM: return 0x0888A2194A509000;
-		case TinyImageFormat_R5G5B5X1_UNORM: return 0x1888D4404A529000;
-		case TinyImageFormat_B5G5R5X1_UNORM: return 0x1888D0504A529000;
-		case TinyImageFormat_X1R5G5B5_UNORM: return 0x0889A2294A509000;
-		case TinyImageFormat_X1B5G5R5_UNORM: return 0x088982A94A509000;
-		case TinyImageFormat_B2G3R3A8_UNORM: return 0x0888B05206311000;
-		case TinyImageFormat_R8G8_UNORM: return 0x0008D84000840000;
-		case TinyImageFormat_R8G8_SNORM: return 0x0011584000840000;
-		case TinyImageFormat_G8R8_UNORM: return 0x0008D80800840000;
-		case TinyImageFormat_G8R8_SNORM: return 0x0011580800840000;
-		case TinyImageFormat_R8G8_UINT: return 0x0019D84000840000;
-		case TinyImageFormat_R8G8_SINT: return 0x0022584000840000;
-		case TinyImageFormat_R8G8_SRGB: return 0x003BD84000840000;
-		case TinyImageFormat_R16_UNORM: return 0x0000D90000068000;
-		case TinyImageFormat_R16_SNORM: return 0x0001590000068000;
-		case TinyImageFormat_R16_UINT: return 0x0001D90000068000;
-		case TinyImageFormat_R16_SINT: return 0x0002590000068000;
-		case TinyImageFormat_R16_SFLOAT: return 0x0003590000068000;
-		case TinyImageFormat_R16_SBFLOAT: return 0x0004590000068000;
-		case TinyImageFormat_R8G8B8_UNORM: return 0x0088D44010840000;
-		case TinyImageFormat_R8G8B8_SNORM: return 0x0111544010840000;
-		case TinyImageFormat_R8G8B8_UINT: return 0x0199D44010840000;
-		case TinyImageFormat_R8G8B8_SINT: return 0x0222544010840000;
-		case TinyImageFormat_R8G8B8_SRGB: return 0x03BBD44010840000;
-		case TinyImageFormat_B8G8R8_UNORM: return 0x0088D05010840000;
-		case TinyImageFormat_B8G8R8_SNORM: return 0x0111505010840000;
-		case TinyImageFormat_B8G8R8_UINT: return 0x0199D05010840000;
-		case TinyImageFormat_B8G8R8_SINT: return 0x0222505010840000;
-		case TinyImageFormat_B8G8R8_SRGB: return 0x03BBD05010840000;
-		case TinyImageFormat_R8G8B8A8_UNORM: return 0x0888B44210840000;
-		case TinyImageFormat_R8G8B8A8_SNORM: return 0x1111344210840000;
-		case TinyImageFormat_R8G8B8A8_UINT: return 0x1999B44210840000;
-		case TinyImageFormat_R8G8B8A8_SINT: return 0x2222344210840000;
-		case TinyImageFormat_R8G8B8A8_SRGB: return 0x0BBBB44210840000;
-		case TinyImageFormat_B8G8R8A8_UNORM: return 0x0888B05210840000;
-		case TinyImageFormat_B8G8R8A8_SNORM: return 0x1111305210840000;
-		case TinyImageFormat_B8G8R8A8_UINT: return 0x1999B05210840000;
-		case TinyImageFormat_B8G8R8A8_SINT: return 0x2222305210840000;
-		case TinyImageFormat_B8G8R8A8_SRGB: return 0x0BBBB05210840000;
-		case TinyImageFormat_R8G8B8X8_UNORM: return 0x0888D44210840000;
-		case TinyImageFormat_B8G8R8X8_UNORM: return 0x0888D05210840000;
-		case TinyImageFormat_R16G16_UNORM: return 0x0008D84000D68000;
-		case TinyImageFormat_G16R16_UNORM: return 0x0008D80800D68000;
-		case TinyImageFormat_R16G16_SNORM: return 0x0011584000D68000;
-		case TinyImageFormat_G16R16_SNORM: return 0x0011580800D68000;
-		case TinyImageFormat_R16G16_UINT: return 0x0019D84000D68000;
-		case TinyImageFormat_R16G16_SINT: return 0x0022584000D68000;
-		case TinyImageFormat_R16G16_SFLOAT: return 0x0033584000D68000;
-		case TinyImageFormat_R16G16_SBFLOAT: return 0x0044584000D68000;
-		case TinyImageFormat_R32_UINT: return 0x0001D90000078000;
-		case TinyImageFormat_R32_SINT: return 0x0002590000078000;
-		case TinyImageFormat_R32_SFLOAT: return 0x0003590000078000;
-		case TinyImageFormat_A2R10G10B10_UNORM: return 0x0888A21A94A11000;
-		case TinyImageFormat_A2R10G10B10_UINT: return 0x1999A21A94A11000;
-		case TinyImageFormat_A2R10G10B10_SNORM: return 0x1111221A94A11000;
-		case TinyImageFormat_A2R10G10B10_SINT: return 0x2222221A94A11000;
-		case TinyImageFormat_A2B10G10R10_UNORM: return 0x0888829A94A11000;
-		case TinyImageFormat_A2B10G10R10_UINT: return 0x1999829A94A11000;
-		case TinyImageFormat_A2B10G10R10_SNORM: return 0x1111029A94A11000;
-		case TinyImageFormat_A2B10G10R10_SINT: return 0x2222029A94A11000;
-		case TinyImageFormat_R10G10B10A2_UNORM: return 0x0888B44094A51000;
-		case TinyImageFormat_R10G10B10A2_UINT: return 0x1999B44094A51000;
-		case TinyImageFormat_R10G10B10A2_SNORM: return 0x1111344094A51000;
-		case TinyImageFormat_R10G10B10A2_SINT: return 0x2222344094A51000;
-		case TinyImageFormat_B10G10R10A2_UNORM: return 0x0888B05094A51000;
-		case TinyImageFormat_B10G10R10A2_UINT: return 0x1999B05094A51000;
-		case TinyImageFormat_B10G10R10A2_SNORM: return 0x1111305094A51000;
-		case TinyImageFormat_B10G10R10A2_SINT: return 0x2222305094A51000;
-		case TinyImageFormat_B10G11R11_UFLOAT: return 0x02AAD05016B51000;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return 0x2AA9829A52929000;
-		case TinyImageFormat_R16G16B16_UNORM: return 0x0088D4401AD68000;
-		case TinyImageFormat_R16G16B16_SNORM: return 0x011154401AD68000;
-		case TinyImageFormat_R16G16B16_UINT: return 0x0199D4401AD68000;
-		case TinyImageFormat_R16G16B16_SINT: return 0x022254401AD68000;
-		case TinyImageFormat_R16G16B16_SFLOAT: return 0x033354401AD68000;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return 0x044454401AD68000;
-		case TinyImageFormat_R16G16B16A16_UNORM: return 0x0888B4435AD68000;
-		case TinyImageFormat_R16G16B16A16_SNORM: return 0x111134435AD68000;
-		case TinyImageFormat_R16G16B16A16_UINT: return 0x1999B4435AD68000;
-		case TinyImageFormat_R16G16B16A16_SINT: return 0x222234435AD68000;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return 0x333334435AD68000;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return 0x444434435AD68000;
-		case TinyImageFormat_R32G32_UINT: return 0x0019D84000F78000;
-		case TinyImageFormat_R32G32_SINT: return 0x0022584000F78000;
-		case TinyImageFormat_R32G32_SFLOAT: return 0x0033584000F78000;
-		case TinyImageFormat_R32G32B32_UINT: return 0x0199D4401EF78000;
-		case TinyImageFormat_R32G32B32_SINT: return 0x022254401EF78000;
-		case TinyImageFormat_R32G32B32_SFLOAT: return 0x033354401EF78000;
-		case TinyImageFormat_R32G32B32A32_UINT: return 0x1999B443DEF78000;
-		case TinyImageFormat_R32G32B32A32_SINT: return 0x22223443DEF78000;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return 0x33333443DEF78000;
-		case TinyImageFormat_R64_UINT: return 0x0001D90000080000;
-		case TinyImageFormat_R64_SINT: return 0x0002590000080000;
-		case TinyImageFormat_R64_SFLOAT: return 0x0003590000080000;
-		case TinyImageFormat_R64G64_UINT: return 0x0019D84001080000;
-		case TinyImageFormat_R64G64_SINT: return 0x0022584001080000;
-		case TinyImageFormat_R64G64_SFLOAT: return 0x0033584001080000;
-		case TinyImageFormat_R64G64B64_UINT: return 0x0199D44021080000;
-		case TinyImageFormat_R64G64B64_SINT: return 0x0222544021080000;
-		case TinyImageFormat_R64G64B64_SFLOAT: return 0x0333544021080000;
-		case TinyImageFormat_R64G64B64A64_UINT: return 0x1999B44421080000;
-		case TinyImageFormat_R64G64B64A64_SINT: return 0x2222344421080000;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return 0x3333344421080000;
-		case TinyImageFormat_D16_UNORM: return 0x0000000001809001;
-		case TinyImageFormat_X8_D24_UNORM: return 0x0000000006266001;
-		case TinyImageFormat_D32_SFLOAT: return 0x0000000003812001;
-		case TinyImageFormat_S8_UINT: return 0x0000000002904001;
-		case TinyImageFormat_D16_UNORM_S8_UINT: return 0x000000000942A001;
-		case TinyImageFormat_D24_UNORM_S8_UINT: return 0x000000000942E001;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return 0x000000000B433001;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return 0x0000000000100002;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return 0x0000000000108002;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return 0x0000000000181002;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return 0x0000000000189002;
-		case TinyImageFormat_DXBC2_UNORM: return 0x00000000001A3002;
-		case TinyImageFormat_DXBC2_SRGB: return 0x00000000001AB002;
-		case TinyImageFormat_DXBC3_UNORM: return 0x00000000001A2002;
-		case TinyImageFormat_DXBC3_SRGB: return 0x00000000001AA002;
-		case TinyImageFormat_DXBC4_UNORM: return 0x0000000000000002;
-		case TinyImageFormat_DXBC4_SNORM: return 0x0000000000004002;
-		case TinyImageFormat_DXBC5_UNORM: return 0x00000000000A0002;
-		case TinyImageFormat_DXBC5_SNORM: return 0x00000000000A4002;
-		case TinyImageFormat_DXBC6H_UFLOAT: return 0x0000000000530002;
-		case TinyImageFormat_DXBC6H_SFLOAT: return 0x000000000052C002;
-		case TinyImageFormat_DXBC7_UNORM: return 0x00000000003A3002;
-		case TinyImageFormat_DXBC7_SRGB: return 0x00000000003AB002;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return 0x0000000000000003;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return 0x0000000000004003;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return 0x0000000000001003;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return 0x0000000000005003;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return 0x0000000000010003;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return 0x0000000000014003;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return 0x0000000000011003;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return 0x0000000000015003;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return 0x0000000000080004;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return 0x00000000000A0004;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return 0x00000000000C4004;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return 0x00000000000E4004;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return 0x00000000000C8004;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return 0x00000000000E8004;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return 0x0000000000001004;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return 0x0000000000011004;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 0x0000000000041004;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 0x0000000000051004;
-		case TinyImageFormat_ASTC_4x4_UNORM: return 0x0000000000012005;
-		case TinyImageFormat_ASTC_4x4_SRGB: return 0x0000000000212005;
-		case TinyImageFormat_ASTC_5x4_UNORM: return 0x0000000000013005;
-		case TinyImageFormat_ASTC_5x4_SRGB: return 0x0000000000213005;
-		case TinyImageFormat_ASTC_5x5_UNORM: return 0x000000000001B005;
-		case TinyImageFormat_ASTC_5x5_SRGB: return 0x000000000021B005;
-		case TinyImageFormat_ASTC_6x5_UNORM: return 0x000000000001C005;
-		case TinyImageFormat_ASTC_6x5_SRGB: return 0x000000000021C005;
-		case TinyImageFormat_ASTC_6x6_UNORM: return 0x0000000000024005;
-		case TinyImageFormat_ASTC_6x6_SRGB: return 0x0000000000224005;
-		case TinyImageFormat_ASTC_8x5_UNORM: return 0x000000000001D005;
-		case TinyImageFormat_ASTC_8x5_SRGB: return 0x000000000021D005;
-		case TinyImageFormat_ASTC_8x6_UNORM: return 0x0000000000025005;
-		case TinyImageFormat_ASTC_8x6_SRGB: return 0x0000000000225005;
-		case TinyImageFormat_ASTC_8x8_UNORM: return 0x000000000002D005;
-		case TinyImageFormat_ASTC_8x8_SRGB: return 0x000000000022D005;
-		case TinyImageFormat_ASTC_10x5_UNORM: return 0x000000000001E005;
-		case TinyImageFormat_ASTC_10x5_SRGB: return 0x000000000021E005;
-		case TinyImageFormat_ASTC_10x6_UNORM: return 0x0000000000026005;
-		case TinyImageFormat_ASTC_10x6_SRGB: return 0x0000000000226005;
-		case TinyImageFormat_ASTC_10x8_UNORM: return 0x000000000002E005;
-		case TinyImageFormat_ASTC_10x8_SRGB: return 0x000000000022E005;
-		case TinyImageFormat_ASTC_10x10_UNORM: return 0x0000000000036005;
-		case TinyImageFormat_ASTC_10x10_SRGB: return 0x0000000000236005;
-		case TinyImageFormat_ASTC_12x10_UNORM: return 0x0000000000037005;
-		case TinyImageFormat_ASTC_12x10_SRGB: return 0x0000000000237005;
-		case TinyImageFormat_ASTC_12x12_UNORM: return 0x000000000003F005;
-		case TinyImageFormat_ASTC_12x12_SRGB: return 0x000000000023F005;
-		case TinyImageFormat_CLUT_P4: return 0x000000000010D006;
-		case TinyImageFormat_CLUT_P4A4: return 0x0000000000D6C006;
-		case TinyImageFormat_CLUT_P8: return 0x0000000000110006;
-		case TinyImageFormat_CLUT_P8A8: return 0x0000000000D90006;
+		case CqFormat_UNDEFINED: return 0x0000000000000000;
+		case CqFormat_R1_UNORM: return 0x0000D9000000C000;
+		case CqFormat_R2_UNORM: return 0x0000D90000013000;
+		case CqFormat_R4_UNORM: return 0x0000D90000022000;
+		case CqFormat_R4G4_UNORM: return 0x0008D84000421000;
+		case CqFormat_G4R4_UNORM: return 0x0008D80800421000;
+		case CqFormat_A8_UNORM: return 0x0000C91800040000;
+		case CqFormat_R8_UNORM: return 0x0000D90000040000;
+		case CqFormat_R8_SNORM: return 0x0001590000040000;
+		case CqFormat_R8_UINT: return 0x0001D90000040000;
+		case CqFormat_R8_SINT: return 0x0002590000040000;
+		case CqFormat_R8_SRGB: return 0x0003D90000040000;
+		case CqFormat_B2G3R3_UNORM: return 0x0088D05006311000;
+		case CqFormat_R4G4B4A4_UNORM: return 0x0888B44108421000;
+		case CqFormat_R4G4B4X4_UNORM: return 0x0888D44108421000;
+		case CqFormat_B4G4R4A4_UNORM: return 0x0888B05108421000;
+		case CqFormat_B4G4R4X4_UNORM: return 0x0888D05108421000;
+		case CqFormat_A4R4G4B4_UNORM: return 0x0888A21908421000;
+		case CqFormat_X4R4G4B4_UNORM: return 0x0889A22908421000;
+		case CqFormat_A4B4G4R4_UNORM: return 0x0888829908421000;
+		case CqFormat_X4B4G4R4_UNORM: return 0x088982A908421000;
+		case CqFormat_R5G6B5_UNORM: return 0x0088D4400A629000;
+		case CqFormat_B5G6R5_UNORM: return 0x0088D0500A629000;
+		case CqFormat_R5G5B5A1_UNORM: return 0x0888B4404A529000;
+		case CqFormat_B5G5R5A1_UNORM: return 0x0888B0504A529000;
+		case CqFormat_A1B5G5R5_UNORM: return 0x088882994A509000;
+		case CqFormat_A1R5G5B5_UNORM: return 0x0888A2194A509000;
+		case CqFormat_R5G5B5X1_UNORM: return 0x1888D4404A529000;
+		case CqFormat_B5G5R5X1_UNORM: return 0x1888D0504A529000;
+		case CqFormat_X1R5G5B5_UNORM: return 0x0889A2294A509000;
+		case CqFormat_X1B5G5R5_UNORM: return 0x088982A94A509000;
+		case CqFormat_B2G3R3A8_UNORM: return 0x0888B05206311000;
+		case CqFormat_R8G8_UNORM: return 0x0008D84000840000;
+		case CqFormat_R8G8_SNORM: return 0x0011584000840000;
+		case CqFormat_G8R8_UNORM: return 0x0008D80800840000;
+		case CqFormat_G8R8_SNORM: return 0x0011580800840000;
+		case CqFormat_R8G8_UINT: return 0x0019D84000840000;
+		case CqFormat_R8G8_SINT: return 0x0022584000840000;
+		case CqFormat_R8G8_SRGB: return 0x003BD84000840000;
+		case CqFormat_R16_UNORM: return 0x0000D90000068000;
+		case CqFormat_R16_SNORM: return 0x0001590000068000;
+		case CqFormat_R16_UINT: return 0x0001D90000068000;
+		case CqFormat_R16_SINT: return 0x0002590000068000;
+		case CqFormat_R16_SFLOAT: return 0x0003590000068000;
+		case CqFormat_R16_SBFLOAT: return 0x0004590000068000;
+		case CqFormat_R8G8B8_UNORM: return 0x0088D44010840000;
+		case CqFormat_R8G8B8_SNORM: return 0x0111544010840000;
+		case CqFormat_R8G8B8_UINT: return 0x0199D44010840000;
+		case CqFormat_R8G8B8_SINT: return 0x0222544010840000;
+		case CqFormat_R8G8B8_SRGB: return 0x03BBD44010840000;
+		case CqFormat_B8G8R8_UNORM: return 0x0088D05010840000;
+		case CqFormat_B8G8R8_SNORM: return 0x0111505010840000;
+		case CqFormat_B8G8R8_UINT: return 0x0199D05010840000;
+		case CqFormat_B8G8R8_SINT: return 0x0222505010840000;
+		case CqFormat_B8G8R8_SRGB: return 0x03BBD05010840000;
+		case CqFormat_R8G8B8A8_UNORM: return 0x0888B44210840000;
+		case CqFormat_R8G8B8A8_SNORM: return 0x1111344210840000;
+		case CqFormat_R8G8B8A8_UINT: return 0x1999B44210840000;
+		case CqFormat_R8G8B8A8_SINT: return 0x2222344210840000;
+		case CqFormat_R8G8B8A8_SRGB: return 0x0BBBB44210840000;
+		case CqFormat_B8G8R8A8_UNORM: return 0x0888B05210840000;
+		case CqFormat_B8G8R8A8_SNORM: return 0x1111305210840000;
+		case CqFormat_B8G8R8A8_UINT: return 0x1999B05210840000;
+		case CqFormat_B8G8R8A8_SINT: return 0x2222305210840000;
+		case CqFormat_B8G8R8A8_SRGB: return 0x0BBBB05210840000;
+		case CqFormat_R8G8B8X8_UNORM: return 0x0888D44210840000;
+		case CqFormat_B8G8R8X8_UNORM: return 0x0888D05210840000;
+		case CqFormat_R16G16_UNORM: return 0x0008D84000D68000;
+		case CqFormat_G16R16_UNORM: return 0x0008D80800D68000;
+		case CqFormat_R16G16_SNORM: return 0x0011584000D68000;
+		case CqFormat_G16R16_SNORM: return 0x0011580800D68000;
+		case CqFormat_R16G16_UINT: return 0x0019D84000D68000;
+		case CqFormat_R16G16_SINT: return 0x0022584000D68000;
+		case CqFormat_R16G16_SFLOAT: return 0x0033584000D68000;
+		case CqFormat_R16G16_SBFLOAT: return 0x0044584000D68000;
+		case CqFormat_R32_UINT: return 0x0001D90000078000;
+		case CqFormat_R32_SINT: return 0x0002590000078000;
+		case CqFormat_R32_SFLOAT: return 0x0003590000078000;
+		case CqFormat_A2R10G10B10_UNORM: return 0x0888A21A94A11000;
+		case CqFormat_A2R10G10B10_UINT: return 0x1999A21A94A11000;
+		case CqFormat_A2R10G10B10_SNORM: return 0x1111221A94A11000;
+		case CqFormat_A2R10G10B10_SINT: return 0x2222221A94A11000;
+		case CqFormat_A2B10G10R10_UNORM: return 0x0888829A94A11000;
+		case CqFormat_A2B10G10R10_UINT: return 0x1999829A94A11000;
+		case CqFormat_A2B10G10R10_SNORM: return 0x1111029A94A11000;
+		case CqFormat_A2B10G10R10_SINT: return 0x2222029A94A11000;
+		case CqFormat_R10G10B10A2_UNORM: return 0x0888B44094A51000;
+		case CqFormat_R10G10B10A2_UINT: return 0x1999B44094A51000;
+		case CqFormat_R10G10B10A2_SNORM: return 0x1111344094A51000;
+		case CqFormat_R10G10B10A2_SINT: return 0x2222344094A51000;
+		case CqFormat_B10G10R10A2_UNORM: return 0x0888B05094A51000;
+		case CqFormat_B10G10R10A2_UINT: return 0x1999B05094A51000;
+		case CqFormat_B10G10R10A2_SNORM: return 0x1111305094A51000;
+		case CqFormat_B10G10R10A2_SINT: return 0x2222305094A51000;
+		case CqFormat_B10G11R11_UFLOAT: return 0x02AAD05016B51000;
+		case CqFormat_E5B9G9R9_UFLOAT: return 0x2AA9829A52929000;
+		case CqFormat_R16G16B16_UNORM: return 0x0088D4401AD68000;
+		case CqFormat_R16G16B16_SNORM: return 0x011154401AD68000;
+		case CqFormat_R16G16B16_UINT: return 0x0199D4401AD68000;
+		case CqFormat_R16G16B16_SINT: return 0x022254401AD68000;
+		case CqFormat_R16G16B16_SFLOAT: return 0x033354401AD68000;
+		case CqFormat_R16G16B16_SBFLOAT: return 0x044454401AD68000;
+		case CqFormat_R16G16B16A16_UNORM: return 0x0888B4435AD68000;
+		case CqFormat_R16G16B16A16_SNORM: return 0x111134435AD68000;
+		case CqFormat_R16G16B16A16_UINT: return 0x1999B4435AD68000;
+		case CqFormat_R16G16B16A16_SINT: return 0x222234435AD68000;
+		case CqFormat_R16G16B16A16_SFLOAT: return 0x333334435AD68000;
+		case CqFormat_R16G16B16A16_SBFLOAT: return 0x444434435AD68000;
+		case CqFormat_R32G32_UINT: return 0x0019D84000F78000;
+		case CqFormat_R32G32_SINT: return 0x0022584000F78000;
+		case CqFormat_R32G32_SFLOAT: return 0x0033584000F78000;
+		case CqFormat_R32G32B32_UINT: return 0x0199D4401EF78000;
+		case CqFormat_R32G32B32_SINT: return 0x022254401EF78000;
+		case CqFormat_R32G32B32_SFLOAT: return 0x033354401EF78000;
+		case CqFormat_R32G32B32A32_UINT: return 0x1999B443DEF78000;
+		case CqFormat_R32G32B32A32_SINT: return 0x22223443DEF78000;
+		case CqFormat_R32G32B32A32_SFLOAT: return 0x33333443DEF78000;
+		case CqFormat_R64_UINT: return 0x0001D90000080000;
+		case CqFormat_R64_SINT: return 0x0002590000080000;
+		case CqFormat_R64_SFLOAT: return 0x0003590000080000;
+		case CqFormat_R64G64_UINT: return 0x0019D84001080000;
+		case CqFormat_R64G64_SINT: return 0x0022584001080000;
+		case CqFormat_R64G64_SFLOAT: return 0x0033584001080000;
+		case CqFormat_R64G64B64_UINT: return 0x0199D44021080000;
+		case CqFormat_R64G64B64_SINT: return 0x0222544021080000;
+		case CqFormat_R64G64B64_SFLOAT: return 0x0333544021080000;
+		case CqFormat_R64G64B64A64_UINT: return 0x1999B44421080000;
+		case CqFormat_R64G64B64A64_SINT: return 0x2222344421080000;
+		case CqFormat_R64G64B64A64_SFLOAT: return 0x3333344421080000;
+		case CqFormat_D16_UNORM: return 0x0000000001809001;
+		case CqFormat_X8_D24_UNORM: return 0x0000000006266001;
+		case CqFormat_D32_SFLOAT: return 0x0000000003812001;
+		case CqFormat_S8_UINT: return 0x0000000002904001;
+		case CqFormat_D16_UNORM_S8_UINT: return 0x000000000942A001;
+		case CqFormat_D24_UNORM_S8_UINT: return 0x000000000942E001;
+		case CqFormat_D32_SFLOAT_S8_UINT: return 0x000000000B433001;
+		case CqFormat_DXBC1_RGB_UNORM: return 0x0000000000100002;
+		case CqFormat_DXBC1_RGB_SRGB: return 0x0000000000108002;
+		case CqFormat_DXBC1_RGBA_UNORM: return 0x0000000000181002;
+		case CqFormat_DXBC1_RGBA_SRGB: return 0x0000000000189002;
+		case CqFormat_DXBC2_UNORM: return 0x00000000001A3002;
+		case CqFormat_DXBC2_SRGB: return 0x00000000001AB002;
+		case CqFormat_DXBC3_UNORM: return 0x00000000001A2002;
+		case CqFormat_DXBC3_SRGB: return 0x00000000001AA002;
+		case CqFormat_DXBC4_UNORM: return 0x0000000000000002;
+		case CqFormat_DXBC4_SNORM: return 0x0000000000004002;
+		case CqFormat_DXBC5_UNORM: return 0x00000000000A0002;
+		case CqFormat_DXBC5_SNORM: return 0x00000000000A4002;
+		case CqFormat_DXBC6H_UFLOAT: return 0x0000000000530002;
+		case CqFormat_DXBC6H_SFLOAT: return 0x000000000052C002;
+		case CqFormat_DXBC7_UNORM: return 0x00000000003A3002;
+		case CqFormat_DXBC7_SRGB: return 0x00000000003AB002;
+		case CqFormat_PVRTC1_2BPP_UNORM: return 0x0000000000000003;
+		case CqFormat_PVRTC1_4BPP_UNORM: return 0x0000000000004003;
+		case CqFormat_PVRTC2_2BPP_UNORM: return 0x0000000000001003;
+		case CqFormat_PVRTC2_4BPP_UNORM: return 0x0000000000005003;
+		case CqFormat_PVRTC1_2BPP_SRGB: return 0x0000000000010003;
+		case CqFormat_PVRTC1_4BPP_SRGB: return 0x0000000000014003;
+		case CqFormat_PVRTC2_2BPP_SRGB: return 0x0000000000011003;
+		case CqFormat_PVRTC2_4BPP_SRGB: return 0x0000000000015003;
+		case CqFormat_ETC2_R8G8B8_UNORM: return 0x0000000000080004;
+		case CqFormat_ETC2_R8G8B8_SRGB: return 0x00000000000A0004;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return 0x00000000000C4004;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return 0x00000000000E4004;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return 0x00000000000C8004;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return 0x00000000000E8004;
+		case CqFormat_ETC2_EAC_R11_UNORM: return 0x0000000000001004;
+		case CqFormat_ETC2_EAC_R11_SNORM: return 0x0000000000011004;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return 0x0000000000041004;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return 0x0000000000051004;
+		case CqFormat_ASTC_4x4_UNORM: return 0x0000000000012005;
+		case CqFormat_ASTC_4x4_SRGB: return 0x0000000000212005;
+		case CqFormat_ASTC_5x4_UNORM: return 0x0000000000013005;
+		case CqFormat_ASTC_5x4_SRGB: return 0x0000000000213005;
+		case CqFormat_ASTC_5x5_UNORM: return 0x000000000001B005;
+		case CqFormat_ASTC_5x5_SRGB: return 0x000000000021B005;
+		case CqFormat_ASTC_6x5_UNORM: return 0x000000000001C005;
+		case CqFormat_ASTC_6x5_SRGB: return 0x000000000021C005;
+		case CqFormat_ASTC_6x6_UNORM: return 0x0000000000024005;
+		case CqFormat_ASTC_6x6_SRGB: return 0x0000000000224005;
+		case CqFormat_ASTC_8x5_UNORM: return 0x000000000001D005;
+		case CqFormat_ASTC_8x5_SRGB: return 0x000000000021D005;
+		case CqFormat_ASTC_8x6_UNORM: return 0x0000000000025005;
+		case CqFormat_ASTC_8x6_SRGB: return 0x0000000000225005;
+		case CqFormat_ASTC_8x8_UNORM: return 0x000000000002D005;
+		case CqFormat_ASTC_8x8_SRGB: return 0x000000000022D005;
+		case CqFormat_ASTC_10x5_UNORM: return 0x000000000001E005;
+		case CqFormat_ASTC_10x5_SRGB: return 0x000000000021E005;
+		case CqFormat_ASTC_10x6_UNORM: return 0x0000000000026005;
+		case CqFormat_ASTC_10x6_SRGB: return 0x0000000000226005;
+		case CqFormat_ASTC_10x8_UNORM: return 0x000000000002E005;
+		case CqFormat_ASTC_10x8_SRGB: return 0x000000000022E005;
+		case CqFormat_ASTC_10x10_UNORM: return 0x0000000000036005;
+		case CqFormat_ASTC_10x10_SRGB: return 0x0000000000236005;
+		case CqFormat_ASTC_12x10_UNORM: return 0x0000000000037005;
+		case CqFormat_ASTC_12x10_SRGB: return 0x0000000000237005;
+		case CqFormat_ASTC_12x12_UNORM: return 0x000000000003F005;
+		case CqFormat_ASTC_12x12_SRGB: return 0x000000000023F005;
+		case CqFormat_CLUT_P4: return 0x000000000010D006;
+		case CqFormat_CLUT_P4A4: return 0x0000000000D6C006;
+		case CqFormat_CLUT_P8: return 0x0000000000110006;
+		case CqFormat_CLUT_P8A8: return 0x0000000000D90006;
 		default: return 0ULL;
 	}
 }
 
-#define TinyImageFormat_MaxPixelCountOfBlock 144U 
+#define CqFormat_MaxPixelCountOfBlock 144U 
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsDepthOnly(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsDepthOnly(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_D16_UNORM: return true;
-		case TinyImageFormat_X8_D24_UNORM: return true;
-		case TinyImageFormat_D32_SFLOAT: return true;
+		case CqFormat_D16_UNORM: return true;
+		case CqFormat_X8_D24_UNORM: return true;
+		case CqFormat_D32_SFLOAT: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsStencilOnly(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsStencilOnly(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_S8_UINT: return true;
+		case CqFormat_S8_UINT: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsDepthAndStencil(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsDepthAndStencil(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_D16_UNORM_S8_UINT: return true;
-		case TinyImageFormat_D24_UNORM_S8_UINT: return true;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return true;
+		case CqFormat_D16_UNORM_S8_UINT: return true;
+		case CqFormat_D24_UNORM_S8_UINT: return true;
+		case CqFormat_D32_SFLOAT_S8_UINT: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsCLUT(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsCLUT(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_CLUT_P4: return true;
-		case TinyImageFormat_CLUT_P4A4: return true;
-		case TinyImageFormat_CLUT_P8: return true;
-		case TinyImageFormat_CLUT_P8A8: return true;
+		case CqFormat_CLUT_P4: return true;
+		case CqFormat_CLUT_P4A4: return true;
+		case CqFormat_CLUT_P8: return true;
+		case CqFormat_CLUT_P8A8: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsFloat(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsFloat(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R16_SFLOAT: return true;
-		case TinyImageFormat_R16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16_SFLOAT: return true;
-		case TinyImageFormat_R16G16_SBFLOAT: return true;
-		case TinyImageFormat_R32_SFLOAT: return true;
-		case TinyImageFormat_B10G11R11_UFLOAT: return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return true;
-		case TinyImageFormat_R32G32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return true;
-		case TinyImageFormat_R64_SFLOAT: return true;
-		case TinyImageFormat_R64G64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return true;
-		case TinyImageFormat_D32_SFLOAT: return true;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return true;
-		case TinyImageFormat_DXBC6H_UFLOAT: return true;
-		case TinyImageFormat_DXBC6H_SFLOAT: return true;
+		case CqFormat_R16_SFLOAT: return true;
+		case CqFormat_R16_SBFLOAT: return true;
+		case CqFormat_R16G16_SFLOAT: return true;
+		case CqFormat_R16G16_SBFLOAT: return true;
+		case CqFormat_R32_SFLOAT: return true;
+		case CqFormat_B10G11R11_UFLOAT: return true;
+		case CqFormat_E5B9G9R9_UFLOAT: return true;
+		case CqFormat_R16G16B16_SFLOAT: return true;
+		case CqFormat_R16G16B16_SBFLOAT: return true;
+		case CqFormat_R16G16B16A16_SFLOAT: return true;
+		case CqFormat_R16G16B16A16_SBFLOAT: return true;
+		case CqFormat_R32G32_SFLOAT: return true;
+		case CqFormat_R32G32B32_SFLOAT: return true;
+		case CqFormat_R32G32B32A32_SFLOAT: return true;
+		case CqFormat_R64_SFLOAT: return true;
+		case CqFormat_R64G64_SFLOAT: return true;
+		case CqFormat_R64G64B64_SFLOAT: return true;
+		case CqFormat_R64G64B64A64_SFLOAT: return true;
+		case CqFormat_D32_SFLOAT: return true;
+		case CqFormat_D32_SFLOAT_S8_UINT: return true;
+		case CqFormat_DXBC6H_UFLOAT: return true;
+		case CqFormat_DXBC6H_SFLOAT: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsNormalised(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsNormalised(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM: return true;
-		case TinyImageFormat_R2_UNORM: return true;
-		case TinyImageFormat_R4_UNORM: return true;
-		case TinyImageFormat_R4G4_UNORM: return true;
-		case TinyImageFormat_G4R4_UNORM: return true;
-		case TinyImageFormat_A8_UNORM: return true;
-		case TinyImageFormat_R8_UNORM: return true;
-		case TinyImageFormat_R8_SNORM: return true;
-		case TinyImageFormat_R8_SRGB: return true;
-		case TinyImageFormat_B2G3R3_UNORM: return true;
-		case TinyImageFormat_R4G4B4A4_UNORM: return true;
-		case TinyImageFormat_R4G4B4X4_UNORM: return true;
-		case TinyImageFormat_B4G4R4A4_UNORM: return true;
-		case TinyImageFormat_B4G4R4X4_UNORM: return true;
-		case TinyImageFormat_A4R4G4B4_UNORM: return true;
-		case TinyImageFormat_X4R4G4B4_UNORM: return true;
-		case TinyImageFormat_A4B4G4R4_UNORM: return true;
-		case TinyImageFormat_X4B4G4R4_UNORM: return true;
-		case TinyImageFormat_R5G6B5_UNORM: return true;
-		case TinyImageFormat_B5G6R5_UNORM: return true;
-		case TinyImageFormat_R5G5B5A1_UNORM: return true;
-		case TinyImageFormat_B5G5R5A1_UNORM: return true;
-		case TinyImageFormat_A1B5G5R5_UNORM: return true;
-		case TinyImageFormat_A1R5G5B5_UNORM: return true;
-		case TinyImageFormat_R5G5B5X1_UNORM: return true;
-		case TinyImageFormat_B5G5R5X1_UNORM: return true;
-		case TinyImageFormat_X1R5G5B5_UNORM: return true;
-		case TinyImageFormat_X1B5G5R5_UNORM: return true;
-		case TinyImageFormat_B2G3R3A8_UNORM: return true;
-		case TinyImageFormat_R8G8_UNORM: return true;
-		case TinyImageFormat_R8G8_SNORM: return true;
-		case TinyImageFormat_G8R8_UNORM: return true;
-		case TinyImageFormat_G8R8_SNORM: return true;
-		case TinyImageFormat_R8G8_SRGB: return true;
-		case TinyImageFormat_R16_UNORM: return true;
-		case TinyImageFormat_R16_SNORM: return true;
-		case TinyImageFormat_R8G8B8_UNORM: return true;
-		case TinyImageFormat_R8G8B8_SNORM: return true;
-		case TinyImageFormat_R8G8B8_SRGB: return true;
-		case TinyImageFormat_B8G8R8_UNORM: return true;
-		case TinyImageFormat_B8G8R8_SNORM: return true;
-		case TinyImageFormat_B8G8R8_SRGB: return true;
-		case TinyImageFormat_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_B8G8R8A8_UNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SRGB: return true;
-		case TinyImageFormat_R8G8B8X8_UNORM: return true;
-		case TinyImageFormat_B8G8R8X8_UNORM: return true;
-		case TinyImageFormat_R16G16_UNORM: return true;
-		case TinyImageFormat_G16R16_UNORM: return true;
-		case TinyImageFormat_R16G16_SNORM: return true;
-		case TinyImageFormat_G16R16_SNORM: return true;
-		case TinyImageFormat_A2R10G10B10_UNORM: return true;
-		case TinyImageFormat_A2R10G10B10_SNORM: return true;
-		case TinyImageFormat_A2B10G10R10_UNORM: return true;
-		case TinyImageFormat_A2B10G10R10_SNORM: return true;
-		case TinyImageFormat_R10G10B10A2_UNORM: return true;
-		case TinyImageFormat_R10G10B10A2_SNORM: return true;
-		case TinyImageFormat_B10G10R10A2_UNORM: return true;
-		case TinyImageFormat_B10G10R10A2_SNORM: return true;
-		case TinyImageFormat_R16G16B16_UNORM: return true;
-		case TinyImageFormat_R16G16B16_SNORM: return true;
-		case TinyImageFormat_R16G16B16A16_UNORM: return true;
-		case TinyImageFormat_R16G16B16A16_SNORM: return true;
-		case TinyImageFormat_D16_UNORM: return true;
-		case TinyImageFormat_X8_D24_UNORM: return true;
-		case TinyImageFormat_D16_UNORM_S8_UINT: return true;
-		case TinyImageFormat_D24_UNORM_S8_UINT: return true;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return true;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return true;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return true;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return true;
-		case TinyImageFormat_DXBC2_UNORM: return true;
-		case TinyImageFormat_DXBC2_SRGB: return true;
-		case TinyImageFormat_DXBC3_UNORM: return true;
-		case TinyImageFormat_DXBC3_SRGB: return true;
-		case TinyImageFormat_DXBC4_UNORM: return true;
-		case TinyImageFormat_DXBC4_SNORM: return true;
-		case TinyImageFormat_DXBC5_UNORM: return true;
-		case TinyImageFormat_DXBC5_SNORM: return true;
-		case TinyImageFormat_DXBC7_UNORM: return true;
-		case TinyImageFormat_DXBC7_SRGB: return true;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return true;
-		case TinyImageFormat_ASTC_4x4_UNORM: return true;
-		case TinyImageFormat_ASTC_4x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x4_UNORM: return true;
-		case TinyImageFormat_ASTC_5x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x5_UNORM: return true;
-		case TinyImageFormat_ASTC_5x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x5_UNORM: return true;
-		case TinyImageFormat_ASTC_6x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x6_UNORM: return true;
-		case TinyImageFormat_ASTC_6x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x5_UNORM: return true;
-		case TinyImageFormat_ASTC_8x5_SRGB: return true;
-		case TinyImageFormat_ASTC_8x6_UNORM: return true;
-		case TinyImageFormat_ASTC_8x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x8_UNORM: return true;
-		case TinyImageFormat_ASTC_8x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x5_UNORM: return true;
-		case TinyImageFormat_ASTC_10x5_SRGB: return true;
-		case TinyImageFormat_ASTC_10x6_UNORM: return true;
-		case TinyImageFormat_ASTC_10x6_SRGB: return true;
-		case TinyImageFormat_ASTC_10x8_UNORM: return true;
-		case TinyImageFormat_ASTC_10x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x10_UNORM: return true;
-		case TinyImageFormat_ASTC_10x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x10_UNORM: return true;
-		case TinyImageFormat_ASTC_12x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x12_UNORM: return true;
-		case TinyImageFormat_ASTC_12x12_SRGB: return true;
+		case CqFormat_R1_UNORM: return true;
+		case CqFormat_R2_UNORM: return true;
+		case CqFormat_R4_UNORM: return true;
+		case CqFormat_R4G4_UNORM: return true;
+		case CqFormat_G4R4_UNORM: return true;
+		case CqFormat_A8_UNORM: return true;
+		case CqFormat_R8_UNORM: return true;
+		case CqFormat_R8_SNORM: return true;
+		case CqFormat_R8_SRGB: return true;
+		case CqFormat_B2G3R3_UNORM: return true;
+		case CqFormat_R4G4B4A4_UNORM: return true;
+		case CqFormat_R4G4B4X4_UNORM: return true;
+		case CqFormat_B4G4R4A4_UNORM: return true;
+		case CqFormat_B4G4R4X4_UNORM: return true;
+		case CqFormat_A4R4G4B4_UNORM: return true;
+		case CqFormat_X4R4G4B4_UNORM: return true;
+		case CqFormat_A4B4G4R4_UNORM: return true;
+		case CqFormat_X4B4G4R4_UNORM: return true;
+		case CqFormat_R5G6B5_UNORM: return true;
+		case CqFormat_B5G6R5_UNORM: return true;
+		case CqFormat_R5G5B5A1_UNORM: return true;
+		case CqFormat_B5G5R5A1_UNORM: return true;
+		case CqFormat_A1B5G5R5_UNORM: return true;
+		case CqFormat_A1R5G5B5_UNORM: return true;
+		case CqFormat_R5G5B5X1_UNORM: return true;
+		case CqFormat_B5G5R5X1_UNORM: return true;
+		case CqFormat_X1R5G5B5_UNORM: return true;
+		case CqFormat_X1B5G5R5_UNORM: return true;
+		case CqFormat_B2G3R3A8_UNORM: return true;
+		case CqFormat_R8G8_UNORM: return true;
+		case CqFormat_R8G8_SNORM: return true;
+		case CqFormat_G8R8_UNORM: return true;
+		case CqFormat_G8R8_SNORM: return true;
+		case CqFormat_R8G8_SRGB: return true;
+		case CqFormat_R16_UNORM: return true;
+		case CqFormat_R16_SNORM: return true;
+		case CqFormat_R8G8B8_UNORM: return true;
+		case CqFormat_R8G8B8_SNORM: return true;
+		case CqFormat_R8G8B8_SRGB: return true;
+		case CqFormat_B8G8R8_UNORM: return true;
+		case CqFormat_B8G8R8_SNORM: return true;
+		case CqFormat_B8G8R8_SRGB: return true;
+		case CqFormat_R8G8B8A8_UNORM: return true;
+		case CqFormat_R8G8B8A8_SNORM: return true;
+		case CqFormat_R8G8B8A8_SRGB: return true;
+		case CqFormat_B8G8R8A8_UNORM: return true;
+		case CqFormat_B8G8R8A8_SNORM: return true;
+		case CqFormat_B8G8R8A8_SRGB: return true;
+		case CqFormat_R8G8B8X8_UNORM: return true;
+		case CqFormat_B8G8R8X8_UNORM: return true;
+		case CqFormat_R16G16_UNORM: return true;
+		case CqFormat_G16R16_UNORM: return true;
+		case CqFormat_R16G16_SNORM: return true;
+		case CqFormat_G16R16_SNORM: return true;
+		case CqFormat_A2R10G10B10_UNORM: return true;
+		case CqFormat_A2R10G10B10_SNORM: return true;
+		case CqFormat_A2B10G10R10_UNORM: return true;
+		case CqFormat_A2B10G10R10_SNORM: return true;
+		case CqFormat_R10G10B10A2_UNORM: return true;
+		case CqFormat_R10G10B10A2_SNORM: return true;
+		case CqFormat_B10G10R10A2_UNORM: return true;
+		case CqFormat_B10G10R10A2_SNORM: return true;
+		case CqFormat_R16G16B16_UNORM: return true;
+		case CqFormat_R16G16B16_SNORM: return true;
+		case CqFormat_R16G16B16A16_UNORM: return true;
+		case CqFormat_R16G16B16A16_SNORM: return true;
+		case CqFormat_D16_UNORM: return true;
+		case CqFormat_X8_D24_UNORM: return true;
+		case CqFormat_D16_UNORM_S8_UINT: return true;
+		case CqFormat_D24_UNORM_S8_UINT: return true;
+		case CqFormat_DXBC1_RGB_UNORM: return true;
+		case CqFormat_DXBC1_RGB_SRGB: return true;
+		case CqFormat_DXBC1_RGBA_UNORM: return true;
+		case CqFormat_DXBC1_RGBA_SRGB: return true;
+		case CqFormat_DXBC2_UNORM: return true;
+		case CqFormat_DXBC2_SRGB: return true;
+		case CqFormat_DXBC3_UNORM: return true;
+		case CqFormat_DXBC3_SRGB: return true;
+		case CqFormat_DXBC4_UNORM: return true;
+		case CqFormat_DXBC4_SNORM: return true;
+		case CqFormat_DXBC5_UNORM: return true;
+		case CqFormat_DXBC5_SNORM: return true;
+		case CqFormat_DXBC7_UNORM: return true;
+		case CqFormat_DXBC7_SRGB: return true;
+		case CqFormat_PVRTC1_2BPP_UNORM: return true;
+		case CqFormat_PVRTC1_4BPP_UNORM: return true;
+		case CqFormat_PVRTC2_2BPP_UNORM: return true;
+		case CqFormat_PVRTC2_4BPP_UNORM: return true;
+		case CqFormat_PVRTC1_2BPP_SRGB: return true;
+		case CqFormat_PVRTC1_4BPP_SRGB: return true;
+		case CqFormat_PVRTC2_2BPP_SRGB: return true;
+		case CqFormat_PVRTC2_4BPP_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return true;
+		case CqFormat_ETC2_EAC_R11_UNORM: return true;
+		case CqFormat_ETC2_EAC_R11_SNORM: return true;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return true;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return true;
+		case CqFormat_ASTC_4x4_UNORM: return true;
+		case CqFormat_ASTC_4x4_SRGB: return true;
+		case CqFormat_ASTC_5x4_UNORM: return true;
+		case CqFormat_ASTC_5x4_SRGB: return true;
+		case CqFormat_ASTC_5x5_UNORM: return true;
+		case CqFormat_ASTC_5x5_SRGB: return true;
+		case CqFormat_ASTC_6x5_UNORM: return true;
+		case CqFormat_ASTC_6x5_SRGB: return true;
+		case CqFormat_ASTC_6x6_UNORM: return true;
+		case CqFormat_ASTC_6x6_SRGB: return true;
+		case CqFormat_ASTC_8x5_UNORM: return true;
+		case CqFormat_ASTC_8x5_SRGB: return true;
+		case CqFormat_ASTC_8x6_UNORM: return true;
+		case CqFormat_ASTC_8x6_SRGB: return true;
+		case CqFormat_ASTC_8x8_UNORM: return true;
+		case CqFormat_ASTC_8x8_SRGB: return true;
+		case CqFormat_ASTC_10x5_UNORM: return true;
+		case CqFormat_ASTC_10x5_SRGB: return true;
+		case CqFormat_ASTC_10x6_UNORM: return true;
+		case CqFormat_ASTC_10x6_SRGB: return true;
+		case CqFormat_ASTC_10x8_UNORM: return true;
+		case CqFormat_ASTC_10x8_SRGB: return true;
+		case CqFormat_ASTC_10x10_UNORM: return true;
+		case CqFormat_ASTC_10x10_SRGB: return true;
+		case CqFormat_ASTC_12x10_UNORM: return true;
+		case CqFormat_ASTC_12x10_SRGB: return true;
+		case CqFormat_ASTC_12x12_UNORM: return true;
+		case CqFormat_ASTC_12x12_SRGB: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsSigned(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsSigned(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R8_SNORM: return true;
-		case TinyImageFormat_R8_SINT: return true;
-		case TinyImageFormat_R8G8_SNORM: return true;
-		case TinyImageFormat_G8R8_SNORM: return true;
-		case TinyImageFormat_R8G8_SINT: return true;
-		case TinyImageFormat_R16_SNORM: return true;
-		case TinyImageFormat_R16_SINT: return true;
-		case TinyImageFormat_R16_SFLOAT: return true;
-		case TinyImageFormat_R16_SBFLOAT: return true;
-		case TinyImageFormat_R8G8B8_SNORM: return true;
-		case TinyImageFormat_R8G8B8_SINT: return true;
-		case TinyImageFormat_B8G8R8_SNORM: return true;
-		case TinyImageFormat_B8G8R8_SINT: return true;
-		case TinyImageFormat_R8G8B8A8_SNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SINT: return true;
-		case TinyImageFormat_B8G8R8A8_SNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SINT: return true;
-		case TinyImageFormat_R16G16_SNORM: return true;
-		case TinyImageFormat_G16R16_SNORM: return true;
-		case TinyImageFormat_R16G16_SINT: return true;
-		case TinyImageFormat_R16G16_SFLOAT: return true;
-		case TinyImageFormat_R16G16_SBFLOAT: return true;
-		case TinyImageFormat_R32_SINT: return true;
-		case TinyImageFormat_R32_SFLOAT: return true;
-		case TinyImageFormat_A2R10G10B10_SNORM: return true;
-		case TinyImageFormat_A2R10G10B10_SINT: return true;
-		case TinyImageFormat_A2B10G10R10_SNORM: return true;
-		case TinyImageFormat_A2B10G10R10_SINT: return true;
-		case TinyImageFormat_R10G10B10A2_SNORM: return true;
-		case TinyImageFormat_R10G10B10A2_SINT: return true;
-		case TinyImageFormat_B10G10R10A2_SNORM: return true;
-		case TinyImageFormat_B10G10R10A2_SINT: return true;
-		case TinyImageFormat_R16G16B16_SNORM: return true;
-		case TinyImageFormat_R16G16B16_SINT: return true;
-		case TinyImageFormat_R16G16B16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SNORM: return true;
-		case TinyImageFormat_R16G16B16A16_SINT: return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return true;
-		case TinyImageFormat_R32G32_SINT: return true;
-		case TinyImageFormat_R32G32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32_SINT: return true;
-		case TinyImageFormat_R32G32B32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32A32_SINT: return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return true;
-		case TinyImageFormat_R64_SINT: return true;
-		case TinyImageFormat_R64_SFLOAT: return true;
-		case TinyImageFormat_R64G64_SINT: return true;
-		case TinyImageFormat_R64G64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64_SINT: return true;
-		case TinyImageFormat_R64G64B64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64A64_SINT: return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return true;
-		case TinyImageFormat_D32_SFLOAT: return true;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return true;
-		case TinyImageFormat_DXBC4_SNORM: return true;
-		case TinyImageFormat_DXBC5_SNORM: return true;
-		case TinyImageFormat_DXBC6H_SFLOAT: return true;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return true;
+		case CqFormat_R8_SNORM: return true;
+		case CqFormat_R8_SINT: return true;
+		case CqFormat_R8G8_SNORM: return true;
+		case CqFormat_G8R8_SNORM: return true;
+		case CqFormat_R8G8_SINT: return true;
+		case CqFormat_R16_SNORM: return true;
+		case CqFormat_R16_SINT: return true;
+		case CqFormat_R16_SFLOAT: return true;
+		case CqFormat_R16_SBFLOAT: return true;
+		case CqFormat_R8G8B8_SNORM: return true;
+		case CqFormat_R8G8B8_SINT: return true;
+		case CqFormat_B8G8R8_SNORM: return true;
+		case CqFormat_B8G8R8_SINT: return true;
+		case CqFormat_R8G8B8A8_SNORM: return true;
+		case CqFormat_R8G8B8A8_SINT: return true;
+		case CqFormat_B8G8R8A8_SNORM: return true;
+		case CqFormat_B8G8R8A8_SINT: return true;
+		case CqFormat_R16G16_SNORM: return true;
+		case CqFormat_G16R16_SNORM: return true;
+		case CqFormat_R16G16_SINT: return true;
+		case CqFormat_R16G16_SFLOAT: return true;
+		case CqFormat_R16G16_SBFLOAT: return true;
+		case CqFormat_R32_SINT: return true;
+		case CqFormat_R32_SFLOAT: return true;
+		case CqFormat_A2R10G10B10_SNORM: return true;
+		case CqFormat_A2R10G10B10_SINT: return true;
+		case CqFormat_A2B10G10R10_SNORM: return true;
+		case CqFormat_A2B10G10R10_SINT: return true;
+		case CqFormat_R10G10B10A2_SNORM: return true;
+		case CqFormat_R10G10B10A2_SINT: return true;
+		case CqFormat_B10G10R10A2_SNORM: return true;
+		case CqFormat_B10G10R10A2_SINT: return true;
+		case CqFormat_R16G16B16_SNORM: return true;
+		case CqFormat_R16G16B16_SINT: return true;
+		case CqFormat_R16G16B16_SFLOAT: return true;
+		case CqFormat_R16G16B16_SBFLOAT: return true;
+		case CqFormat_R16G16B16A16_SNORM: return true;
+		case CqFormat_R16G16B16A16_SINT: return true;
+		case CqFormat_R16G16B16A16_SFLOAT: return true;
+		case CqFormat_R16G16B16A16_SBFLOAT: return true;
+		case CqFormat_R32G32_SINT: return true;
+		case CqFormat_R32G32_SFLOAT: return true;
+		case CqFormat_R32G32B32_SINT: return true;
+		case CqFormat_R32G32B32_SFLOAT: return true;
+		case CqFormat_R32G32B32A32_SINT: return true;
+		case CqFormat_R32G32B32A32_SFLOAT: return true;
+		case CqFormat_R64_SINT: return true;
+		case CqFormat_R64_SFLOAT: return true;
+		case CqFormat_R64G64_SINT: return true;
+		case CqFormat_R64G64_SFLOAT: return true;
+		case CqFormat_R64G64B64_SINT: return true;
+		case CqFormat_R64G64B64_SFLOAT: return true;
+		case CqFormat_R64G64B64A64_SINT: return true;
+		case CqFormat_R64G64B64A64_SFLOAT: return true;
+		case CqFormat_D32_SFLOAT: return true;
+		case CqFormat_D32_SFLOAT_S8_UINT: return true;
+		case CqFormat_DXBC4_SNORM: return true;
+		case CqFormat_DXBC5_SNORM: return true;
+		case CqFormat_DXBC6H_SFLOAT: return true;
+		case CqFormat_ETC2_EAC_R11_SNORM: return true;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsSRGB(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsSRGB(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R8_SRGB: return true;
-		case TinyImageFormat_R8G8_SRGB: return true;
-		case TinyImageFormat_R8G8B8_SRGB: return true;
-		case TinyImageFormat_B8G8R8_SRGB: return true;
-		case TinyImageFormat_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_B8G8R8A8_SRGB: return true;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return true;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return true;
-		case TinyImageFormat_DXBC2_SRGB: return true;
-		case TinyImageFormat_DXBC3_SRGB: return true;
-		case TinyImageFormat_DXBC7_SRGB: return true;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_ASTC_4x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x5_SRGB: return true;
-		case TinyImageFormat_ASTC_8x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x5_SRGB: return true;
-		case TinyImageFormat_ASTC_10x6_SRGB: return true;
-		case TinyImageFormat_ASTC_10x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x12_SRGB: return true;
+		case CqFormat_R8_SRGB: return true;
+		case CqFormat_R8G8_SRGB: return true;
+		case CqFormat_R8G8B8_SRGB: return true;
+		case CqFormat_B8G8R8_SRGB: return true;
+		case CqFormat_R8G8B8A8_SRGB: return true;
+		case CqFormat_B8G8R8A8_SRGB: return true;
+		case CqFormat_DXBC1_RGB_SRGB: return true;
+		case CqFormat_DXBC1_RGBA_SRGB: return true;
+		case CqFormat_DXBC2_SRGB: return true;
+		case CqFormat_DXBC3_SRGB: return true;
+		case CqFormat_DXBC7_SRGB: return true;
+		case CqFormat_PVRTC1_2BPP_SRGB: return true;
+		case CqFormat_PVRTC1_4BPP_SRGB: return true;
+		case CqFormat_PVRTC2_2BPP_SRGB: return true;
+		case CqFormat_PVRTC2_4BPP_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return true;
+		case CqFormat_ASTC_4x4_SRGB: return true;
+		case CqFormat_ASTC_5x4_SRGB: return true;
+		case CqFormat_ASTC_5x5_SRGB: return true;
+		case CqFormat_ASTC_6x5_SRGB: return true;
+		case CqFormat_ASTC_6x6_SRGB: return true;
+		case CqFormat_ASTC_8x5_SRGB: return true;
+		case CqFormat_ASTC_8x6_SRGB: return true;
+		case CqFormat_ASTC_8x8_SRGB: return true;
+		case CqFormat_ASTC_10x5_SRGB: return true;
+		case CqFormat_ASTC_10x6_SRGB: return true;
+		case CqFormat_ASTC_10x8_SRGB: return true;
+		case CqFormat_ASTC_10x10_SRGB: return true;
+		case CqFormat_ASTC_12x10_SRGB: return true;
+		case CqFormat_ASTC_12x12_SRGB: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsCompressed(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsCompressed(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_DXBC1_RGB_UNORM: return true;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return true;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return true;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return true;
-		case TinyImageFormat_DXBC2_UNORM: return true;
-		case TinyImageFormat_DXBC2_SRGB: return true;
-		case TinyImageFormat_DXBC3_UNORM: return true;
-		case TinyImageFormat_DXBC3_SRGB: return true;
-		case TinyImageFormat_DXBC4_UNORM: return true;
-		case TinyImageFormat_DXBC4_SNORM: return true;
-		case TinyImageFormat_DXBC5_UNORM: return true;
-		case TinyImageFormat_DXBC5_SNORM: return true;
-		case TinyImageFormat_DXBC6H_UFLOAT: return true;
-		case TinyImageFormat_DXBC6H_SFLOAT: return true;
-		case TinyImageFormat_DXBC7_UNORM: return true;
-		case TinyImageFormat_DXBC7_SRGB: return true;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return true;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return true;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return true;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return true;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return true;
-		case TinyImageFormat_ASTC_4x4_UNORM: return true;
-		case TinyImageFormat_ASTC_4x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x4_UNORM: return true;
-		case TinyImageFormat_ASTC_5x4_SRGB: return true;
-		case TinyImageFormat_ASTC_5x5_UNORM: return true;
-		case TinyImageFormat_ASTC_5x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x5_UNORM: return true;
-		case TinyImageFormat_ASTC_6x5_SRGB: return true;
-		case TinyImageFormat_ASTC_6x6_UNORM: return true;
-		case TinyImageFormat_ASTC_6x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x5_UNORM: return true;
-		case TinyImageFormat_ASTC_8x5_SRGB: return true;
-		case TinyImageFormat_ASTC_8x6_UNORM: return true;
-		case TinyImageFormat_ASTC_8x6_SRGB: return true;
-		case TinyImageFormat_ASTC_8x8_UNORM: return true;
-		case TinyImageFormat_ASTC_8x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x5_UNORM: return true;
-		case TinyImageFormat_ASTC_10x5_SRGB: return true;
-		case TinyImageFormat_ASTC_10x6_UNORM: return true;
-		case TinyImageFormat_ASTC_10x6_SRGB: return true;
-		case TinyImageFormat_ASTC_10x8_UNORM: return true;
-		case TinyImageFormat_ASTC_10x8_SRGB: return true;
-		case TinyImageFormat_ASTC_10x10_UNORM: return true;
-		case TinyImageFormat_ASTC_10x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x10_UNORM: return true;
-		case TinyImageFormat_ASTC_12x10_SRGB: return true;
-		case TinyImageFormat_ASTC_12x12_UNORM: return true;
-		case TinyImageFormat_ASTC_12x12_SRGB: return true;
+		case CqFormat_DXBC1_RGB_UNORM: return true;
+		case CqFormat_DXBC1_RGB_SRGB: return true;
+		case CqFormat_DXBC1_RGBA_UNORM: return true;
+		case CqFormat_DXBC1_RGBA_SRGB: return true;
+		case CqFormat_DXBC2_UNORM: return true;
+		case CqFormat_DXBC2_SRGB: return true;
+		case CqFormat_DXBC3_UNORM: return true;
+		case CqFormat_DXBC3_SRGB: return true;
+		case CqFormat_DXBC4_UNORM: return true;
+		case CqFormat_DXBC4_SNORM: return true;
+		case CqFormat_DXBC5_UNORM: return true;
+		case CqFormat_DXBC5_SNORM: return true;
+		case CqFormat_DXBC6H_UFLOAT: return true;
+		case CqFormat_DXBC6H_SFLOAT: return true;
+		case CqFormat_DXBC7_UNORM: return true;
+		case CqFormat_DXBC7_SRGB: return true;
+		case CqFormat_PVRTC1_2BPP_UNORM: return true;
+		case CqFormat_PVRTC1_4BPP_UNORM: return true;
+		case CqFormat_PVRTC2_2BPP_UNORM: return true;
+		case CqFormat_PVRTC2_4BPP_UNORM: return true;
+		case CqFormat_PVRTC1_2BPP_SRGB: return true;
+		case CqFormat_PVRTC1_4BPP_SRGB: return true;
+		case CqFormat_PVRTC2_2BPP_SRGB: return true;
+		case CqFormat_PVRTC2_4BPP_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return true;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return true;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return true;
+		case CqFormat_ETC2_EAC_R11_UNORM: return true;
+		case CqFormat_ETC2_EAC_R11_SNORM: return true;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return true;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return true;
+		case CqFormat_ASTC_4x4_UNORM: return true;
+		case CqFormat_ASTC_4x4_SRGB: return true;
+		case CqFormat_ASTC_5x4_UNORM: return true;
+		case CqFormat_ASTC_5x4_SRGB: return true;
+		case CqFormat_ASTC_5x5_UNORM: return true;
+		case CqFormat_ASTC_5x5_SRGB: return true;
+		case CqFormat_ASTC_6x5_UNORM: return true;
+		case CqFormat_ASTC_6x5_SRGB: return true;
+		case CqFormat_ASTC_6x6_UNORM: return true;
+		case CqFormat_ASTC_6x6_SRGB: return true;
+		case CqFormat_ASTC_8x5_UNORM: return true;
+		case CqFormat_ASTC_8x5_SRGB: return true;
+		case CqFormat_ASTC_8x6_UNORM: return true;
+		case CqFormat_ASTC_8x6_SRGB: return true;
+		case CqFormat_ASTC_8x8_UNORM: return true;
+		case CqFormat_ASTC_8x8_SRGB: return true;
+		case CqFormat_ASTC_10x5_UNORM: return true;
+		case CqFormat_ASTC_10x5_SRGB: return true;
+		case CqFormat_ASTC_10x6_UNORM: return true;
+		case CqFormat_ASTC_10x6_SRGB: return true;
+		case CqFormat_ASTC_10x8_UNORM: return true;
+		case CqFormat_ASTC_10x8_SRGB: return true;
+		case CqFormat_ASTC_10x10_UNORM: return true;
+		case CqFormat_ASTC_10x10_SRGB: return true;
+		case CqFormat_ASTC_12x10_UNORM: return true;
+		case CqFormat_ASTC_12x10_SRGB: return true;
+		case CqFormat_ASTC_12x12_UNORM: return true;
+		case CqFormat_ASTC_12x12_SRGB: return true;
 		default: return false;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_IsHomogenous(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_IsHomogenous(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return false;
-		case TinyImageFormat_B2G3R3_UNORM: return false;
-		case TinyImageFormat_X4R4G4B4_UNORM: return false;
-		case TinyImageFormat_X4B4G4R4_UNORM: return false;
-		case TinyImageFormat_R5G6B5_UNORM: return false;
-		case TinyImageFormat_B5G6R5_UNORM: return false;
-		case TinyImageFormat_R5G5B5A1_UNORM: return false;
-		case TinyImageFormat_B5G5R5A1_UNORM: return false;
-		case TinyImageFormat_A1B5G5R5_UNORM: return false;
-		case TinyImageFormat_A1R5G5B5_UNORM: return false;
-		case TinyImageFormat_R5G5B5X1_UNORM: return false;
-		case TinyImageFormat_B5G5R5X1_UNORM: return false;
-		case TinyImageFormat_X1R5G5B5_UNORM: return false;
-		case TinyImageFormat_X1B5G5R5_UNORM: return false;
-		case TinyImageFormat_B2G3R3A8_UNORM: return false;
-		case TinyImageFormat_R8G8B8A8_SRGB: return false;
-		case TinyImageFormat_B8G8R8A8_SRGB: return false;
-		case TinyImageFormat_A2R10G10B10_UNORM: return false;
-		case TinyImageFormat_A2R10G10B10_UINT: return false;
-		case TinyImageFormat_A2R10G10B10_SNORM: return false;
-		case TinyImageFormat_A2R10G10B10_SINT: return false;
-		case TinyImageFormat_A2B10G10R10_UNORM: return false;
-		case TinyImageFormat_A2B10G10R10_UINT: return false;
-		case TinyImageFormat_A2B10G10R10_SNORM: return false;
-		case TinyImageFormat_A2B10G10R10_SINT: return false;
-		case TinyImageFormat_R10G10B10A2_UNORM: return false;
-		case TinyImageFormat_R10G10B10A2_UINT: return false;
-		case TinyImageFormat_R10G10B10A2_SNORM: return false;
-		case TinyImageFormat_R10G10B10A2_SINT: return false;
-		case TinyImageFormat_B10G10R10A2_UNORM: return false;
-		case TinyImageFormat_B10G10R10A2_UINT: return false;
-		case TinyImageFormat_B10G10R10A2_SNORM: return false;
-		case TinyImageFormat_B10G10R10A2_SINT: return false;
-		case TinyImageFormat_B10G11R11_UFLOAT: return false;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return false;
-		case TinyImageFormat_X8_D24_UNORM: return false;
-		case TinyImageFormat_D16_UNORM_S8_UINT: return false;
-		case TinyImageFormat_D24_UNORM_S8_UINT: return false;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return false;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return false;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return false;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return false;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return false;
-		case TinyImageFormat_DXBC2_UNORM: return false;
-		case TinyImageFormat_DXBC2_SRGB: return false;
-		case TinyImageFormat_DXBC3_UNORM: return false;
-		case TinyImageFormat_DXBC3_SRGB: return false;
-		case TinyImageFormat_DXBC4_UNORM: return false;
-		case TinyImageFormat_DXBC4_SNORM: return false;
-		case TinyImageFormat_DXBC5_UNORM: return false;
-		case TinyImageFormat_DXBC5_SNORM: return false;
-		case TinyImageFormat_DXBC6H_UFLOAT: return false;
-		case TinyImageFormat_DXBC6H_SFLOAT: return false;
-		case TinyImageFormat_DXBC7_UNORM: return false;
-		case TinyImageFormat_DXBC7_SRGB: return false;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return false;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return false;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return false;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return false;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return false;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return false;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return false;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return false;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return false;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return false;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return false;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return false;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return false;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return false;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return false;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return false;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return false;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return false;
-		case TinyImageFormat_ASTC_4x4_UNORM: return false;
-		case TinyImageFormat_ASTC_4x4_SRGB: return false;
-		case TinyImageFormat_ASTC_5x4_UNORM: return false;
-		case TinyImageFormat_ASTC_5x4_SRGB: return false;
-		case TinyImageFormat_ASTC_5x5_UNORM: return false;
-		case TinyImageFormat_ASTC_5x5_SRGB: return false;
-		case TinyImageFormat_ASTC_6x5_UNORM: return false;
-		case TinyImageFormat_ASTC_6x5_SRGB: return false;
-		case TinyImageFormat_ASTC_6x6_UNORM: return false;
-		case TinyImageFormat_ASTC_6x6_SRGB: return false;
-		case TinyImageFormat_ASTC_8x5_UNORM: return false;
-		case TinyImageFormat_ASTC_8x5_SRGB: return false;
-		case TinyImageFormat_ASTC_8x6_UNORM: return false;
-		case TinyImageFormat_ASTC_8x6_SRGB: return false;
-		case TinyImageFormat_ASTC_8x8_UNORM: return false;
-		case TinyImageFormat_ASTC_8x8_SRGB: return false;
-		case TinyImageFormat_ASTC_10x5_UNORM: return false;
-		case TinyImageFormat_ASTC_10x5_SRGB: return false;
-		case TinyImageFormat_ASTC_10x6_UNORM: return false;
-		case TinyImageFormat_ASTC_10x6_SRGB: return false;
-		case TinyImageFormat_ASTC_10x8_UNORM: return false;
-		case TinyImageFormat_ASTC_10x8_SRGB: return false;
-		case TinyImageFormat_ASTC_10x10_UNORM: return false;
-		case TinyImageFormat_ASTC_10x10_SRGB: return false;
-		case TinyImageFormat_ASTC_12x10_UNORM: return false;
-		case TinyImageFormat_ASTC_12x10_SRGB: return false;
-		case TinyImageFormat_ASTC_12x12_UNORM: return false;
-		case TinyImageFormat_ASTC_12x12_SRGB: return false;
-		case TinyImageFormat_CLUT_P4: return false;
-		case TinyImageFormat_CLUT_P4A4: return false;
-		case TinyImageFormat_CLUT_P8: return false;
-		case TinyImageFormat_CLUT_P8A8: return false;
+		case CqFormat_UNDEFINED: return false;
+		case CqFormat_B2G3R3_UNORM: return false;
+		case CqFormat_X4R4G4B4_UNORM: return false;
+		case CqFormat_X4B4G4R4_UNORM: return false;
+		case CqFormat_R5G6B5_UNORM: return false;
+		case CqFormat_B5G6R5_UNORM: return false;
+		case CqFormat_R5G5B5A1_UNORM: return false;
+		case CqFormat_B5G5R5A1_UNORM: return false;
+		case CqFormat_A1B5G5R5_UNORM: return false;
+		case CqFormat_A1R5G5B5_UNORM: return false;
+		case CqFormat_R5G5B5X1_UNORM: return false;
+		case CqFormat_B5G5R5X1_UNORM: return false;
+		case CqFormat_X1R5G5B5_UNORM: return false;
+		case CqFormat_X1B5G5R5_UNORM: return false;
+		case CqFormat_B2G3R3A8_UNORM: return false;
+		case CqFormat_R8G8B8A8_SRGB: return false;
+		case CqFormat_B8G8R8A8_SRGB: return false;
+		case CqFormat_A2R10G10B10_UNORM: return false;
+		case CqFormat_A2R10G10B10_UINT: return false;
+		case CqFormat_A2R10G10B10_SNORM: return false;
+		case CqFormat_A2R10G10B10_SINT: return false;
+		case CqFormat_A2B10G10R10_UNORM: return false;
+		case CqFormat_A2B10G10R10_UINT: return false;
+		case CqFormat_A2B10G10R10_SNORM: return false;
+		case CqFormat_A2B10G10R10_SINT: return false;
+		case CqFormat_R10G10B10A2_UNORM: return false;
+		case CqFormat_R10G10B10A2_UINT: return false;
+		case CqFormat_R10G10B10A2_SNORM: return false;
+		case CqFormat_R10G10B10A2_SINT: return false;
+		case CqFormat_B10G10R10A2_UNORM: return false;
+		case CqFormat_B10G10R10A2_UINT: return false;
+		case CqFormat_B10G10R10A2_SNORM: return false;
+		case CqFormat_B10G10R10A2_SINT: return false;
+		case CqFormat_B10G11R11_UFLOAT: return false;
+		case CqFormat_E5B9G9R9_UFLOAT: return false;
+		case CqFormat_X8_D24_UNORM: return false;
+		case CqFormat_D16_UNORM_S8_UINT: return false;
+		case CqFormat_D24_UNORM_S8_UINT: return false;
+		case CqFormat_D32_SFLOAT_S8_UINT: return false;
+		case CqFormat_DXBC1_RGB_UNORM: return false;
+		case CqFormat_DXBC1_RGB_SRGB: return false;
+		case CqFormat_DXBC1_RGBA_UNORM: return false;
+		case CqFormat_DXBC1_RGBA_SRGB: return false;
+		case CqFormat_DXBC2_UNORM: return false;
+		case CqFormat_DXBC2_SRGB: return false;
+		case CqFormat_DXBC3_UNORM: return false;
+		case CqFormat_DXBC3_SRGB: return false;
+		case CqFormat_DXBC4_UNORM: return false;
+		case CqFormat_DXBC4_SNORM: return false;
+		case CqFormat_DXBC5_UNORM: return false;
+		case CqFormat_DXBC5_SNORM: return false;
+		case CqFormat_DXBC6H_UFLOAT: return false;
+		case CqFormat_DXBC6H_SFLOAT: return false;
+		case CqFormat_DXBC7_UNORM: return false;
+		case CqFormat_DXBC7_SRGB: return false;
+		case CqFormat_PVRTC1_2BPP_UNORM: return false;
+		case CqFormat_PVRTC1_4BPP_UNORM: return false;
+		case CqFormat_PVRTC2_2BPP_UNORM: return false;
+		case CqFormat_PVRTC2_4BPP_UNORM: return false;
+		case CqFormat_PVRTC1_2BPP_SRGB: return false;
+		case CqFormat_PVRTC1_4BPP_SRGB: return false;
+		case CqFormat_PVRTC2_2BPP_SRGB: return false;
+		case CqFormat_PVRTC2_4BPP_SRGB: return false;
+		case CqFormat_ETC2_R8G8B8_UNORM: return false;
+		case CqFormat_ETC2_R8G8B8_SRGB: return false;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return false;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return false;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return false;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return false;
+		case CqFormat_ETC2_EAC_R11_UNORM: return false;
+		case CqFormat_ETC2_EAC_R11_SNORM: return false;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return false;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return false;
+		case CqFormat_ASTC_4x4_UNORM: return false;
+		case CqFormat_ASTC_4x4_SRGB: return false;
+		case CqFormat_ASTC_5x4_UNORM: return false;
+		case CqFormat_ASTC_5x4_SRGB: return false;
+		case CqFormat_ASTC_5x5_UNORM: return false;
+		case CqFormat_ASTC_5x5_SRGB: return false;
+		case CqFormat_ASTC_6x5_UNORM: return false;
+		case CqFormat_ASTC_6x5_SRGB: return false;
+		case CqFormat_ASTC_6x6_UNORM: return false;
+		case CqFormat_ASTC_6x6_SRGB: return false;
+		case CqFormat_ASTC_8x5_UNORM: return false;
+		case CqFormat_ASTC_8x5_SRGB: return false;
+		case CqFormat_ASTC_8x6_UNORM: return false;
+		case CqFormat_ASTC_8x6_SRGB: return false;
+		case CqFormat_ASTC_8x8_UNORM: return false;
+		case CqFormat_ASTC_8x8_SRGB: return false;
+		case CqFormat_ASTC_10x5_UNORM: return false;
+		case CqFormat_ASTC_10x5_SRGB: return false;
+		case CqFormat_ASTC_10x6_UNORM: return false;
+		case CqFormat_ASTC_10x6_SRGB: return false;
+		case CqFormat_ASTC_10x8_UNORM: return false;
+		case CqFormat_ASTC_10x8_SRGB: return false;
+		case CqFormat_ASTC_10x10_UNORM: return false;
+		case CqFormat_ASTC_10x10_SRGB: return false;
+		case CqFormat_ASTC_12x10_UNORM: return false;
+		case CqFormat_ASTC_12x10_SRGB: return false;
+		case CqFormat_ASTC_12x12_UNORM: return false;
+		case CqFormat_ASTC_12x12_SRGB: return false;
+		case CqFormat_CLUT_P4: return false;
+		case CqFormat_CLUT_P4A4: return false;
+		case CqFormat_CLUT_P8: return false;
+		case CqFormat_CLUT_P8A8: return false;
 		default: return true;
 	}
 }
@@ -1935,416 +1935,416 @@ CQ_FMT_CONSTEXPR inline bool isHomogenous(Format const fmt) {
 }
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_WidthOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_WidthOfBlock(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0;
-		case TinyImageFormat_R1_UNORM: return 8;
-		case TinyImageFormat_R2_UNORM: return 4;
-		case TinyImageFormat_R4_UNORM: return 2;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return 4;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return 4;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return 4;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return 4;
-		case TinyImageFormat_DXBC2_UNORM: return 4;
-		case TinyImageFormat_DXBC2_SRGB: return 4;
-		case TinyImageFormat_DXBC3_UNORM: return 4;
-		case TinyImageFormat_DXBC3_SRGB: return 4;
-		case TinyImageFormat_DXBC4_UNORM: return 4;
-		case TinyImageFormat_DXBC4_SNORM: return 4;
-		case TinyImageFormat_DXBC5_UNORM: return 4;
-		case TinyImageFormat_DXBC5_SNORM: return 4;
-		case TinyImageFormat_DXBC6H_UFLOAT: return 4;
-		case TinyImageFormat_DXBC6H_SFLOAT: return 4;
-		case TinyImageFormat_DXBC7_UNORM: return 4;
-		case TinyImageFormat_DXBC7_SRGB: return 4;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return 8;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return 8;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return 8;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return 4;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return 8;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return 4;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 4;
-		case TinyImageFormat_ASTC_4x4_UNORM: return 4;
-		case TinyImageFormat_ASTC_4x4_SRGB: return 4;
-		case TinyImageFormat_ASTC_5x4_UNORM: return 5;
-		case TinyImageFormat_ASTC_5x4_SRGB: return 5;
-		case TinyImageFormat_ASTC_5x5_UNORM: return 5;
-		case TinyImageFormat_ASTC_5x5_SRGB: return 5;
-		case TinyImageFormat_ASTC_6x5_UNORM: return 6;
-		case TinyImageFormat_ASTC_6x5_SRGB: return 6;
-		case TinyImageFormat_ASTC_6x6_UNORM: return 6;
-		case TinyImageFormat_ASTC_6x6_SRGB: return 6;
-		case TinyImageFormat_ASTC_8x5_UNORM: return 8;
-		case TinyImageFormat_ASTC_8x5_SRGB: return 8;
-		case TinyImageFormat_ASTC_8x6_UNORM: return 8;
-		case TinyImageFormat_ASTC_8x6_SRGB: return 8;
-		case TinyImageFormat_ASTC_8x8_UNORM: return 8;
-		case TinyImageFormat_ASTC_8x8_SRGB: return 8;
-		case TinyImageFormat_ASTC_10x5_UNORM: return 10;
-		case TinyImageFormat_ASTC_10x5_SRGB: return 10;
-		case TinyImageFormat_ASTC_10x6_UNORM: return 10;
-		case TinyImageFormat_ASTC_10x6_SRGB: return 10;
-		case TinyImageFormat_ASTC_10x8_UNORM: return 10;
-		case TinyImageFormat_ASTC_10x8_SRGB: return 10;
-		case TinyImageFormat_ASTC_10x10_UNORM: return 10;
-		case TinyImageFormat_ASTC_10x10_SRGB: return 10;
-		case TinyImageFormat_ASTC_12x10_UNORM: return 12;
-		case TinyImageFormat_ASTC_12x10_SRGB: return 12;
-		case TinyImageFormat_ASTC_12x12_UNORM: return 12;
-		case TinyImageFormat_ASTC_12x12_SRGB: return 12;
-		case TinyImageFormat_CLUT_P4: return 2;
+		case CqFormat_UNDEFINED: return 0;
+		case CqFormat_R1_UNORM: return 8;
+		case CqFormat_R2_UNORM: return 4;
+		case CqFormat_R4_UNORM: return 2;
+		case CqFormat_DXBC1_RGB_UNORM: return 4;
+		case CqFormat_DXBC1_RGB_SRGB: return 4;
+		case CqFormat_DXBC1_RGBA_UNORM: return 4;
+		case CqFormat_DXBC1_RGBA_SRGB: return 4;
+		case CqFormat_DXBC2_UNORM: return 4;
+		case CqFormat_DXBC2_SRGB: return 4;
+		case CqFormat_DXBC3_UNORM: return 4;
+		case CqFormat_DXBC3_SRGB: return 4;
+		case CqFormat_DXBC4_UNORM: return 4;
+		case CqFormat_DXBC4_SNORM: return 4;
+		case CqFormat_DXBC5_UNORM: return 4;
+		case CqFormat_DXBC5_SNORM: return 4;
+		case CqFormat_DXBC6H_UFLOAT: return 4;
+		case CqFormat_DXBC6H_SFLOAT: return 4;
+		case CqFormat_DXBC7_UNORM: return 4;
+		case CqFormat_DXBC7_SRGB: return 4;
+		case CqFormat_PVRTC1_2BPP_UNORM: return 8;
+		case CqFormat_PVRTC1_4BPP_UNORM: return 4;
+		case CqFormat_PVRTC2_2BPP_UNORM: return 8;
+		case CqFormat_PVRTC2_4BPP_UNORM: return 4;
+		case CqFormat_PVRTC1_2BPP_SRGB: return 8;
+		case CqFormat_PVRTC1_4BPP_SRGB: return 4;
+		case CqFormat_PVRTC2_2BPP_SRGB: return 8;
+		case CqFormat_PVRTC2_4BPP_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return 4;
+		case CqFormat_ETC2_EAC_R11_UNORM: return 4;
+		case CqFormat_ETC2_EAC_R11_SNORM: return 4;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return 4;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return 4;
+		case CqFormat_ASTC_4x4_UNORM: return 4;
+		case CqFormat_ASTC_4x4_SRGB: return 4;
+		case CqFormat_ASTC_5x4_UNORM: return 5;
+		case CqFormat_ASTC_5x4_SRGB: return 5;
+		case CqFormat_ASTC_5x5_UNORM: return 5;
+		case CqFormat_ASTC_5x5_SRGB: return 5;
+		case CqFormat_ASTC_6x5_UNORM: return 6;
+		case CqFormat_ASTC_6x5_SRGB: return 6;
+		case CqFormat_ASTC_6x6_UNORM: return 6;
+		case CqFormat_ASTC_6x6_SRGB: return 6;
+		case CqFormat_ASTC_8x5_UNORM: return 8;
+		case CqFormat_ASTC_8x5_SRGB: return 8;
+		case CqFormat_ASTC_8x6_UNORM: return 8;
+		case CqFormat_ASTC_8x6_SRGB: return 8;
+		case CqFormat_ASTC_8x8_UNORM: return 8;
+		case CqFormat_ASTC_8x8_SRGB: return 8;
+		case CqFormat_ASTC_10x5_UNORM: return 10;
+		case CqFormat_ASTC_10x5_SRGB: return 10;
+		case CqFormat_ASTC_10x6_UNORM: return 10;
+		case CqFormat_ASTC_10x6_SRGB: return 10;
+		case CqFormat_ASTC_10x8_UNORM: return 10;
+		case CqFormat_ASTC_10x8_SRGB: return 10;
+		case CqFormat_ASTC_10x10_UNORM: return 10;
+		case CqFormat_ASTC_10x10_SRGB: return 10;
+		case CqFormat_ASTC_12x10_UNORM: return 12;
+		case CqFormat_ASTC_12x10_SRGB: return 12;
+		case CqFormat_ASTC_12x12_UNORM: return 12;
+		case CqFormat_ASTC_12x12_SRGB: return 12;
+		case CqFormat_CLUT_P4: return 2;
 		default: return 1;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_HeightOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_HeightOfBlock(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return 4;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return 4;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return 4;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return 4;
-		case TinyImageFormat_DXBC2_UNORM: return 4;
-		case TinyImageFormat_DXBC2_SRGB: return 4;
-		case TinyImageFormat_DXBC3_UNORM: return 4;
-		case TinyImageFormat_DXBC3_SRGB: return 4;
-		case TinyImageFormat_DXBC4_UNORM: return 4;
-		case TinyImageFormat_DXBC4_SNORM: return 4;
-		case TinyImageFormat_DXBC5_UNORM: return 4;
-		case TinyImageFormat_DXBC5_SNORM: return 4;
-		case TinyImageFormat_DXBC6H_UFLOAT: return 4;
-		case TinyImageFormat_DXBC6H_SFLOAT: return 4;
-		case TinyImageFormat_DXBC7_UNORM: return 4;
-		case TinyImageFormat_DXBC7_SRGB: return 4;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return 4;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return 4;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return 4;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return 4;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return 4;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return 4;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 4;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 4;
-		case TinyImageFormat_ASTC_4x4_UNORM: return 4;
-		case TinyImageFormat_ASTC_4x4_SRGB: return 4;
-		case TinyImageFormat_ASTC_5x4_UNORM: return 4;
-		case TinyImageFormat_ASTC_5x4_SRGB: return 4;
-		case TinyImageFormat_ASTC_5x5_UNORM: return 5;
-		case TinyImageFormat_ASTC_5x5_SRGB: return 5;
-		case TinyImageFormat_ASTC_6x5_UNORM: return 5;
-		case TinyImageFormat_ASTC_6x5_SRGB: return 5;
-		case TinyImageFormat_ASTC_6x6_UNORM: return 6;
-		case TinyImageFormat_ASTC_6x6_SRGB: return 6;
-		case TinyImageFormat_ASTC_8x5_UNORM: return 5;
-		case TinyImageFormat_ASTC_8x5_SRGB: return 5;
-		case TinyImageFormat_ASTC_8x6_UNORM: return 6;
-		case TinyImageFormat_ASTC_8x6_SRGB: return 6;
-		case TinyImageFormat_ASTC_8x8_UNORM: return 8;
-		case TinyImageFormat_ASTC_8x8_SRGB: return 8;
-		case TinyImageFormat_ASTC_10x5_UNORM: return 5;
-		case TinyImageFormat_ASTC_10x5_SRGB: return 5;
-		case TinyImageFormat_ASTC_10x6_UNORM: return 6;
-		case TinyImageFormat_ASTC_10x6_SRGB: return 6;
-		case TinyImageFormat_ASTC_10x8_UNORM: return 8;
-		case TinyImageFormat_ASTC_10x8_SRGB: return 8;
-		case TinyImageFormat_ASTC_10x10_UNORM: return 10;
-		case TinyImageFormat_ASTC_10x10_SRGB: return 10;
-		case TinyImageFormat_ASTC_12x10_UNORM: return 10;
-		case TinyImageFormat_ASTC_12x10_SRGB: return 10;
-		case TinyImageFormat_ASTC_12x12_UNORM: return 12;
-		case TinyImageFormat_ASTC_12x12_SRGB: return 12;
+		case CqFormat_UNDEFINED: return 0;
+		case CqFormat_DXBC1_RGB_UNORM: return 4;
+		case CqFormat_DXBC1_RGB_SRGB: return 4;
+		case CqFormat_DXBC1_RGBA_UNORM: return 4;
+		case CqFormat_DXBC1_RGBA_SRGB: return 4;
+		case CqFormat_DXBC2_UNORM: return 4;
+		case CqFormat_DXBC2_SRGB: return 4;
+		case CqFormat_DXBC3_UNORM: return 4;
+		case CqFormat_DXBC3_SRGB: return 4;
+		case CqFormat_DXBC4_UNORM: return 4;
+		case CqFormat_DXBC4_SNORM: return 4;
+		case CqFormat_DXBC5_UNORM: return 4;
+		case CqFormat_DXBC5_SNORM: return 4;
+		case CqFormat_DXBC6H_UFLOAT: return 4;
+		case CqFormat_DXBC6H_SFLOAT: return 4;
+		case CqFormat_DXBC7_UNORM: return 4;
+		case CqFormat_DXBC7_SRGB: return 4;
+		case CqFormat_PVRTC1_2BPP_UNORM: return 4;
+		case CqFormat_PVRTC1_4BPP_UNORM: return 4;
+		case CqFormat_PVRTC2_2BPP_UNORM: return 4;
+		case CqFormat_PVRTC2_4BPP_UNORM: return 4;
+		case CqFormat_PVRTC1_2BPP_SRGB: return 4;
+		case CqFormat_PVRTC1_4BPP_SRGB: return 4;
+		case CqFormat_PVRTC2_2BPP_SRGB: return 4;
+		case CqFormat_PVRTC2_4BPP_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return 4;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return 4;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return 4;
+		case CqFormat_ETC2_EAC_R11_UNORM: return 4;
+		case CqFormat_ETC2_EAC_R11_SNORM: return 4;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return 4;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return 4;
+		case CqFormat_ASTC_4x4_UNORM: return 4;
+		case CqFormat_ASTC_4x4_SRGB: return 4;
+		case CqFormat_ASTC_5x4_UNORM: return 4;
+		case CqFormat_ASTC_5x4_SRGB: return 4;
+		case CqFormat_ASTC_5x5_UNORM: return 5;
+		case CqFormat_ASTC_5x5_SRGB: return 5;
+		case CqFormat_ASTC_6x5_UNORM: return 5;
+		case CqFormat_ASTC_6x5_SRGB: return 5;
+		case CqFormat_ASTC_6x6_UNORM: return 6;
+		case CqFormat_ASTC_6x6_SRGB: return 6;
+		case CqFormat_ASTC_8x5_UNORM: return 5;
+		case CqFormat_ASTC_8x5_SRGB: return 5;
+		case CqFormat_ASTC_8x6_UNORM: return 6;
+		case CqFormat_ASTC_8x6_SRGB: return 6;
+		case CqFormat_ASTC_8x8_UNORM: return 8;
+		case CqFormat_ASTC_8x8_SRGB: return 8;
+		case CqFormat_ASTC_10x5_UNORM: return 5;
+		case CqFormat_ASTC_10x5_SRGB: return 5;
+		case CqFormat_ASTC_10x6_UNORM: return 6;
+		case CqFormat_ASTC_10x6_SRGB: return 6;
+		case CqFormat_ASTC_10x8_UNORM: return 8;
+		case CqFormat_ASTC_10x8_SRGB: return 8;
+		case CqFormat_ASTC_10x10_UNORM: return 10;
+		case CqFormat_ASTC_10x10_SRGB: return 10;
+		case CqFormat_ASTC_12x10_UNORM: return 10;
+		case CqFormat_ASTC_12x10_SRGB: return 10;
+		case CqFormat_ASTC_12x12_UNORM: return 12;
+		case CqFormat_ASTC_12x12_SRGB: return 12;
 		default: return 1;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_DepthOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_DepthOfBlock(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0;
+		case CqFormat_UNDEFINED: return 0;
 		default: return 1;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_BitSizeOfBlock(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_BitSizeOfBlock(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0;
-		case TinyImageFormat_R1_UNORM: return 8;
-		case TinyImageFormat_R2_UNORM: return 8;
-		case TinyImageFormat_R4_UNORM: return 8;
-		case TinyImageFormat_R4G4_UNORM: return 8;
-		case TinyImageFormat_G4R4_UNORM: return 8;
-		case TinyImageFormat_A8_UNORM: return 8;
-		case TinyImageFormat_R8_UNORM: return 8;
-		case TinyImageFormat_R8_SNORM: return 8;
-		case TinyImageFormat_R8_UINT: return 8;
-		case TinyImageFormat_R8_SINT: return 8;
-		case TinyImageFormat_R8_SRGB: return 8;
-		case TinyImageFormat_B2G3R3_UNORM: return 8;
-		case TinyImageFormat_R4G4B4A4_UNORM: return 16;
-		case TinyImageFormat_R4G4B4X4_UNORM: return 16;
-		case TinyImageFormat_B4G4R4A4_UNORM: return 16;
-		case TinyImageFormat_B4G4R4X4_UNORM: return 16;
-		case TinyImageFormat_A4R4G4B4_UNORM: return 16;
-		case TinyImageFormat_X4R4G4B4_UNORM: return 16;
-		case TinyImageFormat_A4B4G4R4_UNORM: return 16;
-		case TinyImageFormat_X4B4G4R4_UNORM: return 16;
-		case TinyImageFormat_R5G6B5_UNORM: return 16;
-		case TinyImageFormat_B5G6R5_UNORM: return 16;
-		case TinyImageFormat_R5G5B5A1_UNORM: return 16;
-		case TinyImageFormat_B5G5R5A1_UNORM: return 16;
-		case TinyImageFormat_A1B5G5R5_UNORM: return 16;
-		case TinyImageFormat_A1R5G5B5_UNORM: return 16;
-		case TinyImageFormat_R5G5B5X1_UNORM: return 16;
-		case TinyImageFormat_B5G5R5X1_UNORM: return 16;
-		case TinyImageFormat_X1R5G5B5_UNORM: return 16;
-		case TinyImageFormat_X1B5G5R5_UNORM: return 16;
-		case TinyImageFormat_B2G3R3A8_UNORM: return 16;
-		case TinyImageFormat_R8G8_UNORM: return 16;
-		case TinyImageFormat_R8G8_SNORM: return 16;
-		case TinyImageFormat_G8R8_UNORM: return 16;
-		case TinyImageFormat_G8R8_SNORM: return 16;
-		case TinyImageFormat_R8G8_UINT: return 16;
-		case TinyImageFormat_R8G8_SINT: return 16;
-		case TinyImageFormat_R8G8_SRGB: return 16;
-		case TinyImageFormat_R16_UNORM: return 16;
-		case TinyImageFormat_R16_SNORM: return 16;
-		case TinyImageFormat_R16_UINT: return 16;
-		case TinyImageFormat_R16_SINT: return 16;
-		case TinyImageFormat_R16_SFLOAT: return 16;
-		case TinyImageFormat_R16_SBFLOAT: return 16;
-		case TinyImageFormat_R8G8B8_UNORM: return 24;
-		case TinyImageFormat_R8G8B8_SNORM: return 24;
-		case TinyImageFormat_R8G8B8_UINT: return 24;
-		case TinyImageFormat_R8G8B8_SINT: return 24;
-		case TinyImageFormat_R8G8B8_SRGB: return 24;
-		case TinyImageFormat_B8G8R8_UNORM: return 24;
-		case TinyImageFormat_B8G8R8_SNORM: return 24;
-		case TinyImageFormat_B8G8R8_UINT: return 24;
-		case TinyImageFormat_B8G8R8_SINT: return 24;
-		case TinyImageFormat_B8G8R8_SRGB: return 24;
-		case TinyImageFormat_R16G16B16_UNORM: return 48;
-		case TinyImageFormat_R16G16B16_SNORM: return 48;
-		case TinyImageFormat_R16G16B16_UINT: return 48;
-		case TinyImageFormat_R16G16B16_SINT: return 48;
-		case TinyImageFormat_R16G16B16_SFLOAT: return 48;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return 48;
-		case TinyImageFormat_R16G16B16A16_UNORM: return 64;
-		case TinyImageFormat_R16G16B16A16_SNORM: return 64;
-		case TinyImageFormat_R16G16B16A16_UINT: return 64;
-		case TinyImageFormat_R16G16B16A16_SINT: return 64;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return 64;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return 64;
-		case TinyImageFormat_R32G32_UINT: return 64;
-		case TinyImageFormat_R32G32_SINT: return 64;
-		case TinyImageFormat_R32G32_SFLOAT: return 64;
-		case TinyImageFormat_R32G32B32_UINT: return 96;
-		case TinyImageFormat_R32G32B32_SINT: return 96;
-		case TinyImageFormat_R32G32B32_SFLOAT: return 96;
-		case TinyImageFormat_R32G32B32A32_UINT: return 128;
-		case TinyImageFormat_R32G32B32A32_SINT: return 128;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return 128;
-		case TinyImageFormat_R64_UINT: return 64;
-		case TinyImageFormat_R64_SINT: return 64;
-		case TinyImageFormat_R64_SFLOAT: return 64;
-		case TinyImageFormat_R64G64_UINT: return 128;
-		case TinyImageFormat_R64G64_SINT: return 128;
-		case TinyImageFormat_R64G64_SFLOAT: return 128;
-		case TinyImageFormat_R64G64B64_UINT: return 192;
-		case TinyImageFormat_R64G64B64_SINT: return 192;
-		case TinyImageFormat_R64G64B64_SFLOAT: return 192;
-		case TinyImageFormat_R64G64B64A64_UINT: return 256;
-		case TinyImageFormat_R64G64B64A64_SINT: return 256;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return 256;
-		case TinyImageFormat_D16_UNORM: return 16;
-		case TinyImageFormat_S8_UINT: return 8;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return 64;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return 64;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return 64;
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return 64;
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return 64;
-		case TinyImageFormat_DXBC2_UNORM: return 128;
-		case TinyImageFormat_DXBC2_SRGB: return 128;
-		case TinyImageFormat_DXBC3_UNORM: return 128;
-		case TinyImageFormat_DXBC3_SRGB: return 128;
-		case TinyImageFormat_DXBC4_UNORM: return 64;
-		case TinyImageFormat_DXBC4_SNORM: return 64;
-		case TinyImageFormat_DXBC5_UNORM: return 128;
-		case TinyImageFormat_DXBC5_SNORM: return 128;
-		case TinyImageFormat_DXBC6H_UFLOAT: return 128;
-		case TinyImageFormat_DXBC6H_SFLOAT: return 128;
-		case TinyImageFormat_DXBC7_UNORM: return 128;
-		case TinyImageFormat_DXBC7_SRGB: return 128;
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return 64;
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return 64;
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return 64;
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return 64;
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return 64;
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return 64;
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return 64;
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return 64;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return 64;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return 64;
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return 64;
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return 64;
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return 64;
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return 64;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return 64;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return 64;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 64;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 64;
-		case TinyImageFormat_ASTC_4x4_UNORM: return 128;
-		case TinyImageFormat_ASTC_4x4_SRGB: return 128;
-		case TinyImageFormat_ASTC_5x4_UNORM: return 128;
-		case TinyImageFormat_ASTC_5x4_SRGB: return 128;
-		case TinyImageFormat_ASTC_5x5_UNORM: return 128;
-		case TinyImageFormat_ASTC_5x5_SRGB: return 128;
-		case TinyImageFormat_ASTC_6x5_UNORM: return 128;
-		case TinyImageFormat_ASTC_6x5_SRGB: return 128;
-		case TinyImageFormat_ASTC_6x6_UNORM: return 128;
-		case TinyImageFormat_ASTC_6x6_SRGB: return 128;
-		case TinyImageFormat_ASTC_8x5_UNORM: return 128;
-		case TinyImageFormat_ASTC_8x5_SRGB: return 128;
-		case TinyImageFormat_ASTC_8x6_UNORM: return 128;
-		case TinyImageFormat_ASTC_8x6_SRGB: return 128;
-		case TinyImageFormat_ASTC_8x8_UNORM: return 128;
-		case TinyImageFormat_ASTC_8x8_SRGB: return 128;
-		case TinyImageFormat_ASTC_10x5_UNORM: return 128;
-		case TinyImageFormat_ASTC_10x5_SRGB: return 128;
-		case TinyImageFormat_ASTC_10x6_UNORM: return 128;
-		case TinyImageFormat_ASTC_10x6_SRGB: return 128;
-		case TinyImageFormat_ASTC_10x8_UNORM: return 128;
-		case TinyImageFormat_ASTC_10x8_SRGB: return 128;
-		case TinyImageFormat_ASTC_10x10_UNORM: return 128;
-		case TinyImageFormat_ASTC_10x10_SRGB: return 128;
-		case TinyImageFormat_ASTC_12x10_UNORM: return 128;
-		case TinyImageFormat_ASTC_12x10_SRGB: return 128;
-		case TinyImageFormat_ASTC_12x12_UNORM: return 128;
-		case TinyImageFormat_ASTC_12x12_SRGB: return 128;
-		case TinyImageFormat_CLUT_P4: return 8;
-		case TinyImageFormat_CLUT_P4A4: return 8;
-		case TinyImageFormat_CLUT_P8: return 8;
-		case TinyImageFormat_CLUT_P8A8: return 16;
+		case CqFormat_UNDEFINED: return 0;
+		case CqFormat_R1_UNORM: return 8;
+		case CqFormat_R2_UNORM: return 8;
+		case CqFormat_R4_UNORM: return 8;
+		case CqFormat_R4G4_UNORM: return 8;
+		case CqFormat_G4R4_UNORM: return 8;
+		case CqFormat_A8_UNORM: return 8;
+		case CqFormat_R8_UNORM: return 8;
+		case CqFormat_R8_SNORM: return 8;
+		case CqFormat_R8_UINT: return 8;
+		case CqFormat_R8_SINT: return 8;
+		case CqFormat_R8_SRGB: return 8;
+		case CqFormat_B2G3R3_UNORM: return 8;
+		case CqFormat_R4G4B4A4_UNORM: return 16;
+		case CqFormat_R4G4B4X4_UNORM: return 16;
+		case CqFormat_B4G4R4A4_UNORM: return 16;
+		case CqFormat_B4G4R4X4_UNORM: return 16;
+		case CqFormat_A4R4G4B4_UNORM: return 16;
+		case CqFormat_X4R4G4B4_UNORM: return 16;
+		case CqFormat_A4B4G4R4_UNORM: return 16;
+		case CqFormat_X4B4G4R4_UNORM: return 16;
+		case CqFormat_R5G6B5_UNORM: return 16;
+		case CqFormat_B5G6R5_UNORM: return 16;
+		case CqFormat_R5G5B5A1_UNORM: return 16;
+		case CqFormat_B5G5R5A1_UNORM: return 16;
+		case CqFormat_A1B5G5R5_UNORM: return 16;
+		case CqFormat_A1R5G5B5_UNORM: return 16;
+		case CqFormat_R5G5B5X1_UNORM: return 16;
+		case CqFormat_B5G5R5X1_UNORM: return 16;
+		case CqFormat_X1R5G5B5_UNORM: return 16;
+		case CqFormat_X1B5G5R5_UNORM: return 16;
+		case CqFormat_B2G3R3A8_UNORM: return 16;
+		case CqFormat_R8G8_UNORM: return 16;
+		case CqFormat_R8G8_SNORM: return 16;
+		case CqFormat_G8R8_UNORM: return 16;
+		case CqFormat_G8R8_SNORM: return 16;
+		case CqFormat_R8G8_UINT: return 16;
+		case CqFormat_R8G8_SINT: return 16;
+		case CqFormat_R8G8_SRGB: return 16;
+		case CqFormat_R16_UNORM: return 16;
+		case CqFormat_R16_SNORM: return 16;
+		case CqFormat_R16_UINT: return 16;
+		case CqFormat_R16_SINT: return 16;
+		case CqFormat_R16_SFLOAT: return 16;
+		case CqFormat_R16_SBFLOAT: return 16;
+		case CqFormat_R8G8B8_UNORM: return 24;
+		case CqFormat_R8G8B8_SNORM: return 24;
+		case CqFormat_R8G8B8_UINT: return 24;
+		case CqFormat_R8G8B8_SINT: return 24;
+		case CqFormat_R8G8B8_SRGB: return 24;
+		case CqFormat_B8G8R8_UNORM: return 24;
+		case CqFormat_B8G8R8_SNORM: return 24;
+		case CqFormat_B8G8R8_UINT: return 24;
+		case CqFormat_B8G8R8_SINT: return 24;
+		case CqFormat_B8G8R8_SRGB: return 24;
+		case CqFormat_R16G16B16_UNORM: return 48;
+		case CqFormat_R16G16B16_SNORM: return 48;
+		case CqFormat_R16G16B16_UINT: return 48;
+		case CqFormat_R16G16B16_SINT: return 48;
+		case CqFormat_R16G16B16_SFLOAT: return 48;
+		case CqFormat_R16G16B16_SBFLOAT: return 48;
+		case CqFormat_R16G16B16A16_UNORM: return 64;
+		case CqFormat_R16G16B16A16_SNORM: return 64;
+		case CqFormat_R16G16B16A16_UINT: return 64;
+		case CqFormat_R16G16B16A16_SINT: return 64;
+		case CqFormat_R16G16B16A16_SFLOAT: return 64;
+		case CqFormat_R16G16B16A16_SBFLOAT: return 64;
+		case CqFormat_R32G32_UINT: return 64;
+		case CqFormat_R32G32_SINT: return 64;
+		case CqFormat_R32G32_SFLOAT: return 64;
+		case CqFormat_R32G32B32_UINT: return 96;
+		case CqFormat_R32G32B32_SINT: return 96;
+		case CqFormat_R32G32B32_SFLOAT: return 96;
+		case CqFormat_R32G32B32A32_UINT: return 128;
+		case CqFormat_R32G32B32A32_SINT: return 128;
+		case CqFormat_R32G32B32A32_SFLOAT: return 128;
+		case CqFormat_R64_UINT: return 64;
+		case CqFormat_R64_SINT: return 64;
+		case CqFormat_R64_SFLOAT: return 64;
+		case CqFormat_R64G64_UINT: return 128;
+		case CqFormat_R64G64_SINT: return 128;
+		case CqFormat_R64G64_SFLOAT: return 128;
+		case CqFormat_R64G64B64_UINT: return 192;
+		case CqFormat_R64G64B64_SINT: return 192;
+		case CqFormat_R64G64B64_SFLOAT: return 192;
+		case CqFormat_R64G64B64A64_UINT: return 256;
+		case CqFormat_R64G64B64A64_SINT: return 256;
+		case CqFormat_R64G64B64A64_SFLOAT: return 256;
+		case CqFormat_D16_UNORM: return 16;
+		case CqFormat_S8_UINT: return 8;
+		case CqFormat_D32_SFLOAT_S8_UINT: return 64;
+		case CqFormat_DXBC1_RGB_UNORM: return 64;
+		case CqFormat_DXBC1_RGB_SRGB: return 64;
+		case CqFormat_DXBC1_RGBA_UNORM: return 64;
+		case CqFormat_DXBC1_RGBA_SRGB: return 64;
+		case CqFormat_DXBC2_UNORM: return 128;
+		case CqFormat_DXBC2_SRGB: return 128;
+		case CqFormat_DXBC3_UNORM: return 128;
+		case CqFormat_DXBC3_SRGB: return 128;
+		case CqFormat_DXBC4_UNORM: return 64;
+		case CqFormat_DXBC4_SNORM: return 64;
+		case CqFormat_DXBC5_UNORM: return 128;
+		case CqFormat_DXBC5_SNORM: return 128;
+		case CqFormat_DXBC6H_UFLOAT: return 128;
+		case CqFormat_DXBC6H_SFLOAT: return 128;
+		case CqFormat_DXBC7_UNORM: return 128;
+		case CqFormat_DXBC7_SRGB: return 128;
+		case CqFormat_PVRTC1_2BPP_UNORM: return 64;
+		case CqFormat_PVRTC1_4BPP_UNORM: return 64;
+		case CqFormat_PVRTC2_2BPP_UNORM: return 64;
+		case CqFormat_PVRTC2_4BPP_UNORM: return 64;
+		case CqFormat_PVRTC1_2BPP_SRGB: return 64;
+		case CqFormat_PVRTC1_4BPP_SRGB: return 64;
+		case CqFormat_PVRTC2_2BPP_SRGB: return 64;
+		case CqFormat_PVRTC2_4BPP_SRGB: return 64;
+		case CqFormat_ETC2_R8G8B8_UNORM: return 64;
+		case CqFormat_ETC2_R8G8B8_SRGB: return 64;
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return 64;
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return 64;
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return 64;
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return 64;
+		case CqFormat_ETC2_EAC_R11_UNORM: return 64;
+		case CqFormat_ETC2_EAC_R11_SNORM: return 64;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return 64;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return 64;
+		case CqFormat_ASTC_4x4_UNORM: return 128;
+		case CqFormat_ASTC_4x4_SRGB: return 128;
+		case CqFormat_ASTC_5x4_UNORM: return 128;
+		case CqFormat_ASTC_5x4_SRGB: return 128;
+		case CqFormat_ASTC_5x5_UNORM: return 128;
+		case CqFormat_ASTC_5x5_SRGB: return 128;
+		case CqFormat_ASTC_6x5_UNORM: return 128;
+		case CqFormat_ASTC_6x5_SRGB: return 128;
+		case CqFormat_ASTC_6x6_UNORM: return 128;
+		case CqFormat_ASTC_6x6_SRGB: return 128;
+		case CqFormat_ASTC_8x5_UNORM: return 128;
+		case CqFormat_ASTC_8x5_SRGB: return 128;
+		case CqFormat_ASTC_8x6_UNORM: return 128;
+		case CqFormat_ASTC_8x6_SRGB: return 128;
+		case CqFormat_ASTC_8x8_UNORM: return 128;
+		case CqFormat_ASTC_8x8_SRGB: return 128;
+		case CqFormat_ASTC_10x5_UNORM: return 128;
+		case CqFormat_ASTC_10x5_SRGB: return 128;
+		case CqFormat_ASTC_10x6_UNORM: return 128;
+		case CqFormat_ASTC_10x6_SRGB: return 128;
+		case CqFormat_ASTC_10x8_UNORM: return 128;
+		case CqFormat_ASTC_10x8_SRGB: return 128;
+		case CqFormat_ASTC_10x10_UNORM: return 128;
+		case CqFormat_ASTC_10x10_SRGB: return 128;
+		case CqFormat_ASTC_12x10_UNORM: return 128;
+		case CqFormat_ASTC_12x10_SRGB: return 128;
+		case CqFormat_ASTC_12x12_UNORM: return 128;
+		case CqFormat_ASTC_12x12_SRGB: return 128;
+		case CqFormat_CLUT_P4: return 8;
+		case CqFormat_CLUT_P4A4: return 8;
+		case CqFormat_CLUT_P8: return 8;
+		case CqFormat_CLUT_P8A8: return 16;
 		default: return 32;
 	}
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelCount(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_ChannelCount(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return 0;
-		case TinyImageFormat_R1_UNORM: return 1;
-		case TinyImageFormat_R2_UNORM: return 1;
-		case TinyImageFormat_R4_UNORM: return 1;
-		case TinyImageFormat_R4G4_UNORM: return 2;
-		case TinyImageFormat_G4R4_UNORM: return 2;
-		case TinyImageFormat_A8_UNORM: return 1;
-		case TinyImageFormat_R8_UNORM: return 1;
-		case TinyImageFormat_R8_SNORM: return 1;
-		case TinyImageFormat_R8_UINT: return 1;
-		case TinyImageFormat_R8_SINT: return 1;
-		case TinyImageFormat_R8_SRGB: return 1;
-		case TinyImageFormat_B2G3R3_UNORM: return 3;
-		case TinyImageFormat_R5G6B5_UNORM: return 3;
-		case TinyImageFormat_B5G6R5_UNORM: return 3;
-		case TinyImageFormat_R8G8_UNORM: return 2;
-		case TinyImageFormat_R8G8_SNORM: return 2;
-		case TinyImageFormat_G8R8_UNORM: return 2;
-		case TinyImageFormat_G8R8_SNORM: return 2;
-		case TinyImageFormat_R8G8_UINT: return 2;
-		case TinyImageFormat_R8G8_SINT: return 2;
-		case TinyImageFormat_R8G8_SRGB: return 2;
-		case TinyImageFormat_R16_UNORM: return 1;
-		case TinyImageFormat_R16_SNORM: return 1;
-		case TinyImageFormat_R16_UINT: return 1;
-		case TinyImageFormat_R16_SINT: return 1;
-		case TinyImageFormat_R16_SFLOAT: return 1;
-		case TinyImageFormat_R16_SBFLOAT: return 1;
-		case TinyImageFormat_R8G8B8_UNORM: return 3;
-		case TinyImageFormat_R8G8B8_SNORM: return 3;
-		case TinyImageFormat_R8G8B8_UINT: return 3;
-		case TinyImageFormat_R8G8B8_SINT: return 3;
-		case TinyImageFormat_R8G8B8_SRGB: return 3;
-		case TinyImageFormat_B8G8R8_UNORM: return 3;
-		case TinyImageFormat_B8G8R8_SNORM: return 3;
-		case TinyImageFormat_B8G8R8_UINT: return 3;
-		case TinyImageFormat_B8G8R8_SINT: return 3;
-		case TinyImageFormat_B8G8R8_SRGB: return 3;
-		case TinyImageFormat_R16G16_UNORM: return 2;
-		case TinyImageFormat_G16R16_UNORM: return 2;
-		case TinyImageFormat_R16G16_SNORM: return 2;
-		case TinyImageFormat_G16R16_SNORM: return 2;
-		case TinyImageFormat_R16G16_UINT: return 2;
-		case TinyImageFormat_R16G16_SINT: return 2;
-		case TinyImageFormat_R16G16_SFLOAT: return 2;
-		case TinyImageFormat_R16G16_SBFLOAT: return 2;
-		case TinyImageFormat_R32_UINT: return 1;
-		case TinyImageFormat_R32_SINT: return 1;
-		case TinyImageFormat_R32_SFLOAT: return 1;
-		case TinyImageFormat_B10G11R11_UFLOAT: return 3;
-		case TinyImageFormat_R16G16B16_UNORM: return 3;
-		case TinyImageFormat_R16G16B16_SNORM: return 3;
-		case TinyImageFormat_R16G16B16_UINT: return 3;
-		case TinyImageFormat_R16G16B16_SINT: return 3;
-		case TinyImageFormat_R16G16B16_SFLOAT: return 3;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return 3;
-		case TinyImageFormat_R32G32_UINT: return 2;
-		case TinyImageFormat_R32G32_SINT: return 2;
-		case TinyImageFormat_R32G32_SFLOAT: return 2;
-		case TinyImageFormat_R32G32B32_UINT: return 3;
-		case TinyImageFormat_R32G32B32_SINT: return 3;
-		case TinyImageFormat_R32G32B32_SFLOAT: return 3;
-		case TinyImageFormat_R64_UINT: return 1;
-		case TinyImageFormat_R64_SINT: return 1;
-		case TinyImageFormat_R64_SFLOAT: return 1;
-		case TinyImageFormat_R64G64_UINT: return 2;
-		case TinyImageFormat_R64G64_SINT: return 2;
-		case TinyImageFormat_R64G64_SFLOAT: return 2;
-		case TinyImageFormat_R64G64B64_UINT: return 3;
-		case TinyImageFormat_R64G64B64_SINT: return 3;
-		case TinyImageFormat_R64G64B64_SFLOAT: return 3;
-		case TinyImageFormat_D16_UNORM: return 1;
-		case TinyImageFormat_X8_D24_UNORM: return 2;
-		case TinyImageFormat_D32_SFLOAT: return 1;
-		case TinyImageFormat_S8_UINT: return 1;
-		case TinyImageFormat_D16_UNORM_S8_UINT: return 2;
-		case TinyImageFormat_D24_UNORM_S8_UINT: return 2;
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return 2;
-		case TinyImageFormat_DXBC1_RGB_UNORM: return 3;
-		case TinyImageFormat_DXBC1_RGB_SRGB: return 3;
-		case TinyImageFormat_DXBC4_UNORM: return 1;
-		case TinyImageFormat_DXBC4_SNORM: return 1;
-		case TinyImageFormat_DXBC5_UNORM: return 2;
-		case TinyImageFormat_DXBC5_SNORM: return 2;
-		case TinyImageFormat_DXBC6H_UFLOAT: return 3;
-		case TinyImageFormat_DXBC6H_SFLOAT: return 3;
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return 3;
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return 3;
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return 1;
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return 1;
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 2;
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 2;
-		case TinyImageFormat_CLUT_P4: return 1;
-		case TinyImageFormat_CLUT_P4A4: return 2;
-		case TinyImageFormat_CLUT_P8: return 1;
-		case TinyImageFormat_CLUT_P8A8: return 2;
+		case CqFormat_UNDEFINED: return 0;
+		case CqFormat_R1_UNORM: return 1;
+		case CqFormat_R2_UNORM: return 1;
+		case CqFormat_R4_UNORM: return 1;
+		case CqFormat_R4G4_UNORM: return 2;
+		case CqFormat_G4R4_UNORM: return 2;
+		case CqFormat_A8_UNORM: return 1;
+		case CqFormat_R8_UNORM: return 1;
+		case CqFormat_R8_SNORM: return 1;
+		case CqFormat_R8_UINT: return 1;
+		case CqFormat_R8_SINT: return 1;
+		case CqFormat_R8_SRGB: return 1;
+		case CqFormat_B2G3R3_UNORM: return 3;
+		case CqFormat_R5G6B5_UNORM: return 3;
+		case CqFormat_B5G6R5_UNORM: return 3;
+		case CqFormat_R8G8_UNORM: return 2;
+		case CqFormat_R8G8_SNORM: return 2;
+		case CqFormat_G8R8_UNORM: return 2;
+		case CqFormat_G8R8_SNORM: return 2;
+		case CqFormat_R8G8_UINT: return 2;
+		case CqFormat_R8G8_SINT: return 2;
+		case CqFormat_R8G8_SRGB: return 2;
+		case CqFormat_R16_UNORM: return 1;
+		case CqFormat_R16_SNORM: return 1;
+		case CqFormat_R16_UINT: return 1;
+		case CqFormat_R16_SINT: return 1;
+		case CqFormat_R16_SFLOAT: return 1;
+		case CqFormat_R16_SBFLOAT: return 1;
+		case CqFormat_R8G8B8_UNORM: return 3;
+		case CqFormat_R8G8B8_SNORM: return 3;
+		case CqFormat_R8G8B8_UINT: return 3;
+		case CqFormat_R8G8B8_SINT: return 3;
+		case CqFormat_R8G8B8_SRGB: return 3;
+		case CqFormat_B8G8R8_UNORM: return 3;
+		case CqFormat_B8G8R8_SNORM: return 3;
+		case CqFormat_B8G8R8_UINT: return 3;
+		case CqFormat_B8G8R8_SINT: return 3;
+		case CqFormat_B8G8R8_SRGB: return 3;
+		case CqFormat_R16G16_UNORM: return 2;
+		case CqFormat_G16R16_UNORM: return 2;
+		case CqFormat_R16G16_SNORM: return 2;
+		case CqFormat_G16R16_SNORM: return 2;
+		case CqFormat_R16G16_UINT: return 2;
+		case CqFormat_R16G16_SINT: return 2;
+		case CqFormat_R16G16_SFLOAT: return 2;
+		case CqFormat_R16G16_SBFLOAT: return 2;
+		case CqFormat_R32_UINT: return 1;
+		case CqFormat_R32_SINT: return 1;
+		case CqFormat_R32_SFLOAT: return 1;
+		case CqFormat_B10G11R11_UFLOAT: return 3;
+		case CqFormat_R16G16B16_UNORM: return 3;
+		case CqFormat_R16G16B16_SNORM: return 3;
+		case CqFormat_R16G16B16_UINT: return 3;
+		case CqFormat_R16G16B16_SINT: return 3;
+		case CqFormat_R16G16B16_SFLOAT: return 3;
+		case CqFormat_R16G16B16_SBFLOAT: return 3;
+		case CqFormat_R32G32_UINT: return 2;
+		case CqFormat_R32G32_SINT: return 2;
+		case CqFormat_R32G32_SFLOAT: return 2;
+		case CqFormat_R32G32B32_UINT: return 3;
+		case CqFormat_R32G32B32_SINT: return 3;
+		case CqFormat_R32G32B32_SFLOAT: return 3;
+		case CqFormat_R64_UINT: return 1;
+		case CqFormat_R64_SINT: return 1;
+		case CqFormat_R64_SFLOAT: return 1;
+		case CqFormat_R64G64_UINT: return 2;
+		case CqFormat_R64G64_SINT: return 2;
+		case CqFormat_R64G64_SFLOAT: return 2;
+		case CqFormat_R64G64B64_UINT: return 3;
+		case CqFormat_R64G64B64_SINT: return 3;
+		case CqFormat_R64G64B64_SFLOAT: return 3;
+		case CqFormat_D16_UNORM: return 1;
+		case CqFormat_X8_D24_UNORM: return 2;
+		case CqFormat_D32_SFLOAT: return 1;
+		case CqFormat_S8_UINT: return 1;
+		case CqFormat_D16_UNORM_S8_UINT: return 2;
+		case CqFormat_D24_UNORM_S8_UINT: return 2;
+		case CqFormat_D32_SFLOAT_S8_UINT: return 2;
+		case CqFormat_DXBC1_RGB_UNORM: return 3;
+		case CqFormat_DXBC1_RGB_SRGB: return 3;
+		case CqFormat_DXBC4_UNORM: return 1;
+		case CqFormat_DXBC4_SNORM: return 1;
+		case CqFormat_DXBC5_UNORM: return 2;
+		case CqFormat_DXBC5_SNORM: return 2;
+		case CqFormat_DXBC6H_UFLOAT: return 3;
+		case CqFormat_DXBC6H_SFLOAT: return 3;
+		case CqFormat_ETC2_R8G8B8_UNORM: return 3;
+		case CqFormat_ETC2_R8G8B8_SRGB: return 3;
+		case CqFormat_ETC2_EAC_R11_UNORM: return 1;
+		case CqFormat_ETC2_EAC_R11_SNORM: return 1;
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return 2;
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return 2;
+		case CqFormat_CLUT_P4: return 1;
+		case CqFormat_CLUT_P4A4: return 2;
+		case CqFormat_CLUT_P8: return 1;
+		case CqFormat_CLUT_P8A8: return 2;
 		default: return 4;
 	}
 }
@@ -2773,536 +2773,536 @@ CQ_FMT_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
 }
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidthAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
-	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_ChannelBitWidthAtPhysical(CqFormat const fmt, uint32_t const channel) {
+	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return 0;
-			case TinyImageFormat_R1_UNORM: return 1;
-			case TinyImageFormat_R2_UNORM: return 2;
-			case TinyImageFormat_R4_UNORM: return 4;
-			case TinyImageFormat_R4G4_UNORM: return 4;
-			case TinyImageFormat_G4R4_UNORM: return 4;
-			case TinyImageFormat_B2G3R3_UNORM: return 2;
-			case TinyImageFormat_R4G4B4A4_UNORM: return 4;
-			case TinyImageFormat_R4G4B4X4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4A4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4X4_UNORM: return 4;
-			case TinyImageFormat_A4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_X4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_A4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_X4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_R5G6B5_UNORM: return 5;
-			case TinyImageFormat_B5G6R5_UNORM: return 5;
-			case TinyImageFormat_R5G5B5A1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5A1_UNORM: return 5;
-			case TinyImageFormat_A1B5G5R5_UNORM: return 1;
-			case TinyImageFormat_A1R5G5B5_UNORM: return 1;
-			case TinyImageFormat_R5G5B5X1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5X1_UNORM: return 5;
-			case TinyImageFormat_X1R5G5B5_UNORM: return 1;
-			case TinyImageFormat_X1B5G5R5_UNORM: return 1;
-			case TinyImageFormat_B2G3R3A8_UNORM: return 2;
-			case TinyImageFormat_R16_UNORM: return 16;
-			case TinyImageFormat_R16_SNORM: return 16;
-			case TinyImageFormat_R16_UINT: return 16;
-			case TinyImageFormat_R16_SINT: return 16;
-			case TinyImageFormat_R16_SFLOAT: return 16;
-			case TinyImageFormat_R16_SBFLOAT: return 16;
-			case TinyImageFormat_R16G16_UNORM: return 16;
-			case TinyImageFormat_G16R16_UNORM: return 16;
-			case TinyImageFormat_R16G16_SNORM: return 16;
-			case TinyImageFormat_G16R16_SNORM: return 16;
-			case TinyImageFormat_R16G16_UINT: return 16;
-			case TinyImageFormat_R16G16_SINT: return 16;
-			case TinyImageFormat_R16G16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16_SBFLOAT: return 16;
-			case TinyImageFormat_R32_UINT: return 32;
-			case TinyImageFormat_R32_SINT: return 32;
-			case TinyImageFormat_R32_SFLOAT: return 32;
-			case TinyImageFormat_A2R10G10B10_UNORM: return 2;
-			case TinyImageFormat_A2R10G10B10_UINT: return 2;
-			case TinyImageFormat_A2R10G10B10_SNORM: return 2;
-			case TinyImageFormat_A2R10G10B10_SINT: return 2;
-			case TinyImageFormat_A2B10G10R10_UNORM: return 2;
-			case TinyImageFormat_A2B10G10R10_UINT: return 2;
-			case TinyImageFormat_A2B10G10R10_SNORM: return 2;
-			case TinyImageFormat_A2B10G10R10_SINT: return 2;
-			case TinyImageFormat_R10G10B10A2_UNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_UINT: return 10;
-			case TinyImageFormat_R10G10B10A2_SNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_SINT: return 10;
-			case TinyImageFormat_B10G10R10A2_UNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_UINT: return 10;
-			case TinyImageFormat_B10G10R10A2_SNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_SINT: return 10;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 10;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 5;
-			case TinyImageFormat_R16G16B16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16_UINT: return 16;
-			case TinyImageFormat_R16G16B16_SINT: return 16;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_UINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 16;
-			case TinyImageFormat_R32G32_UINT: return 32;
-			case TinyImageFormat_R32G32_SINT: return 32;
-			case TinyImageFormat_R32G32_SFLOAT: return 32;
-			case TinyImageFormat_R32G32B32_UINT: return 32;
-			case TinyImageFormat_R32G32B32_SINT: return 32;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 32;
-			case TinyImageFormat_R32G32B32A32_UINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 32;
-			case TinyImageFormat_R64_UINT: return 64;
-			case TinyImageFormat_R64_SINT: return 64;
-			case TinyImageFormat_R64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64_UINT: return 64;
-			case TinyImageFormat_R64G64_SINT: return 64;
-			case TinyImageFormat_R64G64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64B64_UINT: return 64;
-			case TinyImageFormat_R64G64B64_SINT: return 64;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64B64A64_UINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 64;
-			case TinyImageFormat_D16_UNORM: return 16;
-			case TinyImageFormat_D32_SFLOAT: return 32;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 16;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 24;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 32;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return 5;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return 5;
-			case TinyImageFormat_DXBC1_RGBA_UNORM: return 5;
-			case TinyImageFormat_DXBC1_RGBA_SRGB: return 5;
-			case TinyImageFormat_DXBC2_UNORM: return 5;
-			case TinyImageFormat_DXBC2_SRGB: return 5;
-			case TinyImageFormat_DXBC3_UNORM: return 5;
-			case TinyImageFormat_DXBC3_SRGB: return 5;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 16;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 16;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 11;
-			case TinyImageFormat_CLUT_P4: return 4;
-			case TinyImageFormat_CLUT_P4A4: return 4;
+			case CqFormat_UNDEFINED: return 0;
+			case CqFormat_R1_UNORM: return 1;
+			case CqFormat_R2_UNORM: return 2;
+			case CqFormat_R4_UNORM: return 4;
+			case CqFormat_R4G4_UNORM: return 4;
+			case CqFormat_G4R4_UNORM: return 4;
+			case CqFormat_B2G3R3_UNORM: return 2;
+			case CqFormat_R4G4B4A4_UNORM: return 4;
+			case CqFormat_R4G4B4X4_UNORM: return 4;
+			case CqFormat_B4G4R4A4_UNORM: return 4;
+			case CqFormat_B4G4R4X4_UNORM: return 4;
+			case CqFormat_A4R4G4B4_UNORM: return 4;
+			case CqFormat_X4R4G4B4_UNORM: return 4;
+			case CqFormat_A4B4G4R4_UNORM: return 4;
+			case CqFormat_X4B4G4R4_UNORM: return 4;
+			case CqFormat_R5G6B5_UNORM: return 5;
+			case CqFormat_B5G6R5_UNORM: return 5;
+			case CqFormat_R5G5B5A1_UNORM: return 5;
+			case CqFormat_B5G5R5A1_UNORM: return 5;
+			case CqFormat_A1B5G5R5_UNORM: return 1;
+			case CqFormat_A1R5G5B5_UNORM: return 1;
+			case CqFormat_R5G5B5X1_UNORM: return 5;
+			case CqFormat_B5G5R5X1_UNORM: return 5;
+			case CqFormat_X1R5G5B5_UNORM: return 1;
+			case CqFormat_X1B5G5R5_UNORM: return 1;
+			case CqFormat_B2G3R3A8_UNORM: return 2;
+			case CqFormat_R16_UNORM: return 16;
+			case CqFormat_R16_SNORM: return 16;
+			case CqFormat_R16_UINT: return 16;
+			case CqFormat_R16_SINT: return 16;
+			case CqFormat_R16_SFLOAT: return 16;
+			case CqFormat_R16_SBFLOAT: return 16;
+			case CqFormat_R16G16_UNORM: return 16;
+			case CqFormat_G16R16_UNORM: return 16;
+			case CqFormat_R16G16_SNORM: return 16;
+			case CqFormat_G16R16_SNORM: return 16;
+			case CqFormat_R16G16_UINT: return 16;
+			case CqFormat_R16G16_SINT: return 16;
+			case CqFormat_R16G16_SFLOAT: return 16;
+			case CqFormat_R16G16_SBFLOAT: return 16;
+			case CqFormat_R32_UINT: return 32;
+			case CqFormat_R32_SINT: return 32;
+			case CqFormat_R32_SFLOAT: return 32;
+			case CqFormat_A2R10G10B10_UNORM: return 2;
+			case CqFormat_A2R10G10B10_UINT: return 2;
+			case CqFormat_A2R10G10B10_SNORM: return 2;
+			case CqFormat_A2R10G10B10_SINT: return 2;
+			case CqFormat_A2B10G10R10_UNORM: return 2;
+			case CqFormat_A2B10G10R10_UINT: return 2;
+			case CqFormat_A2B10G10R10_SNORM: return 2;
+			case CqFormat_A2B10G10R10_SINT: return 2;
+			case CqFormat_R10G10B10A2_UNORM: return 10;
+			case CqFormat_R10G10B10A2_UINT: return 10;
+			case CqFormat_R10G10B10A2_SNORM: return 10;
+			case CqFormat_R10G10B10A2_SINT: return 10;
+			case CqFormat_B10G10R10A2_UNORM: return 10;
+			case CqFormat_B10G10R10A2_UINT: return 10;
+			case CqFormat_B10G10R10A2_SNORM: return 10;
+			case CqFormat_B10G10R10A2_SINT: return 10;
+			case CqFormat_B10G11R11_UFLOAT: return 10;
+			case CqFormat_E5B9G9R9_UFLOAT: return 5;
+			case CqFormat_R16G16B16_UNORM: return 16;
+			case CqFormat_R16G16B16_SNORM: return 16;
+			case CqFormat_R16G16B16_UINT: return 16;
+			case CqFormat_R16G16B16_SINT: return 16;
+			case CqFormat_R16G16B16_SFLOAT: return 16;
+			case CqFormat_R16G16B16_SBFLOAT: return 16;
+			case CqFormat_R16G16B16A16_UNORM: return 16;
+			case CqFormat_R16G16B16A16_SNORM: return 16;
+			case CqFormat_R16G16B16A16_UINT: return 16;
+			case CqFormat_R16G16B16A16_SINT: return 16;
+			case CqFormat_R16G16B16A16_SFLOAT: return 16;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 16;
+			case CqFormat_R32G32_UINT: return 32;
+			case CqFormat_R32G32_SINT: return 32;
+			case CqFormat_R32G32_SFLOAT: return 32;
+			case CqFormat_R32G32B32_UINT: return 32;
+			case CqFormat_R32G32B32_SINT: return 32;
+			case CqFormat_R32G32B32_SFLOAT: return 32;
+			case CqFormat_R32G32B32A32_UINT: return 32;
+			case CqFormat_R32G32B32A32_SINT: return 32;
+			case CqFormat_R32G32B32A32_SFLOAT: return 32;
+			case CqFormat_R64_UINT: return 64;
+			case CqFormat_R64_SINT: return 64;
+			case CqFormat_R64_SFLOAT: return 64;
+			case CqFormat_R64G64_UINT: return 64;
+			case CqFormat_R64G64_SINT: return 64;
+			case CqFormat_R64G64_SFLOAT: return 64;
+			case CqFormat_R64G64B64_UINT: return 64;
+			case CqFormat_R64G64B64_SINT: return 64;
+			case CqFormat_R64G64B64_SFLOAT: return 64;
+			case CqFormat_R64G64B64A64_UINT: return 64;
+			case CqFormat_R64G64B64A64_SINT: return 64;
+			case CqFormat_R64G64B64A64_SFLOAT: return 64;
+			case CqFormat_D16_UNORM: return 16;
+			case CqFormat_D32_SFLOAT: return 32;
+			case CqFormat_D16_UNORM_S8_UINT: return 16;
+			case CqFormat_D24_UNORM_S8_UINT: return 24;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 32;
+			case CqFormat_DXBC1_RGB_UNORM: return 5;
+			case CqFormat_DXBC1_RGB_SRGB: return 5;
+			case CqFormat_DXBC1_RGBA_UNORM: return 5;
+			case CqFormat_DXBC1_RGBA_SRGB: return 5;
+			case CqFormat_DXBC2_UNORM: return 5;
+			case CqFormat_DXBC2_SRGB: return 5;
+			case CqFormat_DXBC3_UNORM: return 5;
+			case CqFormat_DXBC3_SRGB: return 5;
+			case CqFormat_DXBC6H_UFLOAT: return 16;
+			case CqFormat_DXBC6H_SFLOAT: return 16;
+			case CqFormat_ETC2_EAC_R11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11_SNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return 11;
+			case CqFormat_CLUT_P4: return 4;
+			case CqFormat_CLUT_P4A4: return 4;
 			default: return 8;
 		}
 	}	else if(channel == 1) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0;
-			case TinyImageFormat_R1_UNORM: return 0;
-			case TinyImageFormat_R2_UNORM: return 0;
-			case TinyImageFormat_R4_UNORM: return 0;
-			case TinyImageFormat_R4G4_UNORM: return 4;
-			case TinyImageFormat_G4R4_UNORM: return 4;
-			case TinyImageFormat_A8_UNORM: return 0;
-			case TinyImageFormat_R8_UNORM: return 0;
-			case TinyImageFormat_R8_SNORM: return 0;
-			case TinyImageFormat_R8_UINT: return 0;
-			case TinyImageFormat_R8_SINT: return 0;
-			case TinyImageFormat_R8_SRGB: return 0;
-			case TinyImageFormat_B2G3R3_UNORM: return 3;
-			case TinyImageFormat_R4G4B4A4_UNORM: return 4;
-			case TinyImageFormat_R4G4B4X4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4A4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4X4_UNORM: return 4;
-			case TinyImageFormat_A4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_X4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_A4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_X4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_R5G6B5_UNORM: return 6;
-			case TinyImageFormat_B5G6R5_UNORM: return 6;
-			case TinyImageFormat_R5G5B5A1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5A1_UNORM: return 5;
-			case TinyImageFormat_A1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_A1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_R5G5B5X1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5X1_UNORM: return 5;
-			case TinyImageFormat_X1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_X1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_B2G3R3A8_UNORM: return 3;
-			case TinyImageFormat_R16_UNORM: return 0;
-			case TinyImageFormat_R16_SNORM: return 0;
-			case TinyImageFormat_R16_UINT: return 0;
-			case TinyImageFormat_R16_SINT: return 0;
-			case TinyImageFormat_R16_SFLOAT: return 0;
-			case TinyImageFormat_R16_SBFLOAT: return 0;
-			case TinyImageFormat_R16G16_UNORM: return 16;
-			case TinyImageFormat_G16R16_UNORM: return 16;
-			case TinyImageFormat_R16G16_SNORM: return 16;
-			case TinyImageFormat_G16R16_SNORM: return 16;
-			case TinyImageFormat_R16G16_UINT: return 16;
-			case TinyImageFormat_R16G16_SINT: return 16;
-			case TinyImageFormat_R16G16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16_SBFLOAT: return 16;
-			case TinyImageFormat_R32_UINT: return 0;
-			case TinyImageFormat_R32_SINT: return 0;
-			case TinyImageFormat_R32_SFLOAT: return 0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_UINT: return 10;
-			case TinyImageFormat_A2R10G10B10_SNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_SINT: return 10;
-			case TinyImageFormat_A2B10G10R10_UNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_UINT: return 10;
-			case TinyImageFormat_A2B10G10R10_SNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_SINT: return 10;
-			case TinyImageFormat_R10G10B10A2_UNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_UINT: return 10;
-			case TinyImageFormat_R10G10B10A2_SNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_SINT: return 10;
-			case TinyImageFormat_B10G10R10A2_UNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_UINT: return 10;
-			case TinyImageFormat_B10G10R10A2_SNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_SINT: return 10;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 11;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 9;
-			case TinyImageFormat_R16G16B16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16_UINT: return 16;
-			case TinyImageFormat_R16G16B16_SINT: return 16;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_UINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 16;
-			case TinyImageFormat_R32G32_UINT: return 32;
-			case TinyImageFormat_R32G32_SINT: return 32;
-			case TinyImageFormat_R32G32_SFLOAT: return 32;
-			case TinyImageFormat_R32G32B32_UINT: return 32;
-			case TinyImageFormat_R32G32B32_SINT: return 32;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 32;
-			case TinyImageFormat_R32G32B32A32_UINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 32;
-			case TinyImageFormat_R64_UINT: return 0;
-			case TinyImageFormat_R64_SINT: return 0;
-			case TinyImageFormat_R64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64_UINT: return 64;
-			case TinyImageFormat_R64G64_SINT: return 64;
-			case TinyImageFormat_R64G64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64B64_UINT: return 64;
-			case TinyImageFormat_R64G64B64_SINT: return 64;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64B64A64_UINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 64;
-			case TinyImageFormat_D16_UNORM: return 0;
-			case TinyImageFormat_X8_D24_UNORM: return 24;
-			case TinyImageFormat_D32_SFLOAT: return 0;
-			case TinyImageFormat_S8_UINT: return 0;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return 6;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return 6;
-			case TinyImageFormat_DXBC1_RGBA_UNORM: return 6;
-			case TinyImageFormat_DXBC1_RGBA_SRGB: return 6;
-			case TinyImageFormat_DXBC2_UNORM: return 6;
-			case TinyImageFormat_DXBC2_SRGB: return 6;
-			case TinyImageFormat_DXBC3_UNORM: return 6;
-			case TinyImageFormat_DXBC3_SRGB: return 6;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 16;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 16;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 11;
-			case TinyImageFormat_CLUT_P4: return 0;
-			case TinyImageFormat_CLUT_P4A4: return 4;
-			case TinyImageFormat_CLUT_P8: return 0;
+			case CqFormat_UNDEFINED: return 0;
+			case CqFormat_R1_UNORM: return 0;
+			case CqFormat_R2_UNORM: return 0;
+			case CqFormat_R4_UNORM: return 0;
+			case CqFormat_R4G4_UNORM: return 4;
+			case CqFormat_G4R4_UNORM: return 4;
+			case CqFormat_A8_UNORM: return 0;
+			case CqFormat_R8_UNORM: return 0;
+			case CqFormat_R8_SNORM: return 0;
+			case CqFormat_R8_UINT: return 0;
+			case CqFormat_R8_SINT: return 0;
+			case CqFormat_R8_SRGB: return 0;
+			case CqFormat_B2G3R3_UNORM: return 3;
+			case CqFormat_R4G4B4A4_UNORM: return 4;
+			case CqFormat_R4G4B4X4_UNORM: return 4;
+			case CqFormat_B4G4R4A4_UNORM: return 4;
+			case CqFormat_B4G4R4X4_UNORM: return 4;
+			case CqFormat_A4R4G4B4_UNORM: return 4;
+			case CqFormat_X4R4G4B4_UNORM: return 4;
+			case CqFormat_A4B4G4R4_UNORM: return 4;
+			case CqFormat_X4B4G4R4_UNORM: return 4;
+			case CqFormat_R5G6B5_UNORM: return 6;
+			case CqFormat_B5G6R5_UNORM: return 6;
+			case CqFormat_R5G5B5A1_UNORM: return 5;
+			case CqFormat_B5G5R5A1_UNORM: return 5;
+			case CqFormat_A1B5G5R5_UNORM: return 5;
+			case CqFormat_A1R5G5B5_UNORM: return 5;
+			case CqFormat_R5G5B5X1_UNORM: return 5;
+			case CqFormat_B5G5R5X1_UNORM: return 5;
+			case CqFormat_X1R5G5B5_UNORM: return 5;
+			case CqFormat_X1B5G5R5_UNORM: return 5;
+			case CqFormat_B2G3R3A8_UNORM: return 3;
+			case CqFormat_R16_UNORM: return 0;
+			case CqFormat_R16_SNORM: return 0;
+			case CqFormat_R16_UINT: return 0;
+			case CqFormat_R16_SINT: return 0;
+			case CqFormat_R16_SFLOAT: return 0;
+			case CqFormat_R16_SBFLOAT: return 0;
+			case CqFormat_R16G16_UNORM: return 16;
+			case CqFormat_G16R16_UNORM: return 16;
+			case CqFormat_R16G16_SNORM: return 16;
+			case CqFormat_G16R16_SNORM: return 16;
+			case CqFormat_R16G16_UINT: return 16;
+			case CqFormat_R16G16_SINT: return 16;
+			case CqFormat_R16G16_SFLOAT: return 16;
+			case CqFormat_R16G16_SBFLOAT: return 16;
+			case CqFormat_R32_UINT: return 0;
+			case CqFormat_R32_SINT: return 0;
+			case CqFormat_R32_SFLOAT: return 0;
+			case CqFormat_A2R10G10B10_UNORM: return 10;
+			case CqFormat_A2R10G10B10_UINT: return 10;
+			case CqFormat_A2R10G10B10_SNORM: return 10;
+			case CqFormat_A2R10G10B10_SINT: return 10;
+			case CqFormat_A2B10G10R10_UNORM: return 10;
+			case CqFormat_A2B10G10R10_UINT: return 10;
+			case CqFormat_A2B10G10R10_SNORM: return 10;
+			case CqFormat_A2B10G10R10_SINT: return 10;
+			case CqFormat_R10G10B10A2_UNORM: return 10;
+			case CqFormat_R10G10B10A2_UINT: return 10;
+			case CqFormat_R10G10B10A2_SNORM: return 10;
+			case CqFormat_R10G10B10A2_SINT: return 10;
+			case CqFormat_B10G10R10A2_UNORM: return 10;
+			case CqFormat_B10G10R10A2_UINT: return 10;
+			case CqFormat_B10G10R10A2_SNORM: return 10;
+			case CqFormat_B10G10R10A2_SINT: return 10;
+			case CqFormat_B10G11R11_UFLOAT: return 11;
+			case CqFormat_E5B9G9R9_UFLOAT: return 9;
+			case CqFormat_R16G16B16_UNORM: return 16;
+			case CqFormat_R16G16B16_SNORM: return 16;
+			case CqFormat_R16G16B16_UINT: return 16;
+			case CqFormat_R16G16B16_SINT: return 16;
+			case CqFormat_R16G16B16_SFLOAT: return 16;
+			case CqFormat_R16G16B16_SBFLOAT: return 16;
+			case CqFormat_R16G16B16A16_UNORM: return 16;
+			case CqFormat_R16G16B16A16_SNORM: return 16;
+			case CqFormat_R16G16B16A16_UINT: return 16;
+			case CqFormat_R16G16B16A16_SINT: return 16;
+			case CqFormat_R16G16B16A16_SFLOAT: return 16;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 16;
+			case CqFormat_R32G32_UINT: return 32;
+			case CqFormat_R32G32_SINT: return 32;
+			case CqFormat_R32G32_SFLOAT: return 32;
+			case CqFormat_R32G32B32_UINT: return 32;
+			case CqFormat_R32G32B32_SINT: return 32;
+			case CqFormat_R32G32B32_SFLOAT: return 32;
+			case CqFormat_R32G32B32A32_UINT: return 32;
+			case CqFormat_R32G32B32A32_SINT: return 32;
+			case CqFormat_R32G32B32A32_SFLOAT: return 32;
+			case CqFormat_R64_UINT: return 0;
+			case CqFormat_R64_SINT: return 0;
+			case CqFormat_R64_SFLOAT: return 0;
+			case CqFormat_R64G64_UINT: return 64;
+			case CqFormat_R64G64_SINT: return 64;
+			case CqFormat_R64G64_SFLOAT: return 64;
+			case CqFormat_R64G64B64_UINT: return 64;
+			case CqFormat_R64G64B64_SINT: return 64;
+			case CqFormat_R64G64B64_SFLOAT: return 64;
+			case CqFormat_R64G64B64A64_UINT: return 64;
+			case CqFormat_R64G64B64A64_SINT: return 64;
+			case CqFormat_R64G64B64A64_SFLOAT: return 64;
+			case CqFormat_D16_UNORM: return 0;
+			case CqFormat_X8_D24_UNORM: return 24;
+			case CqFormat_D32_SFLOAT: return 0;
+			case CqFormat_S8_UINT: return 0;
+			case CqFormat_DXBC1_RGB_UNORM: return 6;
+			case CqFormat_DXBC1_RGB_SRGB: return 6;
+			case CqFormat_DXBC1_RGBA_UNORM: return 6;
+			case CqFormat_DXBC1_RGBA_SRGB: return 6;
+			case CqFormat_DXBC2_UNORM: return 6;
+			case CqFormat_DXBC2_SRGB: return 6;
+			case CqFormat_DXBC3_UNORM: return 6;
+			case CqFormat_DXBC3_SRGB: return 6;
+			case CqFormat_DXBC6H_UFLOAT: return 16;
+			case CqFormat_DXBC6H_SFLOAT: return 16;
+			case CqFormat_ETC2_EAC_R11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11_SNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return 11;
+			case CqFormat_CLUT_P4: return 0;
+			case CqFormat_CLUT_P4A4: return 4;
+			case CqFormat_CLUT_P8: return 0;
 			default: return 8;
 		}
 	}	else if(channel == 2) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0;
-			case TinyImageFormat_R1_UNORM: return 0;
-			case TinyImageFormat_R2_UNORM: return 0;
-			case TinyImageFormat_R4_UNORM: return 0;
-			case TinyImageFormat_R4G4_UNORM: return 0;
-			case TinyImageFormat_G4R4_UNORM: return 0;
-			case TinyImageFormat_A8_UNORM: return 0;
-			case TinyImageFormat_R8_UNORM: return 0;
-			case TinyImageFormat_R8_SNORM: return 0;
-			case TinyImageFormat_R8_UINT: return 0;
-			case TinyImageFormat_R8_SINT: return 0;
-			case TinyImageFormat_R8_SRGB: return 0;
-			case TinyImageFormat_B2G3R3_UNORM: return 3;
-			case TinyImageFormat_R4G4B4A4_UNORM: return 4;
-			case TinyImageFormat_R4G4B4X4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4A4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4X4_UNORM: return 4;
-			case TinyImageFormat_A4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_X4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_A4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_X4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_R5G6B5_UNORM: return 5;
-			case TinyImageFormat_B5G6R5_UNORM: return 5;
-			case TinyImageFormat_R5G5B5A1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5A1_UNORM: return 5;
-			case TinyImageFormat_A1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_A1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_R5G5B5X1_UNORM: return 5;
-			case TinyImageFormat_B5G5R5X1_UNORM: return 5;
-			case TinyImageFormat_X1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_X1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_B2G3R3A8_UNORM: return 3;
-			case TinyImageFormat_R8G8_UNORM: return 0;
-			case TinyImageFormat_R8G8_SNORM: return 0;
-			case TinyImageFormat_G8R8_UNORM: return 0;
-			case TinyImageFormat_G8R8_SNORM: return 0;
-			case TinyImageFormat_R8G8_UINT: return 0;
-			case TinyImageFormat_R8G8_SINT: return 0;
-			case TinyImageFormat_R8G8_SRGB: return 0;
-			case TinyImageFormat_R16_UNORM: return 0;
-			case TinyImageFormat_R16_SNORM: return 0;
-			case TinyImageFormat_R16_UINT: return 0;
-			case TinyImageFormat_R16_SINT: return 0;
-			case TinyImageFormat_R16_SFLOAT: return 0;
-			case TinyImageFormat_R16_SBFLOAT: return 0;
-			case TinyImageFormat_R16G16_UNORM: return 0;
-			case TinyImageFormat_G16R16_UNORM: return 0;
-			case TinyImageFormat_R16G16_SNORM: return 0;
-			case TinyImageFormat_G16R16_SNORM: return 0;
-			case TinyImageFormat_R16G16_UINT: return 0;
-			case TinyImageFormat_R16G16_SINT: return 0;
-			case TinyImageFormat_R16G16_SFLOAT: return 0;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0;
-			case TinyImageFormat_R32_UINT: return 0;
-			case TinyImageFormat_R32_SINT: return 0;
-			case TinyImageFormat_R32_SFLOAT: return 0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_UINT: return 10;
-			case TinyImageFormat_A2R10G10B10_SNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_SINT: return 10;
-			case TinyImageFormat_A2B10G10R10_UNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_UINT: return 10;
-			case TinyImageFormat_A2B10G10R10_SNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_SINT: return 10;
-			case TinyImageFormat_R10G10B10A2_UNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_UINT: return 10;
-			case TinyImageFormat_R10G10B10A2_SNORM: return 10;
-			case TinyImageFormat_R10G10B10A2_SINT: return 10;
-			case TinyImageFormat_B10G10R10A2_UNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_UINT: return 10;
-			case TinyImageFormat_B10G10R10A2_SNORM: return 10;
-			case TinyImageFormat_B10G10R10A2_SINT: return 10;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 11;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 9;
-			case TinyImageFormat_R16G16B16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16_UINT: return 16;
-			case TinyImageFormat_R16G16B16_SINT: return 16;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_UINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 16;
-			case TinyImageFormat_R32G32_UINT: return 0;
-			case TinyImageFormat_R32G32_SINT: return 0;
-			case TinyImageFormat_R32G32_SFLOAT: return 0;
-			case TinyImageFormat_R32G32B32_UINT: return 32;
-			case TinyImageFormat_R32G32B32_SINT: return 32;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 32;
-			case TinyImageFormat_R32G32B32A32_UINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 32;
-			case TinyImageFormat_R64_UINT: return 0;
-			case TinyImageFormat_R64_SINT: return 0;
-			case TinyImageFormat_R64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64_UINT: return 0;
-			case TinyImageFormat_R64G64_SINT: return 0;
-			case TinyImageFormat_R64G64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64B64_UINT: return 64;
-			case TinyImageFormat_R64G64B64_SINT: return 64;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 64;
-			case TinyImageFormat_R64G64B64A64_UINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 64;
-			case TinyImageFormat_D16_UNORM: return 0;
-			case TinyImageFormat_X8_D24_UNORM: return 0;
-			case TinyImageFormat_D32_SFLOAT: return 0;
-			case TinyImageFormat_S8_UINT: return 0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 0;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return 5;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return 5;
-			case TinyImageFormat_DXBC1_RGBA_UNORM: return 5;
-			case TinyImageFormat_DXBC1_RGBA_SRGB: return 5;
-			case TinyImageFormat_DXBC2_UNORM: return 5;
-			case TinyImageFormat_DXBC2_SRGB: return 5;
-			case TinyImageFormat_DXBC3_UNORM: return 5;
-			case TinyImageFormat_DXBC3_SRGB: return 5;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 16;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 16;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 11;
-			case TinyImageFormat_CLUT_P4: return 0;
-			case TinyImageFormat_CLUT_P4A4: return 0;
-			case TinyImageFormat_CLUT_P8: return 0;
-			case TinyImageFormat_CLUT_P8A8: return 0;
+			case CqFormat_UNDEFINED: return 0;
+			case CqFormat_R1_UNORM: return 0;
+			case CqFormat_R2_UNORM: return 0;
+			case CqFormat_R4_UNORM: return 0;
+			case CqFormat_R4G4_UNORM: return 0;
+			case CqFormat_G4R4_UNORM: return 0;
+			case CqFormat_A8_UNORM: return 0;
+			case CqFormat_R8_UNORM: return 0;
+			case CqFormat_R8_SNORM: return 0;
+			case CqFormat_R8_UINT: return 0;
+			case CqFormat_R8_SINT: return 0;
+			case CqFormat_R8_SRGB: return 0;
+			case CqFormat_B2G3R3_UNORM: return 3;
+			case CqFormat_R4G4B4A4_UNORM: return 4;
+			case CqFormat_R4G4B4X4_UNORM: return 4;
+			case CqFormat_B4G4R4A4_UNORM: return 4;
+			case CqFormat_B4G4R4X4_UNORM: return 4;
+			case CqFormat_A4R4G4B4_UNORM: return 4;
+			case CqFormat_X4R4G4B4_UNORM: return 4;
+			case CqFormat_A4B4G4R4_UNORM: return 4;
+			case CqFormat_X4B4G4R4_UNORM: return 4;
+			case CqFormat_R5G6B5_UNORM: return 5;
+			case CqFormat_B5G6R5_UNORM: return 5;
+			case CqFormat_R5G5B5A1_UNORM: return 5;
+			case CqFormat_B5G5R5A1_UNORM: return 5;
+			case CqFormat_A1B5G5R5_UNORM: return 5;
+			case CqFormat_A1R5G5B5_UNORM: return 5;
+			case CqFormat_R5G5B5X1_UNORM: return 5;
+			case CqFormat_B5G5R5X1_UNORM: return 5;
+			case CqFormat_X1R5G5B5_UNORM: return 5;
+			case CqFormat_X1B5G5R5_UNORM: return 5;
+			case CqFormat_B2G3R3A8_UNORM: return 3;
+			case CqFormat_R8G8_UNORM: return 0;
+			case CqFormat_R8G8_SNORM: return 0;
+			case CqFormat_G8R8_UNORM: return 0;
+			case CqFormat_G8R8_SNORM: return 0;
+			case CqFormat_R8G8_UINT: return 0;
+			case CqFormat_R8G8_SINT: return 0;
+			case CqFormat_R8G8_SRGB: return 0;
+			case CqFormat_R16_UNORM: return 0;
+			case CqFormat_R16_SNORM: return 0;
+			case CqFormat_R16_UINT: return 0;
+			case CqFormat_R16_SINT: return 0;
+			case CqFormat_R16_SFLOAT: return 0;
+			case CqFormat_R16_SBFLOAT: return 0;
+			case CqFormat_R16G16_UNORM: return 0;
+			case CqFormat_G16R16_UNORM: return 0;
+			case CqFormat_R16G16_SNORM: return 0;
+			case CqFormat_G16R16_SNORM: return 0;
+			case CqFormat_R16G16_UINT: return 0;
+			case CqFormat_R16G16_SINT: return 0;
+			case CqFormat_R16G16_SFLOAT: return 0;
+			case CqFormat_R16G16_SBFLOAT: return 0;
+			case CqFormat_R32_UINT: return 0;
+			case CqFormat_R32_SINT: return 0;
+			case CqFormat_R32_SFLOAT: return 0;
+			case CqFormat_A2R10G10B10_UNORM: return 10;
+			case CqFormat_A2R10G10B10_UINT: return 10;
+			case CqFormat_A2R10G10B10_SNORM: return 10;
+			case CqFormat_A2R10G10B10_SINT: return 10;
+			case CqFormat_A2B10G10R10_UNORM: return 10;
+			case CqFormat_A2B10G10R10_UINT: return 10;
+			case CqFormat_A2B10G10R10_SNORM: return 10;
+			case CqFormat_A2B10G10R10_SINT: return 10;
+			case CqFormat_R10G10B10A2_UNORM: return 10;
+			case CqFormat_R10G10B10A2_UINT: return 10;
+			case CqFormat_R10G10B10A2_SNORM: return 10;
+			case CqFormat_R10G10B10A2_SINT: return 10;
+			case CqFormat_B10G10R10A2_UNORM: return 10;
+			case CqFormat_B10G10R10A2_UINT: return 10;
+			case CqFormat_B10G10R10A2_SNORM: return 10;
+			case CqFormat_B10G10R10A2_SINT: return 10;
+			case CqFormat_B10G11R11_UFLOAT: return 11;
+			case CqFormat_E5B9G9R9_UFLOAT: return 9;
+			case CqFormat_R16G16B16_UNORM: return 16;
+			case CqFormat_R16G16B16_SNORM: return 16;
+			case CqFormat_R16G16B16_UINT: return 16;
+			case CqFormat_R16G16B16_SINT: return 16;
+			case CqFormat_R16G16B16_SFLOAT: return 16;
+			case CqFormat_R16G16B16_SBFLOAT: return 16;
+			case CqFormat_R16G16B16A16_UNORM: return 16;
+			case CqFormat_R16G16B16A16_SNORM: return 16;
+			case CqFormat_R16G16B16A16_UINT: return 16;
+			case CqFormat_R16G16B16A16_SINT: return 16;
+			case CqFormat_R16G16B16A16_SFLOAT: return 16;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 16;
+			case CqFormat_R32G32_UINT: return 0;
+			case CqFormat_R32G32_SINT: return 0;
+			case CqFormat_R32G32_SFLOAT: return 0;
+			case CqFormat_R32G32B32_UINT: return 32;
+			case CqFormat_R32G32B32_SINT: return 32;
+			case CqFormat_R32G32B32_SFLOAT: return 32;
+			case CqFormat_R32G32B32A32_UINT: return 32;
+			case CqFormat_R32G32B32A32_SINT: return 32;
+			case CqFormat_R32G32B32A32_SFLOAT: return 32;
+			case CqFormat_R64_UINT: return 0;
+			case CqFormat_R64_SINT: return 0;
+			case CqFormat_R64_SFLOAT: return 0;
+			case CqFormat_R64G64_UINT: return 0;
+			case CqFormat_R64G64_SINT: return 0;
+			case CqFormat_R64G64_SFLOAT: return 0;
+			case CqFormat_R64G64B64_UINT: return 64;
+			case CqFormat_R64G64B64_SINT: return 64;
+			case CqFormat_R64G64B64_SFLOAT: return 64;
+			case CqFormat_R64G64B64A64_UINT: return 64;
+			case CqFormat_R64G64B64A64_SINT: return 64;
+			case CqFormat_R64G64B64A64_SFLOAT: return 64;
+			case CqFormat_D16_UNORM: return 0;
+			case CqFormat_X8_D24_UNORM: return 0;
+			case CqFormat_D32_SFLOAT: return 0;
+			case CqFormat_S8_UINT: return 0;
+			case CqFormat_D16_UNORM_S8_UINT: return 0;
+			case CqFormat_D24_UNORM_S8_UINT: return 0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 0;
+			case CqFormat_DXBC1_RGB_UNORM: return 5;
+			case CqFormat_DXBC1_RGB_SRGB: return 5;
+			case CqFormat_DXBC1_RGBA_UNORM: return 5;
+			case CqFormat_DXBC1_RGBA_SRGB: return 5;
+			case CqFormat_DXBC2_UNORM: return 5;
+			case CqFormat_DXBC2_SRGB: return 5;
+			case CqFormat_DXBC3_UNORM: return 5;
+			case CqFormat_DXBC3_SRGB: return 5;
+			case CqFormat_DXBC6H_UFLOAT: return 16;
+			case CqFormat_DXBC6H_SFLOAT: return 16;
+			case CqFormat_ETC2_EAC_R11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11_SNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return 11;
+			case CqFormat_CLUT_P4: return 0;
+			case CqFormat_CLUT_P4A4: return 0;
+			case CqFormat_CLUT_P8: return 0;
+			case CqFormat_CLUT_P8A8: return 0;
 			default: return 8;
 		}
 	}	else if(channel == 3) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0;
-			case TinyImageFormat_R1_UNORM: return 0;
-			case TinyImageFormat_R2_UNORM: return 0;
-			case TinyImageFormat_R4_UNORM: return 0;
-			case TinyImageFormat_R4G4_UNORM: return 0;
-			case TinyImageFormat_G4R4_UNORM: return 0;
-			case TinyImageFormat_A8_UNORM: return 0;
-			case TinyImageFormat_R8_UNORM: return 0;
-			case TinyImageFormat_R8_SNORM: return 0;
-			case TinyImageFormat_R8_UINT: return 0;
-			case TinyImageFormat_R8_SINT: return 0;
-			case TinyImageFormat_R8_SRGB: return 0;
-			case TinyImageFormat_B2G3R3_UNORM: return 0;
-			case TinyImageFormat_R4G4B4A4_UNORM: return 4;
-			case TinyImageFormat_R4G4B4X4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4A4_UNORM: return 4;
-			case TinyImageFormat_B4G4R4X4_UNORM: return 4;
-			case TinyImageFormat_A4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_X4R4G4B4_UNORM: return 4;
-			case TinyImageFormat_A4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_X4B4G4R4_UNORM: return 4;
-			case TinyImageFormat_R5G6B5_UNORM: return 0;
-			case TinyImageFormat_B5G6R5_UNORM: return 0;
-			case TinyImageFormat_R5G5B5A1_UNORM: return 1;
-			case TinyImageFormat_B5G5R5A1_UNORM: return 1;
-			case TinyImageFormat_A1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_A1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_R5G5B5X1_UNORM: return 1;
-			case TinyImageFormat_B5G5R5X1_UNORM: return 1;
-			case TinyImageFormat_X1R5G5B5_UNORM: return 5;
-			case TinyImageFormat_X1B5G5R5_UNORM: return 5;
-			case TinyImageFormat_R8G8_UNORM: return 0;
-			case TinyImageFormat_R8G8_SNORM: return 0;
-			case TinyImageFormat_G8R8_UNORM: return 0;
-			case TinyImageFormat_G8R8_SNORM: return 0;
-			case TinyImageFormat_R8G8_UINT: return 0;
-			case TinyImageFormat_R8G8_SINT: return 0;
-			case TinyImageFormat_R8G8_SRGB: return 0;
-			case TinyImageFormat_R16_UNORM: return 0;
-			case TinyImageFormat_R16_SNORM: return 0;
-			case TinyImageFormat_R16_UINT: return 0;
-			case TinyImageFormat_R16_SINT: return 0;
-			case TinyImageFormat_R16_SFLOAT: return 0;
-			case TinyImageFormat_R16_SBFLOAT: return 0;
-			case TinyImageFormat_R8G8B8_UNORM: return 0;
-			case TinyImageFormat_R8G8B8_SNORM: return 0;
-			case TinyImageFormat_R8G8B8_UINT: return 0;
-			case TinyImageFormat_R8G8B8_SINT: return 0;
-			case TinyImageFormat_R8G8B8_SRGB: return 0;
-			case TinyImageFormat_B8G8R8_UNORM: return 0;
-			case TinyImageFormat_B8G8R8_SNORM: return 0;
-			case TinyImageFormat_B8G8R8_UINT: return 0;
-			case TinyImageFormat_B8G8R8_SINT: return 0;
-			case TinyImageFormat_B8G8R8_SRGB: return 0;
-			case TinyImageFormat_R16G16_UNORM: return 0;
-			case TinyImageFormat_G16R16_UNORM: return 0;
-			case TinyImageFormat_R16G16_SNORM: return 0;
-			case TinyImageFormat_G16R16_SNORM: return 0;
-			case TinyImageFormat_R16G16_UINT: return 0;
-			case TinyImageFormat_R16G16_SINT: return 0;
-			case TinyImageFormat_R16G16_SFLOAT: return 0;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0;
-			case TinyImageFormat_R32_UINT: return 0;
-			case TinyImageFormat_R32_SINT: return 0;
-			case TinyImageFormat_R32_SFLOAT: return 0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_UINT: return 10;
-			case TinyImageFormat_A2R10G10B10_SNORM: return 10;
-			case TinyImageFormat_A2R10G10B10_SINT: return 10;
-			case TinyImageFormat_A2B10G10R10_UNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_UINT: return 10;
-			case TinyImageFormat_A2B10G10R10_SNORM: return 10;
-			case TinyImageFormat_A2B10G10R10_SINT: return 10;
-			case TinyImageFormat_R10G10B10A2_UNORM: return 2;
-			case TinyImageFormat_R10G10B10A2_UINT: return 2;
-			case TinyImageFormat_R10G10B10A2_SNORM: return 2;
-			case TinyImageFormat_R10G10B10A2_SINT: return 2;
-			case TinyImageFormat_B10G10R10A2_UNORM: return 2;
-			case TinyImageFormat_B10G10R10A2_UINT: return 2;
-			case TinyImageFormat_B10G10R10A2_SNORM: return 2;
-			case TinyImageFormat_B10G10R10A2_SINT: return 2;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 0;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 9;
-			case TinyImageFormat_R16G16B16_UNORM: return 0;
-			case TinyImageFormat_R16G16B16_SNORM: return 0;
-			case TinyImageFormat_R16G16B16_UINT: return 0;
-			case TinyImageFormat_R16G16B16_SINT: return 0;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 0;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 0;
-			case TinyImageFormat_R16G16B16A16_UNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_SNORM: return 16;
-			case TinyImageFormat_R16G16B16A16_UINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SINT: return 16;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 16;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 16;
-			case TinyImageFormat_R32G32_UINT: return 0;
-			case TinyImageFormat_R32G32_SINT: return 0;
-			case TinyImageFormat_R32G32_SFLOAT: return 0;
-			case TinyImageFormat_R32G32B32_UINT: return 0;
-			case TinyImageFormat_R32G32B32_SINT: return 0;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 0;
-			case TinyImageFormat_R32G32B32A32_UINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SINT: return 32;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 32;
-			case TinyImageFormat_R64_UINT: return 0;
-			case TinyImageFormat_R64_SINT: return 0;
-			case TinyImageFormat_R64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64_UINT: return 0;
-			case TinyImageFormat_R64G64_SINT: return 0;
-			case TinyImageFormat_R64G64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64B64_UINT: return 0;
-			case TinyImageFormat_R64G64B64_SINT: return 0;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 0;
-			case TinyImageFormat_R64G64B64A64_UINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SINT: return 64;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 64;
-			case TinyImageFormat_D16_UNORM: return 0;
-			case TinyImageFormat_X8_D24_UNORM: return 0;
-			case TinyImageFormat_D32_SFLOAT: return 0;
-			case TinyImageFormat_S8_UINT: return 0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 0;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return 0;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return 0;
-			case TinyImageFormat_DXBC1_RGBA_UNORM: return 0;
-			case TinyImageFormat_DXBC1_RGBA_SRGB: return 0;
-			case TinyImageFormat_DXBC2_UNORM: return 4;
-			case TinyImageFormat_DXBC2_SRGB: return 4;
-			case TinyImageFormat_DXBC3_UNORM: return 4;
-			case TinyImageFormat_DXBC3_SRGB: return 4;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 16;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 16;
-			case TinyImageFormat_DXBC7_UNORM: return 4;
-			case TinyImageFormat_DXBC7_SRGB: return 4;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return 11;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return 11;
-			case TinyImageFormat_CLUT_P4: return 0;
-			case TinyImageFormat_CLUT_P4A4: return 0;
-			case TinyImageFormat_CLUT_P8: return 0;
-			case TinyImageFormat_CLUT_P8A8: return 0;
+			case CqFormat_UNDEFINED: return 0;
+			case CqFormat_R1_UNORM: return 0;
+			case CqFormat_R2_UNORM: return 0;
+			case CqFormat_R4_UNORM: return 0;
+			case CqFormat_R4G4_UNORM: return 0;
+			case CqFormat_G4R4_UNORM: return 0;
+			case CqFormat_A8_UNORM: return 0;
+			case CqFormat_R8_UNORM: return 0;
+			case CqFormat_R8_SNORM: return 0;
+			case CqFormat_R8_UINT: return 0;
+			case CqFormat_R8_SINT: return 0;
+			case CqFormat_R8_SRGB: return 0;
+			case CqFormat_B2G3R3_UNORM: return 0;
+			case CqFormat_R4G4B4A4_UNORM: return 4;
+			case CqFormat_R4G4B4X4_UNORM: return 4;
+			case CqFormat_B4G4R4A4_UNORM: return 4;
+			case CqFormat_B4G4R4X4_UNORM: return 4;
+			case CqFormat_A4R4G4B4_UNORM: return 4;
+			case CqFormat_X4R4G4B4_UNORM: return 4;
+			case CqFormat_A4B4G4R4_UNORM: return 4;
+			case CqFormat_X4B4G4R4_UNORM: return 4;
+			case CqFormat_R5G6B5_UNORM: return 0;
+			case CqFormat_B5G6R5_UNORM: return 0;
+			case CqFormat_R5G5B5A1_UNORM: return 1;
+			case CqFormat_B5G5R5A1_UNORM: return 1;
+			case CqFormat_A1B5G5R5_UNORM: return 5;
+			case CqFormat_A1R5G5B5_UNORM: return 5;
+			case CqFormat_R5G5B5X1_UNORM: return 1;
+			case CqFormat_B5G5R5X1_UNORM: return 1;
+			case CqFormat_X1R5G5B5_UNORM: return 5;
+			case CqFormat_X1B5G5R5_UNORM: return 5;
+			case CqFormat_R8G8_UNORM: return 0;
+			case CqFormat_R8G8_SNORM: return 0;
+			case CqFormat_G8R8_UNORM: return 0;
+			case CqFormat_G8R8_SNORM: return 0;
+			case CqFormat_R8G8_UINT: return 0;
+			case CqFormat_R8G8_SINT: return 0;
+			case CqFormat_R8G8_SRGB: return 0;
+			case CqFormat_R16_UNORM: return 0;
+			case CqFormat_R16_SNORM: return 0;
+			case CqFormat_R16_UINT: return 0;
+			case CqFormat_R16_SINT: return 0;
+			case CqFormat_R16_SFLOAT: return 0;
+			case CqFormat_R16_SBFLOAT: return 0;
+			case CqFormat_R8G8B8_UNORM: return 0;
+			case CqFormat_R8G8B8_SNORM: return 0;
+			case CqFormat_R8G8B8_UINT: return 0;
+			case CqFormat_R8G8B8_SINT: return 0;
+			case CqFormat_R8G8B8_SRGB: return 0;
+			case CqFormat_B8G8R8_UNORM: return 0;
+			case CqFormat_B8G8R8_SNORM: return 0;
+			case CqFormat_B8G8R8_UINT: return 0;
+			case CqFormat_B8G8R8_SINT: return 0;
+			case CqFormat_B8G8R8_SRGB: return 0;
+			case CqFormat_R16G16_UNORM: return 0;
+			case CqFormat_G16R16_UNORM: return 0;
+			case CqFormat_R16G16_SNORM: return 0;
+			case CqFormat_G16R16_SNORM: return 0;
+			case CqFormat_R16G16_UINT: return 0;
+			case CqFormat_R16G16_SINT: return 0;
+			case CqFormat_R16G16_SFLOAT: return 0;
+			case CqFormat_R16G16_SBFLOAT: return 0;
+			case CqFormat_R32_UINT: return 0;
+			case CqFormat_R32_SINT: return 0;
+			case CqFormat_R32_SFLOAT: return 0;
+			case CqFormat_A2R10G10B10_UNORM: return 10;
+			case CqFormat_A2R10G10B10_UINT: return 10;
+			case CqFormat_A2R10G10B10_SNORM: return 10;
+			case CqFormat_A2R10G10B10_SINT: return 10;
+			case CqFormat_A2B10G10R10_UNORM: return 10;
+			case CqFormat_A2B10G10R10_UINT: return 10;
+			case CqFormat_A2B10G10R10_SNORM: return 10;
+			case CqFormat_A2B10G10R10_SINT: return 10;
+			case CqFormat_R10G10B10A2_UNORM: return 2;
+			case CqFormat_R10G10B10A2_UINT: return 2;
+			case CqFormat_R10G10B10A2_SNORM: return 2;
+			case CqFormat_R10G10B10A2_SINT: return 2;
+			case CqFormat_B10G10R10A2_UNORM: return 2;
+			case CqFormat_B10G10R10A2_UINT: return 2;
+			case CqFormat_B10G10R10A2_SNORM: return 2;
+			case CqFormat_B10G10R10A2_SINT: return 2;
+			case CqFormat_B10G11R11_UFLOAT: return 0;
+			case CqFormat_E5B9G9R9_UFLOAT: return 9;
+			case CqFormat_R16G16B16_UNORM: return 0;
+			case CqFormat_R16G16B16_SNORM: return 0;
+			case CqFormat_R16G16B16_UINT: return 0;
+			case CqFormat_R16G16B16_SINT: return 0;
+			case CqFormat_R16G16B16_SFLOAT: return 0;
+			case CqFormat_R16G16B16_SBFLOAT: return 0;
+			case CqFormat_R16G16B16A16_UNORM: return 16;
+			case CqFormat_R16G16B16A16_SNORM: return 16;
+			case CqFormat_R16G16B16A16_UINT: return 16;
+			case CqFormat_R16G16B16A16_SINT: return 16;
+			case CqFormat_R16G16B16A16_SFLOAT: return 16;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 16;
+			case CqFormat_R32G32_UINT: return 0;
+			case CqFormat_R32G32_SINT: return 0;
+			case CqFormat_R32G32_SFLOAT: return 0;
+			case CqFormat_R32G32B32_UINT: return 0;
+			case CqFormat_R32G32B32_SINT: return 0;
+			case CqFormat_R32G32B32_SFLOAT: return 0;
+			case CqFormat_R32G32B32A32_UINT: return 32;
+			case CqFormat_R32G32B32A32_SINT: return 32;
+			case CqFormat_R32G32B32A32_SFLOAT: return 32;
+			case CqFormat_R64_UINT: return 0;
+			case CqFormat_R64_SINT: return 0;
+			case CqFormat_R64_SFLOAT: return 0;
+			case CqFormat_R64G64_UINT: return 0;
+			case CqFormat_R64G64_SINT: return 0;
+			case CqFormat_R64G64_SFLOAT: return 0;
+			case CqFormat_R64G64B64_UINT: return 0;
+			case CqFormat_R64G64B64_SINT: return 0;
+			case CqFormat_R64G64B64_SFLOAT: return 0;
+			case CqFormat_R64G64B64A64_UINT: return 64;
+			case CqFormat_R64G64B64A64_SINT: return 64;
+			case CqFormat_R64G64B64A64_SFLOAT: return 64;
+			case CqFormat_D16_UNORM: return 0;
+			case CqFormat_X8_D24_UNORM: return 0;
+			case CqFormat_D32_SFLOAT: return 0;
+			case CqFormat_S8_UINT: return 0;
+			case CqFormat_D16_UNORM_S8_UINT: return 0;
+			case CqFormat_D24_UNORM_S8_UINT: return 0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 0;
+			case CqFormat_DXBC1_RGB_UNORM: return 0;
+			case CqFormat_DXBC1_RGB_SRGB: return 0;
+			case CqFormat_DXBC1_RGBA_UNORM: return 0;
+			case CqFormat_DXBC1_RGBA_SRGB: return 0;
+			case CqFormat_DXBC2_UNORM: return 4;
+			case CqFormat_DXBC2_SRGB: return 4;
+			case CqFormat_DXBC3_UNORM: return 4;
+			case CqFormat_DXBC3_SRGB: return 4;
+			case CqFormat_DXBC6H_UFLOAT: return 16;
+			case CqFormat_DXBC6H_SFLOAT: return 16;
+			case CqFormat_DXBC7_UNORM: return 4;
+			case CqFormat_DXBC7_SRGB: return 4;
+			case CqFormat_ETC2_EAC_R11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11_SNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return 11;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return 11;
+			case CqFormat_CLUT_P4: return 0;
+			case CqFormat_CLUT_P4A4: return 0;
+			case CqFormat_CLUT_P8: return 0;
+			case CqFormat_CLUT_P8A8: return 0;
 			default: return 8;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0;
 }
 
@@ -3836,556 +3836,556 @@ CQ_FMT_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fmt, 
 			default: return 8;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0;
 }
 }
 
-CQ_FMT_CONSTEXPR inline double TinyImageFormat_MinAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
-	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
+CQ_FMT_CONSTEXPR inline double CqFormat_MinAtPhysical(CqFormat const fmt, uint32_t const channel) {
+	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
-			case TinyImageFormat_R8_SNORM: return -1.000000;
-			case TinyImageFormat_R8_SINT: return -128.000000;
-			case TinyImageFormat_R8G8_SNORM: return -1.000000;
-			case TinyImageFormat_G8R8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8_SINT: return -128.000000;
-			case TinyImageFormat_R16_SNORM: return -1.000000;
-			case TinyImageFormat_R16_SINT: return -32768.000000;
-			case TinyImageFormat_R16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R8G8B8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8_SINT: return -128.000000;
-			case TinyImageFormat_R8G8B8A8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8A8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return -128.000000;
-			case TinyImageFormat_R16G16_SNORM: return -1.000000;
-			case TinyImageFormat_G16R16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_A2R10G10B10_SNORM: return -1.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return -2.000000;
-			case TinyImageFormat_A2B10G10R10_SNORM: return -1.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return -2.000000;
-			case TinyImageFormat_R10G10B10A2_SNORM: return -1.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return -512.000000;
-			case TinyImageFormat_B10G10R10A2_SNORM: return -1.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return -512.000000;
-			case TinyImageFormat_R16G16B16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R16G16B16A16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R32G32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_D32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_DXBC4_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC5_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return -1.000000;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
+			case CqFormat_R8_SNORM: return -1.000000;
+			case CqFormat_R8_SINT: return -128.000000;
+			case CqFormat_R8G8_SNORM: return -1.000000;
+			case CqFormat_G8R8_SNORM: return -1.000000;
+			case CqFormat_R8G8_SINT: return -128.000000;
+			case CqFormat_R16_SNORM: return -1.000000;
+			case CqFormat_R16_SINT: return -32768.000000;
+			case CqFormat_R16_SFLOAT: return -65504.000000;
+			case CqFormat_R8G8B8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8_SINT: return -128.000000;
+			case CqFormat_B8G8R8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8_SINT: return -128.000000;
+			case CqFormat_R8G8B8A8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8A8_SINT: return -128.000000;
+			case CqFormat_B8G8R8A8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8A8_SINT: return -128.000000;
+			case CqFormat_R16G16_SNORM: return -1.000000;
+			case CqFormat_G16R16_SNORM: return -1.000000;
+			case CqFormat_R16G16_SINT: return -32768.000000;
+			case CqFormat_R16G16_SFLOAT: return -65504.000000;
+			case CqFormat_R32_SINT: return -2147483648.000000;
+			case CqFormat_R32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_A2R10G10B10_SNORM: return -1.000000;
+			case CqFormat_A2R10G10B10_SINT: return -2.000000;
+			case CqFormat_A2B10G10R10_SNORM: return -1.000000;
+			case CqFormat_A2B10G10R10_SINT: return -2.000000;
+			case CqFormat_R10G10B10A2_SNORM: return -1.000000;
+			case CqFormat_R10G10B10A2_SINT: return -512.000000;
+			case CqFormat_B10G10R10A2_SNORM: return -1.000000;
+			case CqFormat_B10G10R10A2_SINT: return -512.000000;
+			case CqFormat_R16G16B16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16_SFLOAT: return -65504.000000;
+			case CqFormat_R16G16B16A16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16A16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return -65504.000000;
+			case CqFormat_R32G32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_D32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_D32_SFLOAT_S8_UINT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_DXBC4_SNORM: return -1.000000;
+			case CqFormat_DXBC5_SNORM: return -1.000000;
+			case CqFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_ETC2_EAC_R11_SNORM: return -1.000000;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
 			default: return 0.000000;
 		}
 	}	else if(channel == 1) {
 		switch(fmt) { 
-			case TinyImageFormat_R8G8_SNORM: return -1.000000;
-			case TinyImageFormat_G8R8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8_SINT: return -128.000000;
-			case TinyImageFormat_R8G8B8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8_SINT: return -128.000000;
-			case TinyImageFormat_R8G8B8A8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8A8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return -128.000000;
-			case TinyImageFormat_R16G16_SNORM: return -1.000000;
-			case TinyImageFormat_G16R16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_A2R10G10B10_SNORM: return -1.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return -512.000000;
-			case TinyImageFormat_A2B10G10R10_SNORM: return -1.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return -512.000000;
-			case TinyImageFormat_R10G10B10A2_SNORM: return -1.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return -512.000000;
-			case TinyImageFormat_B10G10R10A2_SNORM: return -1.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return -512.000000;
-			case TinyImageFormat_R16G16B16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R16G16B16A16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R32G32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64G64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_DXBC4_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC5_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return -1.000000;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
+			case CqFormat_R8G8_SNORM: return -1.000000;
+			case CqFormat_G8R8_SNORM: return -1.000000;
+			case CqFormat_R8G8_SINT: return -128.000000;
+			case CqFormat_R8G8B8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8_SINT: return -128.000000;
+			case CqFormat_B8G8R8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8_SINT: return -128.000000;
+			case CqFormat_R8G8B8A8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8A8_SINT: return -128.000000;
+			case CqFormat_B8G8R8A8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8A8_SINT: return -128.000000;
+			case CqFormat_R16G16_SNORM: return -1.000000;
+			case CqFormat_G16R16_SNORM: return -1.000000;
+			case CqFormat_R16G16_SINT: return -32768.000000;
+			case CqFormat_R16G16_SFLOAT: return -65504.000000;
+			case CqFormat_A2R10G10B10_SNORM: return -1.000000;
+			case CqFormat_A2R10G10B10_SINT: return -512.000000;
+			case CqFormat_A2B10G10R10_SNORM: return -1.000000;
+			case CqFormat_A2B10G10R10_SINT: return -512.000000;
+			case CqFormat_R10G10B10A2_SNORM: return -1.000000;
+			case CqFormat_R10G10B10A2_SINT: return -512.000000;
+			case CqFormat_B10G10R10A2_SNORM: return -1.000000;
+			case CqFormat_B10G10R10A2_SINT: return -512.000000;
+			case CqFormat_R16G16B16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16_SFLOAT: return -65504.000000;
+			case CqFormat_R16G16B16A16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16A16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return -65504.000000;
+			case CqFormat_R32G32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R64G64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_DXBC4_SNORM: return -1.000000;
+			case CqFormat_DXBC5_SNORM: return -1.000000;
+			case CqFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_ETC2_EAC_R11_SNORM: return -1.000000;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
 			default: return 0.000000;
 		}
 	}	else if(channel == 2) {
 		switch(fmt) { 
-			case TinyImageFormat_R8G8B8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8_SINT: return -128.000000;
-			case TinyImageFormat_R8G8B8A8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8A8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return -128.000000;
-			case TinyImageFormat_A2R10G10B10_SNORM: return -1.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return -512.000000;
-			case TinyImageFormat_A2B10G10R10_SNORM: return -1.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return -512.000000;
-			case TinyImageFormat_R10G10B10A2_SNORM: return -1.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return -512.000000;
-			case TinyImageFormat_B10G10R10A2_SNORM: return -1.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return -512.000000;
-			case TinyImageFormat_R16G16B16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R16G16B16A16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R32G32B32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64G64B64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_DXBC4_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC5_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return -1.000000;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
+			case CqFormat_R8G8B8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8_SINT: return -128.000000;
+			case CqFormat_B8G8R8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8_SINT: return -128.000000;
+			case CqFormat_R8G8B8A8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8A8_SINT: return -128.000000;
+			case CqFormat_B8G8R8A8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8A8_SINT: return -128.000000;
+			case CqFormat_A2R10G10B10_SNORM: return -1.000000;
+			case CqFormat_A2R10G10B10_SINT: return -512.000000;
+			case CqFormat_A2B10G10R10_SNORM: return -1.000000;
+			case CqFormat_A2B10G10R10_SINT: return -512.000000;
+			case CqFormat_R10G10B10A2_SNORM: return -1.000000;
+			case CqFormat_R10G10B10A2_SINT: return -512.000000;
+			case CqFormat_B10G10R10A2_SNORM: return -1.000000;
+			case CqFormat_B10G10R10A2_SINT: return -512.000000;
+			case CqFormat_R16G16B16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16_SFLOAT: return -65504.000000;
+			case CqFormat_R16G16B16A16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16A16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return -65504.000000;
+			case CqFormat_R32G32B32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R64G64B64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_DXBC4_SNORM: return -1.000000;
+			case CqFormat_DXBC5_SNORM: return -1.000000;
+			case CqFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_ETC2_EAC_R11_SNORM: return -1.000000;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
 			default: return 0.000000;
 		}
 	}	else if(channel == 3) {
 		switch(fmt) { 
-			case TinyImageFormat_R8G8B8A8_SNORM: return -1.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return -128.000000;
-			case TinyImageFormat_B8G8R8A8_SNORM: return -1.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return -128.000000;
-			case TinyImageFormat_A2R10G10B10_SNORM: return -1.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return -512.000000;
-			case TinyImageFormat_A2B10G10R10_SNORM: return -1.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return -512.000000;
-			case TinyImageFormat_R10G10B10A2_SNORM: return -1.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return -2.000000;
-			case TinyImageFormat_B10G10R10A2_SNORM: return -1.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return -2.000000;
-			case TinyImageFormat_R16G16B16A16_SNORM: return -1.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return -32768.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return -65504.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return -2147483648.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_DXBC4_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC5_SNORM: return -1.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return -1.000000;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
+			case CqFormat_R8G8B8A8_SNORM: return -1.000000;
+			case CqFormat_R8G8B8A8_SINT: return -128.000000;
+			case CqFormat_B8G8R8A8_SNORM: return -1.000000;
+			case CqFormat_B8G8R8A8_SINT: return -128.000000;
+			case CqFormat_A2R10G10B10_SNORM: return -1.000000;
+			case CqFormat_A2R10G10B10_SINT: return -512.000000;
+			case CqFormat_A2B10G10R10_SNORM: return -1.000000;
+			case CqFormat_A2B10G10R10_SINT: return -512.000000;
+			case CqFormat_R10G10B10A2_SNORM: return -1.000000;
+			case CqFormat_R10G10B10A2_SINT: return -2.000000;
+			case CqFormat_B10G10R10A2_SNORM: return -1.000000;
+			case CqFormat_B10G10R10A2_SINT: return -2.000000;
+			case CqFormat_R16G16B16A16_SNORM: return -1.000000;
+			case CqFormat_R16G16B16A16_SINT: return -32768.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return -65504.000000;
+			case CqFormat_R32G32B32A32_SINT: return -2147483648.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_R64G64B64A64_SINT: return -9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_DXBC4_SNORM: return -1.000000;
+			case CqFormat_DXBC5_SNORM: return -1.000000;
+			case CqFormat_DXBC6H_SFLOAT: return -340282346638528859811704183484516925440.000000;
+			case CqFormat_ETC2_EAC_R11_SNORM: return -1.000000;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return -1.000000;
 			default: return 0.000000;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0.0;
 }
 
-CQ_FMT_CONSTEXPR inline double TinyImageFormat_MaxAtPhysical(TinyImageFormat const fmt, uint32_t const channel) {
-	if(TinyImageFormat_IsHomogenous(fmt) || channel == 0) {
+CQ_FMT_CONSTEXPR inline double CqFormat_MaxAtPhysical(CqFormat const fmt, uint32_t const channel) {
+	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return 0.000000;
-			case TinyImageFormat_R8_UINT: return 255.000000;
-			case TinyImageFormat_R8_SINT: return 127.000000;
-			case TinyImageFormat_X4R4G4B4_UNORM: return 15.000000;
-			case TinyImageFormat_X4B4G4R4_UNORM: return 15.000000;
-			case TinyImageFormat_R8G8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8_SINT: return 127.000000;
-			case TinyImageFormat_R16_UINT: return 65535.000000;
-			case TinyImageFormat_R16_SINT: return 32767.000000;
-			case TinyImageFormat_R16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R8G8B8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8_SINT: return 127.000000;
-			case TinyImageFormat_R8G8B8A8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8A8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return 127.000000;
-			case TinyImageFormat_R16G16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_A2R10G10B10_UINT: return 3.000000;
-			case TinyImageFormat_A2B10G10R10_UINT: return 3.000000;
-			case TinyImageFormat_R10G10B10A2_UINT: return 1023.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G10R10A2_UINT: return 1023.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 65000.000000;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 31.000000;
-			case TinyImageFormat_R16G16B16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16B16A16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_X8_D24_UNORM: return 255.000000;
-			case TinyImageFormat_D32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_S8_UINT: return 255.000000;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 131008.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 65504.000000;
+			case CqFormat_UNDEFINED: return 0.000000;
+			case CqFormat_R8_UINT: return 255.000000;
+			case CqFormat_R8_SINT: return 127.000000;
+			case CqFormat_X4R4G4B4_UNORM: return 15.000000;
+			case CqFormat_X4B4G4R4_UNORM: return 15.000000;
+			case CqFormat_R8G8_UINT: return 255.000000;
+			case CqFormat_R8G8_SINT: return 127.000000;
+			case CqFormat_R16_UINT: return 65535.000000;
+			case CqFormat_R16_SINT: return 32767.000000;
+			case CqFormat_R16_SFLOAT: return 65504.000000;
+			case CqFormat_R16_SBFLOAT: return 0.000000;
+			case CqFormat_R8G8B8_UINT: return 255.000000;
+			case CqFormat_R8G8B8_SINT: return 127.000000;
+			case CqFormat_B8G8R8_UINT: return 255.000000;
+			case CqFormat_B8G8R8_SINT: return 127.000000;
+			case CqFormat_R8G8B8A8_UINT: return 255.000000;
+			case CqFormat_R8G8B8A8_SINT: return 127.000000;
+			case CqFormat_B8G8R8A8_UINT: return 255.000000;
+			case CqFormat_B8G8R8A8_SINT: return 127.000000;
+			case CqFormat_R16G16_UINT: return 65535.000000;
+			case CqFormat_R16G16_SINT: return 32767.000000;
+			case CqFormat_R16G16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16_SBFLOAT: return 0.000000;
+			case CqFormat_R32_UINT: return 4294967295.000000;
+			case CqFormat_R32_SINT: return 2147483647.000000;
+			case CqFormat_R32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_A2R10G10B10_UINT: return 3.000000;
+			case CqFormat_A2B10G10R10_UINT: return 3.000000;
+			case CqFormat_R10G10B10A2_UINT: return 1023.000000;
+			case CqFormat_R10G10B10A2_SINT: return 511.000000;
+			case CqFormat_B10G10R10A2_UINT: return 1023.000000;
+			case CqFormat_B10G10R10A2_SINT: return 511.000000;
+			case CqFormat_B10G11R11_UFLOAT: return 65000.000000;
+			case CqFormat_E5B9G9R9_UFLOAT: return 31.000000;
+			case CqFormat_R16G16B16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16_SBFLOAT: return 0.000000;
+			case CqFormat_R16G16B16A16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16A16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 0.000000;
+			case CqFormat_R32G32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32A32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_X8_D24_UNORM: return 255.000000;
+			case CqFormat_D32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_S8_UINT: return 255.000000;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_DXBC6H_UFLOAT: return 131008.000000;
+			case CqFormat_DXBC6H_SFLOAT: return 65504.000000;
 			default: return 1.000000;
 		}
 	}	else if(channel == 1) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0.000000;
-			case TinyImageFormat_R1_UNORM: return 0.000000;
-			case TinyImageFormat_R2_UNORM: return 0.000000;
-			case TinyImageFormat_R4_UNORM: return 0.000000;
-			case TinyImageFormat_A8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_SNORM: return 0.000000;
-			case TinyImageFormat_R8_UINT: return 0.000000;
-			case TinyImageFormat_R8_SINT: return 0.000000;
-			case TinyImageFormat_R8_SRGB: return 0.000000;
-			case TinyImageFormat_R8G8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8_SINT: return 127.000000;
-			case TinyImageFormat_R16_UNORM: return 0.000000;
-			case TinyImageFormat_R16_SNORM: return 0.000000;
-			case TinyImageFormat_R16_UINT: return 0.000000;
-			case TinyImageFormat_R16_SINT: return 0.000000;
-			case TinyImageFormat_R16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R8G8B8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8_SINT: return 127.000000;
-			case TinyImageFormat_R8G8B8A8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8A8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return 127.000000;
-			case TinyImageFormat_R16G16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32_UINT: return 0.000000;
-			case TinyImageFormat_R32_SINT: return 0.000000;
-			case TinyImageFormat_R32_SFLOAT: return 0.000000;
-			case TinyImageFormat_A2R10G10B10_UINT: return 1023.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return 511.000000;
-			case TinyImageFormat_A2B10G10R10_UINT: return 1023.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return 511.000000;
-			case TinyImageFormat_R10G10B10A2_UINT: return 1023.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G10R10A2_UINT: return 1023.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 65500.000000;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 65408.000000;
-			case TinyImageFormat_R16G16B16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16B16A16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64_UINT: return 0.000000;
-			case TinyImageFormat_R64_SINT: return 0.000000;
-			case TinyImageFormat_R64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_D16_UNORM: return 0.000000;
-			case TinyImageFormat_D32_SFLOAT: return 0.000000;
-			case TinyImageFormat_S8_UINT: return 0.000000;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 255.000000;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 255.000000;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 255.000000;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 131008.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 65504.000000;
+			case CqFormat_UNDEFINED: return 0.000000;
+			case CqFormat_R1_UNORM: return 0.000000;
+			case CqFormat_R2_UNORM: return 0.000000;
+			case CqFormat_R4_UNORM: return 0.000000;
+			case CqFormat_A8_UNORM: return 0.000000;
+			case CqFormat_R8_UNORM: return 0.000000;
+			case CqFormat_R8_SNORM: return 0.000000;
+			case CqFormat_R8_UINT: return 0.000000;
+			case CqFormat_R8_SINT: return 0.000000;
+			case CqFormat_R8_SRGB: return 0.000000;
+			case CqFormat_R8G8_UINT: return 255.000000;
+			case CqFormat_R8G8_SINT: return 127.000000;
+			case CqFormat_R16_UNORM: return 0.000000;
+			case CqFormat_R16_SNORM: return 0.000000;
+			case CqFormat_R16_UINT: return 0.000000;
+			case CqFormat_R16_SINT: return 0.000000;
+			case CqFormat_R16_SFLOAT: return 0.000000;
+			case CqFormat_R16_SBFLOAT: return 0.000000;
+			case CqFormat_R8G8B8_UINT: return 255.000000;
+			case CqFormat_R8G8B8_SINT: return 127.000000;
+			case CqFormat_B8G8R8_UINT: return 255.000000;
+			case CqFormat_B8G8R8_SINT: return 127.000000;
+			case CqFormat_R8G8B8A8_UINT: return 255.000000;
+			case CqFormat_R8G8B8A8_SINT: return 127.000000;
+			case CqFormat_B8G8R8A8_UINT: return 255.000000;
+			case CqFormat_B8G8R8A8_SINT: return 127.000000;
+			case CqFormat_R16G16_UINT: return 65535.000000;
+			case CqFormat_R16G16_SINT: return 32767.000000;
+			case CqFormat_R16G16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16_SBFLOAT: return 0.000000;
+			case CqFormat_R32_UINT: return 0.000000;
+			case CqFormat_R32_SINT: return 0.000000;
+			case CqFormat_R32_SFLOAT: return 0.000000;
+			case CqFormat_A2R10G10B10_UINT: return 1023.000000;
+			case CqFormat_A2R10G10B10_SINT: return 511.000000;
+			case CqFormat_A2B10G10R10_UINT: return 1023.000000;
+			case CqFormat_A2B10G10R10_SINT: return 511.000000;
+			case CqFormat_R10G10B10A2_UINT: return 1023.000000;
+			case CqFormat_R10G10B10A2_SINT: return 511.000000;
+			case CqFormat_B10G10R10A2_UINT: return 1023.000000;
+			case CqFormat_B10G10R10A2_SINT: return 511.000000;
+			case CqFormat_B10G11R11_UFLOAT: return 65500.000000;
+			case CqFormat_E5B9G9R9_UFLOAT: return 65408.000000;
+			case CqFormat_R16G16B16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16_SBFLOAT: return 0.000000;
+			case CqFormat_R16G16B16A16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16A16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 0.000000;
+			case CqFormat_R32G32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32A32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R64_UINT: return 0.000000;
+			case CqFormat_R64_SINT: return 0.000000;
+			case CqFormat_R64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_D16_UNORM: return 0.000000;
+			case CqFormat_D32_SFLOAT: return 0.000000;
+			case CqFormat_S8_UINT: return 0.000000;
+			case CqFormat_D16_UNORM_S8_UINT: return 255.000000;
+			case CqFormat_D24_UNORM_S8_UINT: return 255.000000;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 255.000000;
+			case CqFormat_DXBC6H_UFLOAT: return 131008.000000;
+			case CqFormat_DXBC6H_SFLOAT: return 65504.000000;
 			default: return 1.000000;
 		}
 	}	else if(channel == 2) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0.000000;
-			case TinyImageFormat_R1_UNORM: return 0.000000;
-			case TinyImageFormat_R2_UNORM: return 0.000000;
-			case TinyImageFormat_R4_UNORM: return 0.000000;
-			case TinyImageFormat_R4G4_UNORM: return 0.000000;
-			case TinyImageFormat_G4R4_UNORM: return 0.000000;
-			case TinyImageFormat_A8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_SNORM: return 0.000000;
-			case TinyImageFormat_R8_UINT: return 0.000000;
-			case TinyImageFormat_R8_SINT: return 0.000000;
-			case TinyImageFormat_R8_SRGB: return 0.000000;
-			case TinyImageFormat_R8G8_UNORM: return 0.000000;
-			case TinyImageFormat_R8G8_SNORM: return 0.000000;
-			case TinyImageFormat_G8R8_UNORM: return 0.000000;
-			case TinyImageFormat_G8R8_SNORM: return 0.000000;
-			case TinyImageFormat_R8G8_UINT: return 0.000000;
-			case TinyImageFormat_R8G8_SINT: return 0.000000;
-			case TinyImageFormat_R8G8_SRGB: return 0.000000;
-			case TinyImageFormat_R16_UNORM: return 0.000000;
-			case TinyImageFormat_R16_SNORM: return 0.000000;
-			case TinyImageFormat_R16_UINT: return 0.000000;
-			case TinyImageFormat_R16_SINT: return 0.000000;
-			case TinyImageFormat_R16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R8G8B8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8_SINT: return 127.000000;
-			case TinyImageFormat_R8G8B8A8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8A8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return 127.000000;
-			case TinyImageFormat_R16G16_UNORM: return 0.000000;
-			case TinyImageFormat_G16R16_UNORM: return 0.000000;
-			case TinyImageFormat_R16G16_SNORM: return 0.000000;
-			case TinyImageFormat_G16R16_SNORM: return 0.000000;
-			case TinyImageFormat_R16G16_UINT: return 0.000000;
-			case TinyImageFormat_R16G16_SINT: return 0.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32_UINT: return 0.000000;
-			case TinyImageFormat_R32_SINT: return 0.000000;
-			case TinyImageFormat_R32_SFLOAT: return 0.000000;
-			case TinyImageFormat_A2R10G10B10_UINT: return 1023.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return 511.000000;
-			case TinyImageFormat_A2B10G10R10_UINT: return 1023.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return 511.000000;
-			case TinyImageFormat_R10G10B10A2_UINT: return 1023.000000;
-			case TinyImageFormat_R10G10B10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G10R10A2_UINT: return 1023.000000;
-			case TinyImageFormat_B10G10R10A2_SINT: return 511.000000;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 65500.000000;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 65408.000000;
-			case TinyImageFormat_R16G16B16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16B16A16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32_UINT: return 0.000000;
-			case TinyImageFormat_R32G32_SINT: return 0.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32B32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R32G32B32A32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64_UINT: return 0.000000;
-			case TinyImageFormat_R64_SINT: return 0.000000;
-			case TinyImageFormat_R64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64_UINT: return 0.000000;
-			case TinyImageFormat_R64G64_SINT: return 0.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64B64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_D16_UNORM: return 0.000000;
-			case TinyImageFormat_X8_D24_UNORM: return 0.000000;
-			case TinyImageFormat_D32_SFLOAT: return 0.000000;
-			case TinyImageFormat_S8_UINT: return 0.000000;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 0.000000;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 0.000000;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 0.000000;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 131008.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 65504.000000;
+			case CqFormat_UNDEFINED: return 0.000000;
+			case CqFormat_R1_UNORM: return 0.000000;
+			case CqFormat_R2_UNORM: return 0.000000;
+			case CqFormat_R4_UNORM: return 0.000000;
+			case CqFormat_R4G4_UNORM: return 0.000000;
+			case CqFormat_G4R4_UNORM: return 0.000000;
+			case CqFormat_A8_UNORM: return 0.000000;
+			case CqFormat_R8_UNORM: return 0.000000;
+			case CqFormat_R8_SNORM: return 0.000000;
+			case CqFormat_R8_UINT: return 0.000000;
+			case CqFormat_R8_SINT: return 0.000000;
+			case CqFormat_R8_SRGB: return 0.000000;
+			case CqFormat_R8G8_UNORM: return 0.000000;
+			case CqFormat_R8G8_SNORM: return 0.000000;
+			case CqFormat_G8R8_UNORM: return 0.000000;
+			case CqFormat_G8R8_SNORM: return 0.000000;
+			case CqFormat_R8G8_UINT: return 0.000000;
+			case CqFormat_R8G8_SINT: return 0.000000;
+			case CqFormat_R8G8_SRGB: return 0.000000;
+			case CqFormat_R16_UNORM: return 0.000000;
+			case CqFormat_R16_SNORM: return 0.000000;
+			case CqFormat_R16_UINT: return 0.000000;
+			case CqFormat_R16_SINT: return 0.000000;
+			case CqFormat_R16_SFLOAT: return 0.000000;
+			case CqFormat_R16_SBFLOAT: return 0.000000;
+			case CqFormat_R8G8B8_UINT: return 255.000000;
+			case CqFormat_R8G8B8_SINT: return 127.000000;
+			case CqFormat_B8G8R8_UINT: return 255.000000;
+			case CqFormat_B8G8R8_SINT: return 127.000000;
+			case CqFormat_R8G8B8A8_UINT: return 255.000000;
+			case CqFormat_R8G8B8A8_SINT: return 127.000000;
+			case CqFormat_B8G8R8A8_UINT: return 255.000000;
+			case CqFormat_B8G8R8A8_SINT: return 127.000000;
+			case CqFormat_R16G16_UNORM: return 0.000000;
+			case CqFormat_G16R16_UNORM: return 0.000000;
+			case CqFormat_R16G16_SNORM: return 0.000000;
+			case CqFormat_G16R16_SNORM: return 0.000000;
+			case CqFormat_R16G16_UINT: return 0.000000;
+			case CqFormat_R16G16_SINT: return 0.000000;
+			case CqFormat_R16G16_SFLOAT: return 0.000000;
+			case CqFormat_R16G16_SBFLOAT: return 0.000000;
+			case CqFormat_R32_UINT: return 0.000000;
+			case CqFormat_R32_SINT: return 0.000000;
+			case CqFormat_R32_SFLOAT: return 0.000000;
+			case CqFormat_A2R10G10B10_UINT: return 1023.000000;
+			case CqFormat_A2R10G10B10_SINT: return 511.000000;
+			case CqFormat_A2B10G10R10_UINT: return 1023.000000;
+			case CqFormat_A2B10G10R10_SINT: return 511.000000;
+			case CqFormat_R10G10B10A2_UINT: return 1023.000000;
+			case CqFormat_R10G10B10A2_SINT: return 511.000000;
+			case CqFormat_B10G10R10A2_UINT: return 1023.000000;
+			case CqFormat_B10G10R10A2_SINT: return 511.000000;
+			case CqFormat_B10G11R11_UFLOAT: return 65500.000000;
+			case CqFormat_E5B9G9R9_UFLOAT: return 65408.000000;
+			case CqFormat_R16G16B16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16_SBFLOAT: return 0.000000;
+			case CqFormat_R16G16B16A16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16A16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 0.000000;
+			case CqFormat_R32G32_UINT: return 0.000000;
+			case CqFormat_R32G32_SINT: return 0.000000;
+			case CqFormat_R32G32_SFLOAT: return 0.000000;
+			case CqFormat_R32G32B32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R32G32B32A32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32A32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R64_UINT: return 0.000000;
+			case CqFormat_R64_SINT: return 0.000000;
+			case CqFormat_R64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64_UINT: return 0.000000;
+			case CqFormat_R64G64_SINT: return 0.000000;
+			case CqFormat_R64G64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64B64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_D16_UNORM: return 0.000000;
+			case CqFormat_X8_D24_UNORM: return 0.000000;
+			case CqFormat_D32_SFLOAT: return 0.000000;
+			case CqFormat_S8_UINT: return 0.000000;
+			case CqFormat_D16_UNORM_S8_UINT: return 0.000000;
+			case CqFormat_D24_UNORM_S8_UINT: return 0.000000;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 0.000000;
+			case CqFormat_DXBC6H_UFLOAT: return 131008.000000;
+			case CqFormat_DXBC6H_SFLOAT: return 65504.000000;
 			default: return 1.000000;
 		}
 	}	else if(channel == 3) {
 		switch(fmt) { 
-			case TinyImageFormat_UNDEFINED: return 0.000000;
-			case TinyImageFormat_R1_UNORM: return 0.000000;
-			case TinyImageFormat_R2_UNORM: return 0.000000;
-			case TinyImageFormat_R4_UNORM: return 0.000000;
-			case TinyImageFormat_R4G4_UNORM: return 0.000000;
-			case TinyImageFormat_G4R4_UNORM: return 0.000000;
-			case TinyImageFormat_A8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_UNORM: return 0.000000;
-			case TinyImageFormat_R8_SNORM: return 0.000000;
-			case TinyImageFormat_R8_UINT: return 0.000000;
-			case TinyImageFormat_R8_SINT: return 0.000000;
-			case TinyImageFormat_R8_SRGB: return 0.000000;
-			case TinyImageFormat_B2G3R3_UNORM: return 0.000000;
-			case TinyImageFormat_R5G6B5_UNORM: return 0.000000;
-			case TinyImageFormat_B5G6R5_UNORM: return 0.000000;
-			case TinyImageFormat_R8G8_UNORM: return 0.000000;
-			case TinyImageFormat_R8G8_SNORM: return 0.000000;
-			case TinyImageFormat_G8R8_UNORM: return 0.000000;
-			case TinyImageFormat_G8R8_SNORM: return 0.000000;
-			case TinyImageFormat_R8G8_UINT: return 0.000000;
-			case TinyImageFormat_R8G8_SINT: return 0.000000;
-			case TinyImageFormat_R8G8_SRGB: return 0.000000;
-			case TinyImageFormat_R16_UNORM: return 0.000000;
-			case TinyImageFormat_R16_SNORM: return 0.000000;
-			case TinyImageFormat_R16_UINT: return 0.000000;
-			case TinyImageFormat_R16_SINT: return 0.000000;
-			case TinyImageFormat_R16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R8G8B8_UNORM: return 0.000000;
-			case TinyImageFormat_R8G8B8_SNORM: return 0.000000;
-			case TinyImageFormat_R8G8B8_UINT: return 0.000000;
-			case TinyImageFormat_R8G8B8_SINT: return 0.000000;
-			case TinyImageFormat_R8G8B8_SRGB: return 0.000000;
-			case TinyImageFormat_B8G8R8_UNORM: return 0.000000;
-			case TinyImageFormat_B8G8R8_SNORM: return 0.000000;
-			case TinyImageFormat_B8G8R8_UINT: return 0.000000;
-			case TinyImageFormat_B8G8R8_SINT: return 0.000000;
-			case TinyImageFormat_B8G8R8_SRGB: return 0.000000;
-			case TinyImageFormat_R8G8B8A8_UINT: return 255.000000;
-			case TinyImageFormat_R8G8B8A8_SINT: return 127.000000;
-			case TinyImageFormat_B8G8R8A8_UINT: return 255.000000;
-			case TinyImageFormat_B8G8R8A8_SINT: return 127.000000;
-			case TinyImageFormat_R16G16_UNORM: return 0.000000;
-			case TinyImageFormat_G16R16_UNORM: return 0.000000;
-			case TinyImageFormat_R16G16_SNORM: return 0.000000;
-			case TinyImageFormat_G16R16_SNORM: return 0.000000;
-			case TinyImageFormat_R16G16_UINT: return 0.000000;
-			case TinyImageFormat_R16G16_SINT: return 0.000000;
-			case TinyImageFormat_R16G16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32_UINT: return 0.000000;
-			case TinyImageFormat_R32_SINT: return 0.000000;
-			case TinyImageFormat_R32_SFLOAT: return 0.000000;
-			case TinyImageFormat_A2R10G10B10_UINT: return 1023.000000;
-			case TinyImageFormat_A2R10G10B10_SINT: return 511.000000;
-			case TinyImageFormat_A2B10G10R10_UINT: return 1023.000000;
-			case TinyImageFormat_A2B10G10R10_SINT: return 511.000000;
-			case TinyImageFormat_R10G10B10A2_UINT: return 3.000000;
-			case TinyImageFormat_B10G10R10A2_UINT: return 3.000000;
-			case TinyImageFormat_B10G11R11_UFLOAT: return 0.000000;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return 65408.000000;
-			case TinyImageFormat_R16G16B16_UNORM: return 0.000000;
-			case TinyImageFormat_R16G16B16_SNORM: return 0.000000;
-			case TinyImageFormat_R16G16B16_UINT: return 0.000000;
-			case TinyImageFormat_R16G16B16_SINT: return 0.000000;
-			case TinyImageFormat_R16G16B16_SFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R16G16B16A16_UINT: return 65535.000000;
-			case TinyImageFormat_R16G16B16A16_SINT: return 32767.000000;
-			case TinyImageFormat_R16G16B16A16_SFLOAT: return 65504.000000;
-			case TinyImageFormat_R16G16B16A16_SBFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32_UINT: return 0.000000;
-			case TinyImageFormat_R32G32_SINT: return 0.000000;
-			case TinyImageFormat_R32G32_SFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32B32_UINT: return 0.000000;
-			case TinyImageFormat_R32G32B32_SINT: return 0.000000;
-			case TinyImageFormat_R32G32B32_SFLOAT: return 0.000000;
-			case TinyImageFormat_R32G32B32A32_UINT: return 4294967295.000000;
-			case TinyImageFormat_R32G32B32A32_SINT: return 2147483647.000000;
-			case TinyImageFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
-			case TinyImageFormat_R64_UINT: return 0.000000;
-			case TinyImageFormat_R64_SINT: return 0.000000;
-			case TinyImageFormat_R64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64_UINT: return 0.000000;
-			case TinyImageFormat_R64G64_SINT: return 0.000000;
-			case TinyImageFormat_R64G64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64B64_UINT: return 0.000000;
-			case TinyImageFormat_R64G64B64_SINT: return 0.000000;
-			case TinyImageFormat_R64G64B64_SFLOAT: return 0.000000;
-			case TinyImageFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
-			case TinyImageFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
-			case TinyImageFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
-			case TinyImageFormat_D16_UNORM: return 0.000000;
-			case TinyImageFormat_X8_D24_UNORM: return 0.000000;
-			case TinyImageFormat_D32_SFLOAT: return 0.000000;
-			case TinyImageFormat_S8_UINT: return 0.000000;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return 0.000000;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return 0.000000;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return 0.000000;
-			case TinyImageFormat_DXBC6H_UFLOAT: return 131008.000000;
-			case TinyImageFormat_DXBC6H_SFLOAT: return 65504.000000;
+			case CqFormat_UNDEFINED: return 0.000000;
+			case CqFormat_R1_UNORM: return 0.000000;
+			case CqFormat_R2_UNORM: return 0.000000;
+			case CqFormat_R4_UNORM: return 0.000000;
+			case CqFormat_R4G4_UNORM: return 0.000000;
+			case CqFormat_G4R4_UNORM: return 0.000000;
+			case CqFormat_A8_UNORM: return 0.000000;
+			case CqFormat_R8_UNORM: return 0.000000;
+			case CqFormat_R8_SNORM: return 0.000000;
+			case CqFormat_R8_UINT: return 0.000000;
+			case CqFormat_R8_SINT: return 0.000000;
+			case CqFormat_R8_SRGB: return 0.000000;
+			case CqFormat_B2G3R3_UNORM: return 0.000000;
+			case CqFormat_R5G6B5_UNORM: return 0.000000;
+			case CqFormat_B5G6R5_UNORM: return 0.000000;
+			case CqFormat_R8G8_UNORM: return 0.000000;
+			case CqFormat_R8G8_SNORM: return 0.000000;
+			case CqFormat_G8R8_UNORM: return 0.000000;
+			case CqFormat_G8R8_SNORM: return 0.000000;
+			case CqFormat_R8G8_UINT: return 0.000000;
+			case CqFormat_R8G8_SINT: return 0.000000;
+			case CqFormat_R8G8_SRGB: return 0.000000;
+			case CqFormat_R16_UNORM: return 0.000000;
+			case CqFormat_R16_SNORM: return 0.000000;
+			case CqFormat_R16_UINT: return 0.000000;
+			case CqFormat_R16_SINT: return 0.000000;
+			case CqFormat_R16_SFLOAT: return 0.000000;
+			case CqFormat_R16_SBFLOAT: return 0.000000;
+			case CqFormat_R8G8B8_UNORM: return 0.000000;
+			case CqFormat_R8G8B8_SNORM: return 0.000000;
+			case CqFormat_R8G8B8_UINT: return 0.000000;
+			case CqFormat_R8G8B8_SINT: return 0.000000;
+			case CqFormat_R8G8B8_SRGB: return 0.000000;
+			case CqFormat_B8G8R8_UNORM: return 0.000000;
+			case CqFormat_B8G8R8_SNORM: return 0.000000;
+			case CqFormat_B8G8R8_UINT: return 0.000000;
+			case CqFormat_B8G8R8_SINT: return 0.000000;
+			case CqFormat_B8G8R8_SRGB: return 0.000000;
+			case CqFormat_R8G8B8A8_UINT: return 255.000000;
+			case CqFormat_R8G8B8A8_SINT: return 127.000000;
+			case CqFormat_B8G8R8A8_UINT: return 255.000000;
+			case CqFormat_B8G8R8A8_SINT: return 127.000000;
+			case CqFormat_R16G16_UNORM: return 0.000000;
+			case CqFormat_G16R16_UNORM: return 0.000000;
+			case CqFormat_R16G16_SNORM: return 0.000000;
+			case CqFormat_G16R16_SNORM: return 0.000000;
+			case CqFormat_R16G16_UINT: return 0.000000;
+			case CqFormat_R16G16_SINT: return 0.000000;
+			case CqFormat_R16G16_SFLOAT: return 0.000000;
+			case CqFormat_R16G16_SBFLOAT: return 0.000000;
+			case CqFormat_R32_UINT: return 0.000000;
+			case CqFormat_R32_SINT: return 0.000000;
+			case CqFormat_R32_SFLOAT: return 0.000000;
+			case CqFormat_A2R10G10B10_UINT: return 1023.000000;
+			case CqFormat_A2R10G10B10_SINT: return 511.000000;
+			case CqFormat_A2B10G10R10_UINT: return 1023.000000;
+			case CqFormat_A2B10G10R10_SINT: return 511.000000;
+			case CqFormat_R10G10B10A2_UINT: return 3.000000;
+			case CqFormat_B10G10R10A2_UINT: return 3.000000;
+			case CqFormat_B10G11R11_UFLOAT: return 0.000000;
+			case CqFormat_E5B9G9R9_UFLOAT: return 65408.000000;
+			case CqFormat_R16G16B16_UNORM: return 0.000000;
+			case CqFormat_R16G16B16_SNORM: return 0.000000;
+			case CqFormat_R16G16B16_UINT: return 0.000000;
+			case CqFormat_R16G16B16_SINT: return 0.000000;
+			case CqFormat_R16G16B16_SFLOAT: return 0.000000;
+			case CqFormat_R16G16B16_SBFLOAT: return 0.000000;
+			case CqFormat_R16G16B16A16_UINT: return 65535.000000;
+			case CqFormat_R16G16B16A16_SINT: return 32767.000000;
+			case CqFormat_R16G16B16A16_SFLOAT: return 65504.000000;
+			case CqFormat_R16G16B16A16_SBFLOAT: return 0.000000;
+			case CqFormat_R32G32_UINT: return 0.000000;
+			case CqFormat_R32G32_SINT: return 0.000000;
+			case CqFormat_R32G32_SFLOAT: return 0.000000;
+			case CqFormat_R32G32B32_UINT: return 0.000000;
+			case CqFormat_R32G32B32_SINT: return 0.000000;
+			case CqFormat_R32G32B32_SFLOAT: return 0.000000;
+			case CqFormat_R32G32B32A32_UINT: return 4294967295.000000;
+			case CqFormat_R32G32B32A32_SINT: return 2147483647.000000;
+			case CqFormat_R32G32B32A32_SFLOAT: return 340282346638528859811704183484516925440.000000;
+			case CqFormat_R64_UINT: return 0.000000;
+			case CqFormat_R64_SINT: return 0.000000;
+			case CqFormat_R64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64_UINT: return 0.000000;
+			case CqFormat_R64G64_SINT: return 0.000000;
+			case CqFormat_R64G64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64B64_UINT: return 0.000000;
+			case CqFormat_R64G64B64_SINT: return 0.000000;
+			case CqFormat_R64G64B64_SFLOAT: return 0.000000;
+			case CqFormat_R64G64B64A64_UINT: return 18446744073709551616.000000;
+			case CqFormat_R64G64B64A64_SINT: return 9223372036854775808.000000;
+			case CqFormat_R64G64B64A64_SFLOAT: return 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000;
+			case CqFormat_D16_UNORM: return 0.000000;
+			case CqFormat_X8_D24_UNORM: return 0.000000;
+			case CqFormat_D32_SFLOAT: return 0.000000;
+			case CqFormat_S8_UINT: return 0.000000;
+			case CqFormat_D16_UNORM_S8_UINT: return 0.000000;
+			case CqFormat_D24_UNORM_S8_UINT: return 0.000000;
+			case CqFormat_D32_SFLOAT_S8_UINT: return 0.000000;
+			case CqFormat_DXBC6H_UFLOAT: return 131008.000000;
+			case CqFormat_DXBC6H_SFLOAT: return 65504.000000;
 			default: return 1.000000;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0.0;
 }
 
@@ -4570,7 +4570,7 @@ CQ_FMT_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalChanne
 			default: return 0.000000;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0.0;
 }
 }
@@ -4936,1151 +4936,1151 @@ CQ_FMT_CONSTEXPR inline double getMaxAtPhysical(Format const fmt, PhysicalChanne
 			default: return 1.000000;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
+	 CqFormat_ASSERT(false);
 	return 0.0;
 }
 }
 
-CQ_FMT_CONSTEXPR inline TinyImageFormat_LogicalChannel TinyImageFormat_PhysicalChannelToLogical(TinyImageFormat const fmt, int8_t const channel) {
-	 TinyImageFormat_ASSERT(channel != TinyImageFormat_PC_CONST_0);
-	 TinyImageFormat_ASSERT(channel != TinyImageFormat_PC_CONST_1);
-	if(channel == TinyImageFormat_PC_0) {
+CQ_FMT_CONSTEXPR inline CqFormat_LogicalChannel CqFormat_PhysicalChannelToLogical(CqFormat const fmt, int8_t const channel) {
+	 CqFormat_ASSERT(channel != CqFormat_PC_CONST_0);
+	 CqFormat_ASSERT(channel != CqFormat_PC_CONST_1);
+	if(channel == CqFormat_PC_0) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B4G4R4A4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B5G5R5A1_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B2G3R3A8_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8A8_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8A8_SNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8A8_UINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8A8_SINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8A8_SRGB: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_B10G10R10A2_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B10G10R10A2_UINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B10G10R10A2_SNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B10G10R10A2_SINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_LC_Green;
-			default: return TinyImageFormat_LC_Red;
+			case CqFormat_UNDEFINED: return CqFormat_LC_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_LC_Green;
+			case CqFormat_A8_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B4G4R4A4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_LC_1;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_LC_1;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B5G5R5A1_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_LC_1;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_LC_1;
+			case CqFormat_B2G3R3A8_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_G8R8_UNORM: return CqFormat_LC_Green;
+			case CqFormat_G8R8_SNORM: return CqFormat_LC_Green;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8_UINT: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8_SINT: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8A8_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8A8_SNORM: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8A8_UINT: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8A8_SINT: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8A8_SRGB: return CqFormat_LC_Blue;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_G16R16_UNORM: return CqFormat_LC_Green;
+			case CqFormat_G16R16_SNORM: return CqFormat_LC_Green;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_LC_Alpha;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_LC_Alpha;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_LC_Alpha;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_LC_Alpha;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_LC_Alpha;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_LC_Alpha;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_LC_Alpha;
+			case CqFormat_B10G10R10A2_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_B10G10R10A2_UINT: return CqFormat_LC_Blue;
+			case CqFormat_B10G10R10A2_SNORM: return CqFormat_LC_Blue;
+			case CqFormat_B10G10R10A2_SINT: return CqFormat_LC_Blue;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_LC_Blue;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_LC_Alpha;
+			case CqFormat_X8_D24_UNORM: return CqFormat_LC_0;
+			case CqFormat_S8_UINT: return CqFormat_LC_Green;
+			default: return CqFormat_LC_Red;
 		}
-	}	else if(channel == TinyImageFormat_PC_1) {
+	}	else if(channel == CqFormat_PC_1) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_LC_0;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_LC_Alpha;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_LC_Alpha;
-			default: return TinyImageFormat_LC_Green;
+			case CqFormat_UNDEFINED: return CqFormat_LC_0;
+			case CqFormat_R1_UNORM: return CqFormat_LC_0;
+			case CqFormat_R2_UNORM: return CqFormat_LC_0;
+			case CqFormat_R4_UNORM: return CqFormat_LC_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8_SNORM: return CqFormat_LC_0;
+			case CqFormat_R8_UINT: return CqFormat_LC_0;
+			case CqFormat_R8_SINT: return CqFormat_LC_0;
+			case CqFormat_R8_SRGB: return CqFormat_LC_0;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_LC_Red;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_LC_Red;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_G8R8_UNORM: return CqFormat_LC_Red;
+			case CqFormat_G8R8_SNORM: return CqFormat_LC_Red;
+			case CqFormat_R16_UNORM: return CqFormat_LC_0;
+			case CqFormat_R16_SNORM: return CqFormat_LC_0;
+			case CqFormat_R16_UINT: return CqFormat_LC_0;
+			case CqFormat_R16_SINT: return CqFormat_LC_0;
+			case CqFormat_R16_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_R16_SBFLOAT: return CqFormat_LC_0;
+			case CqFormat_G16R16_UNORM: return CqFormat_LC_Red;
+			case CqFormat_G16R16_SNORM: return CqFormat_LC_Red;
+			case CqFormat_R32_UINT: return CqFormat_LC_0;
+			case CqFormat_R32_SINT: return CqFormat_LC_0;
+			case CqFormat_R32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_LC_Red;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_LC_Red;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_LC_Red;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_LC_Blue;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_LC_Blue;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_LC_Blue;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_LC_Blue;
+			case CqFormat_R64_UINT: return CqFormat_LC_0;
+			case CqFormat_R64_SINT: return CqFormat_LC_0;
+			case CqFormat_R64_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_D16_UNORM: return CqFormat_LC_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_LC_Red;
+			case CqFormat_D32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_DXBC4_UNORM: return CqFormat_LC_0;
+			case CqFormat_DXBC4_SNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_LC_0;
+			case CqFormat_CLUT_P4: return CqFormat_LC_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_LC_Alpha;
+			case CqFormat_CLUT_P8: return CqFormat_LC_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_LC_Alpha;
+			default: return CqFormat_LC_Green;
 		}
-	}	else if(channel == TinyImageFormat_PC_2) {
+	}	else if(channel == CqFormat_PC_2) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R4G4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_LC_0;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B4G4R4A4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B5G5R5A1_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_B2G3R3A8_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R8G8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8G8_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8G8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8G8_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8G8_SRGB: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8A8_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8A8_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8A8_UINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8A8_SINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8A8_SRGB: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R16G16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16G16_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16G16_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16G16_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16G16_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R16G16_SBFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_B10G10R10A2_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B10G10R10A2_UINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B10G10R10A2_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B10G10R10A2_SINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_LC_Green;
-			case TinyImageFormat_R32G32_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32G32_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R32G32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64G64_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64G64_SINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R64G64_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC5_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC5_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_LC_0;
-			default: return TinyImageFormat_LC_Blue;
+			case CqFormat_UNDEFINED: return CqFormat_LC_0;
+			case CqFormat_R1_UNORM: return CqFormat_LC_0;
+			case CqFormat_R2_UNORM: return CqFormat_LC_0;
+			case CqFormat_R4_UNORM: return CqFormat_LC_0;
+			case CqFormat_R4G4_UNORM: return CqFormat_LC_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_LC_0;
+			case CqFormat_A8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8_SNORM: return CqFormat_LC_0;
+			case CqFormat_R8_UINT: return CqFormat_LC_0;
+			case CqFormat_R8_SINT: return CqFormat_LC_0;
+			case CqFormat_R8_SRGB: return CqFormat_LC_0;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B4G4R4A4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_LC_Green;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_LC_Green;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_LC_Green;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_LC_Green;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B5G5R5A1_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_LC_Green;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_LC_Green;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_LC_Red;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_LC_Green;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_LC_Green;
+			case CqFormat_B2G3R3A8_UNORM: return CqFormat_LC_Red;
+			case CqFormat_R8G8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8G8_SNORM: return CqFormat_LC_0;
+			case CqFormat_G8R8_UNORM: return CqFormat_LC_0;
+			case CqFormat_G8R8_SNORM: return CqFormat_LC_0;
+			case CqFormat_R8G8_UINT: return CqFormat_LC_0;
+			case CqFormat_R8G8_SINT: return CqFormat_LC_0;
+			case CqFormat_R8G8_SRGB: return CqFormat_LC_0;
+			case CqFormat_R16_UNORM: return CqFormat_LC_0;
+			case CqFormat_R16_SNORM: return CqFormat_LC_0;
+			case CqFormat_R16_UINT: return CqFormat_LC_0;
+			case CqFormat_R16_SINT: return CqFormat_LC_0;
+			case CqFormat_R16_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_R16_SBFLOAT: return CqFormat_LC_0;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8_UINT: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8_SINT: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8A8_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8A8_SNORM: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8A8_UINT: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8A8_SINT: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8A8_SRGB: return CqFormat_LC_Red;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_LC_Red;
+			case CqFormat_R16G16_UNORM: return CqFormat_LC_0;
+			case CqFormat_G16R16_UNORM: return CqFormat_LC_0;
+			case CqFormat_R16G16_SNORM: return CqFormat_LC_0;
+			case CqFormat_G16R16_SNORM: return CqFormat_LC_0;
+			case CqFormat_R16G16_UINT: return CqFormat_LC_0;
+			case CqFormat_R16G16_SINT: return CqFormat_LC_0;
+			case CqFormat_R16G16_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_R16G16_SBFLOAT: return CqFormat_LC_0;
+			case CqFormat_R32_UINT: return CqFormat_LC_0;
+			case CqFormat_R32_SINT: return CqFormat_LC_0;
+			case CqFormat_R32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_LC_Green;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_LC_Green;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_LC_Green;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_LC_Green;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_LC_Green;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_LC_Green;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_LC_Green;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_LC_Green;
+			case CqFormat_B10G10R10A2_UNORM: return CqFormat_LC_Red;
+			case CqFormat_B10G10R10A2_UINT: return CqFormat_LC_Red;
+			case CqFormat_B10G10R10A2_SNORM: return CqFormat_LC_Red;
+			case CqFormat_B10G10R10A2_SINT: return CqFormat_LC_Red;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_LC_Red;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_LC_Green;
+			case CqFormat_R32G32_UINT: return CqFormat_LC_0;
+			case CqFormat_R32G32_SINT: return CqFormat_LC_0;
+			case CqFormat_R32G32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_R64_UINT: return CqFormat_LC_0;
+			case CqFormat_R64_SINT: return CqFormat_LC_0;
+			case CqFormat_R64_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_R64G64_UINT: return CqFormat_LC_0;
+			case CqFormat_R64G64_SINT: return CqFormat_LC_0;
+			case CqFormat_R64G64_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_D16_UNORM: return CqFormat_LC_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_LC_0;
+			case CqFormat_D32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D16_UNORM_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D24_UNORM_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_DXBC4_UNORM: return CqFormat_LC_0;
+			case CqFormat_DXBC4_SNORM: return CqFormat_LC_0;
+			case CqFormat_DXBC5_UNORM: return CqFormat_LC_0;
+			case CqFormat_DXBC5_SNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return CqFormat_LC_0;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return CqFormat_LC_0;
+			case CqFormat_CLUT_P4: return CqFormat_LC_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_LC_0;
+			case CqFormat_CLUT_P8: return CqFormat_LC_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_LC_0;
+			default: return CqFormat_LC_Blue;
 		}
-	}	else if(channel == TinyImageFormat_PC_3) {
+	}	else if(channel == CqFormat_PC_3) {
 		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R4G4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R4G4B4X4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R5G6B5_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_R5G5B5X1_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R8G8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R8G8B8X8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16_SBFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_LC_Blue;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_LC_Red;
-			case TinyImageFormat_R16G16B16_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16B16_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16B16_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16B16_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16B16_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32B32_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32B32_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R32G32B32_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64B64_UINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64B64_SINT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_R64G64B64_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return TinyImageFormat_LC_0;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC5_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC5_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC6H_UFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_DXBC6H_SFLOAT: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_R8G8B8_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_R8G8B8_SRGB: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return TinyImageFormat_LC_1;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_LC_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_LC_0;
-			default: return TinyImageFormat_LC_Alpha;
-		}
-	}
-	 TinyImageFormat_ASSERT(false);
-	return TinyImageFormat_LC_0;
-}
-
-CQ_FMT_CONSTEXPR inline int8_t TinyImageFormat_LogicalChannelToPhysical(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	 TinyImageFormat_ASSERT(channel != TinyImageFormat_LC_0);
-	 TinyImageFormat_ASSERT(channel != TinyImageFormat_LC_1);
-	if(channel == TinyImageFormat_LC_Red) {
-		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B4G4R4A4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B5G5R5A1_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_B2G3R3A8_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8A8_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8A8_SNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8A8_UINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8A8_SINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8A8_SRGB: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_PC_3;
-			case TinyImageFormat_B10G10R10A2_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B10G10R10A2_UINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B10G10R10A2_SNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B10G10R10A2_SINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_PC_3;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			default: return TinyImageFormat_PC_0;
-		}
-	}	else if(channel == TinyImageFormat_LC_Green) {
-		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_PC_2;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_PC_2;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_PC_CONST_0;
-			default: return TinyImageFormat_PC_1;
-		}
-	}	else if(channel == TinyImageFormat_LC_Blue) {
-		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R4G4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B4G4R4A4_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B5G5R5A1_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_B2G3R3A8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R8G8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8G8_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8G8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8G8_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R8G8_SRGB: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8A8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8A8_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8A8_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8A8_SINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8A8_SRGB: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R16G16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16G16_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16G16_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16G16_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16G16_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R16G16_SBFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_PC_3;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_PC_1;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_PC_1;
-			case TinyImageFormat_B10G10R10A2_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B10G10R10A2_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B10G10R10A2_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B10G10R10A2_SINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_PC_1;
-			case TinyImageFormat_R32G32_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32G32_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R32G32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64G64_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64G64_SINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R64G64_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC5_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC5_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_PC_CONST_0;
-			default: return TinyImageFormat_PC_2;
-		}
-	}	else if(channel == TinyImageFormat_LC_Alpha) {
-		switch(fmt) {
-			case TinyImageFormat_UNDEFINED: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_R1_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R2_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R4G4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_G4R4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_A8_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B2G3R3_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R4G4B4X4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B4G4R4X4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_A4R4G4B4_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_X4R4G4B4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_A4B4G4R4_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_X4B4G4R4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R5G6B5_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B5G6R5_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_A1B5G5R5_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A1R5G5B5_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R5G5B5X1_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B5G5R5X1_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_X1R5G5B5_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_X1B5G5R5_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_G8R8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_G8R8_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16_SBFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R8G8B8X8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_B8G8R8X8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_G16R16_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_G16R16_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16_SBFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_A2R10G10B10_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2R10G10B10_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2R10G10B10_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2R10G10B10_SINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2B10G10R10_UNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2B10G10R10_UINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2B10G10R10_SNORM: return TinyImageFormat_PC_0;
-			case TinyImageFormat_A2B10G10R10_SINT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_B10G11R11_UFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_E5B9G9R9_UFLOAT: return TinyImageFormat_PC_0;
-			case TinyImageFormat_R16G16B16_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16B16_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16B16_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16B16_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16B16_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R16G16B16_SBFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32B32_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32B32_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R32G32B32_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64B64_UINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64B64_SINT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_R64G64B64_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_D16_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_X8_D24_UNORM: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D32_SFLOAT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D16_UNORM_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D24_UNORM_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_D32_SFLOAT_S8_UINT: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_DXBC1_RGB_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC1_RGB_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC4_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC4_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC5_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC5_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC6H_UFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_DXBC6H_SFLOAT: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_R8G8B8_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_R8G8B8_SRGB: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_EAC_R11_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_EAC_R11_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return TinyImageFormat_PC_CONST_1;
-			case TinyImageFormat_CLUT_P4: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P4A4: return TinyImageFormat_PC_1;
-			case TinyImageFormat_CLUT_P8: return TinyImageFormat_PC_CONST_0;
-			case TinyImageFormat_CLUT_P8A8: return TinyImageFormat_PC_1;
-			default: return TinyImageFormat_PC_3;
+			case CqFormat_UNDEFINED: return CqFormat_LC_0;
+			case CqFormat_R1_UNORM: return CqFormat_LC_1;
+			case CqFormat_R2_UNORM: return CqFormat_LC_1;
+			case CqFormat_R4_UNORM: return CqFormat_LC_1;
+			case CqFormat_R4G4_UNORM: return CqFormat_LC_1;
+			case CqFormat_G4R4_UNORM: return CqFormat_LC_1;
+			case CqFormat_A8_UNORM: return CqFormat_LC_0;
+			case CqFormat_R8_UNORM: return CqFormat_LC_1;
+			case CqFormat_R8_SNORM: return CqFormat_LC_1;
+			case CqFormat_R8_UINT: return CqFormat_LC_1;
+			case CqFormat_R8_SINT: return CqFormat_LC_1;
+			case CqFormat_R8_SRGB: return CqFormat_LC_1;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_LC_1;
+			case CqFormat_R4G4B4X4_UNORM: return CqFormat_LC_1;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_LC_1;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_LC_Red;
+			case CqFormat_R5G6B5_UNORM: return CqFormat_LC_1;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_LC_1;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_R5G5B5X1_UNORM: return CqFormat_LC_1;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_LC_1;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_LC_Red;
+			case CqFormat_R8G8_UNORM: return CqFormat_LC_1;
+			case CqFormat_R8G8_SNORM: return CqFormat_LC_1;
+			case CqFormat_G8R8_UNORM: return CqFormat_LC_1;
+			case CqFormat_G8R8_SNORM: return CqFormat_LC_1;
+			case CqFormat_R8G8_UINT: return CqFormat_LC_1;
+			case CqFormat_R8G8_SINT: return CqFormat_LC_1;
+			case CqFormat_R8G8_SRGB: return CqFormat_LC_1;
+			case CqFormat_R16_UNORM: return CqFormat_LC_1;
+			case CqFormat_R16_SNORM: return CqFormat_LC_1;
+			case CqFormat_R16_UINT: return CqFormat_LC_1;
+			case CqFormat_R16_SINT: return CqFormat_LC_1;
+			case CqFormat_R16_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R16_SBFLOAT: return CqFormat_LC_1;
+			case CqFormat_R8G8B8_UNORM: return CqFormat_LC_1;
+			case CqFormat_R8G8B8_SNORM: return CqFormat_LC_1;
+			case CqFormat_R8G8B8_UINT: return CqFormat_LC_1;
+			case CqFormat_R8G8B8_SINT: return CqFormat_LC_1;
+			case CqFormat_R8G8B8_SRGB: return CqFormat_LC_1;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_LC_1;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_LC_1;
+			case CqFormat_B8G8R8_UINT: return CqFormat_LC_1;
+			case CqFormat_B8G8R8_SINT: return CqFormat_LC_1;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_LC_1;
+			case CqFormat_R8G8B8X8_UNORM: return CqFormat_LC_1;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_LC_1;
+			case CqFormat_R16G16_UNORM: return CqFormat_LC_1;
+			case CqFormat_G16R16_UNORM: return CqFormat_LC_1;
+			case CqFormat_R16G16_SNORM: return CqFormat_LC_1;
+			case CqFormat_G16R16_SNORM: return CqFormat_LC_1;
+			case CqFormat_R16G16_UINT: return CqFormat_LC_1;
+			case CqFormat_R16G16_SINT: return CqFormat_LC_1;
+			case CqFormat_R16G16_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R16G16_SBFLOAT: return CqFormat_LC_1;
+			case CqFormat_R32_UINT: return CqFormat_LC_1;
+			case CqFormat_R32_SINT: return CqFormat_LC_1;
+			case CqFormat_R32_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_LC_Blue;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_LC_Blue;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_LC_Blue;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_LC_Blue;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_LC_Red;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_LC_Red;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_LC_Red;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_LC_Red;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_LC_1;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_LC_Red;
+			case CqFormat_R16G16B16_UNORM: return CqFormat_LC_1;
+			case CqFormat_R16G16B16_SNORM: return CqFormat_LC_1;
+			case CqFormat_R16G16B16_UINT: return CqFormat_LC_1;
+			case CqFormat_R16G16B16_SINT: return CqFormat_LC_1;
+			case CqFormat_R16G16B16_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R16G16B16_SBFLOAT: return CqFormat_LC_1;
+			case CqFormat_R32G32_UINT: return CqFormat_LC_1;
+			case CqFormat_R32G32_SINT: return CqFormat_LC_1;
+			case CqFormat_R32G32_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R32G32B32_UINT: return CqFormat_LC_1;
+			case CqFormat_R32G32B32_SINT: return CqFormat_LC_1;
+			case CqFormat_R32G32B32_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R64_UINT: return CqFormat_LC_1;
+			case CqFormat_R64_SINT: return CqFormat_LC_1;
+			case CqFormat_R64_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R64G64_UINT: return CqFormat_LC_1;
+			case CqFormat_R64G64_SINT: return CqFormat_LC_1;
+			case CqFormat_R64G64_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_R64G64B64_UINT: return CqFormat_LC_1;
+			case CqFormat_R64G64B64_SINT: return CqFormat_LC_1;
+			case CqFormat_R64G64B64_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_D16_UNORM: return CqFormat_LC_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_LC_0;
+			case CqFormat_D32_SFLOAT: return CqFormat_LC_0;
+			case CqFormat_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D16_UNORM_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D24_UNORM_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return CqFormat_LC_0;
+			case CqFormat_DXBC1_RGB_UNORM: return CqFormat_LC_1;
+			case CqFormat_DXBC1_RGB_SRGB: return CqFormat_LC_1;
+			case CqFormat_DXBC4_UNORM: return CqFormat_LC_1;
+			case CqFormat_DXBC4_SNORM: return CqFormat_LC_1;
+			case CqFormat_DXBC5_UNORM: return CqFormat_LC_1;
+			case CqFormat_DXBC5_SNORM: return CqFormat_LC_1;
+			case CqFormat_DXBC6H_UFLOAT: return CqFormat_LC_1;
+			case CqFormat_DXBC6H_SFLOAT: return CqFormat_LC_1;
+			case CqFormat_ETC2_R8G8B8_UNORM: return CqFormat_LC_1;
+			case CqFormat_ETC2_R8G8B8_SRGB: return CqFormat_LC_1;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_LC_1;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_LC_1;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return CqFormat_LC_1;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return CqFormat_LC_1;
+			case CqFormat_CLUT_P4: return CqFormat_LC_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_LC_0;
+			case CqFormat_CLUT_P8: return CqFormat_LC_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_LC_0;
+			default: return CqFormat_LC_Alpha;
 		}
 	}
-	 TinyImageFormat_ASSERT(false);
-	return TinyImageFormat_PC_CONST_0;
+	 CqFormat_ASSERT(false);
+	return CqFormat_LC_0;
 }
 
-CQ_FMT_CONSTEXPR inline char const * const TinyImageFormat_Name(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline int8_t CqFormat_LogicalChannelToPhysical(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+	 CqFormat_ASSERT(channel != CqFormat_LC_0);
+	 CqFormat_ASSERT(channel != CqFormat_LC_1);
+	if(channel == CqFormat_LC_Red) {
+		switch(fmt) {
+			case CqFormat_UNDEFINED: return CqFormat_PC_CONST_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_PC_1;
+			case CqFormat_A8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_PC_2;
+			case CqFormat_B4G4R4A4_UNORM: return CqFormat_PC_2;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_PC_2;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_PC_1;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_PC_1;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_PC_3;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_PC_3;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_PC_2;
+			case CqFormat_B5G5R5A1_UNORM: return CqFormat_PC_2;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_PC_3;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_PC_1;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_PC_2;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_PC_1;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_PC_3;
+			case CqFormat_B2G3R3A8_UNORM: return CqFormat_PC_2;
+			case CqFormat_G8R8_UNORM: return CqFormat_PC_1;
+			case CqFormat_G8R8_SNORM: return CqFormat_PC_1;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_PC_2;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_PC_2;
+			case CqFormat_B8G8R8_UINT: return CqFormat_PC_2;
+			case CqFormat_B8G8R8_SINT: return CqFormat_PC_2;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_PC_2;
+			case CqFormat_B8G8R8A8_UNORM: return CqFormat_PC_2;
+			case CqFormat_B8G8R8A8_SNORM: return CqFormat_PC_2;
+			case CqFormat_B8G8R8A8_UINT: return CqFormat_PC_2;
+			case CqFormat_B8G8R8A8_SINT: return CqFormat_PC_2;
+			case CqFormat_B8G8R8A8_SRGB: return CqFormat_PC_2;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_PC_2;
+			case CqFormat_G16R16_UNORM: return CqFormat_PC_1;
+			case CqFormat_G16R16_SNORM: return CqFormat_PC_1;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_PC_1;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_PC_1;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_PC_1;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_PC_1;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_PC_3;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_PC_3;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_PC_3;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_PC_3;
+			case CqFormat_B10G10R10A2_UNORM: return CqFormat_PC_2;
+			case CqFormat_B10G10R10A2_UINT: return CqFormat_PC_2;
+			case CqFormat_B10G10R10A2_SNORM: return CqFormat_PC_2;
+			case CqFormat_B10G10R10A2_SINT: return CqFormat_PC_2;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_PC_2;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_PC_3;
+			case CqFormat_X8_D24_UNORM: return CqFormat_PC_1;
+			case CqFormat_S8_UINT: return CqFormat_PC_CONST_0;
+			default: return CqFormat_PC_0;
+		}
+	}	else if(channel == CqFormat_LC_Green) {
+		switch(fmt) {
+			case CqFormat_UNDEFINED: return CqFormat_PC_CONST_0;
+			case CqFormat_R1_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R2_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_PC_0;
+			case CqFormat_A8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SRGB: return CqFormat_PC_CONST_0;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_PC_2;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_PC_2;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_PC_2;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_PC_2;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_PC_2;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_PC_2;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_PC_2;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_PC_2;
+			case CqFormat_G8R8_UNORM: return CqFormat_PC_0;
+			case CqFormat_G8R8_SNORM: return CqFormat_PC_0;
+			case CqFormat_R16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SBFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_G16R16_UNORM: return CqFormat_PC_0;
+			case CqFormat_G16R16_SNORM: return CqFormat_PC_0;
+			case CqFormat_R32_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_PC_2;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_PC_2;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_PC_2;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_PC_2;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_PC_2;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_PC_2;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_PC_2;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_PC_2;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_PC_2;
+			case CqFormat_R64_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_D16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_D32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_S8_UINT: return CqFormat_PC_0;
+			case CqFormat_DXBC4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC4_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P4: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P8: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_PC_CONST_0;
+			default: return CqFormat_PC_1;
+		}
+	}	else if(channel == CqFormat_LC_Blue) {
+		switch(fmt) {
+			case CqFormat_UNDEFINED: return CqFormat_PC_CONST_0;
+			case CqFormat_R1_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R2_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R4G4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G4R4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_A8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8_SRGB: return CqFormat_PC_CONST_0;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_PC_0;
+			case CqFormat_B4G4R4A4_UNORM: return CqFormat_PC_0;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_PC_0;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_PC_3;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_PC_3;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_PC_1;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_PC_1;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_PC_0;
+			case CqFormat_B5G5R5A1_UNORM: return CqFormat_PC_0;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_PC_1;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_PC_3;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_PC_0;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_PC_3;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_PC_1;
+			case CqFormat_B2G3R3A8_UNORM: return CqFormat_PC_0;
+			case CqFormat_R8G8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8G8_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G8R8_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G8R8_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R8G8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8G8_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R8G8_SRGB: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16_SBFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_PC_0;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_PC_0;
+			case CqFormat_B8G8R8_UINT: return CqFormat_PC_0;
+			case CqFormat_B8G8R8_SINT: return CqFormat_PC_0;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_PC_0;
+			case CqFormat_B8G8R8A8_UNORM: return CqFormat_PC_0;
+			case CqFormat_B8G8R8A8_SNORM: return CqFormat_PC_0;
+			case CqFormat_B8G8R8A8_UINT: return CqFormat_PC_0;
+			case CqFormat_B8G8R8A8_SINT: return CqFormat_PC_0;
+			case CqFormat_B8G8R8A8_SRGB: return CqFormat_PC_0;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_PC_0;
+			case CqFormat_R16G16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G16R16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16G16_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_G16R16_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_R16G16_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16G16_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16G16_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R16G16_SBFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_PC_3;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_PC_3;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_PC_3;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_PC_3;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_PC_1;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_PC_1;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_PC_1;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_PC_1;
+			case CqFormat_B10G10R10A2_UNORM: return CqFormat_PC_0;
+			case CqFormat_B10G10R10A2_UINT: return CqFormat_PC_0;
+			case CqFormat_B10G10R10A2_SNORM: return CqFormat_PC_0;
+			case CqFormat_B10G10R10A2_SINT: return CqFormat_PC_0;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_PC_0;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_PC_1;
+			case CqFormat_R32G32_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32G32_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R32G32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64G64_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64G64_SINT: return CqFormat_PC_CONST_0;
+			case CqFormat_R64G64_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_D16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_D32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D16_UNORM_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D24_UNORM_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC4_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC4_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC5_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC5_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P4: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P8: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_PC_CONST_0;
+			default: return CqFormat_PC_2;
+		}
+	}	else if(channel == CqFormat_LC_Alpha) {
+		switch(fmt) {
+			case CqFormat_UNDEFINED: return CqFormat_PC_CONST_0;
+			case CqFormat_R1_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R2_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R4G4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_G4R4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_A8_UNORM: return CqFormat_PC_0;
+			case CqFormat_R8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_B2G3R3_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R4G4B4X4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B4G4R4X4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_A4R4G4B4_UNORM: return CqFormat_PC_0;
+			case CqFormat_X4R4G4B4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_A4B4G4R4_UNORM: return CqFormat_PC_0;
+			case CqFormat_X4B4G4R4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R5G6B5_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B5G6R5_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_A1B5G5R5_UNORM: return CqFormat_PC_0;
+			case CqFormat_A1R5G5B5_UNORM: return CqFormat_PC_0;
+			case CqFormat_R5G5B5X1_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B5G5R5X1_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_X1R5G5B5_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_X1B5G5R5_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_G8R8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_G8R8_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16_SBFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_R8G8B8X8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_B8G8R8X8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_G16R16_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_G16R16_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16_SBFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_A2R10G10B10_UNORM: return CqFormat_PC_0;
+			case CqFormat_A2R10G10B10_UINT: return CqFormat_PC_0;
+			case CqFormat_A2R10G10B10_SNORM: return CqFormat_PC_0;
+			case CqFormat_A2R10G10B10_SINT: return CqFormat_PC_0;
+			case CqFormat_A2B10G10R10_UNORM: return CqFormat_PC_0;
+			case CqFormat_A2B10G10R10_UINT: return CqFormat_PC_0;
+			case CqFormat_A2B10G10R10_SNORM: return CqFormat_PC_0;
+			case CqFormat_A2B10G10R10_SINT: return CqFormat_PC_0;
+			case CqFormat_B10G11R11_UFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_E5B9G9R9_UFLOAT: return CqFormat_PC_0;
+			case CqFormat_R16G16B16_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16B16_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16B16_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16B16_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16B16_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R16G16B16_SBFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32B32_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32B32_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R32G32B32_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64B64_UINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64B64_SINT: return CqFormat_PC_CONST_1;
+			case CqFormat_R64G64B64_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_D16_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_X8_D24_UNORM: return CqFormat_PC_CONST_0;
+			case CqFormat_D32_SFLOAT: return CqFormat_PC_CONST_0;
+			case CqFormat_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D16_UNORM_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D24_UNORM_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_D32_SFLOAT_S8_UINT: return CqFormat_PC_CONST_0;
+			case CqFormat_DXBC1_RGB_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC1_RGB_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC4_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC4_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC5_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC5_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC6H_UFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_DXBC6H_SFLOAT: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_R8G8B8_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_R8G8B8_SRGB: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_EAC_R11_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_EAC_R11_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_EAC_R11G11_UNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_ETC2_EAC_R11G11_SNORM: return CqFormat_PC_CONST_1;
+			case CqFormat_CLUT_P4: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P4A4: return CqFormat_PC_1;
+			case CqFormat_CLUT_P8: return CqFormat_PC_CONST_0;
+			case CqFormat_CLUT_P8A8: return CqFormat_PC_1;
+			default: return CqFormat_PC_3;
+		}
+	}
+	 CqFormat_ASSERT(false);
+	return CqFormat_PC_CONST_0;
+}
+
+CQ_FMT_CONSTEXPR inline char const * const CqFormat_Name(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_UNDEFINED: return "UNDEFINED";
-		case TinyImageFormat_R1_UNORM: return "R1_UNORM";
-		case TinyImageFormat_R2_UNORM: return "R2_UNORM";
-		case TinyImageFormat_R4_UNORM: return "R4_UNORM";
-		case TinyImageFormat_R4G4_UNORM: return "R4G4_UNORM";
-		case TinyImageFormat_G4R4_UNORM: return "G4R4_UNORM";
-		case TinyImageFormat_A8_UNORM: return "A8_UNORM";
-		case TinyImageFormat_R8_UNORM: return "R8_UNORM";
-		case TinyImageFormat_R8_SNORM: return "R8_SNORM";
-		case TinyImageFormat_R8_UINT: return "R8_UINT";
-		case TinyImageFormat_R8_SINT: return "R8_SINT";
-		case TinyImageFormat_R8_SRGB: return "R8_SRGB";
-		case TinyImageFormat_B2G3R3_UNORM: return "B2G3R3_UNORM";
-		case TinyImageFormat_R4G4B4A4_UNORM: return "R4G4B4A4_UNORM";
-		case TinyImageFormat_R4G4B4X4_UNORM: return "R4G4B4X4_UNORM";
-		case TinyImageFormat_B4G4R4A4_UNORM: return "B4G4R4A4_UNORM";
-		case TinyImageFormat_B4G4R4X4_UNORM: return "B4G4R4X4_UNORM";
-		case TinyImageFormat_A4R4G4B4_UNORM: return "A4R4G4B4_UNORM";
-		case TinyImageFormat_X4R4G4B4_UNORM: return "X4R4G4B4_UNORM";
-		case TinyImageFormat_A4B4G4R4_UNORM: return "A4B4G4R4_UNORM";
-		case TinyImageFormat_X4B4G4R4_UNORM: return "X4B4G4R4_UNORM";
-		case TinyImageFormat_R5G6B5_UNORM: return "R5G6B5_UNORM";
-		case TinyImageFormat_B5G6R5_UNORM: return "B5G6R5_UNORM";
-		case TinyImageFormat_R5G5B5A1_UNORM: return "R5G5B5A1_UNORM";
-		case TinyImageFormat_B5G5R5A1_UNORM: return "B5G5R5A1_UNORM";
-		case TinyImageFormat_A1B5G5R5_UNORM: return "A1B5G5R5_UNORM";
-		case TinyImageFormat_A1R5G5B5_UNORM: return "A1R5G5B5_UNORM";
-		case TinyImageFormat_R5G5B5X1_UNORM: return "R5G5B5X1_UNORM";
-		case TinyImageFormat_B5G5R5X1_UNORM: return "B5G5R5X1_UNORM";
-		case TinyImageFormat_X1R5G5B5_UNORM: return "X1R5G5B5_UNORM";
-		case TinyImageFormat_X1B5G5R5_UNORM: return "X1B5G5R5_UNORM";
-		case TinyImageFormat_B2G3R3A8_UNORM: return "B2G3R3A8_UNORM";
-		case TinyImageFormat_R8G8_UNORM: return "R8G8_UNORM";
-		case TinyImageFormat_R8G8_SNORM: return "R8G8_SNORM";
-		case TinyImageFormat_G8R8_UNORM: return "G8R8_UNORM";
-		case TinyImageFormat_G8R8_SNORM: return "G8R8_SNORM";
-		case TinyImageFormat_R8G8_UINT: return "R8G8_UINT";
-		case TinyImageFormat_R8G8_SINT: return "R8G8_SINT";
-		case TinyImageFormat_R8G8_SRGB: return "R8G8_SRGB";
-		case TinyImageFormat_R16_UNORM: return "R16_UNORM";
-		case TinyImageFormat_R16_SNORM: return "R16_SNORM";
-		case TinyImageFormat_R16_UINT: return "R16_UINT";
-		case TinyImageFormat_R16_SINT: return "R16_SINT";
-		case TinyImageFormat_R16_SFLOAT: return "R16_SFLOAT";
-		case TinyImageFormat_R16_SBFLOAT: return "R16_SBFLOAT";
-		case TinyImageFormat_R8G8B8_UNORM: return "R8G8B8_UNORM";
-		case TinyImageFormat_R8G8B8_SNORM: return "R8G8B8_SNORM";
-		case TinyImageFormat_R8G8B8_UINT: return "R8G8B8_UINT";
-		case TinyImageFormat_R8G8B8_SINT: return "R8G8B8_SINT";
-		case TinyImageFormat_R8G8B8_SRGB: return "R8G8B8_SRGB";
-		case TinyImageFormat_B8G8R8_UNORM: return "B8G8R8_UNORM";
-		case TinyImageFormat_B8G8R8_SNORM: return "B8G8R8_SNORM";
-		case TinyImageFormat_B8G8R8_UINT: return "B8G8R8_UINT";
-		case TinyImageFormat_B8G8R8_SINT: return "B8G8R8_SINT";
-		case TinyImageFormat_B8G8R8_SRGB: return "B8G8R8_SRGB";
-		case TinyImageFormat_R8G8B8A8_UNORM: return "R8G8B8A8_UNORM";
-		case TinyImageFormat_R8G8B8A8_SNORM: return "R8G8B8A8_SNORM";
-		case TinyImageFormat_R8G8B8A8_UINT: return "R8G8B8A8_UINT";
-		case TinyImageFormat_R8G8B8A8_SINT: return "R8G8B8A8_SINT";
-		case TinyImageFormat_R8G8B8A8_SRGB: return "R8G8B8A8_SRGB";
-		case TinyImageFormat_B8G8R8A8_UNORM: return "B8G8R8A8_UNORM";
-		case TinyImageFormat_B8G8R8A8_SNORM: return "B8G8R8A8_SNORM";
-		case TinyImageFormat_B8G8R8A8_UINT: return "B8G8R8A8_UINT";
-		case TinyImageFormat_B8G8R8A8_SINT: return "B8G8R8A8_SINT";
-		case TinyImageFormat_B8G8R8A8_SRGB: return "B8G8R8A8_SRGB";
-		case TinyImageFormat_R8G8B8X8_UNORM: return "R8G8B8X8_UNORM";
-		case TinyImageFormat_B8G8R8X8_UNORM: return "B8G8R8X8_UNORM";
-		case TinyImageFormat_R16G16_UNORM: return "R16G16_UNORM";
-		case TinyImageFormat_G16R16_UNORM: return "G16R16_UNORM";
-		case TinyImageFormat_R16G16_SNORM: return "R16G16_SNORM";
-		case TinyImageFormat_G16R16_SNORM: return "G16R16_SNORM";
-		case TinyImageFormat_R16G16_UINT: return "R16G16_UINT";
-		case TinyImageFormat_R16G16_SINT: return "R16G16_SINT";
-		case TinyImageFormat_R16G16_SFLOAT: return "R16G16_SFLOAT";
-		case TinyImageFormat_R16G16_SBFLOAT: return "R16G16_SBFLOAT";
-		case TinyImageFormat_R32_UINT: return "R32_UINT";
-		case TinyImageFormat_R32_SINT: return "R32_SINT";
-		case TinyImageFormat_R32_SFLOAT: return "R32_SFLOAT";
-		case TinyImageFormat_A2R10G10B10_UNORM: return "A2R10G10B10_UNORM";
-		case TinyImageFormat_A2R10G10B10_UINT: return "A2R10G10B10_UINT";
-		case TinyImageFormat_A2R10G10B10_SNORM: return "A2R10G10B10_SNORM";
-		case TinyImageFormat_A2R10G10B10_SINT: return "A2R10G10B10_SINT";
-		case TinyImageFormat_A2B10G10R10_UNORM: return "A2B10G10R10_UNORM";
-		case TinyImageFormat_A2B10G10R10_UINT: return "A2B10G10R10_UINT";
-		case TinyImageFormat_A2B10G10R10_SNORM: return "A2B10G10R10_SNORM";
-		case TinyImageFormat_A2B10G10R10_SINT: return "A2B10G10R10_SINT";
-		case TinyImageFormat_R10G10B10A2_UNORM: return "R10G10B10A2_UNORM";
-		case TinyImageFormat_R10G10B10A2_UINT: return "R10G10B10A2_UINT";
-		case TinyImageFormat_R10G10B10A2_SNORM: return "R10G10B10A2_SNORM";
-		case TinyImageFormat_R10G10B10A2_SINT: return "R10G10B10A2_SINT";
-		case TinyImageFormat_B10G10R10A2_UNORM: return "B10G10R10A2_UNORM";
-		case TinyImageFormat_B10G10R10A2_UINT: return "B10G10R10A2_UINT";
-		case TinyImageFormat_B10G10R10A2_SNORM: return "B10G10R10A2_SNORM";
-		case TinyImageFormat_B10G10R10A2_SINT: return "B10G10R10A2_SINT";
-		case TinyImageFormat_B10G11R11_UFLOAT: return "B10G11R11_UFLOAT";
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return "E5B9G9R9_UFLOAT";
-		case TinyImageFormat_R16G16B16_UNORM: return "R16G16B16_UNORM";
-		case TinyImageFormat_R16G16B16_SNORM: return "R16G16B16_SNORM";
-		case TinyImageFormat_R16G16B16_UINT: return "R16G16B16_UINT";
-		case TinyImageFormat_R16G16B16_SINT: return "R16G16B16_SINT";
-		case TinyImageFormat_R16G16B16_SFLOAT: return "R16G16B16_SFLOAT";
-		case TinyImageFormat_R16G16B16_SBFLOAT: return "R16G16B16_SBFLOAT";
-		case TinyImageFormat_R16G16B16A16_UNORM: return "R16G16B16A16_UNORM";
-		case TinyImageFormat_R16G16B16A16_SNORM: return "R16G16B16A16_SNORM";
-		case TinyImageFormat_R16G16B16A16_UINT: return "R16G16B16A16_UINT";
-		case TinyImageFormat_R16G16B16A16_SINT: return "R16G16B16A16_SINT";
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return "R16G16B16A16_SFLOAT";
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return "R16G16B16A16_SBFLOAT";
-		case TinyImageFormat_R32G32_UINT: return "R32G32_UINT";
-		case TinyImageFormat_R32G32_SINT: return "R32G32_SINT";
-		case TinyImageFormat_R32G32_SFLOAT: return "R32G32_SFLOAT";
-		case TinyImageFormat_R32G32B32_UINT: return "R32G32B32_UINT";
-		case TinyImageFormat_R32G32B32_SINT: return "R32G32B32_SINT";
-		case TinyImageFormat_R32G32B32_SFLOAT: return "R32G32B32_SFLOAT";
-		case TinyImageFormat_R32G32B32A32_UINT: return "R32G32B32A32_UINT";
-		case TinyImageFormat_R32G32B32A32_SINT: return "R32G32B32A32_SINT";
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return "R32G32B32A32_SFLOAT";
-		case TinyImageFormat_R64_UINT: return "R64_UINT";
-		case TinyImageFormat_R64_SINT: return "R64_SINT";
-		case TinyImageFormat_R64_SFLOAT: return "R64_SFLOAT";
-		case TinyImageFormat_R64G64_UINT: return "R64G64_UINT";
-		case TinyImageFormat_R64G64_SINT: return "R64G64_SINT";
-		case TinyImageFormat_R64G64_SFLOAT: return "R64G64_SFLOAT";
-		case TinyImageFormat_R64G64B64_UINT: return "R64G64B64_UINT";
-		case TinyImageFormat_R64G64B64_SINT: return "R64G64B64_SINT";
-		case TinyImageFormat_R64G64B64_SFLOAT: return "R64G64B64_SFLOAT";
-		case TinyImageFormat_R64G64B64A64_UINT: return "R64G64B64A64_UINT";
-		case TinyImageFormat_R64G64B64A64_SINT: return "R64G64B64A64_SINT";
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return "R64G64B64A64_SFLOAT";
-		case TinyImageFormat_D16_UNORM: return "D16_UNORM";
-		case TinyImageFormat_X8_D24_UNORM: return "X8_D24_UNORM";
-		case TinyImageFormat_D32_SFLOAT: return "D32_SFLOAT";
-		case TinyImageFormat_S8_UINT: return "S8_UINT";
-		case TinyImageFormat_D16_UNORM_S8_UINT: return "D16_UNORM_S8_UINT";
-		case TinyImageFormat_D24_UNORM_S8_UINT: return "D24_UNORM_S8_UINT";
-		case TinyImageFormat_D32_SFLOAT_S8_UINT: return "D32_SFLOAT_S8_UINT";
-		case TinyImageFormat_DXBC1_RGB_UNORM: return "DXBC1_RGB_UNORM";
-		case TinyImageFormat_DXBC1_RGB_SRGB: return "DXBC1_RGB_SRGB";
-		case TinyImageFormat_DXBC1_RGBA_UNORM: return "DXBC1_RGBA_UNORM";
-		case TinyImageFormat_DXBC1_RGBA_SRGB: return "DXBC1_RGBA_SRGB";
-		case TinyImageFormat_DXBC2_UNORM: return "DXBC2_UNORM";
-		case TinyImageFormat_DXBC2_SRGB: return "DXBC2_SRGB";
-		case TinyImageFormat_DXBC3_UNORM: return "DXBC3_UNORM";
-		case TinyImageFormat_DXBC3_SRGB: return "DXBC3_SRGB";
-		case TinyImageFormat_DXBC4_UNORM: return "DXBC4_UNORM";
-		case TinyImageFormat_DXBC4_SNORM: return "DXBC4_SNORM";
-		case TinyImageFormat_DXBC5_UNORM: return "DXBC5_UNORM";
-		case TinyImageFormat_DXBC5_SNORM: return "DXBC5_SNORM";
-		case TinyImageFormat_DXBC6H_UFLOAT: return "DXBC6H_UFLOAT";
-		case TinyImageFormat_DXBC6H_SFLOAT: return "DXBC6H_SFLOAT";
-		case TinyImageFormat_DXBC7_UNORM: return "DXBC7_UNORM";
-		case TinyImageFormat_DXBC7_SRGB: return "DXBC7_SRGB";
-		case TinyImageFormat_PVRTC1_2BPP_UNORM: return "PVRTC1_2BPP_UNORM";
-		case TinyImageFormat_PVRTC1_4BPP_UNORM: return "PVRTC1_4BPP_UNORM";
-		case TinyImageFormat_PVRTC2_2BPP_UNORM: return "PVRTC2_2BPP_UNORM";
-		case TinyImageFormat_PVRTC2_4BPP_UNORM: return "PVRTC2_4BPP_UNORM";
-		case TinyImageFormat_PVRTC1_2BPP_SRGB: return "PVRTC1_2BPP_SRGB";
-		case TinyImageFormat_PVRTC1_4BPP_SRGB: return "PVRTC1_4BPP_SRGB";
-		case TinyImageFormat_PVRTC2_2BPP_SRGB: return "PVRTC2_2BPP_SRGB";
-		case TinyImageFormat_PVRTC2_4BPP_SRGB: return "PVRTC2_4BPP_SRGB";
-		case TinyImageFormat_ETC2_R8G8B8_UNORM: return "ETC2_R8G8B8_UNORM";
-		case TinyImageFormat_ETC2_R8G8B8_SRGB: return "ETC2_R8G8B8_SRGB";
-		case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return "ETC2_R8G8B8A1_UNORM";
-		case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return "ETC2_R8G8B8A1_SRGB";
-		case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return "ETC2_R8G8B8A8_UNORM";
-		case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return "ETC2_R8G8B8A8_SRGB";
-		case TinyImageFormat_ETC2_EAC_R11_UNORM: return "ETC2_EAC_R11_UNORM";
-		case TinyImageFormat_ETC2_EAC_R11_SNORM: return "ETC2_EAC_R11_SNORM";
-		case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return "ETC2_EAC_R11G11_UNORM";
-		case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return "ETC2_EAC_R11G11_SNORM";
-		case TinyImageFormat_ASTC_4x4_UNORM: return "ASTC_4x4_UNORM";
-		case TinyImageFormat_ASTC_4x4_SRGB: return "ASTC_4x4_SRGB";
-		case TinyImageFormat_ASTC_5x4_UNORM: return "ASTC_5x4_UNORM";
-		case TinyImageFormat_ASTC_5x4_SRGB: return "ASTC_5x4_SRGB";
-		case TinyImageFormat_ASTC_5x5_UNORM: return "ASTC_5x5_UNORM";
-		case TinyImageFormat_ASTC_5x5_SRGB: return "ASTC_5x5_SRGB";
-		case TinyImageFormat_ASTC_6x5_UNORM: return "ASTC_6x5_UNORM";
-		case TinyImageFormat_ASTC_6x5_SRGB: return "ASTC_6x5_SRGB";
-		case TinyImageFormat_ASTC_6x6_UNORM: return "ASTC_6x6_UNORM";
-		case TinyImageFormat_ASTC_6x6_SRGB: return "ASTC_6x6_SRGB";
-		case TinyImageFormat_ASTC_8x5_UNORM: return "ASTC_8x5_UNORM";
-		case TinyImageFormat_ASTC_8x5_SRGB: return "ASTC_8x5_SRGB";
-		case TinyImageFormat_ASTC_8x6_UNORM: return "ASTC_8x6_UNORM";
-		case TinyImageFormat_ASTC_8x6_SRGB: return "ASTC_8x6_SRGB";
-		case TinyImageFormat_ASTC_8x8_UNORM: return "ASTC_8x8_UNORM";
-		case TinyImageFormat_ASTC_8x8_SRGB: return "ASTC_8x8_SRGB";
-		case TinyImageFormat_ASTC_10x5_UNORM: return "ASTC_10x5_UNORM";
-		case TinyImageFormat_ASTC_10x5_SRGB: return "ASTC_10x5_SRGB";
-		case TinyImageFormat_ASTC_10x6_UNORM: return "ASTC_10x6_UNORM";
-		case TinyImageFormat_ASTC_10x6_SRGB: return "ASTC_10x6_SRGB";
-		case TinyImageFormat_ASTC_10x8_UNORM: return "ASTC_10x8_UNORM";
-		case TinyImageFormat_ASTC_10x8_SRGB: return "ASTC_10x8_SRGB";
-		case TinyImageFormat_ASTC_10x10_UNORM: return "ASTC_10x10_UNORM";
-		case TinyImageFormat_ASTC_10x10_SRGB: return "ASTC_10x10_SRGB";
-		case TinyImageFormat_ASTC_12x10_UNORM: return "ASTC_12x10_UNORM";
-		case TinyImageFormat_ASTC_12x10_SRGB: return "ASTC_12x10_SRGB";
-		case TinyImageFormat_ASTC_12x12_UNORM: return "ASTC_12x12_UNORM";
-		case TinyImageFormat_ASTC_12x12_SRGB: return "ASTC_12x12_SRGB";
-		case TinyImageFormat_CLUT_P4: return "CLUT_P4";
-		case TinyImageFormat_CLUT_P4A4: return "CLUT_P4A4";
-		case TinyImageFormat_CLUT_P8: return "CLUT_P8";
-		case TinyImageFormat_CLUT_P8A8: return "CLUT_P8A8";
+		case CqFormat_UNDEFINED: return "UNDEFINED";
+		case CqFormat_R1_UNORM: return "R1_UNORM";
+		case CqFormat_R2_UNORM: return "R2_UNORM";
+		case CqFormat_R4_UNORM: return "R4_UNORM";
+		case CqFormat_R4G4_UNORM: return "R4G4_UNORM";
+		case CqFormat_G4R4_UNORM: return "G4R4_UNORM";
+		case CqFormat_A8_UNORM: return "A8_UNORM";
+		case CqFormat_R8_UNORM: return "R8_UNORM";
+		case CqFormat_R8_SNORM: return "R8_SNORM";
+		case CqFormat_R8_UINT: return "R8_UINT";
+		case CqFormat_R8_SINT: return "R8_SINT";
+		case CqFormat_R8_SRGB: return "R8_SRGB";
+		case CqFormat_B2G3R3_UNORM: return "B2G3R3_UNORM";
+		case CqFormat_R4G4B4A4_UNORM: return "R4G4B4A4_UNORM";
+		case CqFormat_R4G4B4X4_UNORM: return "R4G4B4X4_UNORM";
+		case CqFormat_B4G4R4A4_UNORM: return "B4G4R4A4_UNORM";
+		case CqFormat_B4G4R4X4_UNORM: return "B4G4R4X4_UNORM";
+		case CqFormat_A4R4G4B4_UNORM: return "A4R4G4B4_UNORM";
+		case CqFormat_X4R4G4B4_UNORM: return "X4R4G4B4_UNORM";
+		case CqFormat_A4B4G4R4_UNORM: return "A4B4G4R4_UNORM";
+		case CqFormat_X4B4G4R4_UNORM: return "X4B4G4R4_UNORM";
+		case CqFormat_R5G6B5_UNORM: return "R5G6B5_UNORM";
+		case CqFormat_B5G6R5_UNORM: return "B5G6R5_UNORM";
+		case CqFormat_R5G5B5A1_UNORM: return "R5G5B5A1_UNORM";
+		case CqFormat_B5G5R5A1_UNORM: return "B5G5R5A1_UNORM";
+		case CqFormat_A1B5G5R5_UNORM: return "A1B5G5R5_UNORM";
+		case CqFormat_A1R5G5B5_UNORM: return "A1R5G5B5_UNORM";
+		case CqFormat_R5G5B5X1_UNORM: return "R5G5B5X1_UNORM";
+		case CqFormat_B5G5R5X1_UNORM: return "B5G5R5X1_UNORM";
+		case CqFormat_X1R5G5B5_UNORM: return "X1R5G5B5_UNORM";
+		case CqFormat_X1B5G5R5_UNORM: return "X1B5G5R5_UNORM";
+		case CqFormat_B2G3R3A8_UNORM: return "B2G3R3A8_UNORM";
+		case CqFormat_R8G8_UNORM: return "R8G8_UNORM";
+		case CqFormat_R8G8_SNORM: return "R8G8_SNORM";
+		case CqFormat_G8R8_UNORM: return "G8R8_UNORM";
+		case CqFormat_G8R8_SNORM: return "G8R8_SNORM";
+		case CqFormat_R8G8_UINT: return "R8G8_UINT";
+		case CqFormat_R8G8_SINT: return "R8G8_SINT";
+		case CqFormat_R8G8_SRGB: return "R8G8_SRGB";
+		case CqFormat_R16_UNORM: return "R16_UNORM";
+		case CqFormat_R16_SNORM: return "R16_SNORM";
+		case CqFormat_R16_UINT: return "R16_UINT";
+		case CqFormat_R16_SINT: return "R16_SINT";
+		case CqFormat_R16_SFLOAT: return "R16_SFLOAT";
+		case CqFormat_R16_SBFLOAT: return "R16_SBFLOAT";
+		case CqFormat_R8G8B8_UNORM: return "R8G8B8_UNORM";
+		case CqFormat_R8G8B8_SNORM: return "R8G8B8_SNORM";
+		case CqFormat_R8G8B8_UINT: return "R8G8B8_UINT";
+		case CqFormat_R8G8B8_SINT: return "R8G8B8_SINT";
+		case CqFormat_R8G8B8_SRGB: return "R8G8B8_SRGB";
+		case CqFormat_B8G8R8_UNORM: return "B8G8R8_UNORM";
+		case CqFormat_B8G8R8_SNORM: return "B8G8R8_SNORM";
+		case CqFormat_B8G8R8_UINT: return "B8G8R8_UINT";
+		case CqFormat_B8G8R8_SINT: return "B8G8R8_SINT";
+		case CqFormat_B8G8R8_SRGB: return "B8G8R8_SRGB";
+		case CqFormat_R8G8B8A8_UNORM: return "R8G8B8A8_UNORM";
+		case CqFormat_R8G8B8A8_SNORM: return "R8G8B8A8_SNORM";
+		case CqFormat_R8G8B8A8_UINT: return "R8G8B8A8_UINT";
+		case CqFormat_R8G8B8A8_SINT: return "R8G8B8A8_SINT";
+		case CqFormat_R8G8B8A8_SRGB: return "R8G8B8A8_SRGB";
+		case CqFormat_B8G8R8A8_UNORM: return "B8G8R8A8_UNORM";
+		case CqFormat_B8G8R8A8_SNORM: return "B8G8R8A8_SNORM";
+		case CqFormat_B8G8R8A8_UINT: return "B8G8R8A8_UINT";
+		case CqFormat_B8G8R8A8_SINT: return "B8G8R8A8_SINT";
+		case CqFormat_B8G8R8A8_SRGB: return "B8G8R8A8_SRGB";
+		case CqFormat_R8G8B8X8_UNORM: return "R8G8B8X8_UNORM";
+		case CqFormat_B8G8R8X8_UNORM: return "B8G8R8X8_UNORM";
+		case CqFormat_R16G16_UNORM: return "R16G16_UNORM";
+		case CqFormat_G16R16_UNORM: return "G16R16_UNORM";
+		case CqFormat_R16G16_SNORM: return "R16G16_SNORM";
+		case CqFormat_G16R16_SNORM: return "G16R16_SNORM";
+		case CqFormat_R16G16_UINT: return "R16G16_UINT";
+		case CqFormat_R16G16_SINT: return "R16G16_SINT";
+		case CqFormat_R16G16_SFLOAT: return "R16G16_SFLOAT";
+		case CqFormat_R16G16_SBFLOAT: return "R16G16_SBFLOAT";
+		case CqFormat_R32_UINT: return "R32_UINT";
+		case CqFormat_R32_SINT: return "R32_SINT";
+		case CqFormat_R32_SFLOAT: return "R32_SFLOAT";
+		case CqFormat_A2R10G10B10_UNORM: return "A2R10G10B10_UNORM";
+		case CqFormat_A2R10G10B10_UINT: return "A2R10G10B10_UINT";
+		case CqFormat_A2R10G10B10_SNORM: return "A2R10G10B10_SNORM";
+		case CqFormat_A2R10G10B10_SINT: return "A2R10G10B10_SINT";
+		case CqFormat_A2B10G10R10_UNORM: return "A2B10G10R10_UNORM";
+		case CqFormat_A2B10G10R10_UINT: return "A2B10G10R10_UINT";
+		case CqFormat_A2B10G10R10_SNORM: return "A2B10G10R10_SNORM";
+		case CqFormat_A2B10G10R10_SINT: return "A2B10G10R10_SINT";
+		case CqFormat_R10G10B10A2_UNORM: return "R10G10B10A2_UNORM";
+		case CqFormat_R10G10B10A2_UINT: return "R10G10B10A2_UINT";
+		case CqFormat_R10G10B10A2_SNORM: return "R10G10B10A2_SNORM";
+		case CqFormat_R10G10B10A2_SINT: return "R10G10B10A2_SINT";
+		case CqFormat_B10G10R10A2_UNORM: return "B10G10R10A2_UNORM";
+		case CqFormat_B10G10R10A2_UINT: return "B10G10R10A2_UINT";
+		case CqFormat_B10G10R10A2_SNORM: return "B10G10R10A2_SNORM";
+		case CqFormat_B10G10R10A2_SINT: return "B10G10R10A2_SINT";
+		case CqFormat_B10G11R11_UFLOAT: return "B10G11R11_UFLOAT";
+		case CqFormat_E5B9G9R9_UFLOAT: return "E5B9G9R9_UFLOAT";
+		case CqFormat_R16G16B16_UNORM: return "R16G16B16_UNORM";
+		case CqFormat_R16G16B16_SNORM: return "R16G16B16_SNORM";
+		case CqFormat_R16G16B16_UINT: return "R16G16B16_UINT";
+		case CqFormat_R16G16B16_SINT: return "R16G16B16_SINT";
+		case CqFormat_R16G16B16_SFLOAT: return "R16G16B16_SFLOAT";
+		case CqFormat_R16G16B16_SBFLOAT: return "R16G16B16_SBFLOAT";
+		case CqFormat_R16G16B16A16_UNORM: return "R16G16B16A16_UNORM";
+		case CqFormat_R16G16B16A16_SNORM: return "R16G16B16A16_SNORM";
+		case CqFormat_R16G16B16A16_UINT: return "R16G16B16A16_UINT";
+		case CqFormat_R16G16B16A16_SINT: return "R16G16B16A16_SINT";
+		case CqFormat_R16G16B16A16_SFLOAT: return "R16G16B16A16_SFLOAT";
+		case CqFormat_R16G16B16A16_SBFLOAT: return "R16G16B16A16_SBFLOAT";
+		case CqFormat_R32G32_UINT: return "R32G32_UINT";
+		case CqFormat_R32G32_SINT: return "R32G32_SINT";
+		case CqFormat_R32G32_SFLOAT: return "R32G32_SFLOAT";
+		case CqFormat_R32G32B32_UINT: return "R32G32B32_UINT";
+		case CqFormat_R32G32B32_SINT: return "R32G32B32_SINT";
+		case CqFormat_R32G32B32_SFLOAT: return "R32G32B32_SFLOAT";
+		case CqFormat_R32G32B32A32_UINT: return "R32G32B32A32_UINT";
+		case CqFormat_R32G32B32A32_SINT: return "R32G32B32A32_SINT";
+		case CqFormat_R32G32B32A32_SFLOAT: return "R32G32B32A32_SFLOAT";
+		case CqFormat_R64_UINT: return "R64_UINT";
+		case CqFormat_R64_SINT: return "R64_SINT";
+		case CqFormat_R64_SFLOAT: return "R64_SFLOAT";
+		case CqFormat_R64G64_UINT: return "R64G64_UINT";
+		case CqFormat_R64G64_SINT: return "R64G64_SINT";
+		case CqFormat_R64G64_SFLOAT: return "R64G64_SFLOAT";
+		case CqFormat_R64G64B64_UINT: return "R64G64B64_UINT";
+		case CqFormat_R64G64B64_SINT: return "R64G64B64_SINT";
+		case CqFormat_R64G64B64_SFLOAT: return "R64G64B64_SFLOAT";
+		case CqFormat_R64G64B64A64_UINT: return "R64G64B64A64_UINT";
+		case CqFormat_R64G64B64A64_SINT: return "R64G64B64A64_SINT";
+		case CqFormat_R64G64B64A64_SFLOAT: return "R64G64B64A64_SFLOAT";
+		case CqFormat_D16_UNORM: return "D16_UNORM";
+		case CqFormat_X8_D24_UNORM: return "X8_D24_UNORM";
+		case CqFormat_D32_SFLOAT: return "D32_SFLOAT";
+		case CqFormat_S8_UINT: return "S8_UINT";
+		case CqFormat_D16_UNORM_S8_UINT: return "D16_UNORM_S8_UINT";
+		case CqFormat_D24_UNORM_S8_UINT: return "D24_UNORM_S8_UINT";
+		case CqFormat_D32_SFLOAT_S8_UINT: return "D32_SFLOAT_S8_UINT";
+		case CqFormat_DXBC1_RGB_UNORM: return "DXBC1_RGB_UNORM";
+		case CqFormat_DXBC1_RGB_SRGB: return "DXBC1_RGB_SRGB";
+		case CqFormat_DXBC1_RGBA_UNORM: return "DXBC1_RGBA_UNORM";
+		case CqFormat_DXBC1_RGBA_SRGB: return "DXBC1_RGBA_SRGB";
+		case CqFormat_DXBC2_UNORM: return "DXBC2_UNORM";
+		case CqFormat_DXBC2_SRGB: return "DXBC2_SRGB";
+		case CqFormat_DXBC3_UNORM: return "DXBC3_UNORM";
+		case CqFormat_DXBC3_SRGB: return "DXBC3_SRGB";
+		case CqFormat_DXBC4_UNORM: return "DXBC4_UNORM";
+		case CqFormat_DXBC4_SNORM: return "DXBC4_SNORM";
+		case CqFormat_DXBC5_UNORM: return "DXBC5_UNORM";
+		case CqFormat_DXBC5_SNORM: return "DXBC5_SNORM";
+		case CqFormat_DXBC6H_UFLOAT: return "DXBC6H_UFLOAT";
+		case CqFormat_DXBC6H_SFLOAT: return "DXBC6H_SFLOAT";
+		case CqFormat_DXBC7_UNORM: return "DXBC7_UNORM";
+		case CqFormat_DXBC7_SRGB: return "DXBC7_SRGB";
+		case CqFormat_PVRTC1_2BPP_UNORM: return "PVRTC1_2BPP_UNORM";
+		case CqFormat_PVRTC1_4BPP_UNORM: return "PVRTC1_4BPP_UNORM";
+		case CqFormat_PVRTC2_2BPP_UNORM: return "PVRTC2_2BPP_UNORM";
+		case CqFormat_PVRTC2_4BPP_UNORM: return "PVRTC2_4BPP_UNORM";
+		case CqFormat_PVRTC1_2BPP_SRGB: return "PVRTC1_2BPP_SRGB";
+		case CqFormat_PVRTC1_4BPP_SRGB: return "PVRTC1_4BPP_SRGB";
+		case CqFormat_PVRTC2_2BPP_SRGB: return "PVRTC2_2BPP_SRGB";
+		case CqFormat_PVRTC2_4BPP_SRGB: return "PVRTC2_4BPP_SRGB";
+		case CqFormat_ETC2_R8G8B8_UNORM: return "ETC2_R8G8B8_UNORM";
+		case CqFormat_ETC2_R8G8B8_SRGB: return "ETC2_R8G8B8_SRGB";
+		case CqFormat_ETC2_R8G8B8A1_UNORM: return "ETC2_R8G8B8A1_UNORM";
+		case CqFormat_ETC2_R8G8B8A1_SRGB: return "ETC2_R8G8B8A1_SRGB";
+		case CqFormat_ETC2_R8G8B8A8_UNORM: return "ETC2_R8G8B8A8_UNORM";
+		case CqFormat_ETC2_R8G8B8A8_SRGB: return "ETC2_R8G8B8A8_SRGB";
+		case CqFormat_ETC2_EAC_R11_UNORM: return "ETC2_EAC_R11_UNORM";
+		case CqFormat_ETC2_EAC_R11_SNORM: return "ETC2_EAC_R11_SNORM";
+		case CqFormat_ETC2_EAC_R11G11_UNORM: return "ETC2_EAC_R11G11_UNORM";
+		case CqFormat_ETC2_EAC_R11G11_SNORM: return "ETC2_EAC_R11G11_SNORM";
+		case CqFormat_ASTC_4x4_UNORM: return "ASTC_4x4_UNORM";
+		case CqFormat_ASTC_4x4_SRGB: return "ASTC_4x4_SRGB";
+		case CqFormat_ASTC_5x4_UNORM: return "ASTC_5x4_UNORM";
+		case CqFormat_ASTC_5x4_SRGB: return "ASTC_5x4_SRGB";
+		case CqFormat_ASTC_5x5_UNORM: return "ASTC_5x5_UNORM";
+		case CqFormat_ASTC_5x5_SRGB: return "ASTC_5x5_SRGB";
+		case CqFormat_ASTC_6x5_UNORM: return "ASTC_6x5_UNORM";
+		case CqFormat_ASTC_6x5_SRGB: return "ASTC_6x5_SRGB";
+		case CqFormat_ASTC_6x6_UNORM: return "ASTC_6x6_UNORM";
+		case CqFormat_ASTC_6x6_SRGB: return "ASTC_6x6_SRGB";
+		case CqFormat_ASTC_8x5_UNORM: return "ASTC_8x5_UNORM";
+		case CqFormat_ASTC_8x5_SRGB: return "ASTC_8x5_SRGB";
+		case CqFormat_ASTC_8x6_UNORM: return "ASTC_8x6_UNORM";
+		case CqFormat_ASTC_8x6_SRGB: return "ASTC_8x6_SRGB";
+		case CqFormat_ASTC_8x8_UNORM: return "ASTC_8x8_UNORM";
+		case CqFormat_ASTC_8x8_SRGB: return "ASTC_8x8_SRGB";
+		case CqFormat_ASTC_10x5_UNORM: return "ASTC_10x5_UNORM";
+		case CqFormat_ASTC_10x5_SRGB: return "ASTC_10x5_SRGB";
+		case CqFormat_ASTC_10x6_UNORM: return "ASTC_10x6_UNORM";
+		case CqFormat_ASTC_10x6_SRGB: return "ASTC_10x6_SRGB";
+		case CqFormat_ASTC_10x8_UNORM: return "ASTC_10x8_UNORM";
+		case CqFormat_ASTC_10x8_SRGB: return "ASTC_10x8_SRGB";
+		case CqFormat_ASTC_10x10_UNORM: return "ASTC_10x10_UNORM";
+		case CqFormat_ASTC_10x10_SRGB: return "ASTC_10x10_SRGB";
+		case CqFormat_ASTC_12x10_UNORM: return "ASTC_12x10_UNORM";
+		case CqFormat_ASTC_12x10_SRGB: return "ASTC_12x10_SRGB";
+		case CqFormat_ASTC_12x12_UNORM: return "ASTC_12x12_UNORM";
+		case CqFormat_ASTC_12x12_SRGB: return "ASTC_12x12_SRGB";
+		case CqFormat_CLUT_P4: return "CLUT_P4";
+		case CqFormat_CLUT_P4A4: return "CLUT_P4A4";
+		case CqFormat_CLUT_P8: return "CLUT_P8";
+		case CqFormat_CLUT_P8A8: return "CLUT_P8A8";
 		default: return "The_Format_With_No_Name";
 	}
 }
 
-inline TinyImageFormat TinyImageFormat_FromName(char const* p) {
+inline CqFormat CqFormat_FromName(char const* p) {
 	// FNV-1a hashing algorithm.
 	uint64_t hash = 0xcbf29ce484222325ULL;
 	while ((*p) != 0) { hash = (((uint64_t) *p) ^ hash) * 1099511628211ULL;	p++; }
 	switch(hash) {
-		case 0x2BF653266B186C03: return TinyImageFormat_UNDEFINED;
-		case 0x9C45001516D833DA: return TinyImageFormat_R1_UNORM;
-		case 0x6C00F001F570B433: return TinyImageFormat_R2_UNORM;
-		case 0xDF531A87DF5CFA59: return TinyImageFormat_R4_UNORM;
-		case 0xCBA3F653C82E1E9E: return TinyImageFormat_R4G4_UNORM;
-		case 0x9B897AC5679B790E: return TinyImageFormat_G4R4_UNORM;
-		case 0x63DBCDF5F194196A: return TinyImageFormat_A8_UNORM;
-		case 0x6ECBF1EF06BCE325: return TinyImageFormat_R8_UNORM;
-		case 0x5C766FFB8DE1F1E3: return TinyImageFormat_R8_SNORM;
-		case 0x2B467E1FD60E7DD8: return TinyImageFormat_R8_UINT;
-		case 0xE9ABC60F283D0A72: return TinyImageFormat_R8_SINT;
-		case 0x358F830EC2BB0208: return TinyImageFormat_R8_SRGB;
-		case 0x7706DB5BF249BD5A: return TinyImageFormat_B2G3R3_UNORM;
-		case 0xE2805E85156D9F31: return TinyImageFormat_R4G4B4A4_UNORM;
-		case 0xB8C356FBFD0E908: return TinyImageFormat_R4G4B4X4_UNORM;
-		case 0xC5A6BE73259B0031: return TinyImageFormat_B4G4R4A4_UNORM;
-		case 0xEEB2955DCFFE4A08: return TinyImageFormat_B4G4R4X4_UNORM;
-		case 0x220561C5779CB911: return TinyImageFormat_A4R4G4B4_UNORM;
-		case 0xD30FAF6090EC7818: return TinyImageFormat_X4R4G4B4_UNORM;
-		case 0x3CFC9293744E0831: return TinyImageFormat_A4B4G4R4_UNORM;
-		case 0xE725A84DF23BFD38: return TinyImageFormat_X4B4G4R4_UNORM;
-		case 0xE1AFBA335D26A8DA: return TinyImageFormat_R5G6B5_UNORM;
-		case 0x7A0E74B498D4FAFA: return TinyImageFormat_B5G6R5_UNORM;
-		case 0xA15971F29DD0621: return TinyImageFormat_R5G5B5A1_UNORM;
-		case 0x8EFDC73AA126BFA1: return TinyImageFormat_B5G5R5A1_UNORM;
-		case 0xC742A70EF53AC9F5: return TinyImageFormat_A1B5G5R5_UNORM;
-		case 0xD5B003D5851331F5: return TinyImageFormat_A1R5G5B5_UNORM;
-		case 0x7269A347036A9034: return TinyImageFormat_R5G5B5X1_UNORM;
-		case 0xF751D3627AB449B4: return TinyImageFormat_B5G5R5X1_UNORM;
-		case 0x42335ADEA4EFC0AC: return TinyImageFormat_X1R5G5B5_UNORM;
-		case 0xF4330B957F4D6A4C: return TinyImageFormat_X1B5G5R5_UNORM;
-		case 0x9A6812074759CB0B: return TinyImageFormat_B2G3R3A8_UNORM;
-		case 0xA8082655C8EFA87E: return TinyImageFormat_R8G8_UNORM;
-		case 0x8B68D9060D1834FC: return TinyImageFormat_R8G8_SNORM;
-		case 0x3304A6DE2E40A66: return TinyImageFormat_G8R8_UNORM;
-		case 0x76ED014D8BD59584: return TinyImageFormat_G8R8_SNORM;
-		case 0x15A01776FAC06AE1: return TinyImageFormat_R8G8_UINT;
-		case 0x810697A68C3D3FFB: return TinyImageFormat_R8G8_SINT;
-		case 0xAC3EAAA6A4B1CBB5: return TinyImageFormat_R8G8_SRGB;
-		case 0x2E5F1FF55A762DFC: return TinyImageFormat_R16_UNORM;
-		case 0x4AFE6D45164DA17E: return TinyImageFormat_R16_SNORM;
-		case 0x733B292CB050E2FB: return TinyImageFormat_R16_UINT;
-		case 0x7D4A8FD1ED40DE1: return TinyImageFormat_R16_SINT;
-		case 0x5181789E57BBA72A: return TinyImageFormat_R16_SFLOAT;
-		case 0xC56CFEC3560B6C7C: return TinyImageFormat_R16_SBFLOAT;
-		case 0x9B3BE5AE0416CB88: return TinyImageFormat_R8G8B8_UNORM;
-		case 0x5705279F0768C4D2: return TinyImageFormat_R8G8B8_SNORM;
-		case 0x8E06FA3EEA5892D7: return TinyImageFormat_R8G8B8_UINT;
-		case 0x43570A4F483894A5: return TinyImageFormat_R8G8B8_SINT;
-		case 0x8A0FD4F27827FAF: return TinyImageFormat_R8G8B8_SRGB;
-		case 0xE97F84F8095F6908: return TinyImageFormat_B8G8R8_UNORM;
-		case 0xA548C6E90CB16252: return TinyImageFormat_B8G8R8_SNORM;
-		case 0xF4DDD5D490E7BF57: return TinyImageFormat_B8G8R8_UINT;
-		case 0xAA2DE5E4EEC7C125: return TinyImageFormat_B8G8R8_SINT;
-		case 0x6F77D8E4CE11AC2F: return TinyImageFormat_B8G8R8_SRGB;
-		case 0x5DE537C5CEE18C99: return TinyImageFormat_R8G8B8A8_UNORM;
-		case 0xE25912D12E286C9F: return TinyImageFormat_R8G8B8A8_SNORM;
-		case 0x8725F84C50561C6C: return TinyImageFormat_R8G8B8A8_UINT;
-		case 0x9C079080C9D1C54E: return TinyImageFormat_R8G8B8A8_SINT;
-		case 0xE7B4D5806421618C: return TinyImageFormat_R8G8B8A8_SRGB;
-		case 0xE2CD67E1462B4619: return TinyImageFormat_B8G8R8A8_UNORM;
-		case 0x674142ECA572261F: return TinyImageFormat_B8G8R8A8_SNORM;
-		case 0xCCAB23134AB9BCEC: return TinyImageFormat_B8G8R8A8_UINT;
-		case 0xE18CBB47C43565CE: return TinyImageFormat_B8G8R8A8_SINT;
-		case 0x2D3A00475E85020C: return TinyImageFormat_B8G8R8A8_SRGB;
-		case 0x98E2B1CDECAE73E8: return TinyImageFormat_R8G8B8X8_UNORM;
-		case 0x1DCAE1E963F82D68: return TinyImageFormat_B8G8R8X8_UNORM;
-		case 0xA3FD1100F830F62E: return TinyImageFormat_R16G16_UNORM;
-		case 0xEF345ACC71CAFA68: return TinyImageFormat_G16R16_UNORM;
-		case 0x7F7DCC076FEC8E6C: return TinyImageFormat_R16G16_SNORM;
-		case 0x5736988FE4CCE7B2: return TinyImageFormat_G16R16_SNORM;
-		case 0xD347EDE3A8782E71: return TinyImageFormat_R16G16_UINT;
-		case 0xE8296E1821F3AE8B: return TinyImageFormat_R16G16_SINT;
-		case 0x2DA5B5DBEAB009F0: return TinyImageFormat_R16G16_SFLOAT;
-		case 0x1EBDD86AD61EECA: return TinyImageFormat_R16G16_SBFLOAT;
-		case 0xC89CD2CBE8076CC9: return TinyImageFormat_R32_UINT;
-		case 0x339692FB7927DCC3: return TinyImageFormat_R32_SINT;
-		case 0x79FC5AE23681AB28: return TinyImageFormat_R32_SFLOAT;
-		case 0xFB3BEE0BC19BCDC0: return TinyImageFormat_A2R10G10B10_UNORM;
-		case 0x258D79F3CBE9042F: return TinyImageFormat_A2R10G10B10_UINT;
-		case 0x4CDA31047B01F04A: return TinyImageFormat_A2R10G10B10_SNORM;
-		case 0xF00CCA04C6C8A4FD: return TinyImageFormat_A2R10G10B10_SINT;
-		case 0x477903BFE709CD40: return TinyImageFormat_A2B10G10R10_UNORM;
-		case 0x2274BF26D27846AF: return TinyImageFormat_A2B10G10R10_UINT;
-		case 0x991746B8A06FEFCA: return TinyImageFormat_A2B10G10R10_SNORM;
-		case 0xECF40F37CD57E77D: return TinyImageFormat_A2B10G10R10_SINT;
-		case 0xC370B0AC1F93F676: return TinyImageFormat_R10G10B10A2_UNORM;
-		case 0x171461D7B1633919: return TinyImageFormat_R10G10B10A2_UINT;
-		case 0xE6CC635E3B189E94: return TinyImageFormat_R10G10B10A2_SNORM;
-		case 0x805B220741121493: return TinyImageFormat_R10G10B10A2_SINT;
-		case 0xBB10FC1669F59756: return TinyImageFormat_B10G10R10A2_UNORM;
-		case 0xCAAD5E1DF82DE439: return TinyImageFormat_B10G10R10A2_UINT;
-		case 0x87FBAEC610087BF4: return TinyImageFormat_B10G10R10A2_SNORM;
-		case 0x35A69E4D894D7AB3: return TinyImageFormat_B10G10R10A2_SINT;
-		case 0x5E8DCDA0219DCB1: return TinyImageFormat_B10G11R11_UFLOAT;
-		case 0x1DBB77A7372DFC97: return TinyImageFormat_E5B9G9R9_UFLOAT;
-		case 0xEA85D5CCC5E081E7: return TinyImageFormat_R16G16B16_UNORM;
-		case 0xB57B831A10558861: return TinyImageFormat_R16G16B16_SNORM;
-		case 0x734C0B9981BA0FD6: return TinyImageFormat_R16G16B16_UINT;
-		case 0x851D369F098D3F4: return TinyImageFormat_R16G16B16_SINT;
-		case 0xD1D0593BFAADABEF: return TinyImageFormat_R16G16B16_SFLOAT;
-		case 0x6FDE47BBA7BEA90F: return TinyImageFormat_R16G16B16_SBFLOAT;
-		case 0xA20A282E75CABD2D: return TinyImageFormat_R16G16B16A16_UNORM;
-		case 0x8F48663AFC94404B: return TinyImageFormat_R16G16B16A16_SNORM;
-		case 0xC02442503D4CE820: return TinyImageFormat_R16G16B16A16_UINT;
-		case 0x7E89AA3F8F7BAB1A: return TinyImageFormat_R16G16B16A16_SINT;
-		case 0xBBE9BB01E53ECD91: return TinyImageFormat_R16G16B16A16_SFLOAT;
-		case 0xF170487E732A86C9: return TinyImageFormat_R16G16B16A16_SBFLOAT;
-		case 0x300B9BAFAA9826B9: return TinyImageFormat_R32G32_UINT;
-		case 0x9B04DBDF3BB7BD33: return TinyImageFormat_R32G32_SINT;
-		case 0x1FDED9A9A6421118: return TinyImageFormat_R32G32_SFLOAT;
-		case 0xFFFC8DBFFAC96F58: return TinyImageFormat_R32G32B32_UINT;
-		case 0xBE61D5AF4CF7FBF2: return TinyImageFormat_R32G32B32_SINT;
-		case 0x886FF275EC1787A9: return TinyImageFormat_R32G32B32_SFLOAT;
-		case 0x7648F8DE0F31709C: return TinyImageFormat_R32G32B32A32_UINT;
-		case 0x8B2A511288ACACBE: return TinyImageFormat_R32G32B32A32_SINT;
-		case 0xC1C2788592D0E665: return TinyImageFormat_R32G32B32A32_SFLOAT;
-		case 0x8FAC507F3E91D2F8: return TinyImageFormat_R64_UINT;
-		case 0xA635187107A2DE12: return TinyImageFormat_R64_SINT;
-		case 0x43149901E509F949: return TinyImageFormat_R64_SFLOAT;
-		case 0xA1ECCC57631904C7: return TinyImageFormat_R64G64_UINT;
-		case 0x573CDC67C0F90695: return TinyImageFormat_R64G64_SINT;
-		case 0xE09F2F9190B7A44E: return TinyImageFormat_R64G64_SFLOAT;
-		case 0x1E505D1E0F7F67: return TinyImageFormat_R64G64B64_UINT;
-		case 0xBDEE06FF1606B35: return TinyImageFormat_R64G64B64_SINT;
-		case 0x8B6FB89954C14C6E: return TinyImageFormat_R64G64B64_SFLOAT;
-		case 0x6E24CB511E0FC194: return TinyImageFormat_R64G64B64A64_UINT;
-		case 0xD91E8380AF3023F6: return TinyImageFormat_R64G64B64A64_SINT;
-		case 0x2B3FE15FC07EF07D: return TinyImageFormat_R64G64B64A64_SFLOAT;
-		case 0x54D2FD13F48C6DF6: return TinyImageFormat_D16_UNORM;
-		case 0xC01BE1F2E68AD96E: return TinyImageFormat_X8_D24_UNORM;
-		case 0xD032BE522E700032: return TinyImageFormat_D32_SFLOAT;
-		case 0xCF3FC9D0CC3D3B3B: return TinyImageFormat_S8_UINT;
-		case 0xE48C6BDE0E1BDCB9: return TinyImageFormat_D16_UNORM_S8_UINT;
-		case 0x882CBC689033B818: return TinyImageFormat_D24_UNORM_S8_UINT;
-		case 0x8F4B0A1BC125EADD: return TinyImageFormat_D32_SFLOAT_S8_UINT;
-		case 0x1AA6B819AB24AB4F: return TinyImageFormat_DXBC1_RGB_UNORM;
-		case 0xA0508EF228A561DA: return TinyImageFormat_DXBC1_RGB_SRGB;
-		case 0x71A3B9E5FE557FAE: return TinyImageFormat_DXBC1_RGBA_UNORM;
-		case 0xB9884F4F748AE445: return TinyImageFormat_DXBC1_RGBA_SRGB;
-		case 0x32F4805474A831D2: return TinyImageFormat_DXBC2_UNORM;
-		case 0xB38A3E758BE52A09: return TinyImageFormat_DXBC2_SRGB;
-		case 0x3D1459BB143AA545: return TinyImageFormat_DXBC3_UNORM;
-		case 0xBE7A8D5D66E49268: return TinyImageFormat_DXBC3_SRGB;
-		case 0x8F2AE8FFFA7C726C: return TinyImageFormat_DXBC4_UNORM;
-		case 0xB3AA2DF982C0DA2E: return TinyImageFormat_DXBC4_SNORM;
-		case 0x9FF9DF3FAAA96027: return TinyImageFormat_DXBC5_UNORM;
-		case 0x6CDE8436BC805FA1: return TinyImageFormat_DXBC5_SNORM;
-		case 0xC44BF30D194202E2: return TinyImageFormat_DXBC6H_UFLOAT;
-		case 0xAB754D40F2829738: return TinyImageFormat_DXBC6H_SFLOAT;
-		case 0x3694D3DE28B7BD51: return TinyImageFormat_DXBC7_UNORM;
-		case 0x25F07F23AA734B04: return TinyImageFormat_DXBC7_SRGB;
-		case 0x8DB1509C891B79CC: return TinyImageFormat_PVRTC1_2BPP_UNORM;
-		case 0xA909A9CC15D983BE: return TinyImageFormat_PVRTC1_4BPP_UNORM;
-		case 0x92E357BAD5FE499B: return TinyImageFormat_PVRTC2_2BPP_UNORM;
-		case 0xD1A7C043408183C1: return TinyImageFormat_PVRTC2_4BPP_UNORM;
-		case 0xFB26F7CE7F6C7153: return TinyImageFormat_PVRTC1_2BPP_SRGB;
-		case 0x14B5F7A00D275AF5: return TinyImageFormat_PVRTC1_4BPP_SRGB;
-		case 0x56D223B86BC012D6: return TinyImageFormat_PVRTC2_2BPP_SRGB;
-		case 0x3B616527F2F78AD4: return TinyImageFormat_PVRTC2_4BPP_SRGB;
-		case 0xA222B6AEF8F6342F: return TinyImageFormat_ETC2_R8G8B8_UNORM;
-		case 0xF7F74F04283C85FA: return TinyImageFormat_ETC2_R8G8B8_SRGB;
-		case 0xBDF6B48E8BA852A1: return TinyImageFormat_ETC2_R8G8B8A1_UNORM;
-		case 0xBA6524ED755FF874: return TinyImageFormat_ETC2_R8G8B8A1_SRGB;
-		case 0x1462C4700CE54CF6: return TinyImageFormat_ETC2_R8G8B8A8_UNORM;
-		case 0xB011F915A61397ED: return TinyImageFormat_ETC2_R8G8B8A8_SRGB;
-		case 0xB7BD64A57C276EFC: return TinyImageFormat_ETC2_EAC_R11_UNORM;
-		case 0xD45CB1F537FEE27E: return TinyImageFormat_ETC2_EAC_R11_SNORM;
-		case 0x4AAA81E45F616ADB: return TinyImageFormat_ETC2_EAC_R11G11_UNORM;
-		case 0x60548007F77B43D: return TinyImageFormat_ETC2_EAC_R11G11_SNORM;
-		case 0x42BDD8AC55AFC9ED: return TinyImageFormat_ASTC_4x4_UNORM;
-		case 0x8016161C7AB56E10: return TinyImageFormat_ASTC_4x4_SRGB;
-		case 0x2B5386538D919E02: return TinyImageFormat_ASTC_5x4_UNORM;
-		case 0xA8D99F174DB11719: return TinyImageFormat_ASTC_5x4_SRGB;
-		case 0x915C196DFECCFF75: return TinyImageFormat_ASTC_5x5_UNORM;
-		case 0xDB79A577D6446078: return TinyImageFormat_ASTC_5x5_SRGB;
-		case 0x1160A2285ABAED98: return TinyImageFormat_ASTC_6x5_UNORM;
-		case 0x920DC8F697217E9F: return TinyImageFormat_ASTC_6x5_SRGB;
-		case 0xB16AD1AF5DE6EBCD: return TinyImageFormat_ASTC_6x6_UNORM;
-		case 0x2745169EA3B7D5B0: return TinyImageFormat_ASTC_6x6_SRGB;
-		case 0x8E0E209D6C1311DE: return TinyImageFormat_ASTC_8x5_UNORM;
-		case 0x4ED6E5BA6D481E55: return TinyImageFormat_ASTC_8x5_SRGB;
-		case 0x2E56A25E2CED3A27: return TinyImageFormat_ASTC_8x6_UNORM;
-		case 0x991F492892D765F2: return TinyImageFormat_ASTC_8x6_SRGB;
-		case 0x4C114CE1A220870D: return TinyImageFormat_ASTC_8x8_UNORM;
-		case 0x18043CB1FA4302F0: return TinyImageFormat_ASTC_8x8_SRGB;
-		case 0xDAD7C1D8F81107E9: return TinyImageFormat_ASTC_10x5_UNORM;
-		case 0x6C33C4CA9B25A7BC: return TinyImageFormat_ASTC_10x5_SRGB;
-		case 0xC9992EE75BB14BC4: return TinyImageFormat_ASTC_10x6_UNORM;
-		case 0xFE70841B7B9AEF2B: return TinyImageFormat_ASTC_10x6_SRGB;
-		case 0x9ABA2EE82583DC42: return TinyImageFormat_ASTC_10x8_UNORM;
-		case 0x7F1CDE06C9B3C759: return TinyImageFormat_ASTC_10x8_SRGB;
-		case 0xDE0FA47A2B73AF7B: return TinyImageFormat_ASTC_10x10_UNORM;
-		case 0xCB795EFA4A237676: return TinyImageFormat_ASTC_10x10_SRGB;
-		case 0x5C03E046D11AEA6D: return TinyImageFormat_ASTC_12x10_UNORM;
-		case 0xC68986D3DC188B90: return TinyImageFormat_ASTC_12x10_SRGB;
-		case 0xCE0C328A06CC3333: return TinyImageFormat_ASTC_12x12_UNORM;
-		case 0x6C2617E4D8F0DC0E: return TinyImageFormat_ASTC_12x12_SRGB;
-		case 0xAFF9FCAB198F3D50: return TinyImageFormat_CLUT_P4;
-		case 0x9CF31C2F9538C655: return TinyImageFormat_CLUT_P4A4;
-		case 0xAFFA08AB198F51B4: return TinyImageFormat_CLUT_P8;
-		case 0x698142FD18AA335: return TinyImageFormat_CLUT_P8A8;
-		default: return TinyImageFormat_UNDEFINED;
+		case 0x2BF653266B186C03: return CqFormat_UNDEFINED;
+		case 0x9C45001516D833DA: return CqFormat_R1_UNORM;
+		case 0x6C00F001F570B433: return CqFormat_R2_UNORM;
+		case 0xDF531A87DF5CFA59: return CqFormat_R4_UNORM;
+		case 0xCBA3F653C82E1E9E: return CqFormat_R4G4_UNORM;
+		case 0x9B897AC5679B790E: return CqFormat_G4R4_UNORM;
+		case 0x63DBCDF5F194196A: return CqFormat_A8_UNORM;
+		case 0x6ECBF1EF06BCE325: return CqFormat_R8_UNORM;
+		case 0x5C766FFB8DE1F1E3: return CqFormat_R8_SNORM;
+		case 0x2B467E1FD60E7DD8: return CqFormat_R8_UINT;
+		case 0xE9ABC60F283D0A72: return CqFormat_R8_SINT;
+		case 0x358F830EC2BB0208: return CqFormat_R8_SRGB;
+		case 0x7706DB5BF249BD5A: return CqFormat_B2G3R3_UNORM;
+		case 0xE2805E85156D9F31: return CqFormat_R4G4B4A4_UNORM;
+		case 0xB8C356FBFD0E908: return CqFormat_R4G4B4X4_UNORM;
+		case 0xC5A6BE73259B0031: return CqFormat_B4G4R4A4_UNORM;
+		case 0xEEB2955DCFFE4A08: return CqFormat_B4G4R4X4_UNORM;
+		case 0x220561C5779CB911: return CqFormat_A4R4G4B4_UNORM;
+		case 0xD30FAF6090EC7818: return CqFormat_X4R4G4B4_UNORM;
+		case 0x3CFC9293744E0831: return CqFormat_A4B4G4R4_UNORM;
+		case 0xE725A84DF23BFD38: return CqFormat_X4B4G4R4_UNORM;
+		case 0xE1AFBA335D26A8DA: return CqFormat_R5G6B5_UNORM;
+		case 0x7A0E74B498D4FAFA: return CqFormat_B5G6R5_UNORM;
+		case 0xA15971F29DD0621: return CqFormat_R5G5B5A1_UNORM;
+		case 0x8EFDC73AA126BFA1: return CqFormat_B5G5R5A1_UNORM;
+		case 0xC742A70EF53AC9F5: return CqFormat_A1B5G5R5_UNORM;
+		case 0xD5B003D5851331F5: return CqFormat_A1R5G5B5_UNORM;
+		case 0x7269A347036A9034: return CqFormat_R5G5B5X1_UNORM;
+		case 0xF751D3627AB449B4: return CqFormat_B5G5R5X1_UNORM;
+		case 0x42335ADEA4EFC0AC: return CqFormat_X1R5G5B5_UNORM;
+		case 0xF4330B957F4D6A4C: return CqFormat_X1B5G5R5_UNORM;
+		case 0x9A6812074759CB0B: return CqFormat_B2G3R3A8_UNORM;
+		case 0xA8082655C8EFA87E: return CqFormat_R8G8_UNORM;
+		case 0x8B68D9060D1834FC: return CqFormat_R8G8_SNORM;
+		case 0x3304A6DE2E40A66: return CqFormat_G8R8_UNORM;
+		case 0x76ED014D8BD59584: return CqFormat_G8R8_SNORM;
+		case 0x15A01776FAC06AE1: return CqFormat_R8G8_UINT;
+		case 0x810697A68C3D3FFB: return CqFormat_R8G8_SINT;
+		case 0xAC3EAAA6A4B1CBB5: return CqFormat_R8G8_SRGB;
+		case 0x2E5F1FF55A762DFC: return CqFormat_R16_UNORM;
+		case 0x4AFE6D45164DA17E: return CqFormat_R16_SNORM;
+		case 0x733B292CB050E2FB: return CqFormat_R16_UINT;
+		case 0x7D4A8FD1ED40DE1: return CqFormat_R16_SINT;
+		case 0x5181789E57BBA72A: return CqFormat_R16_SFLOAT;
+		case 0xC56CFEC3560B6C7C: return CqFormat_R16_SBFLOAT;
+		case 0x9B3BE5AE0416CB88: return CqFormat_R8G8B8_UNORM;
+		case 0x5705279F0768C4D2: return CqFormat_R8G8B8_SNORM;
+		case 0x8E06FA3EEA5892D7: return CqFormat_R8G8B8_UINT;
+		case 0x43570A4F483894A5: return CqFormat_R8G8B8_SINT;
+		case 0x8A0FD4F27827FAF: return CqFormat_R8G8B8_SRGB;
+		case 0xE97F84F8095F6908: return CqFormat_B8G8R8_UNORM;
+		case 0xA548C6E90CB16252: return CqFormat_B8G8R8_SNORM;
+		case 0xF4DDD5D490E7BF57: return CqFormat_B8G8R8_UINT;
+		case 0xAA2DE5E4EEC7C125: return CqFormat_B8G8R8_SINT;
+		case 0x6F77D8E4CE11AC2F: return CqFormat_B8G8R8_SRGB;
+		case 0x5DE537C5CEE18C99: return CqFormat_R8G8B8A8_UNORM;
+		case 0xE25912D12E286C9F: return CqFormat_R8G8B8A8_SNORM;
+		case 0x8725F84C50561C6C: return CqFormat_R8G8B8A8_UINT;
+		case 0x9C079080C9D1C54E: return CqFormat_R8G8B8A8_SINT;
+		case 0xE7B4D5806421618C: return CqFormat_R8G8B8A8_SRGB;
+		case 0xE2CD67E1462B4619: return CqFormat_B8G8R8A8_UNORM;
+		case 0x674142ECA572261F: return CqFormat_B8G8R8A8_SNORM;
+		case 0xCCAB23134AB9BCEC: return CqFormat_B8G8R8A8_UINT;
+		case 0xE18CBB47C43565CE: return CqFormat_B8G8R8A8_SINT;
+		case 0x2D3A00475E85020C: return CqFormat_B8G8R8A8_SRGB;
+		case 0x98E2B1CDECAE73E8: return CqFormat_R8G8B8X8_UNORM;
+		case 0x1DCAE1E963F82D68: return CqFormat_B8G8R8X8_UNORM;
+		case 0xA3FD1100F830F62E: return CqFormat_R16G16_UNORM;
+		case 0xEF345ACC71CAFA68: return CqFormat_G16R16_UNORM;
+		case 0x7F7DCC076FEC8E6C: return CqFormat_R16G16_SNORM;
+		case 0x5736988FE4CCE7B2: return CqFormat_G16R16_SNORM;
+		case 0xD347EDE3A8782E71: return CqFormat_R16G16_UINT;
+		case 0xE8296E1821F3AE8B: return CqFormat_R16G16_SINT;
+		case 0x2DA5B5DBEAB009F0: return CqFormat_R16G16_SFLOAT;
+		case 0x1EBDD86AD61EECA: return CqFormat_R16G16_SBFLOAT;
+		case 0xC89CD2CBE8076CC9: return CqFormat_R32_UINT;
+		case 0x339692FB7927DCC3: return CqFormat_R32_SINT;
+		case 0x79FC5AE23681AB28: return CqFormat_R32_SFLOAT;
+		case 0xFB3BEE0BC19BCDC0: return CqFormat_A2R10G10B10_UNORM;
+		case 0x258D79F3CBE9042F: return CqFormat_A2R10G10B10_UINT;
+		case 0x4CDA31047B01F04A: return CqFormat_A2R10G10B10_SNORM;
+		case 0xF00CCA04C6C8A4FD: return CqFormat_A2R10G10B10_SINT;
+		case 0x477903BFE709CD40: return CqFormat_A2B10G10R10_UNORM;
+		case 0x2274BF26D27846AF: return CqFormat_A2B10G10R10_UINT;
+		case 0x991746B8A06FEFCA: return CqFormat_A2B10G10R10_SNORM;
+		case 0xECF40F37CD57E77D: return CqFormat_A2B10G10R10_SINT;
+		case 0xC370B0AC1F93F676: return CqFormat_R10G10B10A2_UNORM;
+		case 0x171461D7B1633919: return CqFormat_R10G10B10A2_UINT;
+		case 0xE6CC635E3B189E94: return CqFormat_R10G10B10A2_SNORM;
+		case 0x805B220741121493: return CqFormat_R10G10B10A2_SINT;
+		case 0xBB10FC1669F59756: return CqFormat_B10G10R10A2_UNORM;
+		case 0xCAAD5E1DF82DE439: return CqFormat_B10G10R10A2_UINT;
+		case 0x87FBAEC610087BF4: return CqFormat_B10G10R10A2_SNORM;
+		case 0x35A69E4D894D7AB3: return CqFormat_B10G10R10A2_SINT;
+		case 0x5E8DCDA0219DCB1: return CqFormat_B10G11R11_UFLOAT;
+		case 0x1DBB77A7372DFC97: return CqFormat_E5B9G9R9_UFLOAT;
+		case 0xEA85D5CCC5E081E7: return CqFormat_R16G16B16_UNORM;
+		case 0xB57B831A10558861: return CqFormat_R16G16B16_SNORM;
+		case 0x734C0B9981BA0FD6: return CqFormat_R16G16B16_UINT;
+		case 0x851D369F098D3F4: return CqFormat_R16G16B16_SINT;
+		case 0xD1D0593BFAADABEF: return CqFormat_R16G16B16_SFLOAT;
+		case 0x6FDE47BBA7BEA90F: return CqFormat_R16G16B16_SBFLOAT;
+		case 0xA20A282E75CABD2D: return CqFormat_R16G16B16A16_UNORM;
+		case 0x8F48663AFC94404B: return CqFormat_R16G16B16A16_SNORM;
+		case 0xC02442503D4CE820: return CqFormat_R16G16B16A16_UINT;
+		case 0x7E89AA3F8F7BAB1A: return CqFormat_R16G16B16A16_SINT;
+		case 0xBBE9BB01E53ECD91: return CqFormat_R16G16B16A16_SFLOAT;
+		case 0xF170487E732A86C9: return CqFormat_R16G16B16A16_SBFLOAT;
+		case 0x300B9BAFAA9826B9: return CqFormat_R32G32_UINT;
+		case 0x9B04DBDF3BB7BD33: return CqFormat_R32G32_SINT;
+		case 0x1FDED9A9A6421118: return CqFormat_R32G32_SFLOAT;
+		case 0xFFFC8DBFFAC96F58: return CqFormat_R32G32B32_UINT;
+		case 0xBE61D5AF4CF7FBF2: return CqFormat_R32G32B32_SINT;
+		case 0x886FF275EC1787A9: return CqFormat_R32G32B32_SFLOAT;
+		case 0x7648F8DE0F31709C: return CqFormat_R32G32B32A32_UINT;
+		case 0x8B2A511288ACACBE: return CqFormat_R32G32B32A32_SINT;
+		case 0xC1C2788592D0E665: return CqFormat_R32G32B32A32_SFLOAT;
+		case 0x8FAC507F3E91D2F8: return CqFormat_R64_UINT;
+		case 0xA635187107A2DE12: return CqFormat_R64_SINT;
+		case 0x43149901E509F949: return CqFormat_R64_SFLOAT;
+		case 0xA1ECCC57631904C7: return CqFormat_R64G64_UINT;
+		case 0x573CDC67C0F90695: return CqFormat_R64G64_SINT;
+		case 0xE09F2F9190B7A44E: return CqFormat_R64G64_SFLOAT;
+		case 0x1E505D1E0F7F67: return CqFormat_R64G64B64_UINT;
+		case 0xBDEE06FF1606B35: return CqFormat_R64G64B64_SINT;
+		case 0x8B6FB89954C14C6E: return CqFormat_R64G64B64_SFLOAT;
+		case 0x6E24CB511E0FC194: return CqFormat_R64G64B64A64_UINT;
+		case 0xD91E8380AF3023F6: return CqFormat_R64G64B64A64_SINT;
+		case 0x2B3FE15FC07EF07D: return CqFormat_R64G64B64A64_SFLOAT;
+		case 0x54D2FD13F48C6DF6: return CqFormat_D16_UNORM;
+		case 0xC01BE1F2E68AD96E: return CqFormat_X8_D24_UNORM;
+		case 0xD032BE522E700032: return CqFormat_D32_SFLOAT;
+		case 0xCF3FC9D0CC3D3B3B: return CqFormat_S8_UINT;
+		case 0xE48C6BDE0E1BDCB9: return CqFormat_D16_UNORM_S8_UINT;
+		case 0x882CBC689033B818: return CqFormat_D24_UNORM_S8_UINT;
+		case 0x8F4B0A1BC125EADD: return CqFormat_D32_SFLOAT_S8_UINT;
+		case 0x1AA6B819AB24AB4F: return CqFormat_DXBC1_RGB_UNORM;
+		case 0xA0508EF228A561DA: return CqFormat_DXBC1_RGB_SRGB;
+		case 0x71A3B9E5FE557FAE: return CqFormat_DXBC1_RGBA_UNORM;
+		case 0xB9884F4F748AE445: return CqFormat_DXBC1_RGBA_SRGB;
+		case 0x32F4805474A831D2: return CqFormat_DXBC2_UNORM;
+		case 0xB38A3E758BE52A09: return CqFormat_DXBC2_SRGB;
+		case 0x3D1459BB143AA545: return CqFormat_DXBC3_UNORM;
+		case 0xBE7A8D5D66E49268: return CqFormat_DXBC3_SRGB;
+		case 0x8F2AE8FFFA7C726C: return CqFormat_DXBC4_UNORM;
+		case 0xB3AA2DF982C0DA2E: return CqFormat_DXBC4_SNORM;
+		case 0x9FF9DF3FAAA96027: return CqFormat_DXBC5_UNORM;
+		case 0x6CDE8436BC805FA1: return CqFormat_DXBC5_SNORM;
+		case 0xC44BF30D194202E2: return CqFormat_DXBC6H_UFLOAT;
+		case 0xAB754D40F2829738: return CqFormat_DXBC6H_SFLOAT;
+		case 0x3694D3DE28B7BD51: return CqFormat_DXBC7_UNORM;
+		case 0x25F07F23AA734B04: return CqFormat_DXBC7_SRGB;
+		case 0x8DB1509C891B79CC: return CqFormat_PVRTC1_2BPP_UNORM;
+		case 0xA909A9CC15D983BE: return CqFormat_PVRTC1_4BPP_UNORM;
+		case 0x92E357BAD5FE499B: return CqFormat_PVRTC2_2BPP_UNORM;
+		case 0xD1A7C043408183C1: return CqFormat_PVRTC2_4BPP_UNORM;
+		case 0xFB26F7CE7F6C7153: return CqFormat_PVRTC1_2BPP_SRGB;
+		case 0x14B5F7A00D275AF5: return CqFormat_PVRTC1_4BPP_SRGB;
+		case 0x56D223B86BC012D6: return CqFormat_PVRTC2_2BPP_SRGB;
+		case 0x3B616527F2F78AD4: return CqFormat_PVRTC2_4BPP_SRGB;
+		case 0xA222B6AEF8F6342F: return CqFormat_ETC2_R8G8B8_UNORM;
+		case 0xF7F74F04283C85FA: return CqFormat_ETC2_R8G8B8_SRGB;
+		case 0xBDF6B48E8BA852A1: return CqFormat_ETC2_R8G8B8A1_UNORM;
+		case 0xBA6524ED755FF874: return CqFormat_ETC2_R8G8B8A1_SRGB;
+		case 0x1462C4700CE54CF6: return CqFormat_ETC2_R8G8B8A8_UNORM;
+		case 0xB011F915A61397ED: return CqFormat_ETC2_R8G8B8A8_SRGB;
+		case 0xB7BD64A57C276EFC: return CqFormat_ETC2_EAC_R11_UNORM;
+		case 0xD45CB1F537FEE27E: return CqFormat_ETC2_EAC_R11_SNORM;
+		case 0x4AAA81E45F616ADB: return CqFormat_ETC2_EAC_R11G11_UNORM;
+		case 0x60548007F77B43D: return CqFormat_ETC2_EAC_R11G11_SNORM;
+		case 0x42BDD8AC55AFC9ED: return CqFormat_ASTC_4x4_UNORM;
+		case 0x8016161C7AB56E10: return CqFormat_ASTC_4x4_SRGB;
+		case 0x2B5386538D919E02: return CqFormat_ASTC_5x4_UNORM;
+		case 0xA8D99F174DB11719: return CqFormat_ASTC_5x4_SRGB;
+		case 0x915C196DFECCFF75: return CqFormat_ASTC_5x5_UNORM;
+		case 0xDB79A577D6446078: return CqFormat_ASTC_5x5_SRGB;
+		case 0x1160A2285ABAED98: return CqFormat_ASTC_6x5_UNORM;
+		case 0x920DC8F697217E9F: return CqFormat_ASTC_6x5_SRGB;
+		case 0xB16AD1AF5DE6EBCD: return CqFormat_ASTC_6x6_UNORM;
+		case 0x2745169EA3B7D5B0: return CqFormat_ASTC_6x6_SRGB;
+		case 0x8E0E209D6C1311DE: return CqFormat_ASTC_8x5_UNORM;
+		case 0x4ED6E5BA6D481E55: return CqFormat_ASTC_8x5_SRGB;
+		case 0x2E56A25E2CED3A27: return CqFormat_ASTC_8x6_UNORM;
+		case 0x991F492892D765F2: return CqFormat_ASTC_8x6_SRGB;
+		case 0x4C114CE1A220870D: return CqFormat_ASTC_8x8_UNORM;
+		case 0x18043CB1FA4302F0: return CqFormat_ASTC_8x8_SRGB;
+		case 0xDAD7C1D8F81107E9: return CqFormat_ASTC_10x5_UNORM;
+		case 0x6C33C4CA9B25A7BC: return CqFormat_ASTC_10x5_SRGB;
+		case 0xC9992EE75BB14BC4: return CqFormat_ASTC_10x6_UNORM;
+		case 0xFE70841B7B9AEF2B: return CqFormat_ASTC_10x6_SRGB;
+		case 0x9ABA2EE82583DC42: return CqFormat_ASTC_10x8_UNORM;
+		case 0x7F1CDE06C9B3C759: return CqFormat_ASTC_10x8_SRGB;
+		case 0xDE0FA47A2B73AF7B: return CqFormat_ASTC_10x10_UNORM;
+		case 0xCB795EFA4A237676: return CqFormat_ASTC_10x10_SRGB;
+		case 0x5C03E046D11AEA6D: return CqFormat_ASTC_12x10_UNORM;
+		case 0xC68986D3DC188B90: return CqFormat_ASTC_12x10_SRGB;
+		case 0xCE0C328A06CC3333: return CqFormat_ASTC_12x12_UNORM;
+		case 0x6C2617E4D8F0DC0E: return CqFormat_ASTC_12x12_SRGB;
+		case 0xAFF9FCAB198F3D50: return CqFormat_CLUT_P4;
+		case 0x9CF31C2F9538C655: return CqFormat_CLUT_P4A4;
+		case 0xAFFA08AB198F51B4: return CqFormat_CLUT_P8;
+		case 0x698142FD18AA335: return CqFormat_CLUT_P8A8;
+		default: return CqFormat_UNDEFINED;
 	}
 }
 
 
 
 // Helpers
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_PixelCountOfBlock(TinyImageFormat const fmt) {
-	return TinyImageFormat_WidthOfBlock(fmt) * TinyImageFormat_HeightOfBlock(fmt) * TinyImageFormat_DepthOfBlock(fmt);
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_PixelCountOfBlock(CqFormat const fmt) {
+	return CqFormat_WidthOfBlock(fmt) * CqFormat_HeightOfBlock(fmt) * CqFormat_DepthOfBlock(fmt);
 }
 
-CQ_FMT_CONSTEXPR inline double TinyImageFormat_Min(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_MinAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
+CQ_FMT_CONSTEXPR inline double CqFormat_Min(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+	return CqFormat_MinAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-CQ_FMT_CONSTEXPR inline double TinyImageFormat_Max(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_MaxAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
+CQ_FMT_CONSTEXPR inline double CqFormat_Max(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+	return CqFormat_MaxAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidth(TinyImageFormat const fmt, TinyImageFormat_LogicalChannel const channel) {
-	return TinyImageFormat_ChannelBitWidthAtPhysical(fmt, TinyImageFormat_LogicalChannelToPhysical(fmt, channel));
+CQ_FMT_CONSTEXPR inline uint32_t CqFormat_ChannelBitWidth(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+	return CqFormat_ChannelBitWidthAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
 #endif // TINYIMAGE_QUERY_H_
@@ -6090,7 +6090,7 @@ CQ_FMT_CONSTEXPR inline uint32_t TinyImageFormat_ChannelBitWidth(TinyImageFormat
 
 
 
-inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
+inline void CqFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union
 	{
@@ -6119,7 +6119,7 @@ inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4
 }
 
 //HalfToFloat from Rygorous public domain code
-inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
+inline float CqFormat_HalfAsUintToFloat(uint16_t h_) {
 
 	const uint32_t shifted_exp = 0x7c00 << 13; // exponent mask after shift
 	union {
@@ -6166,7 +6166,7 @@ inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
+inline float CqFormat_BFloatAsUintToFloat(uint16_t h_) {
 	union {
 		struct {
 			uint16_t x;
@@ -6181,7 +6181,7 @@ inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat6AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -6223,7 +6223,7 @@ inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat7AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -6265,7 +6265,7 @@ inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat10AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -6311,7 +6311,7 @@ inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat11AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -6356,7 +6356,7 @@ inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
+CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {
 	switch(lookup) {
 		case 0: return 0.00000000f;
 		case 1: return 0.00030353f;
@@ -6618,135 +6618,135 @@ CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM: return true;
-		case TinyImageFormat_R2_UNORM: return true;
-		case TinyImageFormat_R4_UNORM: return true;
-		case TinyImageFormat_R4G4_UNORM: return true;
-		case TinyImageFormat_G4R4_UNORM: return true;
-		case TinyImageFormat_A8_UNORM: return true;
-		case TinyImageFormat_R8_UNORM: return true;
-		case TinyImageFormat_R8_SNORM: return true;
-		case TinyImageFormat_R8_UINT: return true;
-		case TinyImageFormat_R8_SINT: return true;
-		case TinyImageFormat_R8_SRGB: return true;
-		case TinyImageFormat_B2G3R3_UNORM: return true;
-		case TinyImageFormat_R4G4B4A4_UNORM: return true;
-		case TinyImageFormat_R4G4B4X4_UNORM: return true;
-		case TinyImageFormat_B4G4R4A4_UNORM: return true;
-		case TinyImageFormat_B4G4R4X4_UNORM: return true;
-		case TinyImageFormat_A4R4G4B4_UNORM: return true;
-		case TinyImageFormat_X4R4G4B4_UNORM: return true;
-		case TinyImageFormat_A4B4G4R4_UNORM: return true;
-		case TinyImageFormat_X4B4G4R4_UNORM: return true;
-		case TinyImageFormat_R5G6B5_UNORM: return true;
-		case TinyImageFormat_B5G6R5_UNORM: return true;
-		case TinyImageFormat_R5G5B5A1_UNORM: return true;
-		case TinyImageFormat_B5G5R5A1_UNORM: return true;
-		case TinyImageFormat_A1B5G5R5_UNORM: return true;
-		case TinyImageFormat_A1R5G5B5_UNORM: return true;
-		case TinyImageFormat_R5G5B5X1_UNORM: return true;
-		case TinyImageFormat_B5G5R5X1_UNORM: return true;
-		case TinyImageFormat_X1R5G5B5_UNORM: return true;
-		case TinyImageFormat_X1B5G5R5_UNORM: return true;
-		case TinyImageFormat_B2G3R3A8_UNORM: return true;
-		case TinyImageFormat_R8G8_UNORM: return true;
-		case TinyImageFormat_R8G8_SNORM: return true;
-		case TinyImageFormat_G8R8_UNORM: return true;
-		case TinyImageFormat_G8R8_SNORM: return true;
-		case TinyImageFormat_R8G8_UINT: return true;
-		case TinyImageFormat_R8G8_SINT: return true;
-		case TinyImageFormat_R8G8_SRGB: return true;
-		case TinyImageFormat_R16_UNORM: return true;
-		case TinyImageFormat_R16_SNORM: return true;
-		case TinyImageFormat_R16_UINT: return true;
-		case TinyImageFormat_R16_SINT: return true;
-		case TinyImageFormat_R16_SFLOAT: return true;
-		case TinyImageFormat_R16_SBFLOAT: return true;
-		case TinyImageFormat_R8G8B8_UNORM: return true;
-		case TinyImageFormat_R8G8B8_SNORM: return true;
-		case TinyImageFormat_R8G8B8_UINT: return true;
-		case TinyImageFormat_R8G8B8_SINT: return true;
-		case TinyImageFormat_R8G8B8_SRGB: return true;
-		case TinyImageFormat_B8G8R8_UNORM: return true;
-		case TinyImageFormat_B8G8R8_SNORM: return true;
-		case TinyImageFormat_B8G8R8_UINT: return true;
-		case TinyImageFormat_B8G8R8_SINT: return true;
-		case TinyImageFormat_B8G8R8_SRGB: return true;
-		case TinyImageFormat_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SNORM: return true;
-		case TinyImageFormat_R8G8B8A8_UINT: return true;
-		case TinyImageFormat_R8G8B8A8_SINT: return true;
-		case TinyImageFormat_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_B8G8R8A8_UNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SNORM: return true;
-		case TinyImageFormat_B8G8R8A8_UINT: return true;
-		case TinyImageFormat_B8G8R8A8_SINT: return true;
-		case TinyImageFormat_B8G8R8A8_SRGB: return true;
-		case TinyImageFormat_R8G8B8X8_UNORM: return true;
-		case TinyImageFormat_B8G8R8X8_UNORM: return true;
-		case TinyImageFormat_R16G16_UNORM: return true;
-		case TinyImageFormat_G16R16_UNORM: return true;
-		case TinyImageFormat_R16G16_SNORM: return true;
-		case TinyImageFormat_G16R16_SNORM: return true;
-		case TinyImageFormat_R16G16_UINT: return true;
-		case TinyImageFormat_R16G16_SINT: return true;
-		case TinyImageFormat_R16G16_SFLOAT: return true;
-		case TinyImageFormat_R16G16_SBFLOAT: return true;
-		case TinyImageFormat_R32_UINT: return true;
-		case TinyImageFormat_R32_SINT: return true;
-		case TinyImageFormat_R32_SFLOAT: return true;
-		case TinyImageFormat_A2R10G10B10_UNORM: return true;
-		case TinyImageFormat_A2R10G10B10_UINT: return true;
-		case TinyImageFormat_A2R10G10B10_SNORM: return true;
-		case TinyImageFormat_A2R10G10B10_SINT: return true;
-		case TinyImageFormat_A2B10G10R10_UNORM: return true;
-		case TinyImageFormat_A2B10G10R10_UINT: return true;
-		case TinyImageFormat_A2B10G10R10_SNORM: return true;
-		case TinyImageFormat_A2B10G10R10_SINT: return true;
-		case TinyImageFormat_R10G10B10A2_UNORM: return true;
-		case TinyImageFormat_R10G10B10A2_UINT: return true;
-		case TinyImageFormat_R10G10B10A2_SNORM: return true;
-		case TinyImageFormat_R10G10B10A2_SINT: return true;
-		case TinyImageFormat_B10G10R10A2_UNORM: return true;
-		case TinyImageFormat_B10G10R10A2_UINT: return true;
-		case TinyImageFormat_B10G10R10A2_SNORM: return true;
-		case TinyImageFormat_B10G10R10A2_SINT: return true;
-		case TinyImageFormat_B10G11R11_UFLOAT: return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return true;
-		case TinyImageFormat_R16G16B16_UNORM: return true;
-		case TinyImageFormat_R16G16B16_SNORM: return true;
-		case TinyImageFormat_R16G16B16_UINT: return true;
-		case TinyImageFormat_R16G16B16_SINT: return true;
-		case TinyImageFormat_R16G16B16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_UNORM: return true;
-		case TinyImageFormat_R16G16B16A16_SNORM: return true;
-		case TinyImageFormat_R16G16B16A16_UINT: return true;
-		case TinyImageFormat_R16G16B16A16_SINT: return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return true;
-		case TinyImageFormat_R32G32_UINT: return true;
-		case TinyImageFormat_R32G32_SINT: return true;
-		case TinyImageFormat_R32G32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32_UINT: return true;
-		case TinyImageFormat_R32G32B32_SINT: return true;
-		case TinyImageFormat_R32G32B32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32A32_UINT: return true;
-		case TinyImageFormat_R32G32B32A32_SINT: return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return true;
-		case TinyImageFormat_CLUT_P4: return true;
-		case TinyImageFormat_CLUT_P4A4: return true;
-		case TinyImageFormat_CLUT_P8: return true;
-		case TinyImageFormat_CLUT_P8A8: return true;
+		case CqFormat_R1_UNORM: return true;
+		case CqFormat_R2_UNORM: return true;
+		case CqFormat_R4_UNORM: return true;
+		case CqFormat_R4G4_UNORM: return true;
+		case CqFormat_G4R4_UNORM: return true;
+		case CqFormat_A8_UNORM: return true;
+		case CqFormat_R8_UNORM: return true;
+		case CqFormat_R8_SNORM: return true;
+		case CqFormat_R8_UINT: return true;
+		case CqFormat_R8_SINT: return true;
+		case CqFormat_R8_SRGB: return true;
+		case CqFormat_B2G3R3_UNORM: return true;
+		case CqFormat_R4G4B4A4_UNORM: return true;
+		case CqFormat_R4G4B4X4_UNORM: return true;
+		case CqFormat_B4G4R4A4_UNORM: return true;
+		case CqFormat_B4G4R4X4_UNORM: return true;
+		case CqFormat_A4R4G4B4_UNORM: return true;
+		case CqFormat_X4R4G4B4_UNORM: return true;
+		case CqFormat_A4B4G4R4_UNORM: return true;
+		case CqFormat_X4B4G4R4_UNORM: return true;
+		case CqFormat_R5G6B5_UNORM: return true;
+		case CqFormat_B5G6R5_UNORM: return true;
+		case CqFormat_R5G5B5A1_UNORM: return true;
+		case CqFormat_B5G5R5A1_UNORM: return true;
+		case CqFormat_A1B5G5R5_UNORM: return true;
+		case CqFormat_A1R5G5B5_UNORM: return true;
+		case CqFormat_R5G5B5X1_UNORM: return true;
+		case CqFormat_B5G5R5X1_UNORM: return true;
+		case CqFormat_X1R5G5B5_UNORM: return true;
+		case CqFormat_X1B5G5R5_UNORM: return true;
+		case CqFormat_B2G3R3A8_UNORM: return true;
+		case CqFormat_R8G8_UNORM: return true;
+		case CqFormat_R8G8_SNORM: return true;
+		case CqFormat_G8R8_UNORM: return true;
+		case CqFormat_G8R8_SNORM: return true;
+		case CqFormat_R8G8_UINT: return true;
+		case CqFormat_R8G8_SINT: return true;
+		case CqFormat_R8G8_SRGB: return true;
+		case CqFormat_R16_UNORM: return true;
+		case CqFormat_R16_SNORM: return true;
+		case CqFormat_R16_UINT: return true;
+		case CqFormat_R16_SINT: return true;
+		case CqFormat_R16_SFLOAT: return true;
+		case CqFormat_R16_SBFLOAT: return true;
+		case CqFormat_R8G8B8_UNORM: return true;
+		case CqFormat_R8G8B8_SNORM: return true;
+		case CqFormat_R8G8B8_UINT: return true;
+		case CqFormat_R8G8B8_SINT: return true;
+		case CqFormat_R8G8B8_SRGB: return true;
+		case CqFormat_B8G8R8_UNORM: return true;
+		case CqFormat_B8G8R8_SNORM: return true;
+		case CqFormat_B8G8R8_UINT: return true;
+		case CqFormat_B8G8R8_SINT: return true;
+		case CqFormat_B8G8R8_SRGB: return true;
+		case CqFormat_R8G8B8A8_UNORM: return true;
+		case CqFormat_R8G8B8A8_SNORM: return true;
+		case CqFormat_R8G8B8A8_UINT: return true;
+		case CqFormat_R8G8B8A8_SINT: return true;
+		case CqFormat_R8G8B8A8_SRGB: return true;
+		case CqFormat_B8G8R8A8_UNORM: return true;
+		case CqFormat_B8G8R8A8_SNORM: return true;
+		case CqFormat_B8G8R8A8_UINT: return true;
+		case CqFormat_B8G8R8A8_SINT: return true;
+		case CqFormat_B8G8R8A8_SRGB: return true;
+		case CqFormat_R8G8B8X8_UNORM: return true;
+		case CqFormat_B8G8R8X8_UNORM: return true;
+		case CqFormat_R16G16_UNORM: return true;
+		case CqFormat_G16R16_UNORM: return true;
+		case CqFormat_R16G16_SNORM: return true;
+		case CqFormat_G16R16_SNORM: return true;
+		case CqFormat_R16G16_UINT: return true;
+		case CqFormat_R16G16_SINT: return true;
+		case CqFormat_R16G16_SFLOAT: return true;
+		case CqFormat_R16G16_SBFLOAT: return true;
+		case CqFormat_R32_UINT: return true;
+		case CqFormat_R32_SINT: return true;
+		case CqFormat_R32_SFLOAT: return true;
+		case CqFormat_A2R10G10B10_UNORM: return true;
+		case CqFormat_A2R10G10B10_UINT: return true;
+		case CqFormat_A2R10G10B10_SNORM: return true;
+		case CqFormat_A2R10G10B10_SINT: return true;
+		case CqFormat_A2B10G10R10_UNORM: return true;
+		case CqFormat_A2B10G10R10_UINT: return true;
+		case CqFormat_A2B10G10R10_SNORM: return true;
+		case CqFormat_A2B10G10R10_SINT: return true;
+		case CqFormat_R10G10B10A2_UNORM: return true;
+		case CqFormat_R10G10B10A2_UINT: return true;
+		case CqFormat_R10G10B10A2_SNORM: return true;
+		case CqFormat_R10G10B10A2_SINT: return true;
+		case CqFormat_B10G10R10A2_UNORM: return true;
+		case CqFormat_B10G10R10A2_UINT: return true;
+		case CqFormat_B10G10R10A2_SNORM: return true;
+		case CqFormat_B10G10R10A2_SINT: return true;
+		case CqFormat_B10G11R11_UFLOAT: return true;
+		case CqFormat_E5B9G9R9_UFLOAT: return true;
+		case CqFormat_R16G16B16_UNORM: return true;
+		case CqFormat_R16G16B16_SNORM: return true;
+		case CqFormat_R16G16B16_UINT: return true;
+		case CqFormat_R16G16B16_SINT: return true;
+		case CqFormat_R16G16B16_SFLOAT: return true;
+		case CqFormat_R16G16B16_SBFLOAT: return true;
+		case CqFormat_R16G16B16A16_UNORM: return true;
+		case CqFormat_R16G16B16A16_SNORM: return true;
+		case CqFormat_R16G16B16A16_UINT: return true;
+		case CqFormat_R16G16B16A16_SINT: return true;
+		case CqFormat_R16G16B16A16_SFLOAT: return true;
+		case CqFormat_R16G16B16A16_SBFLOAT: return true;
+		case CqFormat_R32G32_UINT: return true;
+		case CqFormat_R32G32_SINT: return true;
+		case CqFormat_R32G32_SFLOAT: return true;
+		case CqFormat_R32G32B32_UINT: return true;
+		case CqFormat_R32G32B32_SINT: return true;
+		case CqFormat_R32G32B32_SFLOAT: return true;
+		case CqFormat_R32G32B32A32_UINT: return true;
+		case CqFormat_R32G32B32A32_SINT: return true;
+		case CqFormat_R32G32B32A32_SFLOAT: return true;
+		case CqFormat_CLUT_P4: return true;
+		case CqFormat_CLUT_P4A4: return true;
+		case CqFormat_CLUT_P8: return true;
+		case CqFormat_CLUT_P8A8: return true;
 		default: return false;
 		}
 	}
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM:
+		case CqFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x1);
@@ -6785,7 +6785,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=32;
 			}
 			return true;
-		case TinyImageFormat_R2_UNORM:
+		case CqFormat_R2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -6808,7 +6808,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=16;
 			}
 			return true;
-		case TinyImageFormat_R4_UNORM:
+		case CqFormat_R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6823,7 +6823,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=8;
 			}
 			return true;
-		case TinyImageFormat_R4G4_UNORM:
+		case CqFormat_R4G4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6834,7 +6834,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_G4R4_UNORM:
+		case CqFormat_G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[1] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6845,7 +6845,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A8_UNORM:
+		case CqFormat_A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[3] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[0] = (float)0.00000000;
@@ -6855,7 +6855,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_UNORM:
+		case CqFormat_R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = (float)0.00000000;
@@ -6865,7 +6865,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SNORM:
+		case CqFormat_R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = (float)0.00000000;
@@ -6875,7 +6875,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_UINT:
+		case CqFormat_R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -6885,7 +6885,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SINT:
+		case CqFormat_R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -6895,9 +6895,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SRGB:
+		case CqFormat_R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -6905,7 +6905,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_B2G3R3_UNORM:
+		case CqFormat_B2G3R3_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -6916,7 +6916,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4A4_UNORM:
+		case CqFormat_R4G4B4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6927,7 +6927,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4X4_UNORM:
+		case CqFormat_R4G4B4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6938,7 +6938,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4A4_UNORM:
+		case CqFormat_B4G4R4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6949,7 +6949,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4X4_UNORM:
+		case CqFormat_B4G4R4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6960,7 +6960,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A4R4G4B4_UNORM:
+		case CqFormat_A4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6971,7 +6971,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X4R4G4B4_UNORM:
+		case CqFormat_X4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
@@ -6982,7 +6982,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A4B4G4R4_UNORM:
+		case CqFormat_A4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -6993,7 +6993,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X4B4G4R4_UNORM:
+		case CqFormat_X4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
@@ -7004,7 +7004,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G6B5_UNORM:
+		case CqFormat_R5G6B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7015,7 +7015,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G6R5_UNORM:
+		case CqFormat_B5G6R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7026,7 +7026,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5A1_UNORM:
+		case CqFormat_R5G5B5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7037,7 +7037,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5A1_UNORM:
+		case CqFormat_B5G5R5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7048,7 +7048,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A1B5G5R5_UNORM:
+		case CqFormat_A1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
@@ -7059,7 +7059,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A1R5G5B5_UNORM:
+		case CqFormat_A1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
@@ -7070,7 +7070,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5X1_UNORM:
+		case CqFormat_R5G5B5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7081,7 +7081,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5X1_UNORM:
+		case CqFormat_B5G5R5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -7092,7 +7092,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X1R5G5B5_UNORM:
+		case CqFormat_X1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
@@ -7103,7 +7103,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X1B5G5R5_UNORM:
+		case CqFormat_X1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
@@ -7114,7 +7114,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B2G3R3A8_UNORM:
+		case CqFormat_B2G3R3A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -7125,7 +7125,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_UNORM:
+		case CqFormat_R8G8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7135,7 +7135,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SNORM:
+		case CqFormat_R8G8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7145,7 +7145,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G8R8_UNORM:
+		case CqFormat_G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[0] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7155,7 +7155,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G8R8_SNORM:
+		case CqFormat_G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[0] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7165,7 +7165,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_UINT:
+		case CqFormat_R8G8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -7175,7 +7175,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SINT:
+		case CqFormat_R8G8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -7185,17 +7185,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SRGB:
+		case CqFormat_R8G8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16_UNORM:
+		case CqFormat_R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = (float)0.00000000;
@@ -7205,7 +7205,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SNORM:
+		case CqFormat_R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = (float)0.00000000;
@@ -7215,7 +7215,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_UINT:
+		case CqFormat_R16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -7225,7 +7225,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SINT:
+		case CqFormat_R16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -7235,9 +7235,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SFLOAT:
+		case CqFormat_R16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -7245,9 +7245,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SBFLOAT:
+		case CqFormat_R16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -7255,7 +7255,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UNORM:
+		case CqFormat_R8G8B8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7265,7 +7265,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SNORM:
+		case CqFormat_R8G8B8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7275,7 +7275,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UINT:
+		case CqFormat_R8G8B8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -7285,7 +7285,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SINT:
+		case CqFormat_R8G8B8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -7295,17 +7295,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SRGB:
+		case CqFormat_R8G8B8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UNORM:
+		case CqFormat_B8G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7315,7 +7315,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SNORM:
+		case CqFormat_B8G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7325,7 +7325,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UINT:
+		case CqFormat_B8G8R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -7335,7 +7335,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SINT:
+		case CqFormat_B8G8R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -7345,17 +7345,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SRGB:
+		case CqFormat_B8G8R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UNORM:
+		case CqFormat_R8G8B8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7365,7 +7365,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SNORM:
+		case CqFormat_R8G8B8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7375,7 +7375,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UINT:
+		case CqFormat_R8G8B8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -7385,7 +7385,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SINT:
+		case CqFormat_R8G8B8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -7395,17 +7395,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SRGB:
+		case CqFormat_R8G8B8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = ((float)((uint8_t const *)in->pixel)[3]) * (float)0.00392157;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UNORM:
+		case CqFormat_B8G8R8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7415,7 +7415,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SNORM:
+		case CqFormat_B8G8R8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -7425,7 +7425,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UINT:
+		case CqFormat_B8G8R8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -7435,7 +7435,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SINT:
+		case CqFormat_B8G8R8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -7445,17 +7445,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SRGB:
+		case CqFormat_B8G8R8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = ((float)((uint8_t const *)in->pixel)[3]) * (float)0.00392157;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8X8_UNORM:
+		case CqFormat_R8G8B8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7465,7 +7465,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8X8_UNORM:
+		case CqFormat_B8G8R8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -7475,7 +7475,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16_UNORM:
+		case CqFormat_R16G16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -7485,7 +7485,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G16R16_UNORM:
+		case CqFormat_G16R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[0] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -7495,7 +7495,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SNORM:
+		case CqFormat_R16G16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -7505,7 +7505,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G16R16_SNORM:
+		case CqFormat_G16R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[0] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -7515,7 +7515,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_UINT:
+		case CqFormat_R16G16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -7525,7 +7525,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SINT:
+		case CqFormat_R16G16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -7535,27 +7535,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SFLOAT:
+		case CqFormat_R16G16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SBFLOAT:
+		case CqFormat_R16G16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32_UINT:
+		case CqFormat_R32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -7565,7 +7565,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R32_SINT:
+		case CqFormat_R32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -7575,7 +7575,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R32_SFLOAT:
+		case CqFormat_R32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -7585,7 +7585,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UNORM:
+		case CqFormat_A2R10G10B10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -7596,7 +7596,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UINT:
+		case CqFormat_A2R10G10B10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -7607,7 +7607,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SNORM:
+		case CqFormat_A2R10G10B10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)1.00000000);
@@ -7618,7 +7618,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SINT:
+		case CqFormat_A2R10G10B10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -7629,7 +7629,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UNORM:
+		case CqFormat_A2B10G10R10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -7640,7 +7640,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UINT:
+		case CqFormat_A2B10G10R10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -7651,7 +7651,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SNORM:
+		case CqFormat_A2B10G10R10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)1.00000000);
@@ -7662,7 +7662,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SINT:
+		case CqFormat_A2B10G10R10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -7673,7 +7673,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UNORM:
+		case CqFormat_R10G10B10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
@@ -7684,7 +7684,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UINT:
+		case CqFormat_R10G10B10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x3ff);
@@ -7695,7 +7695,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SNORM:
+		case CqFormat_R10G10B10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00195695);
@@ -7706,7 +7706,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SINT:
+		case CqFormat_R10G10B10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x3ff);
@@ -7717,7 +7717,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UNORM:
+		case CqFormat_B10G10R10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
@@ -7728,7 +7728,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UINT:
+		case CqFormat_B10G10R10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = (float)((val >> 0) & 0x3ff);
@@ -7739,7 +7739,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SNORM:
+		case CqFormat_B10G10R10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00195695);
@@ -7750,7 +7750,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SINT:
+		case CqFormat_B10G10R10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = (float)((val >> 0) & 0x3ff);
@@ -7761,25 +7761,25 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G11R11_UFLOAT:
+		case CqFormat_B10G11R11_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[2] = (float)TinyImageFormat_UFloat10AsUintToFloat((val >> 0) & 0x3ff);
-				out[1] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 10) & 0x7ff);
-				out[0] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 21) & 0x7ff);
+				out[2] = (float)CqFormat_UFloat10AsUintToFloat((val >> 0) & 0x3ff);
+				out[1] = (float)CqFormat_UFloat11AsUintToFloat((val >> 10) & 0x7ff);
+				out[0] = (float)CqFormat_UFloat11AsUintToFloat((val >> 21) & 0x7ff);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT:
+		case CqFormat_E5B9G9R9_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				TinyImageFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);
+				CqFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out += 4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UNORM:
+		case CqFormat_R16G16B16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -7789,7 +7789,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SNORM:
+		case CqFormat_R16G16B16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -7799,7 +7799,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UINT:
+		case CqFormat_R16G16B16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -7809,7 +7809,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SINT:
+		case CqFormat_R16G16B16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -7819,27 +7819,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SFLOAT:
+		case CqFormat_R16G16B16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT:
+		case CqFormat_R16G16B16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UNORM:
+		case CqFormat_R16G16B16A16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -7849,7 +7849,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SNORM:
+		case CqFormat_R16G16B16A16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -7859,7 +7859,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UINT:
+		case CqFormat_R16G16B16A16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -7869,7 +7869,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SINT:
+		case CqFormat_R16G16B16A16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -7879,27 +7879,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT:
+		case CqFormat_R16G16B16A16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
-				out[3] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[3]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[3] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[3]);
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT:
+		case CqFormat_R16G16B16A16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
-				out[3] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[3]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[3] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[3]);
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32_UINT:
+		case CqFormat_R32G32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -7909,7 +7909,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32_SINT:
+		case CqFormat_R32G32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -7919,7 +7919,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32_SFLOAT:
+		case CqFormat_R32G32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -7929,7 +7929,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_UINT:
+		case CqFormat_R32G32B32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -7939,7 +7939,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SINT:
+		case CqFormat_R32G32B32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -7949,7 +7949,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SFLOAT:
+		case CqFormat_R32G32B32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -7959,7 +7959,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_UINT:
+		case CqFormat_R32G32B32A32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -7969,7 +7969,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SINT:
+		case CqFormat_R32G32B32A32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -7979,7 +7979,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT:
+		case CqFormat_R32G32B32A32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -7989,7 +7989,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P4:
+		case CqFormat_CLUT_P4:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -8006,7 +8006,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P4A4:
+		case CqFormat_CLUT_P4A4:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -8018,7 +8018,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P8:
+		case CqFormat_CLUT_P8:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -8030,7 +8030,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P8A8:
+		case CqFormat_CLUT_P8A8:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -8046,27 +8046,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT: return true;
-		case TinyImageFormat_R64_SINT: return true;
-		case TinyImageFormat_R64_SFLOAT: return true;
-		case TinyImageFormat_R64G64_UINT: return true;
-		case TinyImageFormat_R64G64_SINT: return true;
-		case TinyImageFormat_R64G64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64_UINT: return true;
-		case TinyImageFormat_R64G64B64_SINT: return true;
-		case TinyImageFormat_R64G64B64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64A64_UINT: return true;
-		case TinyImageFormat_R64G64B64A64_SINT: return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return true;
-		default: return TinyImageFormat_CanDecodeLogicalPixelsF(fmt);
+		case CqFormat_R64_UINT: return true;
+		case CqFormat_R64_SINT: return true;
+		case CqFormat_R64_SFLOAT: return true;
+		case CqFormat_R64G64_UINT: return true;
+		case CqFormat_R64G64_SINT: return true;
+		case CqFormat_R64G64_SFLOAT: return true;
+		case CqFormat_R64G64B64_UINT: return true;
+		case CqFormat_R64G64B64_SINT: return true;
+		case CqFormat_R64G64B64_SFLOAT: return true;
+		case CqFormat_R64G64B64A64_UINT: return true;
+		case CqFormat_R64G64B64A64_SINT: return true;
+		case CqFormat_R64G64B64A64_SFLOAT: return true;
+		default: return CqFormat_CanDecodeLogicalPixelsF(fmt);
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT:
+		case CqFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -8076,7 +8076,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64_SINT:
+		case CqFormat_R64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -8086,7 +8086,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64_SFLOAT:
+		case CqFormat_R64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -8096,7 +8096,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64G64_UINT:
+		case CqFormat_R64G64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -8106,7 +8106,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64_SINT:
+		case CqFormat_R64G64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -8116,7 +8116,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64_SFLOAT:
+		case CqFormat_R64G64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -8126,7 +8126,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_UINT:
+		case CqFormat_R64G64B64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -8136,7 +8136,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SINT:
+		case CqFormat_R64G64B64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -8146,7 +8146,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SFLOAT:
+		case CqFormat_R64G64B64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -8156,7 +8156,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_UINT:
+		case CqFormat_R64G64B64A64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -8166,7 +8166,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SINT:
+		case CqFormat_R64G64B64A64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -8176,7 +8176,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT:
+		case CqFormat_R64G64B64A64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -8190,7 +8190,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 		{
 			float outF[4] = {0, 0, 0, 0}; bool ret = true;
 			for(uint32_t w = 0; w < width && ret; ++w) {
-				ret = TinyImageFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);
+				ret = CqFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);
 				out[0] = outF[0]; out[1] = outF[1]; out[2] = outF[2]; out[3] = outF[3]; out += 4;
 				}
 			return ret;
@@ -8205,7 +8205,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 
 
 // from D3DX_DXGIFormatConvert.inl
-inline uint8_t TinyImageFormat_FloatToSRGB(float v) {
+inline uint8_t CqFormat_FloatToSRGB(float v) {
 	if (v < 0.0031308f) {
 		v *= 12.92f;
 	} else {
@@ -8215,7 +8215,7 @@ inline uint8_t TinyImageFormat_FloatToSRGB(float v) {
 }
 
 //Float2Half from Rygorous public domain code
-inline uint16_t TinyImageFormat_FloatToHalfAsUint(float f_) {
+inline uint16_t CqFormat_FloatToHalfAsUint(float f_) {
 	union {
 		uint16_t u;
 		struct {
@@ -8282,7 +8282,7 @@ inline uint16_t TinyImageFormat_FloatToHalfAsUint(float f_) {
 	return o.u;
 }
 
-inline uint16_t TinyImageFormat_FloatToBFloatAsUint(float v) {
+inline uint16_t CqFormat_FloatToBFloatAsUint(float v) {
 	union {
 		struct {
 			uint16_t x;
@@ -8297,7 +8297,7 @@ inline uint16_t TinyImageFormat_FloatToBFloatAsUint(float v) {
 	return o.u;
 }
 
-inline void TinyImageFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* out) {
+inline void CqFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* out) {
 	float const r = in[0];
 	float const g = in[1];
 	float const b = in[2];
@@ -8336,7 +8336,7 @@ inline void TinyImageFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* 
 	}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat6AsUint(float Value)
+inline uint16_t CqFormat_FloatToUFloat6AsUint(float Value)
 {
 		uint32_t IValue = *((uint32_t *)&Value);
 
@@ -8371,7 +8371,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat6AsUint(float Value)
 		}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat7AsUint(float Value)
+inline uint16_t CqFormat_FloatToUFloat7AsUint(float Value)
 {
 		uint32_t IValue = *((uint32_t *)&Value);
 
@@ -8406,7 +8406,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat7AsUint(float Value)
 		}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat10AsUint(float v) {
+inline uint16_t CqFormat_FloatToUFloat10AsUint(float v) {
 	union {
 		uint32_t u;
 		float f;
@@ -8458,7 +8458,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat10AsUint(float v) {
 	return ei.v;
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat11AsUint(float v) {
+inline uint16_t CqFormat_FloatToUFloat11AsUint(float v) {
     union {
         uint32_t u;
         float f;
@@ -8510,131 +8510,131 @@ inline uint16_t TinyImageFormat_FloatToUFloat11AsUint(float v) {
 	return ei.v;
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM: return true;
-		case TinyImageFormat_R2_UNORM: return true;
-		case TinyImageFormat_R4_UNORM: return true;
-		case TinyImageFormat_R4G4_UNORM: return true;
-		case TinyImageFormat_G4R4_UNORM: return true;
-		case TinyImageFormat_A8_UNORM: return true;
-		case TinyImageFormat_R8_UNORM: return true;
-		case TinyImageFormat_R8_SNORM: return true;
-		case TinyImageFormat_R8_UINT: return true;
-		case TinyImageFormat_R8_SINT: return true;
-		case TinyImageFormat_R8_SRGB: return true;
-		case TinyImageFormat_B2G3R3_UNORM: return true;
-		case TinyImageFormat_R4G4B4A4_UNORM: return true;
-		case TinyImageFormat_R4G4B4X4_UNORM: return true;
-		case TinyImageFormat_B4G4R4A4_UNORM: return true;
-		case TinyImageFormat_B4G4R4X4_UNORM: return true;
-		case TinyImageFormat_A4R4G4B4_UNORM: return true;
-		case TinyImageFormat_X4R4G4B4_UNORM: return true;
-		case TinyImageFormat_A4B4G4R4_UNORM: return true;
-		case TinyImageFormat_X4B4G4R4_UNORM: return true;
-		case TinyImageFormat_R5G6B5_UNORM: return true;
-		case TinyImageFormat_B5G6R5_UNORM: return true;
-		case TinyImageFormat_R5G5B5A1_UNORM: return true;
-		case TinyImageFormat_B5G5R5A1_UNORM: return true;
-		case TinyImageFormat_A1B5G5R5_UNORM: return true;
-		case TinyImageFormat_A1R5G5B5_UNORM: return true;
-		case TinyImageFormat_R5G5B5X1_UNORM: return true;
-		case TinyImageFormat_B5G5R5X1_UNORM: return true;
-		case TinyImageFormat_X1R5G5B5_UNORM: return true;
-		case TinyImageFormat_X1B5G5R5_UNORM: return true;
-		case TinyImageFormat_B2G3R3A8_UNORM: return true;
-		case TinyImageFormat_R8G8_UNORM: return true;
-		case TinyImageFormat_R8G8_SNORM: return true;
-		case TinyImageFormat_G8R8_UNORM: return true;
-		case TinyImageFormat_G8R8_SNORM: return true;
-		case TinyImageFormat_R8G8_UINT: return true;
-		case TinyImageFormat_R8G8_SINT: return true;
-		case TinyImageFormat_R8G8_SRGB: return true;
-		case TinyImageFormat_R16_UNORM: return true;
-		case TinyImageFormat_R16_SNORM: return true;
-		case TinyImageFormat_R16_UINT: return true;
-		case TinyImageFormat_R16_SINT: return true;
-		case TinyImageFormat_R16_SFLOAT: return true;
-		case TinyImageFormat_R16_SBFLOAT: return true;
-		case TinyImageFormat_R8G8B8_UNORM: return true;
-		case TinyImageFormat_R8G8B8_SNORM: return true;
-		case TinyImageFormat_R8G8B8_UINT: return true;
-		case TinyImageFormat_R8G8B8_SINT: return true;
-		case TinyImageFormat_R8G8B8_SRGB: return true;
-		case TinyImageFormat_B8G8R8_UNORM: return true;
-		case TinyImageFormat_B8G8R8_SNORM: return true;
-		case TinyImageFormat_B8G8R8_UINT: return true;
-		case TinyImageFormat_B8G8R8_SINT: return true;
-		case TinyImageFormat_B8G8R8_SRGB: return true;
-		case TinyImageFormat_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SNORM: return true;
-		case TinyImageFormat_R8G8B8A8_UINT: return true;
-		case TinyImageFormat_R8G8B8A8_SINT: return true;
-		case TinyImageFormat_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_B8G8R8A8_UNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SNORM: return true;
-		case TinyImageFormat_B8G8R8A8_UINT: return true;
-		case TinyImageFormat_B8G8R8A8_SINT: return true;
-		case TinyImageFormat_B8G8R8A8_SRGB: return true;
-		case TinyImageFormat_R8G8B8X8_UNORM: return true;
-		case TinyImageFormat_B8G8R8X8_UNORM: return true;
-		case TinyImageFormat_R16G16_UNORM: return true;
-		case TinyImageFormat_G16R16_UNORM: return true;
-		case TinyImageFormat_R16G16_SNORM: return true;
-		case TinyImageFormat_G16R16_SNORM: return true;
-		case TinyImageFormat_R16G16_UINT: return true;
-		case TinyImageFormat_R16G16_SINT: return true;
-		case TinyImageFormat_R16G16_SFLOAT: return true;
-		case TinyImageFormat_R16G16_SBFLOAT: return true;
-		case TinyImageFormat_R32_UINT: return true;
-		case TinyImageFormat_R32_SINT: return true;
-		case TinyImageFormat_R32_SFLOAT: return true;
-		case TinyImageFormat_A2R10G10B10_UNORM: return true;
-		case TinyImageFormat_A2R10G10B10_UINT: return true;
-		case TinyImageFormat_A2R10G10B10_SNORM: return true;
-		case TinyImageFormat_A2R10G10B10_SINT: return true;
-		case TinyImageFormat_A2B10G10R10_UNORM: return true;
-		case TinyImageFormat_A2B10G10R10_UINT: return true;
-		case TinyImageFormat_A2B10G10R10_SNORM: return true;
-		case TinyImageFormat_A2B10G10R10_SINT: return true;
-		case TinyImageFormat_R10G10B10A2_UNORM: return true;
-		case TinyImageFormat_R10G10B10A2_UINT: return true;
-		case TinyImageFormat_R10G10B10A2_SNORM: return true;
-		case TinyImageFormat_R10G10B10A2_SINT: return true;
-		case TinyImageFormat_B10G10R10A2_UNORM: return true;
-		case TinyImageFormat_B10G10R10A2_UINT: return true;
-		case TinyImageFormat_B10G10R10A2_SNORM: return true;
-		case TinyImageFormat_B10G10R10A2_SINT: return true;
-		case TinyImageFormat_B10G11R11_UFLOAT: return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return true;
-		case TinyImageFormat_R16G16B16_UNORM: return true;
-		case TinyImageFormat_R16G16B16_SNORM: return true;
-		case TinyImageFormat_R16G16B16_UINT: return true;
-		case TinyImageFormat_R16G16B16_SINT: return true;
-		case TinyImageFormat_R16G16B16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_UNORM: return true;
-		case TinyImageFormat_R16G16B16A16_SNORM: return true;
-		case TinyImageFormat_R16G16B16A16_UINT: return true;
-		case TinyImageFormat_R16G16B16A16_SINT: return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return true;
-		case TinyImageFormat_R32G32_UINT: return true;
-		case TinyImageFormat_R32G32_SINT: return true;
-		case TinyImageFormat_R32G32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32_UINT: return true;
-		case TinyImageFormat_R32G32B32_SINT: return true;
-		case TinyImageFormat_R32G32B32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32A32_UINT: return true;
-		case TinyImageFormat_R32G32B32A32_SINT: return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return true;
+		case CqFormat_R1_UNORM: return true;
+		case CqFormat_R2_UNORM: return true;
+		case CqFormat_R4_UNORM: return true;
+		case CqFormat_R4G4_UNORM: return true;
+		case CqFormat_G4R4_UNORM: return true;
+		case CqFormat_A8_UNORM: return true;
+		case CqFormat_R8_UNORM: return true;
+		case CqFormat_R8_SNORM: return true;
+		case CqFormat_R8_UINT: return true;
+		case CqFormat_R8_SINT: return true;
+		case CqFormat_R8_SRGB: return true;
+		case CqFormat_B2G3R3_UNORM: return true;
+		case CqFormat_R4G4B4A4_UNORM: return true;
+		case CqFormat_R4G4B4X4_UNORM: return true;
+		case CqFormat_B4G4R4A4_UNORM: return true;
+		case CqFormat_B4G4R4X4_UNORM: return true;
+		case CqFormat_A4R4G4B4_UNORM: return true;
+		case CqFormat_X4R4G4B4_UNORM: return true;
+		case CqFormat_A4B4G4R4_UNORM: return true;
+		case CqFormat_X4B4G4R4_UNORM: return true;
+		case CqFormat_R5G6B5_UNORM: return true;
+		case CqFormat_B5G6R5_UNORM: return true;
+		case CqFormat_R5G5B5A1_UNORM: return true;
+		case CqFormat_B5G5R5A1_UNORM: return true;
+		case CqFormat_A1B5G5R5_UNORM: return true;
+		case CqFormat_A1R5G5B5_UNORM: return true;
+		case CqFormat_R5G5B5X1_UNORM: return true;
+		case CqFormat_B5G5R5X1_UNORM: return true;
+		case CqFormat_X1R5G5B5_UNORM: return true;
+		case CqFormat_X1B5G5R5_UNORM: return true;
+		case CqFormat_B2G3R3A8_UNORM: return true;
+		case CqFormat_R8G8_UNORM: return true;
+		case CqFormat_R8G8_SNORM: return true;
+		case CqFormat_G8R8_UNORM: return true;
+		case CqFormat_G8R8_SNORM: return true;
+		case CqFormat_R8G8_UINT: return true;
+		case CqFormat_R8G8_SINT: return true;
+		case CqFormat_R8G8_SRGB: return true;
+		case CqFormat_R16_UNORM: return true;
+		case CqFormat_R16_SNORM: return true;
+		case CqFormat_R16_UINT: return true;
+		case CqFormat_R16_SINT: return true;
+		case CqFormat_R16_SFLOAT: return true;
+		case CqFormat_R16_SBFLOAT: return true;
+		case CqFormat_R8G8B8_UNORM: return true;
+		case CqFormat_R8G8B8_SNORM: return true;
+		case CqFormat_R8G8B8_UINT: return true;
+		case CqFormat_R8G8B8_SINT: return true;
+		case CqFormat_R8G8B8_SRGB: return true;
+		case CqFormat_B8G8R8_UNORM: return true;
+		case CqFormat_B8G8R8_SNORM: return true;
+		case CqFormat_B8G8R8_UINT: return true;
+		case CqFormat_B8G8R8_SINT: return true;
+		case CqFormat_B8G8R8_SRGB: return true;
+		case CqFormat_R8G8B8A8_UNORM: return true;
+		case CqFormat_R8G8B8A8_SNORM: return true;
+		case CqFormat_R8G8B8A8_UINT: return true;
+		case CqFormat_R8G8B8A8_SINT: return true;
+		case CqFormat_R8G8B8A8_SRGB: return true;
+		case CqFormat_B8G8R8A8_UNORM: return true;
+		case CqFormat_B8G8R8A8_SNORM: return true;
+		case CqFormat_B8G8R8A8_UINT: return true;
+		case CqFormat_B8G8R8A8_SINT: return true;
+		case CqFormat_B8G8R8A8_SRGB: return true;
+		case CqFormat_R8G8B8X8_UNORM: return true;
+		case CqFormat_B8G8R8X8_UNORM: return true;
+		case CqFormat_R16G16_UNORM: return true;
+		case CqFormat_G16R16_UNORM: return true;
+		case CqFormat_R16G16_SNORM: return true;
+		case CqFormat_G16R16_SNORM: return true;
+		case CqFormat_R16G16_UINT: return true;
+		case CqFormat_R16G16_SINT: return true;
+		case CqFormat_R16G16_SFLOAT: return true;
+		case CqFormat_R16G16_SBFLOAT: return true;
+		case CqFormat_R32_UINT: return true;
+		case CqFormat_R32_SINT: return true;
+		case CqFormat_R32_SFLOAT: return true;
+		case CqFormat_A2R10G10B10_UNORM: return true;
+		case CqFormat_A2R10G10B10_UINT: return true;
+		case CqFormat_A2R10G10B10_SNORM: return true;
+		case CqFormat_A2R10G10B10_SINT: return true;
+		case CqFormat_A2B10G10R10_UNORM: return true;
+		case CqFormat_A2B10G10R10_UINT: return true;
+		case CqFormat_A2B10G10R10_SNORM: return true;
+		case CqFormat_A2B10G10R10_SINT: return true;
+		case CqFormat_R10G10B10A2_UNORM: return true;
+		case CqFormat_R10G10B10A2_UINT: return true;
+		case CqFormat_R10G10B10A2_SNORM: return true;
+		case CqFormat_R10G10B10A2_SINT: return true;
+		case CqFormat_B10G10R10A2_UNORM: return true;
+		case CqFormat_B10G10R10A2_UINT: return true;
+		case CqFormat_B10G10R10A2_SNORM: return true;
+		case CqFormat_B10G10R10A2_SINT: return true;
+		case CqFormat_B10G11R11_UFLOAT: return true;
+		case CqFormat_E5B9G9R9_UFLOAT: return true;
+		case CqFormat_R16G16B16_UNORM: return true;
+		case CqFormat_R16G16B16_SNORM: return true;
+		case CqFormat_R16G16B16_UINT: return true;
+		case CqFormat_R16G16B16_SINT: return true;
+		case CqFormat_R16G16B16_SFLOAT: return true;
+		case CqFormat_R16G16B16_SBFLOAT: return true;
+		case CqFormat_R16G16B16A16_UNORM: return true;
+		case CqFormat_R16G16B16A16_SNORM: return true;
+		case CqFormat_R16G16B16A16_UINT: return true;
+		case CqFormat_R16G16B16A16_SINT: return true;
+		case CqFormat_R16G16B16A16_SFLOAT: return true;
+		case CqFormat_R16G16B16A16_SBFLOAT: return true;
+		case CqFormat_R32G32_UINT: return true;
+		case CqFormat_R32G32_SINT: return true;
+		case CqFormat_R32G32_SFLOAT: return true;
+		case CqFormat_R32G32B32_UINT: return true;
+		case CqFormat_R32G32B32_SINT: return true;
+		case CqFormat_R32G32B32_SFLOAT: return true;
+		case CqFormat_R32G32B32A32_UINT: return true;
+		case CqFormat_R32G32B32A32_SINT: return true;
+		case CqFormat_R32G32B32A32_SFLOAT: return true;
 		default: return false;
 		}
 	}
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageFormat const fmt, float const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt, float const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM:
+		case CqFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 1.00f) & 0x1) << 0;
@@ -8649,7 +8649,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=32;
 			}
 			return true;
-		case TinyImageFormat_R2_UNORM:
+		case CqFormat_R2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 3.00f) & 0x3) << 0;
@@ -8660,7 +8660,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=16;
 			}
 			return true;
-		case TinyImageFormat_R4_UNORM:
+		case CqFormat_R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 15.00f) & 0xf) << 0;
@@ -8669,7 +8669,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=8;
 			}
 			return true;
-		case TinyImageFormat_R4G4_UNORM:
+		case CqFormat_R4G4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 15.00f) & 0xf) << 0;
@@ -8678,7 +8678,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_G4R4_UNORM:
+		case CqFormat_G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[1] * 15.00f) & 0xf) << 0;
@@ -8687,7 +8687,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A8_UNORM:
+		case CqFormat_A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[3] * 255.00f) & 0xff) << 0;
@@ -8695,7 +8695,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8_UNORM:
+		case CqFormat_R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 255.00f) & 0xff) << 0;
@@ -8703,7 +8703,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8_SNORM:
+		case CqFormat_R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int8_t)(in[0] * 127.00f) & 0xff) << 0;
@@ -8711,7 +8711,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8_UINT:
+		case CqFormat_R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint8_t)in[0]) & 0xff) << 0;
@@ -8719,7 +8719,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8_SINT:
+		case CqFormat_R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int8_t)in[0]) & 0xff) << 0;
@@ -8727,15 +8727,15 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8_SRGB:
+		case CqFormat_R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 0;
+				*op0 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[0])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B2G3R3_UNORM:
+		case CqFormat_B2G3R3_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[2] * 3.00f) & 0x3) << 0;
@@ -8745,7 +8745,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4A4_UNORM:
+		case CqFormat_R4G4B4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 15.00f) & 0xf) << 0;
@@ -8756,7 +8756,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4X4_UNORM:
+		case CqFormat_R4G4B4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 15.00f) & 0xf) << 0;
@@ -8766,7 +8766,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4A4_UNORM:
+		case CqFormat_B4G4R4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 15.00f) & 0xf) << 0;
@@ -8777,7 +8777,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4X4_UNORM:
+		case CqFormat_B4G4R4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 15.00f) & 0xf) << 0;
@@ -8787,7 +8787,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A4R4G4B4_UNORM:
+		case CqFormat_A4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[3] * 15.00f) & 0xf) << 0;
@@ -8798,7 +8798,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_X4R4G4B4_UNORM:
+		case CqFormat_X4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
 				*op1 |= ((uint16_t)(in[0] * 15.00f) & 0xf) << 4;
@@ -8808,7 +8808,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A4B4G4R4_UNORM:
+		case CqFormat_A4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[3] * 15.00f) & 0xf) << 0;
@@ -8819,7 +8819,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_X4B4G4R4_UNORM:
+		case CqFormat_X4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
 				*op1 |= ((uint16_t)(in[2] * 15.00f) & 0xf) << 4;
@@ -8829,7 +8829,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G6B5_UNORM:
+		case CqFormat_R5G6B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 31.00f) & 0x1f) << 0;
@@ -8839,7 +8839,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G6R5_UNORM:
+		case CqFormat_B5G6R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 31.00f) & 0x1f) << 0;
@@ -8849,7 +8849,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5A1_UNORM:
+		case CqFormat_R5G5B5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 31.00f) & 0x1f) << 0;
@@ -8860,7 +8860,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5A1_UNORM:
+		case CqFormat_B5G5R5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 31.00f) & 0x1f) << 0;
@@ -8871,7 +8871,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A1B5G5R5_UNORM:
+		case CqFormat_A1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[3] * 1.00f) & 0x1) << 0;
@@ -8882,7 +8882,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A1R5G5B5_UNORM:
+		case CqFormat_A1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[3] * 1.00f) & 0x1) << 0;
@@ -8893,7 +8893,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5X1_UNORM:
+		case CqFormat_R5G5B5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 31.00f) & 0x1f) << 0;
@@ -8903,7 +8903,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5X1_UNORM:
+		case CqFormat_B5G5R5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 31.00f) & 0x1f) << 0;
@@ -8913,7 +8913,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_X1R5G5B5_UNORM:
+		case CqFormat_X1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
 				*op1 |= ((uint16_t)(in[0] * 31.00f) & 0x1f) << 1;
@@ -8923,7 +8923,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_X1B5G5R5_UNORM:
+		case CqFormat_X1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
 				*op1 |= ((uint16_t)(in[2] * 31.00f) & 0x1f) << 1;
@@ -8933,7 +8933,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B2G3R3A8_UNORM:
+		case CqFormat_B2G3R3A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[2] * 3.00f) & 0x3) << 0;
@@ -8944,7 +8944,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_UNORM:
+		case CqFormat_R8G8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 255.00f) & 0xff) << 0;
@@ -8953,7 +8953,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_SNORM:
+		case CqFormat_R8G8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int16_t)(in[0] * 127.00f) & 0xff) << 0;
@@ -8962,7 +8962,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_G8R8_UNORM:
+		case CqFormat_G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[1] * 255.00f) & 0xff) << 0;
@@ -8971,7 +8971,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_G8R8_SNORM:
+		case CqFormat_G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int16_t)(in[1] * 127.00f) & 0xff) << 0;
@@ -8980,7 +8980,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_UINT:
+		case CqFormat_R8G8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint16_t)in[0]) & 0xff) << 0;
@@ -8989,7 +8989,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_SINT:
+		case CqFormat_R8G8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int16_t)in[0]) & 0xff) << 0;
@@ -8998,16 +8998,16 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_SRGB:
+		case CqFormat_R8G8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToSRGB((float)in[1])) << 8;
+				*op0 |= ((uint16_t)CqFormat_FloatToSRGB((float)in[0])) << 0;
+				*op0 |= ((uint16_t)CqFormat_FloatToSRGB((float)in[1])) << 8;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_UNORM:
+		case CqFormat_R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 65535.00f) & 0xffff) << 0;
@@ -9015,7 +9015,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_SNORM:
+		case CqFormat_R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int16_t)(in[0] * 32767.00f) & 0xffff) << 0;
@@ -9023,7 +9023,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_UINT:
+		case CqFormat_R16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint16_t)in[0]) & 0xffff) << 0;
@@ -9031,7 +9031,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_SINT:
+		case CqFormat_R16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int16_t)in[0]) & 0xffff) << 0;
@@ -9039,23 +9039,23 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_SFLOAT:
+		case CqFormat_R16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToHalfAsUint((float)in[0])) << 0;
+				*op0 |= ((uint16_t)CqFormat_FloatToHalfAsUint((float)in[0])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16_SBFLOAT:
+		case CqFormat_R16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToBFloatAsUint((float)in[0])) << 0;
+				*op0 |= ((uint16_t)CqFormat_FloatToBFloatAsUint((float)in[0])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UNORM:
+		case CqFormat_R8G8B8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[0] * 255.00f) & 0xff) << 0;
@@ -9069,7 +9069,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SNORM:
+		case CqFormat_R8G8B8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int8_t)(in[0] * 127.00f) & 0xff) << 0;
@@ -9083,7 +9083,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UINT:
+		case CqFormat_R8G8B8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint8_t)in[0]) & 0xff) << 0;
@@ -9097,7 +9097,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SINT:
+		case CqFormat_R8G8B8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int8_t)in[0]) & 0xff) << 0;
@@ -9111,21 +9111,21 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SRGB:
+		case CqFormat_R8G8B8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 0;
+				*op0 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[0])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				uint8_t* op1 = (uint8_t*)out->pixel; *op1 = 0;
-				*op1 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[1])) << 0;
+				*op1 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[1])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				uint8_t* op2 = (uint8_t*)out->pixel; *op2 = 0;
-				*op2 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[2])) << 0;
+				*op2 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[2])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UNORM:
+		case CqFormat_B8G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint8_t)(in[2] * 255.00f) & 0xff) << 0;
@@ -9139,7 +9139,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SNORM:
+		case CqFormat_B8G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int8_t)(in[2] * 127.00f) & 0xff) << 0;
@@ -9153,7 +9153,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UINT:
+		case CqFormat_B8G8R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint8_t)in[2]) & 0xff) << 0;
@@ -9167,7 +9167,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SINT:
+		case CqFormat_B8G8R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int8_t)in[2]) & 0xff) << 0;
@@ -9181,21 +9181,21 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SRGB:
+		case CqFormat_B8G8R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t* op0 = (uint8_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[2])) << 0;
+				*op0 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[2])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				uint8_t* op1 = (uint8_t*)out->pixel; *op1 = 0;
-				*op1 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[1])) << 0;
+				*op1 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[1])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				uint8_t* op2 = (uint8_t*)out->pixel; *op2 = 0;
-				*op2 |= ((uint8_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 0;
+				*op2 |= ((uint8_t)CqFormat_FloatToSRGB((float)in[0])) << 0;
 				out->pixel = (void*)(((uint8_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UNORM:
+		case CqFormat_R8G8B8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[0] * 255.00f) & 0xff) << 0;
@@ -9206,7 +9206,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SNORM:
+		case CqFormat_R8G8B8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[0] * 127.00f) & 0xff) << 0;
@@ -9217,7 +9217,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UINT:
+		case CqFormat_R8G8B8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[0]) & 0xff) << 0;
@@ -9228,7 +9228,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SINT:
+		case CqFormat_R8G8B8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[0]) & 0xff) << 0;
@@ -9239,18 +9239,18 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SRGB:
+		case CqFormat_R8G8B8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[1])) << 8;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[2])) << 16;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[0])) << 0;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[1])) << 8;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[2])) << 16;
 				*op0 |= ((uint32_t)(in[3] * 255.00f) & 0xff) << 24;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UNORM:
+		case CqFormat_B8G8R8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[2] * 255.00f) & 0xff) << 0;
@@ -9261,7 +9261,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SNORM:
+		case CqFormat_B8G8R8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[2] * 127.00f) & 0xff) << 0;
@@ -9272,7 +9272,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UINT:
+		case CqFormat_B8G8R8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[2]) & 0xff) << 0;
@@ -9283,7 +9283,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SINT:
+		case CqFormat_B8G8R8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[2]) & 0xff) << 0;
@@ -9294,18 +9294,18 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SRGB:
+		case CqFormat_B8G8R8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[2])) << 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[1])) << 8;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToSRGB((float)in[0])) << 16;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[2])) << 0;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[1])) << 8;
+				*op0 |= ((uint32_t)CqFormat_FloatToSRGB((float)in[0])) << 16;
 				*op0 |= ((uint32_t)(in[3] * 255.00f) & 0xff) << 24;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8B8X8_UNORM:
+		case CqFormat_R8G8B8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[0] * 255.00f) & 0xff) << 0;
@@ -9315,7 +9315,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B8G8R8X8_UNORM:
+		case CqFormat_B8G8R8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[2] * 255.00f) & 0xff) << 0;
@@ -9325,7 +9325,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_UNORM:
+		case CqFormat_R16G16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[0] * 65535.00f) & 0xffff) << 0;
@@ -9334,7 +9334,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_G16R16_UNORM:
+		case CqFormat_G16R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[1] * 65535.00f) & 0xffff) << 0;
@@ -9343,7 +9343,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_SNORM:
+		case CqFormat_R16G16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[0] * 32767.00f) & 0xffff) << 0;
@@ -9352,7 +9352,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_G16R16_SNORM:
+		case CqFormat_G16R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[1] * 32767.00f) & 0xffff) << 0;
@@ -9361,7 +9361,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_UINT:
+		case CqFormat_R16G16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[0]) & 0xffff) << 0;
@@ -9370,7 +9370,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_SINT:
+		case CqFormat_R16G16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[0]) & 0xffff) << 0;
@@ -9379,25 +9379,25 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_SFLOAT:
+		case CqFormat_R16G16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToHalfAsUint((float)in[0])) << 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToHalfAsUint((float)in[1])) << 16;
+				*op0 |= ((uint32_t)CqFormat_FloatToHalfAsUint((float)in[0])) << 0;
+				*op0 |= ((uint32_t)CqFormat_FloatToHalfAsUint((float)in[1])) << 16;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16_SBFLOAT:
+		case CqFormat_R16G16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToBFloatAsUint((float)in[0])) << 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToBFloatAsUint((float)in[1])) << 16;
+				*op0 |= ((uint32_t)CqFormat_FloatToBFloatAsUint((float)in[0])) << 0;
+				*op0 |= ((uint32_t)CqFormat_FloatToBFloatAsUint((float)in[1])) << 16;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32_UINT:
+		case CqFormat_R32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[0]) & 0xffffffff) << 0;
@@ -9405,7 +9405,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32_SINT:
+		case CqFormat_R32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[0]) & 0xffffffff) << 0;
@@ -9413,7 +9413,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32_SFLOAT:
+		case CqFormat_R32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				float in0 = (float)in[0];
@@ -9422,7 +9422,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UNORM:
+		case CqFormat_A2R10G10B10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[3] * 3.00f) & 0x3) << 0;
@@ -9433,7 +9433,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UINT:
+		case CqFormat_A2R10G10B10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[3]) & 0x3) << 0;
@@ -9444,7 +9444,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SNORM:
+		case CqFormat_A2R10G10B10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 0;
@@ -9455,7 +9455,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SINT:
+		case CqFormat_A2R10G10B10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[3]) & 0x3) << 0;
@@ -9466,7 +9466,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UNORM:
+		case CqFormat_A2B10G10R10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[3] * 3.00f) & 0x3) << 0;
@@ -9477,7 +9477,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UINT:
+		case CqFormat_A2B10G10R10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[3]) & 0x3) << 0;
@@ -9488,7 +9488,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SNORM:
+		case CqFormat_A2B10G10R10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[3] * 1.00f) & 0x3) << 0;
@@ -9499,7 +9499,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SINT:
+		case CqFormat_A2B10G10R10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[3]) & 0x3) << 0;
@@ -9510,7 +9510,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UNORM:
+		case CqFormat_R10G10B10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[0] * 1023.00f) & 0x3ff) << 0;
@@ -9521,7 +9521,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UINT:
+		case CqFormat_R10G10B10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[0]) & 0x3ff) << 0;
@@ -9532,7 +9532,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SNORM:
+		case CqFormat_R10G10B10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[0] * 511.00f) & 0x3ff) << 0;
@@ -9543,7 +9543,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SINT:
+		case CqFormat_R10G10B10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[0]) & 0x3ff) << 0;
@@ -9554,7 +9554,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UNORM:
+		case CqFormat_B10G10R10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint32_t)(in[2] * 1023.00f) & 0x3ff) << 0;
@@ -9565,7 +9565,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UINT:
+		case CqFormat_B10G10R10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[2]) & 0x3ff) << 0;
@@ -9576,7 +9576,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SNORM:
+		case CqFormat_B10G10R10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int32_t)(in[2] * 511.00f) & 0x3ff) << 0;
@@ -9587,7 +9587,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SINT:
+		case CqFormat_B10G10R10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[2]) & 0x3ff) << 0;
@@ -9598,24 +9598,24 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G11R11_UFLOAT:
+		case CqFormat_B10G11R11_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToUFloat10AsUint((float)in[2])) << 0;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToUFloat11AsUint((float)in[1])) << 10;
-				*op0 |= ((uint32_t)TinyImageFormat_FloatToUFloat11AsUint((float)in[0])) << 21;
+				*op0 |= ((uint32_t)CqFormat_FloatToUFloat10AsUint((float)in[2])) << 0;
+				*op0 |= ((uint32_t)CqFormat_FloatToUFloat11AsUint((float)in[1])) << 10;
+				*op0 |= ((uint32_t)CqFormat_FloatToUFloat11AsUint((float)in[0])) << 21;
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT:
+		case CqFormat_E5B9G9R9_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				TinyImageFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);
+				CqFormat_FloatRGBToRGB9E5AsUint32( (float const*)in, (uint32_t*)out->pixel);
 				out->pixel = (void*)(((uint32_t*)out->pixel) + 1);
 				in += 4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UNORM:
+		case CqFormat_R16G16B16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint16_t)(in[0] * 65535.00f) & 0xffff) << 0;
@@ -9629,7 +9629,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SNORM:
+		case CqFormat_R16G16B16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int16_t)(in[0] * 32767.00f) & 0xffff) << 0;
@@ -9643,7 +9643,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UINT:
+		case CqFormat_R16G16B16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint16_t)in[0]) & 0xffff) << 0;
@@ -9657,7 +9657,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SINT:
+		case CqFormat_R16G16B16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int16_t)in[0]) & 0xffff) << 0;
@@ -9671,35 +9671,35 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SFLOAT:
+		case CqFormat_R16G16B16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToHalfAsUint((float)in[0])) << 0;
+				*op0 |= ((uint16_t)CqFormat_FloatToHalfAsUint((float)in[0])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
-				*op1 |= ((uint16_t)TinyImageFormat_FloatToHalfAsUint((float)in[1])) << 0;
+				*op1 |= ((uint16_t)CqFormat_FloatToHalfAsUint((float)in[1])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				uint16_t* op2 = (uint16_t*)out->pixel; *op2 = 0;
-				*op2 |= ((uint16_t)TinyImageFormat_FloatToHalfAsUint((float)in[2])) << 0;
+				*op2 |= ((uint16_t)CqFormat_FloatToHalfAsUint((float)in[2])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT:
+		case CqFormat_R16G16B16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t* op0 = (uint16_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint16_t)TinyImageFormat_FloatToBFloatAsUint((float)in[0])) << 0;
+				*op0 |= ((uint16_t)CqFormat_FloatToBFloatAsUint((float)in[0])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				uint16_t* op1 = (uint16_t*)out->pixel; *op1 = 0;
-				*op1 |= ((uint16_t)TinyImageFormat_FloatToBFloatAsUint((float)in[1])) << 0;
+				*op1 |= ((uint16_t)CqFormat_FloatToBFloatAsUint((float)in[1])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				uint16_t* op2 = (uint16_t*)out->pixel; *op2 = 0;
-				*op2 |= ((uint16_t)TinyImageFormat_FloatToBFloatAsUint((float)in[2])) << 0;
+				*op2 |= ((uint16_t)CqFormat_FloatToBFloatAsUint((float)in[2])) << 0;
 				out->pixel = (void*)(((uint16_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UNORM:
+		case CqFormat_R16G16B16A16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= ((uint64_t)(in[0] * 65535.00f) & 0xffff) << 0;
@@ -9710,7 +9710,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SNORM:
+		case CqFormat_R16G16B16A16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= ((int64_t)(in[0] * 32767.00f) & 0xffff) << 0;
@@ -9721,7 +9721,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UINT:
+		case CqFormat_R16G16B16A16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0xffff) << 0;
@@ -9732,7 +9732,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SINT:
+		case CqFormat_R16G16B16A16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0xffff) << 0;
@@ -9743,29 +9743,29 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT:
+		case CqFormat_R16G16B16A16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToHalfAsUint((float)in[0])) << 0;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToHalfAsUint((float)in[1])) << 16;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToHalfAsUint((float)in[2])) << 32;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToHalfAsUint((float)in[3])) << 48;
+				*op0 |= ((uint64_t)CqFormat_FloatToHalfAsUint((float)in[0])) << 0;
+				*op0 |= ((uint64_t)CqFormat_FloatToHalfAsUint((float)in[1])) << 16;
+				*op0 |= ((uint64_t)CqFormat_FloatToHalfAsUint((float)in[2])) << 32;
+				*op0 |= ((uint64_t)CqFormat_FloatToHalfAsUint((float)in[3])) << 48;
 				out->pixel = (void*)(((uint64_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT:
+		case CqFormat_R16G16B16A16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToBFloatAsUint((float)in[0])) << 0;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToBFloatAsUint((float)in[1])) << 16;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToBFloatAsUint((float)in[2])) << 32;
-				*op0 |= ((uint64_t)TinyImageFormat_FloatToBFloatAsUint((float)in[3])) << 48;
+				*op0 |= ((uint64_t)CqFormat_FloatToBFloatAsUint((float)in[0])) << 0;
+				*op0 |= ((uint64_t)CqFormat_FloatToBFloatAsUint((float)in[1])) << 16;
+				*op0 |= ((uint64_t)CqFormat_FloatToBFloatAsUint((float)in[2])) << 32;
+				*op0 |= ((uint64_t)CqFormat_FloatToBFloatAsUint((float)in[3])) << 48;
 				out->pixel = (void*)(((uint64_t*)out->pixel) + 1);
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32_UINT:
+		case CqFormat_R32G32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0xffffffff) << 0;
@@ -9774,7 +9774,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32_SINT:
+		case CqFormat_R32G32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0xffffffff) << 0;
@@ -9783,7 +9783,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32_SFLOAT:
+		case CqFormat_R32G32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				float in0 = (float)in[0];
@@ -9794,7 +9794,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_UINT:
+		case CqFormat_R32G32B32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint32_t)in[0]) & 0xffffffff) << 0;
@@ -9808,7 +9808,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SINT:
+		case CqFormat_R32G32B32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int32_t)in[0]) & 0xffffffff) << 0;
@@ -9822,7 +9822,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SFLOAT:
+		case CqFormat_R32G32B32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t* op0 = (uint32_t*)out->pixel; *op0 = 0;
 				float in0 = (float)in[0];
@@ -9839,7 +9839,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_UINT:
+		case CqFormat_R32G32B32A32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0xffffffff) << 0;
@@ -9852,7 +9852,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SINT:
+		case CqFormat_R32G32B32A32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0xffffffff) << 0;
@@ -9865,7 +9865,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT:
+		case CqFormat_R32G32B32A32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				float in0 = (float)in[0];
@@ -9886,27 +9886,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsF(TinyImageForma
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanEncodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT: return true;
-		case TinyImageFormat_R64_SINT: return true;
-		case TinyImageFormat_R64_SFLOAT: return true;
-		case TinyImageFormat_R64G64_UINT: return true;
-		case TinyImageFormat_R64G64_SINT: return true;
-		case TinyImageFormat_R64G64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64_UINT: return true;
-		case TinyImageFormat_R64G64B64_SINT: return true;
-		case TinyImageFormat_R64G64B64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64A64_UINT: return true;
-		case TinyImageFormat_R64G64B64A64_SINT: return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return true;
-		default: return TinyImageFormat_CanEncodeLogicalPixelsF(fmt);
+		case CqFormat_R64_UINT: return true;
+		case CqFormat_R64_SINT: return true;
+		case CqFormat_R64_SFLOAT: return true;
+		case CqFormat_R64G64_UINT: return true;
+		case CqFormat_R64G64_SINT: return true;
+		case CqFormat_R64G64_SFLOAT: return true;
+		case CqFormat_R64G64B64_UINT: return true;
+		case CqFormat_R64G64B64_SINT: return true;
+		case CqFormat_R64G64B64_SFLOAT: return true;
+		case CqFormat_R64G64B64A64_UINT: return true;
+		case CqFormat_R64G64B64A64_SINT: return true;
+		case CqFormat_R64G64B64A64_SFLOAT: return true;
+		default: return CqFormat_CanEncodeLogicalPixelsF(fmt);
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageFormat const fmt, double const *in, uint32_t const width, TinyImageFormat_EncodeOutput * out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsD(CqFormat const fmt, double const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT:
+		case CqFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0x0) << 0;
@@ -9914,7 +9914,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64_SINT:
+		case CqFormat_R64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0x0) << 0;
@@ -9922,7 +9922,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64_SFLOAT:
+		case CqFormat_R64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				double in0 = (double)in[0];
@@ -9931,7 +9931,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64_UINT:
+		case CqFormat_R64G64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0x0) << 0;
@@ -9942,7 +9942,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64_SINT:
+		case CqFormat_R64G64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0x0) << 0;
@@ -9953,7 +9953,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64_SFLOAT:
+		case CqFormat_R64G64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				double in0 = (double)in[0];
@@ -9966,7 +9966,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_UINT:
+		case CqFormat_R64G64B64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0x0) << 0;
@@ -9980,7 +9980,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SINT:
+		case CqFormat_R64G64B64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0x0) << 0;
@@ -9994,7 +9994,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SFLOAT:
+		case CqFormat_R64G64B64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				double in0 = (double)in[0];
@@ -10011,7 +10011,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_UINT:
+		case CqFormat_R64G64B64A64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((uint64_t)in[0]) & 0x0) << 0;
@@ -10028,7 +10028,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SINT:
+		case CqFormat_R64G64B64A64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				*op0 |= (((int64_t)in[0]) & 0x0) << 0;
@@ -10045,7 +10045,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 				in+=4;
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT:
+		case CqFormat_R64G64B64A64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint64_t* op0 = (uint64_t*)out->pixel; *op0 = 0;
 				double in0 = (double)in[0];
@@ -10071,7 +10071,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 			bool ret = true;
 			for(uint32_t w = 0; w < width && ret; ++w) {
 				float inF[4] = {(float)in[0], (float)in[1], (float)in[2], (float)in[3]};
-				ret = TinyImageFormat_EncodeLogicalPixelsF(fmt, inF, 1, out);
+				ret = CqFormat_EncodeLogicalPixelsF(fmt, inF, 1, out);
 				in += 4;
 			}
 			return ret;
@@ -10086,7 +10086,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_EncodeLogicalPixelsD(TinyImageForma
 
 #ifndef TINYIMAGEFORMAT_VKFORMAT
 #define TINYIMAGEFORMAT_VKFORMAT
-typedef enum TinyImageFormat_VkFormat {
+typedef enum CqFormat_VkFormat {
 	CQ_VK_FORMAT_UNDEFINED = 0,
 	CQ_VK_FORMAT_R4G4_UNORM_PACK8 = 1,
 	CQ_VK_FORMAT_R4G4B4A4_UNORM_PACK16 = 2,
@@ -10315,167 +10315,167 @@ typedef enum TinyImageFormat_VkFormat {
 	CQ_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG = 1000054005,
 	CQ_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG = 1000054006,
 	CQ_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG = 1000054007,
-} TinyImageFormat_VkFormat;
+} CqFormat_VkFormat;
 #endif
 
-inline TinyImageFormat TinyImageFormat_FromVkFormat(TinyImageFormat_VkFormat fmt) {
+inline CqFormat CqFormat_FromVkFormat(CqFormat_VkFormat fmt) {
 	switch (fmt) {
 
-	case CQ_VK_FORMAT_UNDEFINED: return TinyImageFormat_UNDEFINED;
-	case CQ_VK_FORMAT_R4G4_UNORM_PACK8: return TinyImageFormat_G4R4_UNORM;
-	case CQ_VK_FORMAT_R4G4B4A4_UNORM_PACK16: return TinyImageFormat_A4B4G4R4_UNORM;
-	case CQ_VK_FORMAT_B4G4R4A4_UNORM_PACK16: return TinyImageFormat_A4R4G4B4_UNORM;
-	case CQ_VK_FORMAT_R5G6B5_UNORM_PACK16: return TinyImageFormat_B5G6R5_UNORM;
-	case CQ_VK_FORMAT_B5G6R5_UNORM_PACK16: return TinyImageFormat_R5G6B5_UNORM;
-	case CQ_VK_FORMAT_R5G5B5A1_UNORM_PACK16: return TinyImageFormat_A1B5G5R5_UNORM;
-	case CQ_VK_FORMAT_B5G5R5A1_UNORM_PACK16: return TinyImageFormat_A1R5G5B5_UNORM;
-	case CQ_VK_FORMAT_A1R5G5B5_UNORM_PACK16: return TinyImageFormat_B5G5R5A1_UNORM;
-	case CQ_VK_FORMAT_R8_UNORM: return TinyImageFormat_R8_UNORM;
-	case CQ_VK_FORMAT_R8_SNORM: return TinyImageFormat_R8_SNORM;
-	case CQ_VK_FORMAT_R8_UINT: return TinyImageFormat_R8_UINT;
-	case CQ_VK_FORMAT_R8_SINT: return TinyImageFormat_R8_SINT;
-	case CQ_VK_FORMAT_R8_SRGB: return TinyImageFormat_R8_SRGB;
-	case CQ_VK_FORMAT_R8G8_UNORM: return TinyImageFormat_R8G8_UNORM;
-	case CQ_VK_FORMAT_R8G8_SNORM: return TinyImageFormat_R8G8_SNORM;
-	case CQ_VK_FORMAT_R8G8_UINT: return TinyImageFormat_R8G8_UINT;
-	case CQ_VK_FORMAT_R8G8_SINT: return TinyImageFormat_R8G8_SINT;
-	case CQ_VK_FORMAT_R8G8_SRGB: return TinyImageFormat_R8G8_SRGB;
-	case CQ_VK_FORMAT_R8G8B8_UNORM: return TinyImageFormat_R8G8B8_UNORM;
-	case CQ_VK_FORMAT_R8G8B8_SNORM: return TinyImageFormat_R8G8B8_SNORM;
-	case CQ_VK_FORMAT_R8G8B8_UINT: return TinyImageFormat_R8G8B8_UINT;
-	case CQ_VK_FORMAT_R8G8B8_SINT: return TinyImageFormat_R8G8B8_SINT;
-	case CQ_VK_FORMAT_R8G8B8_SRGB: return TinyImageFormat_R8G8B8_SRGB;
-	case CQ_VK_FORMAT_B8G8R8_UNORM: return TinyImageFormat_B8G8R8_UNORM;
-	case CQ_VK_FORMAT_B8G8R8_SNORM: return TinyImageFormat_B8G8R8_SNORM;
-	case CQ_VK_FORMAT_B8G8R8_UINT: return TinyImageFormat_B8G8R8_UINT;
-	case CQ_VK_FORMAT_B8G8R8_SINT: return TinyImageFormat_B8G8R8_SINT;
-	case CQ_VK_FORMAT_B8G8R8_SRGB: return TinyImageFormat_B8G8R8_SRGB;
-	case CQ_VK_FORMAT_R8G8B8A8_UNORM: return TinyImageFormat_R8G8B8A8_UNORM;
-	case CQ_VK_FORMAT_R8G8B8A8_SNORM: return TinyImageFormat_R8G8B8A8_SNORM;
-	case CQ_VK_FORMAT_R8G8B8A8_UINT: return TinyImageFormat_R8G8B8A8_UINT;
-	case CQ_VK_FORMAT_R8G8B8A8_SINT: return TinyImageFormat_R8G8B8A8_SINT;
-	case CQ_VK_FORMAT_R8G8B8A8_SRGB: return TinyImageFormat_R8G8B8A8_SRGB;
-	case CQ_VK_FORMAT_B8G8R8A8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
-	case CQ_VK_FORMAT_B8G8R8A8_SNORM: return TinyImageFormat_B8G8R8A8_SNORM;
-	case CQ_VK_FORMAT_B8G8R8A8_UINT: return TinyImageFormat_B8G8R8A8_UINT;
-	case CQ_VK_FORMAT_B8G8R8A8_SINT: return TinyImageFormat_B8G8R8A8_SINT;
-	case CQ_VK_FORMAT_B8G8R8A8_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
-	case CQ_VK_FORMAT_A2R10G10B10_UNORM_PACK32: return TinyImageFormat_B10G10R10A2_UNORM;
-	case CQ_VK_FORMAT_A2R10G10B10_UINT_PACK32: return TinyImageFormat_B10G10R10A2_UINT;
-	case CQ_VK_FORMAT_A2B10G10R10_UNORM_PACK32: return TinyImageFormat_R10G10B10A2_UNORM;
-	case CQ_VK_FORMAT_A2B10G10R10_UINT_PACK32: return TinyImageFormat_R10G10B10A2_UINT;
-	case CQ_VK_FORMAT_R16_UNORM: return TinyImageFormat_R16_UNORM;
-	case CQ_VK_FORMAT_R16_SNORM: return TinyImageFormat_R16_SNORM;
-	case CQ_VK_FORMAT_R16_UINT: return TinyImageFormat_R16_UINT;
-	case CQ_VK_FORMAT_R16_SINT: return TinyImageFormat_R16_SINT;
-	case CQ_VK_FORMAT_R16_SFLOAT: return TinyImageFormat_R16_SFLOAT;
-	case CQ_VK_FORMAT_R16G16_UNORM: return TinyImageFormat_R16G16_UNORM;
-	case CQ_VK_FORMAT_R16G16_SNORM: return TinyImageFormat_R16G16_SNORM;
-	case CQ_VK_FORMAT_R16G16_UINT: return TinyImageFormat_R16G16_UINT;
-	case CQ_VK_FORMAT_R16G16_SINT: return TinyImageFormat_R16G16_SINT;
-	case CQ_VK_FORMAT_R16G16_SFLOAT: return TinyImageFormat_R16G16_SFLOAT;
-	case CQ_VK_FORMAT_R16G16B16_UNORM: return TinyImageFormat_R16G16B16_UNORM;
-	case CQ_VK_FORMAT_R16G16B16_SNORM: return TinyImageFormat_R16G16B16_SNORM;
-	case CQ_VK_FORMAT_R16G16B16_UINT: return TinyImageFormat_R16G16B16_UINT;
-	case CQ_VK_FORMAT_R16G16B16_SINT: return TinyImageFormat_R16G16B16_SINT;
-	case CQ_VK_FORMAT_R16G16B16_SFLOAT: return TinyImageFormat_R16G16B16_SFLOAT;
-	case CQ_VK_FORMAT_R16G16B16A16_UNORM: return TinyImageFormat_R16G16B16A16_UNORM;
-	case CQ_VK_FORMAT_R16G16B16A16_SNORM: return TinyImageFormat_R16G16B16A16_SNORM;
-	case CQ_VK_FORMAT_R16G16B16A16_UINT: return TinyImageFormat_R16G16B16A16_UINT;
-	case CQ_VK_FORMAT_R16G16B16A16_SINT: return TinyImageFormat_R16G16B16A16_SINT;
-	case CQ_VK_FORMAT_R16G16B16A16_SFLOAT: return TinyImageFormat_R16G16B16A16_SFLOAT;
-	case CQ_VK_FORMAT_R32_UINT: return TinyImageFormat_R32_UINT;
-	case CQ_VK_FORMAT_R32_SINT: return TinyImageFormat_R32_SINT;
-	case CQ_VK_FORMAT_R32_SFLOAT: return TinyImageFormat_R32_SFLOAT;
-	case CQ_VK_FORMAT_R32G32_UINT: return TinyImageFormat_R32G32_UINT;
-	case CQ_VK_FORMAT_R32G32_SINT: return TinyImageFormat_R32G32_SINT;
-	case CQ_VK_FORMAT_R32G32_SFLOAT: return TinyImageFormat_R32G32_SFLOAT;
-	case CQ_VK_FORMAT_R32G32B32_UINT: return TinyImageFormat_R32G32B32_UINT;
-	case CQ_VK_FORMAT_R32G32B32_SINT: return TinyImageFormat_R32G32B32_SINT;
-	case CQ_VK_FORMAT_R32G32B32_SFLOAT: return TinyImageFormat_R32G32B32_SFLOAT;
-	case CQ_VK_FORMAT_R32G32B32A32_UINT: return TinyImageFormat_R32G32B32A32_UINT;
-	case CQ_VK_FORMAT_R32G32B32A32_SINT: return TinyImageFormat_R32G32B32A32_SINT;
-	case CQ_VK_FORMAT_R32G32B32A32_SFLOAT: return TinyImageFormat_R32G32B32A32_SFLOAT;
-	case CQ_VK_FORMAT_R64_UINT: return TinyImageFormat_R64_UINT;
-	case CQ_VK_FORMAT_R64_SINT: return TinyImageFormat_R64_SINT;
-	case CQ_VK_FORMAT_R64_SFLOAT: return TinyImageFormat_R64_SFLOAT;
-	case CQ_VK_FORMAT_R64G64_UINT: return TinyImageFormat_R64G64_UINT;
-	case CQ_VK_FORMAT_R64G64_SINT: return TinyImageFormat_R64G64_SINT;
-	case CQ_VK_FORMAT_R64G64_SFLOAT: return TinyImageFormat_R64G64_SFLOAT;
-	case CQ_VK_FORMAT_R64G64B64_UINT: return TinyImageFormat_R64G64B64_UINT;
-	case CQ_VK_FORMAT_R64G64B64_SINT: return TinyImageFormat_R64G64B64_SINT;
-	case CQ_VK_FORMAT_R64G64B64_SFLOAT: return TinyImageFormat_R64G64B64_SFLOAT;
-	case CQ_VK_FORMAT_R64G64B64A64_UINT: return TinyImageFormat_R64G64B64A64_UINT;
-	case CQ_VK_FORMAT_R64G64B64A64_SINT: return TinyImageFormat_R64G64B64A64_SINT;
-	case CQ_VK_FORMAT_R64G64B64A64_SFLOAT: return TinyImageFormat_R64G64B64A64_SFLOAT;
-	case CQ_VK_FORMAT_B10G11R11_UFLOAT_PACK32: return TinyImageFormat_B10G11R11_UFLOAT;
-	case CQ_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32: return TinyImageFormat_E5B9G9R9_UFLOAT;
-	case CQ_VK_FORMAT_D16_UNORM: return TinyImageFormat_D16_UNORM;
-	case CQ_VK_FORMAT_X8_D24_UNORM_PACK32: return TinyImageFormat_X8_D24_UNORM;
-	case CQ_VK_FORMAT_D32_SFLOAT: return TinyImageFormat_D32_SFLOAT;
-	case CQ_VK_FORMAT_S8_UINT: return TinyImageFormat_S8_UINT;
-	case CQ_VK_FORMAT_D16_UNORM_S8_UINT: return TinyImageFormat_D16_UNORM_S8_UINT;
-	case CQ_VK_FORMAT_D24_UNORM_S8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
-	case CQ_VK_FORMAT_D32_SFLOAT_S8_UINT: return TinyImageFormat_D32_SFLOAT_S8_UINT;
-	case CQ_VK_FORMAT_BC1_RGB_UNORM_BLOCK: return TinyImageFormat_DXBC1_RGB_UNORM;
-	case CQ_VK_FORMAT_BC1_RGB_SRGB_BLOCK: return TinyImageFormat_DXBC1_RGB_SRGB;
-	case CQ_VK_FORMAT_BC1_RGBA_UNORM_BLOCK: return TinyImageFormat_DXBC1_RGBA_UNORM;
-	case CQ_VK_FORMAT_BC1_RGBA_SRGB_BLOCK: return TinyImageFormat_DXBC1_RGBA_SRGB;
-	case CQ_VK_FORMAT_BC2_UNORM_BLOCK: return TinyImageFormat_DXBC2_UNORM;
-	case CQ_VK_FORMAT_BC2_SRGB_BLOCK: return TinyImageFormat_DXBC2_SRGB;
-	case CQ_VK_FORMAT_BC3_UNORM_BLOCK: return TinyImageFormat_DXBC3_UNORM;
-	case CQ_VK_FORMAT_BC3_SRGB_BLOCK: return TinyImageFormat_DXBC3_SRGB;
-	case CQ_VK_FORMAT_BC4_UNORM_BLOCK: return TinyImageFormat_DXBC4_UNORM;
-	case CQ_VK_FORMAT_BC4_SNORM_BLOCK: return TinyImageFormat_DXBC4_SNORM;
-	case CQ_VK_FORMAT_BC5_UNORM_BLOCK: return TinyImageFormat_DXBC5_UNORM;
-	case CQ_VK_FORMAT_BC5_SNORM_BLOCK: return TinyImageFormat_DXBC5_SNORM;
-	case CQ_VK_FORMAT_BC6H_UFLOAT_BLOCK: return TinyImageFormat_DXBC6H_UFLOAT;
-	case CQ_VK_FORMAT_BC6H_SFLOAT_BLOCK: return TinyImageFormat_DXBC6H_SFLOAT;
-	case CQ_VK_FORMAT_BC7_UNORM_BLOCK: return TinyImageFormat_DXBC7_UNORM;
-	case CQ_VK_FORMAT_BC7_SRGB_BLOCK: return TinyImageFormat_DXBC7_SRGB;
-	case CQ_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8_UNORM;
-	case CQ_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8_SRGB;
-	case CQ_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8A1_UNORM;
-	case CQ_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8A1_SRGB;
-	case CQ_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK: return TinyImageFormat_ETC2_R8G8B8A8_UNORM;
-	case CQ_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK: return TinyImageFormat_ETC2_R8G8B8A8_SRGB;
-	case CQ_VK_FORMAT_EAC_R11_UNORM_BLOCK: return TinyImageFormat_ETC2_EAC_R11_UNORM;
-	case CQ_VK_FORMAT_EAC_R11_SNORM_BLOCK: return TinyImageFormat_ETC2_EAC_R11_SNORM;
-	case CQ_VK_FORMAT_EAC_R11G11_UNORM_BLOCK: return TinyImageFormat_ETC2_EAC_R11G11_UNORM;
-	case CQ_VK_FORMAT_EAC_R11G11_SNORM_BLOCK: return TinyImageFormat_ETC2_EAC_R11G11_SNORM;
-	case CQ_VK_FORMAT_ASTC_4x4_UNORM_BLOCK: return TinyImageFormat_ASTC_4x4_UNORM;
-	case CQ_VK_FORMAT_ASTC_4x4_SRGB_BLOCK: return TinyImageFormat_ASTC_4x4_SRGB;
-	case CQ_VK_FORMAT_ASTC_5x4_UNORM_BLOCK: return TinyImageFormat_ASTC_5x4_UNORM;
-	case CQ_VK_FORMAT_ASTC_5x4_SRGB_BLOCK: return TinyImageFormat_ASTC_5x4_SRGB;
-	case CQ_VK_FORMAT_ASTC_5x5_UNORM_BLOCK: return TinyImageFormat_ASTC_5x5_UNORM;
-	case CQ_VK_FORMAT_ASTC_5x5_SRGB_BLOCK: return TinyImageFormat_ASTC_5x5_SRGB;
-	case CQ_VK_FORMAT_ASTC_6x5_UNORM_BLOCK: return TinyImageFormat_ASTC_6x5_UNORM;
-	case CQ_VK_FORMAT_ASTC_6x5_SRGB_BLOCK: return TinyImageFormat_ASTC_6x5_SRGB;
-	case CQ_VK_FORMAT_ASTC_6x6_UNORM_BLOCK: return TinyImageFormat_ASTC_6x6_UNORM;
-	case CQ_VK_FORMAT_ASTC_6x6_SRGB_BLOCK: return TinyImageFormat_ASTC_6x6_SRGB;
-	case CQ_VK_FORMAT_ASTC_8x5_UNORM_BLOCK: return TinyImageFormat_ASTC_8x5_UNORM;
-	case CQ_VK_FORMAT_ASTC_8x5_SRGB_BLOCK: return TinyImageFormat_ASTC_8x5_SRGB;
-	case CQ_VK_FORMAT_ASTC_8x6_UNORM_BLOCK: return TinyImageFormat_ASTC_8x6_UNORM;
-	case CQ_VK_FORMAT_ASTC_8x6_SRGB_BLOCK: return TinyImageFormat_ASTC_8x6_SRGB;
-	case CQ_VK_FORMAT_ASTC_8x8_UNORM_BLOCK: return TinyImageFormat_ASTC_8x8_UNORM;
-	case CQ_VK_FORMAT_ASTC_8x8_SRGB_BLOCK: return TinyImageFormat_ASTC_8x8_SRGB;
-	case CQ_VK_FORMAT_ASTC_10x5_UNORM_BLOCK: return TinyImageFormat_ASTC_10x5_UNORM;
-	case CQ_VK_FORMAT_ASTC_10x5_SRGB_BLOCK: return TinyImageFormat_ASTC_10x5_SRGB;
-	case CQ_VK_FORMAT_ASTC_10x6_UNORM_BLOCK: return TinyImageFormat_ASTC_10x6_UNORM;
-	case CQ_VK_FORMAT_ASTC_10x6_SRGB_BLOCK: return TinyImageFormat_ASTC_10x6_SRGB;
-	case CQ_VK_FORMAT_ASTC_10x8_UNORM_BLOCK: return TinyImageFormat_ASTC_10x8_UNORM;
-	case CQ_VK_FORMAT_ASTC_10x8_SRGB_BLOCK: return TinyImageFormat_ASTC_10x8_SRGB;
-	case CQ_VK_FORMAT_ASTC_10x10_UNORM_BLOCK: return TinyImageFormat_ASTC_10x10_UNORM;
-	case CQ_VK_FORMAT_ASTC_10x10_SRGB_BLOCK: return TinyImageFormat_ASTC_10x10_SRGB;
-	case CQ_VK_FORMAT_ASTC_12x10_UNORM_BLOCK: return TinyImageFormat_ASTC_12x10_UNORM;
-	case CQ_VK_FORMAT_ASTC_12x10_SRGB_BLOCK: return TinyImageFormat_ASTC_12x10_SRGB;
-	case CQ_VK_FORMAT_ASTC_12x12_UNORM_BLOCK: return TinyImageFormat_ASTC_12x12_UNORM;
-	case CQ_VK_FORMAT_ASTC_12x12_SRGB_BLOCK: return TinyImageFormat_ASTC_12x12_SRGB;
+	case CQ_VK_FORMAT_UNDEFINED: return CqFormat_UNDEFINED;
+	case CQ_VK_FORMAT_R4G4_UNORM_PACK8: return CqFormat_G4R4_UNORM;
+	case CQ_VK_FORMAT_R4G4B4A4_UNORM_PACK16: return CqFormat_A4B4G4R4_UNORM;
+	case CQ_VK_FORMAT_B4G4R4A4_UNORM_PACK16: return CqFormat_A4R4G4B4_UNORM;
+	case CQ_VK_FORMAT_R5G6B5_UNORM_PACK16: return CqFormat_B5G6R5_UNORM;
+	case CQ_VK_FORMAT_B5G6R5_UNORM_PACK16: return CqFormat_R5G6B5_UNORM;
+	case CQ_VK_FORMAT_R5G5B5A1_UNORM_PACK16: return CqFormat_A1B5G5R5_UNORM;
+	case CQ_VK_FORMAT_B5G5R5A1_UNORM_PACK16: return CqFormat_A1R5G5B5_UNORM;
+	case CQ_VK_FORMAT_A1R5G5B5_UNORM_PACK16: return CqFormat_B5G5R5A1_UNORM;
+	case CQ_VK_FORMAT_R8_UNORM: return CqFormat_R8_UNORM;
+	case CQ_VK_FORMAT_R8_SNORM: return CqFormat_R8_SNORM;
+	case CQ_VK_FORMAT_R8_UINT: return CqFormat_R8_UINT;
+	case CQ_VK_FORMAT_R8_SINT: return CqFormat_R8_SINT;
+	case CQ_VK_FORMAT_R8_SRGB: return CqFormat_R8_SRGB;
+	case CQ_VK_FORMAT_R8G8_UNORM: return CqFormat_R8G8_UNORM;
+	case CQ_VK_FORMAT_R8G8_SNORM: return CqFormat_R8G8_SNORM;
+	case CQ_VK_FORMAT_R8G8_UINT: return CqFormat_R8G8_UINT;
+	case CQ_VK_FORMAT_R8G8_SINT: return CqFormat_R8G8_SINT;
+	case CQ_VK_FORMAT_R8G8_SRGB: return CqFormat_R8G8_SRGB;
+	case CQ_VK_FORMAT_R8G8B8_UNORM: return CqFormat_R8G8B8_UNORM;
+	case CQ_VK_FORMAT_R8G8B8_SNORM: return CqFormat_R8G8B8_SNORM;
+	case CQ_VK_FORMAT_R8G8B8_UINT: return CqFormat_R8G8B8_UINT;
+	case CQ_VK_FORMAT_R8G8B8_SINT: return CqFormat_R8G8B8_SINT;
+	case CQ_VK_FORMAT_R8G8B8_SRGB: return CqFormat_R8G8B8_SRGB;
+	case CQ_VK_FORMAT_B8G8R8_UNORM: return CqFormat_B8G8R8_UNORM;
+	case CQ_VK_FORMAT_B8G8R8_SNORM: return CqFormat_B8G8R8_SNORM;
+	case CQ_VK_FORMAT_B8G8R8_UINT: return CqFormat_B8G8R8_UINT;
+	case CQ_VK_FORMAT_B8G8R8_SINT: return CqFormat_B8G8R8_SINT;
+	case CQ_VK_FORMAT_B8G8R8_SRGB: return CqFormat_B8G8R8_SRGB;
+	case CQ_VK_FORMAT_R8G8B8A8_UNORM: return CqFormat_R8G8B8A8_UNORM;
+	case CQ_VK_FORMAT_R8G8B8A8_SNORM: return CqFormat_R8G8B8A8_SNORM;
+	case CQ_VK_FORMAT_R8G8B8A8_UINT: return CqFormat_R8G8B8A8_UINT;
+	case CQ_VK_FORMAT_R8G8B8A8_SINT: return CqFormat_R8G8B8A8_SINT;
+	case CQ_VK_FORMAT_R8G8B8A8_SRGB: return CqFormat_R8G8B8A8_SRGB;
+	case CQ_VK_FORMAT_B8G8R8A8_UNORM: return CqFormat_B8G8R8A8_UNORM;
+	case CQ_VK_FORMAT_B8G8R8A8_SNORM: return CqFormat_B8G8R8A8_SNORM;
+	case CQ_VK_FORMAT_B8G8R8A8_UINT: return CqFormat_B8G8R8A8_UINT;
+	case CQ_VK_FORMAT_B8G8R8A8_SINT: return CqFormat_B8G8R8A8_SINT;
+	case CQ_VK_FORMAT_B8G8R8A8_SRGB: return CqFormat_B8G8R8A8_SRGB;
+	case CQ_VK_FORMAT_A2R10G10B10_UNORM_PACK32: return CqFormat_B10G10R10A2_UNORM;
+	case CQ_VK_FORMAT_A2R10G10B10_UINT_PACK32: return CqFormat_B10G10R10A2_UINT;
+	case CQ_VK_FORMAT_A2B10G10R10_UNORM_PACK32: return CqFormat_R10G10B10A2_UNORM;
+	case CQ_VK_FORMAT_A2B10G10R10_UINT_PACK32: return CqFormat_R10G10B10A2_UINT;
+	case CQ_VK_FORMAT_R16_UNORM: return CqFormat_R16_UNORM;
+	case CQ_VK_FORMAT_R16_SNORM: return CqFormat_R16_SNORM;
+	case CQ_VK_FORMAT_R16_UINT: return CqFormat_R16_UINT;
+	case CQ_VK_FORMAT_R16_SINT: return CqFormat_R16_SINT;
+	case CQ_VK_FORMAT_R16_SFLOAT: return CqFormat_R16_SFLOAT;
+	case CQ_VK_FORMAT_R16G16_UNORM: return CqFormat_R16G16_UNORM;
+	case CQ_VK_FORMAT_R16G16_SNORM: return CqFormat_R16G16_SNORM;
+	case CQ_VK_FORMAT_R16G16_UINT: return CqFormat_R16G16_UINT;
+	case CQ_VK_FORMAT_R16G16_SINT: return CqFormat_R16G16_SINT;
+	case CQ_VK_FORMAT_R16G16_SFLOAT: return CqFormat_R16G16_SFLOAT;
+	case CQ_VK_FORMAT_R16G16B16_UNORM: return CqFormat_R16G16B16_UNORM;
+	case CQ_VK_FORMAT_R16G16B16_SNORM: return CqFormat_R16G16B16_SNORM;
+	case CQ_VK_FORMAT_R16G16B16_UINT: return CqFormat_R16G16B16_UINT;
+	case CQ_VK_FORMAT_R16G16B16_SINT: return CqFormat_R16G16B16_SINT;
+	case CQ_VK_FORMAT_R16G16B16_SFLOAT: return CqFormat_R16G16B16_SFLOAT;
+	case CQ_VK_FORMAT_R16G16B16A16_UNORM: return CqFormat_R16G16B16A16_UNORM;
+	case CQ_VK_FORMAT_R16G16B16A16_SNORM: return CqFormat_R16G16B16A16_SNORM;
+	case CQ_VK_FORMAT_R16G16B16A16_UINT: return CqFormat_R16G16B16A16_UINT;
+	case CQ_VK_FORMAT_R16G16B16A16_SINT: return CqFormat_R16G16B16A16_SINT;
+	case CQ_VK_FORMAT_R16G16B16A16_SFLOAT: return CqFormat_R16G16B16A16_SFLOAT;
+	case CQ_VK_FORMAT_R32_UINT: return CqFormat_R32_UINT;
+	case CQ_VK_FORMAT_R32_SINT: return CqFormat_R32_SINT;
+	case CQ_VK_FORMAT_R32_SFLOAT: return CqFormat_R32_SFLOAT;
+	case CQ_VK_FORMAT_R32G32_UINT: return CqFormat_R32G32_UINT;
+	case CQ_VK_FORMAT_R32G32_SINT: return CqFormat_R32G32_SINT;
+	case CQ_VK_FORMAT_R32G32_SFLOAT: return CqFormat_R32G32_SFLOAT;
+	case CQ_VK_FORMAT_R32G32B32_UINT: return CqFormat_R32G32B32_UINT;
+	case CQ_VK_FORMAT_R32G32B32_SINT: return CqFormat_R32G32B32_SINT;
+	case CQ_VK_FORMAT_R32G32B32_SFLOAT: return CqFormat_R32G32B32_SFLOAT;
+	case CQ_VK_FORMAT_R32G32B32A32_UINT: return CqFormat_R32G32B32A32_UINT;
+	case CQ_VK_FORMAT_R32G32B32A32_SINT: return CqFormat_R32G32B32A32_SINT;
+	case CQ_VK_FORMAT_R32G32B32A32_SFLOAT: return CqFormat_R32G32B32A32_SFLOAT;
+	case CQ_VK_FORMAT_R64_UINT: return CqFormat_R64_UINT;
+	case CQ_VK_FORMAT_R64_SINT: return CqFormat_R64_SINT;
+	case CQ_VK_FORMAT_R64_SFLOAT: return CqFormat_R64_SFLOAT;
+	case CQ_VK_FORMAT_R64G64_UINT: return CqFormat_R64G64_UINT;
+	case CQ_VK_FORMAT_R64G64_SINT: return CqFormat_R64G64_SINT;
+	case CQ_VK_FORMAT_R64G64_SFLOAT: return CqFormat_R64G64_SFLOAT;
+	case CQ_VK_FORMAT_R64G64B64_UINT: return CqFormat_R64G64B64_UINT;
+	case CQ_VK_FORMAT_R64G64B64_SINT: return CqFormat_R64G64B64_SINT;
+	case CQ_VK_FORMAT_R64G64B64_SFLOAT: return CqFormat_R64G64B64_SFLOAT;
+	case CQ_VK_FORMAT_R64G64B64A64_UINT: return CqFormat_R64G64B64A64_UINT;
+	case CQ_VK_FORMAT_R64G64B64A64_SINT: return CqFormat_R64G64B64A64_SINT;
+	case CQ_VK_FORMAT_R64G64B64A64_SFLOAT: return CqFormat_R64G64B64A64_SFLOAT;
+	case CQ_VK_FORMAT_B10G11R11_UFLOAT_PACK32: return CqFormat_B10G11R11_UFLOAT;
+	case CQ_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32: return CqFormat_E5B9G9R9_UFLOAT;
+	case CQ_VK_FORMAT_D16_UNORM: return CqFormat_D16_UNORM;
+	case CQ_VK_FORMAT_X8_D24_UNORM_PACK32: return CqFormat_X8_D24_UNORM;
+	case CQ_VK_FORMAT_D32_SFLOAT: return CqFormat_D32_SFLOAT;
+	case CQ_VK_FORMAT_S8_UINT: return CqFormat_S8_UINT;
+	case CQ_VK_FORMAT_D16_UNORM_S8_UINT: return CqFormat_D16_UNORM_S8_UINT;
+	case CQ_VK_FORMAT_D24_UNORM_S8_UINT: return CqFormat_D24_UNORM_S8_UINT;
+	case CQ_VK_FORMAT_D32_SFLOAT_S8_UINT: return CqFormat_D32_SFLOAT_S8_UINT;
+	case CQ_VK_FORMAT_BC1_RGB_UNORM_BLOCK: return CqFormat_DXBC1_RGB_UNORM;
+	case CQ_VK_FORMAT_BC1_RGB_SRGB_BLOCK: return CqFormat_DXBC1_RGB_SRGB;
+	case CQ_VK_FORMAT_BC1_RGBA_UNORM_BLOCK: return CqFormat_DXBC1_RGBA_UNORM;
+	case CQ_VK_FORMAT_BC1_RGBA_SRGB_BLOCK: return CqFormat_DXBC1_RGBA_SRGB;
+	case CQ_VK_FORMAT_BC2_UNORM_BLOCK: return CqFormat_DXBC2_UNORM;
+	case CQ_VK_FORMAT_BC2_SRGB_BLOCK: return CqFormat_DXBC2_SRGB;
+	case CQ_VK_FORMAT_BC3_UNORM_BLOCK: return CqFormat_DXBC3_UNORM;
+	case CQ_VK_FORMAT_BC3_SRGB_BLOCK: return CqFormat_DXBC3_SRGB;
+	case CQ_VK_FORMAT_BC4_UNORM_BLOCK: return CqFormat_DXBC4_UNORM;
+	case CQ_VK_FORMAT_BC4_SNORM_BLOCK: return CqFormat_DXBC4_SNORM;
+	case CQ_VK_FORMAT_BC5_UNORM_BLOCK: return CqFormat_DXBC5_UNORM;
+	case CQ_VK_FORMAT_BC5_SNORM_BLOCK: return CqFormat_DXBC5_SNORM;
+	case CQ_VK_FORMAT_BC6H_UFLOAT_BLOCK: return CqFormat_DXBC6H_UFLOAT;
+	case CQ_VK_FORMAT_BC6H_SFLOAT_BLOCK: return CqFormat_DXBC6H_SFLOAT;
+	case CQ_VK_FORMAT_BC7_UNORM_BLOCK: return CqFormat_DXBC7_UNORM;
+	case CQ_VK_FORMAT_BC7_SRGB_BLOCK: return CqFormat_DXBC7_SRGB;
+	case CQ_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK: return CqFormat_ETC2_R8G8B8_UNORM;
+	case CQ_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK: return CqFormat_ETC2_R8G8B8_SRGB;
+	case CQ_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK: return CqFormat_ETC2_R8G8B8A1_UNORM;
+	case CQ_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK: return CqFormat_ETC2_R8G8B8A1_SRGB;
+	case CQ_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK: return CqFormat_ETC2_R8G8B8A8_UNORM;
+	case CQ_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK: return CqFormat_ETC2_R8G8B8A8_SRGB;
+	case CQ_VK_FORMAT_EAC_R11_UNORM_BLOCK: return CqFormat_ETC2_EAC_R11_UNORM;
+	case CQ_VK_FORMAT_EAC_R11_SNORM_BLOCK: return CqFormat_ETC2_EAC_R11_SNORM;
+	case CQ_VK_FORMAT_EAC_R11G11_UNORM_BLOCK: return CqFormat_ETC2_EAC_R11G11_UNORM;
+	case CQ_VK_FORMAT_EAC_R11G11_SNORM_BLOCK: return CqFormat_ETC2_EAC_R11G11_SNORM;
+	case CQ_VK_FORMAT_ASTC_4x4_UNORM_BLOCK: return CqFormat_ASTC_4x4_UNORM;
+	case CQ_VK_FORMAT_ASTC_4x4_SRGB_BLOCK: return CqFormat_ASTC_4x4_SRGB;
+	case CQ_VK_FORMAT_ASTC_5x4_UNORM_BLOCK: return CqFormat_ASTC_5x4_UNORM;
+	case CQ_VK_FORMAT_ASTC_5x4_SRGB_BLOCK: return CqFormat_ASTC_5x4_SRGB;
+	case CQ_VK_FORMAT_ASTC_5x5_UNORM_BLOCK: return CqFormat_ASTC_5x5_UNORM;
+	case CQ_VK_FORMAT_ASTC_5x5_SRGB_BLOCK: return CqFormat_ASTC_5x5_SRGB;
+	case CQ_VK_FORMAT_ASTC_6x5_UNORM_BLOCK: return CqFormat_ASTC_6x5_UNORM;
+	case CQ_VK_FORMAT_ASTC_6x5_SRGB_BLOCK: return CqFormat_ASTC_6x5_SRGB;
+	case CQ_VK_FORMAT_ASTC_6x6_UNORM_BLOCK: return CqFormat_ASTC_6x6_UNORM;
+	case CQ_VK_FORMAT_ASTC_6x6_SRGB_BLOCK: return CqFormat_ASTC_6x6_SRGB;
+	case CQ_VK_FORMAT_ASTC_8x5_UNORM_BLOCK: return CqFormat_ASTC_8x5_UNORM;
+	case CQ_VK_FORMAT_ASTC_8x5_SRGB_BLOCK: return CqFormat_ASTC_8x5_SRGB;
+	case CQ_VK_FORMAT_ASTC_8x6_UNORM_BLOCK: return CqFormat_ASTC_8x6_UNORM;
+	case CQ_VK_FORMAT_ASTC_8x6_SRGB_BLOCK: return CqFormat_ASTC_8x6_SRGB;
+	case CQ_VK_FORMAT_ASTC_8x8_UNORM_BLOCK: return CqFormat_ASTC_8x8_UNORM;
+	case CQ_VK_FORMAT_ASTC_8x8_SRGB_BLOCK: return CqFormat_ASTC_8x8_SRGB;
+	case CQ_VK_FORMAT_ASTC_10x5_UNORM_BLOCK: return CqFormat_ASTC_10x5_UNORM;
+	case CQ_VK_FORMAT_ASTC_10x5_SRGB_BLOCK: return CqFormat_ASTC_10x5_SRGB;
+	case CQ_VK_FORMAT_ASTC_10x6_UNORM_BLOCK: return CqFormat_ASTC_10x6_UNORM;
+	case CQ_VK_FORMAT_ASTC_10x6_SRGB_BLOCK: return CqFormat_ASTC_10x6_SRGB;
+	case CQ_VK_FORMAT_ASTC_10x8_UNORM_BLOCK: return CqFormat_ASTC_10x8_UNORM;
+	case CQ_VK_FORMAT_ASTC_10x8_SRGB_BLOCK: return CqFormat_ASTC_10x8_SRGB;
+	case CQ_VK_FORMAT_ASTC_10x10_UNORM_BLOCK: return CqFormat_ASTC_10x10_UNORM;
+	case CQ_VK_FORMAT_ASTC_10x10_SRGB_BLOCK: return CqFormat_ASTC_10x10_SRGB;
+	case CQ_VK_FORMAT_ASTC_12x10_UNORM_BLOCK: return CqFormat_ASTC_12x10_UNORM;
+	case CQ_VK_FORMAT_ASTC_12x10_SRGB_BLOCK: return CqFormat_ASTC_12x10_SRGB;
+	case CQ_VK_FORMAT_ASTC_12x12_UNORM_BLOCK: return CqFormat_ASTC_12x12_UNORM;
+	case CQ_VK_FORMAT_ASTC_12x12_SRGB_BLOCK: return CqFormat_ASTC_12x12_SRGB;
 
-	case CQ_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVRTC1_2BPP_UNORM;
-	case CQ_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG: return TinyImageFormat_PVRTC1_4BPP_UNORM;
-	case CQ_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVRTC1_2BPP_SRGB;
-	case CQ_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG: return TinyImageFormat_PVRTC1_4BPP_SRGB;
+	case CQ_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG: return CqFormat_PVRTC1_2BPP_UNORM;
+	case CQ_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG: return CqFormat_PVRTC1_4BPP_UNORM;
+	case CQ_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG: return CqFormat_PVRTC1_2BPP_SRGB;
+	case CQ_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG: return CqFormat_PVRTC1_4BPP_SRGB;
 
 	case CQ_VK_FORMAT_A8B8G8R8_UNORM_PACK32:
 	case CQ_VK_FORMAT_R8_USCALED:
@@ -10550,176 +10550,176 @@ inline TinyImageFormat TinyImageFormat_FromVkFormat(TinyImageFormat_VkFormat fmt
 	case CQ_VK_FORMAT_PVRTC2_4BPP_UNORM_BLOCK_IMG:
 	case CQ_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG:
 	case CQ_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG:
-		return TinyImageFormat_UNDEFINED;
+		return CqFormat_UNDEFINED;
 	}
-	return TinyImageFormat_UNDEFINED;
+	return CqFormat_UNDEFINED;
 }
 
-inline TinyImageFormat_VkFormat TinyImageFormat_ToVkFormat(TinyImageFormat fmt) {
+inline CqFormat_VkFormat CqFormat_ToVkFormat(CqFormat fmt) {
 	switch (fmt) {
 
-	case TinyImageFormat_UNDEFINED: return CQ_VK_FORMAT_UNDEFINED;
-	case TinyImageFormat_G4R4_UNORM: return CQ_VK_FORMAT_R4G4_UNORM_PACK8;
-	case TinyImageFormat_A4B4G4R4_UNORM: return CQ_VK_FORMAT_R4G4B4A4_UNORM_PACK16;
-	case TinyImageFormat_A4R4G4B4_UNORM: return CQ_VK_FORMAT_B4G4R4A4_UNORM_PACK16;
-	case TinyImageFormat_R5G6B5_UNORM: return CQ_VK_FORMAT_B5G6R5_UNORM_PACK16;
-	case TinyImageFormat_B5G6R5_UNORM: return CQ_VK_FORMAT_R5G6B5_UNORM_PACK16;
-	case TinyImageFormat_A1B5G5R5_UNORM: return CQ_VK_FORMAT_R5G5B5A1_UNORM_PACK16;
-	case TinyImageFormat_A1R5G5B5_UNORM: return CQ_VK_FORMAT_B5G5R5A1_UNORM_PACK16;
-	case TinyImageFormat_B5G5R5A1_UNORM: return CQ_VK_FORMAT_A1R5G5B5_UNORM_PACK16;
+	case CqFormat_UNDEFINED: return CQ_VK_FORMAT_UNDEFINED;
+	case CqFormat_G4R4_UNORM: return CQ_VK_FORMAT_R4G4_UNORM_PACK8;
+	case CqFormat_A4B4G4R4_UNORM: return CQ_VK_FORMAT_R4G4B4A4_UNORM_PACK16;
+	case CqFormat_A4R4G4B4_UNORM: return CQ_VK_FORMAT_B4G4R4A4_UNORM_PACK16;
+	case CqFormat_R5G6B5_UNORM: return CQ_VK_FORMAT_B5G6R5_UNORM_PACK16;
+	case CqFormat_B5G6R5_UNORM: return CQ_VK_FORMAT_R5G6B5_UNORM_PACK16;
+	case CqFormat_A1B5G5R5_UNORM: return CQ_VK_FORMAT_R5G5B5A1_UNORM_PACK16;
+	case CqFormat_A1R5G5B5_UNORM: return CQ_VK_FORMAT_B5G5R5A1_UNORM_PACK16;
+	case CqFormat_B5G5R5A1_UNORM: return CQ_VK_FORMAT_A1R5G5B5_UNORM_PACK16;
 
-	case TinyImageFormat_R8_UNORM: return CQ_VK_FORMAT_R8_UNORM;
-	case TinyImageFormat_R8_SNORM: return CQ_VK_FORMAT_R8_SNORM;
-	case TinyImageFormat_R8_UINT: return CQ_VK_FORMAT_R8_UINT;
-	case TinyImageFormat_R8_SINT: return CQ_VK_FORMAT_R8_SINT;
-	case TinyImageFormat_R8_SRGB: return CQ_VK_FORMAT_R8_SRGB;
-	case TinyImageFormat_R8G8_UNORM: return CQ_VK_FORMAT_R8G8_UNORM;
-	case TinyImageFormat_R8G8_SNORM: return CQ_VK_FORMAT_R8G8_SNORM;
-	case TinyImageFormat_R8G8_UINT: return CQ_VK_FORMAT_R8G8_UINT;
-	case TinyImageFormat_R8G8_SINT: return CQ_VK_FORMAT_R8G8_SINT;
-	case TinyImageFormat_R8G8_SRGB: return CQ_VK_FORMAT_R8G8_SRGB;
-	case TinyImageFormat_R8G8B8_UNORM: return CQ_VK_FORMAT_R8G8B8_UNORM;
-	case TinyImageFormat_R8G8B8_SNORM: return CQ_VK_FORMAT_R8G8B8_SNORM;
-	case TinyImageFormat_R8G8B8_UINT: return CQ_VK_FORMAT_R8G8B8_UINT;
-	case TinyImageFormat_R8G8B8_SINT: return CQ_VK_FORMAT_R8G8B8_SINT;
-	case TinyImageFormat_R8G8B8_SRGB: return CQ_VK_FORMAT_R8G8B8_SRGB;
-	case TinyImageFormat_B8G8R8_UNORM: return CQ_VK_FORMAT_B8G8R8_UNORM;
-	case TinyImageFormat_B8G8R8_SNORM: return CQ_VK_FORMAT_B8G8R8_SNORM;
-	case TinyImageFormat_B8G8R8_UINT: return CQ_VK_FORMAT_B8G8R8_UINT;
-	case TinyImageFormat_B8G8R8_SINT: return CQ_VK_FORMAT_B8G8R8_SINT;
-	case TinyImageFormat_B8G8R8_SRGB: return CQ_VK_FORMAT_B8G8R8_SRGB;
-	case TinyImageFormat_R8G8B8A8_UNORM: return CQ_VK_FORMAT_R8G8B8A8_UNORM;
-	case TinyImageFormat_R8G8B8A8_SNORM: return CQ_VK_FORMAT_R8G8B8A8_SNORM;
-	case TinyImageFormat_R8G8B8A8_UINT: return CQ_VK_FORMAT_R8G8B8A8_UINT;
-	case TinyImageFormat_R8G8B8A8_SINT: return CQ_VK_FORMAT_R8G8B8A8_SINT;
-	case TinyImageFormat_R8G8B8A8_SRGB: return CQ_VK_FORMAT_R8G8B8A8_SRGB;
-	case TinyImageFormat_B8G8R8A8_UNORM: return CQ_VK_FORMAT_B8G8R8A8_UNORM;
-	case TinyImageFormat_B8G8R8A8_SNORM: return CQ_VK_FORMAT_B8G8R8A8_SNORM;
-	case TinyImageFormat_B8G8R8A8_UINT: return CQ_VK_FORMAT_B8G8R8A8_UINT;
-	case TinyImageFormat_B8G8R8A8_SINT: return CQ_VK_FORMAT_B8G8R8A8_SINT;
-	case TinyImageFormat_B8G8R8A8_SRGB: return CQ_VK_FORMAT_B8G8R8A8_SRGB;
-	case TinyImageFormat_R16_UNORM: return CQ_VK_FORMAT_R16_UNORM;
-	case TinyImageFormat_R16_SNORM: return CQ_VK_FORMAT_R16_SNORM;
-	case TinyImageFormat_R16_UINT: return CQ_VK_FORMAT_R16_UINT;
-	case TinyImageFormat_R16_SINT: return CQ_VK_FORMAT_R16_SINT;
-	case TinyImageFormat_R16_SFLOAT: return CQ_VK_FORMAT_R16_SFLOAT;
-	case TinyImageFormat_R16G16_UNORM: return CQ_VK_FORMAT_R16G16_UNORM;
-	case TinyImageFormat_R16G16_SNORM: return CQ_VK_FORMAT_R16G16_SNORM;
-	case TinyImageFormat_R16G16_UINT: return CQ_VK_FORMAT_R16G16_UINT;
-	case TinyImageFormat_R16G16_SINT: return CQ_VK_FORMAT_R16G16_SINT;
-	case TinyImageFormat_R16G16_SFLOAT: return CQ_VK_FORMAT_R16G16_SFLOAT;
-	case TinyImageFormat_R16G16B16_UNORM: return CQ_VK_FORMAT_R16G16B16_UNORM;
-	case TinyImageFormat_R16G16B16_SNORM: return CQ_VK_FORMAT_R16G16B16_SNORM;
-	case TinyImageFormat_R16G16B16_UINT: return CQ_VK_FORMAT_R16G16B16_UINT;
-	case TinyImageFormat_R16G16B16_SINT: return CQ_VK_FORMAT_R16G16B16_SINT;
-	case TinyImageFormat_R16G16B16_SFLOAT: return CQ_VK_FORMAT_R16G16B16_SFLOAT;
-	case TinyImageFormat_R16G16B16A16_UNORM: return CQ_VK_FORMAT_R16G16B16A16_UNORM;
-	case TinyImageFormat_R16G16B16A16_SNORM: return CQ_VK_FORMAT_R16G16B16A16_SNORM;
-	case TinyImageFormat_R16G16B16A16_UINT: return CQ_VK_FORMAT_R16G16B16A16_UINT;
-	case TinyImageFormat_R16G16B16A16_SINT: return CQ_VK_FORMAT_R16G16B16A16_SINT;
-	case TinyImageFormat_R16G16B16A16_SFLOAT: return CQ_VK_FORMAT_R16G16B16A16_SFLOAT;
-	case TinyImageFormat_R32_UINT: return CQ_VK_FORMAT_R32_UINT;
-	case TinyImageFormat_R32_SINT: return CQ_VK_FORMAT_R32_SINT;
-	case TinyImageFormat_R32_SFLOAT: return CQ_VK_FORMAT_R32_SFLOAT;
-	case TinyImageFormat_R32G32_UINT: return CQ_VK_FORMAT_R32G32_UINT;
-	case TinyImageFormat_R32G32_SINT: return CQ_VK_FORMAT_R32G32_SINT;
-	case TinyImageFormat_R32G32_SFLOAT: return CQ_VK_FORMAT_R32G32_SFLOAT;
-	case TinyImageFormat_R32G32B32_UINT: return CQ_VK_FORMAT_R32G32B32_UINT;
-	case TinyImageFormat_R32G32B32_SINT: return CQ_VK_FORMAT_R32G32B32_SINT;
-	case TinyImageFormat_R32G32B32_SFLOAT: return CQ_VK_FORMAT_R32G32B32_SFLOAT;
-	case TinyImageFormat_R32G32B32A32_UINT: return CQ_VK_FORMAT_R32G32B32A32_UINT;
-	case TinyImageFormat_R32G32B32A32_SINT: return CQ_VK_FORMAT_R32G32B32A32_SINT;
-	case TinyImageFormat_R32G32B32A32_SFLOAT: return CQ_VK_FORMAT_R32G32B32A32_SFLOAT;
-	case TinyImageFormat_R64_UINT: return CQ_VK_FORMAT_R64_UINT;
-	case TinyImageFormat_R64_SINT: return CQ_VK_FORMAT_R64_SINT;
-	case TinyImageFormat_R64_SFLOAT: return CQ_VK_FORMAT_R64_SFLOAT;
-	case TinyImageFormat_R64G64_UINT: return CQ_VK_FORMAT_R64G64_UINT;
-	case TinyImageFormat_R64G64_SINT: return CQ_VK_FORMAT_R64G64_SINT;
-	case TinyImageFormat_R64G64_SFLOAT: return CQ_VK_FORMAT_R64G64_SFLOAT;
-	case TinyImageFormat_R64G64B64_UINT: return CQ_VK_FORMAT_R64G64B64_UINT;
-	case TinyImageFormat_R64G64B64_SINT: return CQ_VK_FORMAT_R64G64B64_SINT;
-	case TinyImageFormat_R64G64B64_SFLOAT: return CQ_VK_FORMAT_R64G64B64_SFLOAT;
-	case TinyImageFormat_R64G64B64A64_UINT: return CQ_VK_FORMAT_R64G64B64A64_UINT;
-	case TinyImageFormat_R64G64B64A64_SINT: return CQ_VK_FORMAT_R64G64B64A64_SINT;
-	case TinyImageFormat_R64G64B64A64_SFLOAT: return CQ_VK_FORMAT_R64G64B64A64_SFLOAT;
+	case CqFormat_R8_UNORM: return CQ_VK_FORMAT_R8_UNORM;
+	case CqFormat_R8_SNORM: return CQ_VK_FORMAT_R8_SNORM;
+	case CqFormat_R8_UINT: return CQ_VK_FORMAT_R8_UINT;
+	case CqFormat_R8_SINT: return CQ_VK_FORMAT_R8_SINT;
+	case CqFormat_R8_SRGB: return CQ_VK_FORMAT_R8_SRGB;
+	case CqFormat_R8G8_UNORM: return CQ_VK_FORMAT_R8G8_UNORM;
+	case CqFormat_R8G8_SNORM: return CQ_VK_FORMAT_R8G8_SNORM;
+	case CqFormat_R8G8_UINT: return CQ_VK_FORMAT_R8G8_UINT;
+	case CqFormat_R8G8_SINT: return CQ_VK_FORMAT_R8G8_SINT;
+	case CqFormat_R8G8_SRGB: return CQ_VK_FORMAT_R8G8_SRGB;
+	case CqFormat_R8G8B8_UNORM: return CQ_VK_FORMAT_R8G8B8_UNORM;
+	case CqFormat_R8G8B8_SNORM: return CQ_VK_FORMAT_R8G8B8_SNORM;
+	case CqFormat_R8G8B8_UINT: return CQ_VK_FORMAT_R8G8B8_UINT;
+	case CqFormat_R8G8B8_SINT: return CQ_VK_FORMAT_R8G8B8_SINT;
+	case CqFormat_R8G8B8_SRGB: return CQ_VK_FORMAT_R8G8B8_SRGB;
+	case CqFormat_B8G8R8_UNORM: return CQ_VK_FORMAT_B8G8R8_UNORM;
+	case CqFormat_B8G8R8_SNORM: return CQ_VK_FORMAT_B8G8R8_SNORM;
+	case CqFormat_B8G8R8_UINT: return CQ_VK_FORMAT_B8G8R8_UINT;
+	case CqFormat_B8G8R8_SINT: return CQ_VK_FORMAT_B8G8R8_SINT;
+	case CqFormat_B8G8R8_SRGB: return CQ_VK_FORMAT_B8G8R8_SRGB;
+	case CqFormat_R8G8B8A8_UNORM: return CQ_VK_FORMAT_R8G8B8A8_UNORM;
+	case CqFormat_R8G8B8A8_SNORM: return CQ_VK_FORMAT_R8G8B8A8_SNORM;
+	case CqFormat_R8G8B8A8_UINT: return CQ_VK_FORMAT_R8G8B8A8_UINT;
+	case CqFormat_R8G8B8A8_SINT: return CQ_VK_FORMAT_R8G8B8A8_SINT;
+	case CqFormat_R8G8B8A8_SRGB: return CQ_VK_FORMAT_R8G8B8A8_SRGB;
+	case CqFormat_B8G8R8A8_UNORM: return CQ_VK_FORMAT_B8G8R8A8_UNORM;
+	case CqFormat_B8G8R8A8_SNORM: return CQ_VK_FORMAT_B8G8R8A8_SNORM;
+	case CqFormat_B8G8R8A8_UINT: return CQ_VK_FORMAT_B8G8R8A8_UINT;
+	case CqFormat_B8G8R8A8_SINT: return CQ_VK_FORMAT_B8G8R8A8_SINT;
+	case CqFormat_B8G8R8A8_SRGB: return CQ_VK_FORMAT_B8G8R8A8_SRGB;
+	case CqFormat_R16_UNORM: return CQ_VK_FORMAT_R16_UNORM;
+	case CqFormat_R16_SNORM: return CQ_VK_FORMAT_R16_SNORM;
+	case CqFormat_R16_UINT: return CQ_VK_FORMAT_R16_UINT;
+	case CqFormat_R16_SINT: return CQ_VK_FORMAT_R16_SINT;
+	case CqFormat_R16_SFLOAT: return CQ_VK_FORMAT_R16_SFLOAT;
+	case CqFormat_R16G16_UNORM: return CQ_VK_FORMAT_R16G16_UNORM;
+	case CqFormat_R16G16_SNORM: return CQ_VK_FORMAT_R16G16_SNORM;
+	case CqFormat_R16G16_UINT: return CQ_VK_FORMAT_R16G16_UINT;
+	case CqFormat_R16G16_SINT: return CQ_VK_FORMAT_R16G16_SINT;
+	case CqFormat_R16G16_SFLOAT: return CQ_VK_FORMAT_R16G16_SFLOAT;
+	case CqFormat_R16G16B16_UNORM: return CQ_VK_FORMAT_R16G16B16_UNORM;
+	case CqFormat_R16G16B16_SNORM: return CQ_VK_FORMAT_R16G16B16_SNORM;
+	case CqFormat_R16G16B16_UINT: return CQ_VK_FORMAT_R16G16B16_UINT;
+	case CqFormat_R16G16B16_SINT: return CQ_VK_FORMAT_R16G16B16_SINT;
+	case CqFormat_R16G16B16_SFLOAT: return CQ_VK_FORMAT_R16G16B16_SFLOAT;
+	case CqFormat_R16G16B16A16_UNORM: return CQ_VK_FORMAT_R16G16B16A16_UNORM;
+	case CqFormat_R16G16B16A16_SNORM: return CQ_VK_FORMAT_R16G16B16A16_SNORM;
+	case CqFormat_R16G16B16A16_UINT: return CQ_VK_FORMAT_R16G16B16A16_UINT;
+	case CqFormat_R16G16B16A16_SINT: return CQ_VK_FORMAT_R16G16B16A16_SINT;
+	case CqFormat_R16G16B16A16_SFLOAT: return CQ_VK_FORMAT_R16G16B16A16_SFLOAT;
+	case CqFormat_R32_UINT: return CQ_VK_FORMAT_R32_UINT;
+	case CqFormat_R32_SINT: return CQ_VK_FORMAT_R32_SINT;
+	case CqFormat_R32_SFLOAT: return CQ_VK_FORMAT_R32_SFLOAT;
+	case CqFormat_R32G32_UINT: return CQ_VK_FORMAT_R32G32_UINT;
+	case CqFormat_R32G32_SINT: return CQ_VK_FORMAT_R32G32_SINT;
+	case CqFormat_R32G32_SFLOAT: return CQ_VK_FORMAT_R32G32_SFLOAT;
+	case CqFormat_R32G32B32_UINT: return CQ_VK_FORMAT_R32G32B32_UINT;
+	case CqFormat_R32G32B32_SINT: return CQ_VK_FORMAT_R32G32B32_SINT;
+	case CqFormat_R32G32B32_SFLOAT: return CQ_VK_FORMAT_R32G32B32_SFLOAT;
+	case CqFormat_R32G32B32A32_UINT: return CQ_VK_FORMAT_R32G32B32A32_UINT;
+	case CqFormat_R32G32B32A32_SINT: return CQ_VK_FORMAT_R32G32B32A32_SINT;
+	case CqFormat_R32G32B32A32_SFLOAT: return CQ_VK_FORMAT_R32G32B32A32_SFLOAT;
+	case CqFormat_R64_UINT: return CQ_VK_FORMAT_R64_UINT;
+	case CqFormat_R64_SINT: return CQ_VK_FORMAT_R64_SINT;
+	case CqFormat_R64_SFLOAT: return CQ_VK_FORMAT_R64_SFLOAT;
+	case CqFormat_R64G64_UINT: return CQ_VK_FORMAT_R64G64_UINT;
+	case CqFormat_R64G64_SINT: return CQ_VK_FORMAT_R64G64_SINT;
+	case CqFormat_R64G64_SFLOAT: return CQ_VK_FORMAT_R64G64_SFLOAT;
+	case CqFormat_R64G64B64_UINT: return CQ_VK_FORMAT_R64G64B64_UINT;
+	case CqFormat_R64G64B64_SINT: return CQ_VK_FORMAT_R64G64B64_SINT;
+	case CqFormat_R64G64B64_SFLOAT: return CQ_VK_FORMAT_R64G64B64_SFLOAT;
+	case CqFormat_R64G64B64A64_UINT: return CQ_VK_FORMAT_R64G64B64A64_UINT;
+	case CqFormat_R64G64B64A64_SINT: return CQ_VK_FORMAT_R64G64B64A64_SINT;
+	case CqFormat_R64G64B64A64_SFLOAT: return CQ_VK_FORMAT_R64G64B64A64_SFLOAT;
 
-	case TinyImageFormat_B10G10R10A2_UNORM: return CQ_VK_FORMAT_A2R10G10B10_UNORM_PACK32;
-	case TinyImageFormat_B10G10R10A2_UINT: return CQ_VK_FORMAT_A2R10G10B10_UINT_PACK32;
-	case TinyImageFormat_R10G10B10A2_UNORM: return CQ_VK_FORMAT_A2B10G10R10_UNORM_PACK32;
-	case TinyImageFormat_R10G10B10A2_UINT: return CQ_VK_FORMAT_A2B10G10R10_UINT_PACK32;
+	case CqFormat_B10G10R10A2_UNORM: return CQ_VK_FORMAT_A2R10G10B10_UNORM_PACK32;
+	case CqFormat_B10G10R10A2_UINT: return CQ_VK_FORMAT_A2R10G10B10_UINT_PACK32;
+	case CqFormat_R10G10B10A2_UNORM: return CQ_VK_FORMAT_A2B10G10R10_UNORM_PACK32;
+	case CqFormat_R10G10B10A2_UINT: return CQ_VK_FORMAT_A2B10G10R10_UINT_PACK32;
 
-	case TinyImageFormat_B10G11R11_UFLOAT: return CQ_VK_FORMAT_B10G11R11_UFLOAT_PACK32;
-	case TinyImageFormat_E5B9G9R9_UFLOAT: return CQ_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32;
+	case CqFormat_B10G11R11_UFLOAT: return CQ_VK_FORMAT_B10G11R11_UFLOAT_PACK32;
+	case CqFormat_E5B9G9R9_UFLOAT: return CQ_VK_FORMAT_E5B9G9R9_UFLOAT_PACK32;
 
-	case TinyImageFormat_D16_UNORM: return CQ_VK_FORMAT_D16_UNORM;
-	case TinyImageFormat_X8_D24_UNORM: return CQ_VK_FORMAT_X8_D24_UNORM_PACK32;
-	case TinyImageFormat_D32_SFLOAT: return CQ_VK_FORMAT_D32_SFLOAT;
-	case TinyImageFormat_S8_UINT: return CQ_VK_FORMAT_S8_UINT;
-	case TinyImageFormat_D16_UNORM_S8_UINT: return CQ_VK_FORMAT_D16_UNORM_S8_UINT;
-	case TinyImageFormat_D24_UNORM_S8_UINT: return CQ_VK_FORMAT_D24_UNORM_S8_UINT;
-	case TinyImageFormat_D32_SFLOAT_S8_UINT: return CQ_VK_FORMAT_D32_SFLOAT_S8_UINT;
-	case TinyImageFormat_DXBC1_RGB_UNORM: return CQ_VK_FORMAT_BC1_RGB_UNORM_BLOCK;
-	case TinyImageFormat_DXBC1_RGB_SRGB: return CQ_VK_FORMAT_BC1_RGB_SRGB_BLOCK;
-	case TinyImageFormat_DXBC1_RGBA_UNORM: return CQ_VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
-	case TinyImageFormat_DXBC1_RGBA_SRGB: return CQ_VK_FORMAT_BC1_RGBA_SRGB_BLOCK;
-	case TinyImageFormat_DXBC2_UNORM: return CQ_VK_FORMAT_BC2_UNORM_BLOCK;
-	case TinyImageFormat_DXBC2_SRGB: return CQ_VK_FORMAT_BC2_SRGB_BLOCK;
-	case TinyImageFormat_DXBC3_UNORM: return CQ_VK_FORMAT_BC3_UNORM_BLOCK;
-	case TinyImageFormat_DXBC3_SRGB: return CQ_VK_FORMAT_BC3_SRGB_BLOCK;
-	case TinyImageFormat_DXBC4_UNORM: return CQ_VK_FORMAT_BC4_UNORM_BLOCK;
-	case TinyImageFormat_DXBC4_SNORM: return CQ_VK_FORMAT_BC4_SNORM_BLOCK;
-	case TinyImageFormat_DXBC5_UNORM: return CQ_VK_FORMAT_BC5_UNORM_BLOCK;
-	case TinyImageFormat_DXBC5_SNORM: return CQ_VK_FORMAT_BC5_SNORM_BLOCK;
-	case TinyImageFormat_DXBC6H_UFLOAT: return CQ_VK_FORMAT_BC6H_UFLOAT_BLOCK;
-	case TinyImageFormat_DXBC6H_SFLOAT: return CQ_VK_FORMAT_BC6H_SFLOAT_BLOCK;
-	case TinyImageFormat_DXBC7_UNORM: return CQ_VK_FORMAT_BC7_UNORM_BLOCK;
-	case TinyImageFormat_DXBC7_SRGB: return CQ_VK_FORMAT_BC7_SRGB_BLOCK;
-	case TinyImageFormat_PVRTC1_2BPP_UNORM: return CQ_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
-	case TinyImageFormat_PVRTC1_4BPP_UNORM: return CQ_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
-	case TinyImageFormat_PVRTC1_2BPP_SRGB: return CQ_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
-	case TinyImageFormat_PVRTC1_4BPP_SRGB: return CQ_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
-	case TinyImageFormat_ETC2_R8G8B8_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK;
-	case TinyImageFormat_ETC2_R8G8B8A1_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK;
-	case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK;
-	case TinyImageFormat_ETC2_R8G8B8_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK;
-	case TinyImageFormat_ETC2_R8G8B8A1_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK;
-	case TinyImageFormat_ETC2_R8G8B8A8_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK;
-	case TinyImageFormat_ETC2_EAC_R11_UNORM: return CQ_VK_FORMAT_EAC_R11_UNORM_BLOCK;
-	case TinyImageFormat_ETC2_EAC_R11G11_UNORM: return CQ_VK_FORMAT_EAC_R11G11_UNORM_BLOCK;
-	case TinyImageFormat_ETC2_EAC_R11_SNORM: return CQ_VK_FORMAT_EAC_R11_SNORM_BLOCK;
-	case TinyImageFormat_ETC2_EAC_R11G11_SNORM: return CQ_VK_FORMAT_EAC_R11G11_SNORM_BLOCK;
-	case TinyImageFormat_ASTC_4x4_UNORM: return CQ_VK_FORMAT_ASTC_4x4_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_4x4_SRGB: return CQ_VK_FORMAT_ASTC_4x4_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_5x4_UNORM: return CQ_VK_FORMAT_ASTC_5x4_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_5x4_SRGB: return CQ_VK_FORMAT_ASTC_5x4_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_5x5_UNORM: return CQ_VK_FORMAT_ASTC_5x5_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_5x5_SRGB: return CQ_VK_FORMAT_ASTC_5x5_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_6x5_UNORM: return CQ_VK_FORMAT_ASTC_6x5_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_6x5_SRGB: return CQ_VK_FORMAT_ASTC_6x5_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_6x6_UNORM: return CQ_VK_FORMAT_ASTC_6x6_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_6x6_SRGB: return CQ_VK_FORMAT_ASTC_6x6_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_8x5_UNORM: return CQ_VK_FORMAT_ASTC_8x5_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_8x5_SRGB: return CQ_VK_FORMAT_ASTC_8x5_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_8x6_UNORM: return CQ_VK_FORMAT_ASTC_8x6_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_8x6_SRGB: return CQ_VK_FORMAT_ASTC_8x6_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_8x8_UNORM: return CQ_VK_FORMAT_ASTC_8x8_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_8x8_SRGB: return CQ_VK_FORMAT_ASTC_8x8_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_10x5_UNORM: return CQ_VK_FORMAT_ASTC_10x5_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_10x5_SRGB: return CQ_VK_FORMAT_ASTC_10x5_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_10x6_UNORM: return CQ_VK_FORMAT_ASTC_10x6_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_10x6_SRGB: return CQ_VK_FORMAT_ASTC_10x6_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_10x8_UNORM: return CQ_VK_FORMAT_ASTC_10x8_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_10x8_SRGB: return CQ_VK_FORMAT_ASTC_10x8_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_10x10_UNORM: return CQ_VK_FORMAT_ASTC_10x10_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_10x10_SRGB: return CQ_VK_FORMAT_ASTC_10x10_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_12x10_UNORM: return CQ_VK_FORMAT_ASTC_12x10_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_12x10_SRGB: return CQ_VK_FORMAT_ASTC_12x10_SRGB_BLOCK;
-	case TinyImageFormat_ASTC_12x12_UNORM: return CQ_VK_FORMAT_ASTC_12x12_UNORM_BLOCK;
-	case TinyImageFormat_ASTC_12x12_SRGB: return CQ_VK_FORMAT_ASTC_12x12_SRGB_BLOCK;
-	case TinyImageFormat_PVRTC2_2BPP_UNORM: return CQ_VK_FORMAT_PVRTC2_2BPP_UNORM_BLOCK_IMG;
-	case TinyImageFormat_PVRTC2_4BPP_UNORM: return CQ_VK_FORMAT_PVRTC2_4BPP_UNORM_BLOCK_IMG;
-	case TinyImageFormat_PVRTC2_2BPP_SRGB: return CQ_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG;
-	case TinyImageFormat_PVRTC2_4BPP_SRGB: return CQ_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG;
+	case CqFormat_D16_UNORM: return CQ_VK_FORMAT_D16_UNORM;
+	case CqFormat_X8_D24_UNORM: return CQ_VK_FORMAT_X8_D24_UNORM_PACK32;
+	case CqFormat_D32_SFLOAT: return CQ_VK_FORMAT_D32_SFLOAT;
+	case CqFormat_S8_UINT: return CQ_VK_FORMAT_S8_UINT;
+	case CqFormat_D16_UNORM_S8_UINT: return CQ_VK_FORMAT_D16_UNORM_S8_UINT;
+	case CqFormat_D24_UNORM_S8_UINT: return CQ_VK_FORMAT_D24_UNORM_S8_UINT;
+	case CqFormat_D32_SFLOAT_S8_UINT: return CQ_VK_FORMAT_D32_SFLOAT_S8_UINT;
+	case CqFormat_DXBC1_RGB_UNORM: return CQ_VK_FORMAT_BC1_RGB_UNORM_BLOCK;
+	case CqFormat_DXBC1_RGB_SRGB: return CQ_VK_FORMAT_BC1_RGB_SRGB_BLOCK;
+	case CqFormat_DXBC1_RGBA_UNORM: return CQ_VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
+	case CqFormat_DXBC1_RGBA_SRGB: return CQ_VK_FORMAT_BC1_RGBA_SRGB_BLOCK;
+	case CqFormat_DXBC2_UNORM: return CQ_VK_FORMAT_BC2_UNORM_BLOCK;
+	case CqFormat_DXBC2_SRGB: return CQ_VK_FORMAT_BC2_SRGB_BLOCK;
+	case CqFormat_DXBC3_UNORM: return CQ_VK_FORMAT_BC3_UNORM_BLOCK;
+	case CqFormat_DXBC3_SRGB: return CQ_VK_FORMAT_BC3_SRGB_BLOCK;
+	case CqFormat_DXBC4_UNORM: return CQ_VK_FORMAT_BC4_UNORM_BLOCK;
+	case CqFormat_DXBC4_SNORM: return CQ_VK_FORMAT_BC4_SNORM_BLOCK;
+	case CqFormat_DXBC5_UNORM: return CQ_VK_FORMAT_BC5_UNORM_BLOCK;
+	case CqFormat_DXBC5_SNORM: return CQ_VK_FORMAT_BC5_SNORM_BLOCK;
+	case CqFormat_DXBC6H_UFLOAT: return CQ_VK_FORMAT_BC6H_UFLOAT_BLOCK;
+	case CqFormat_DXBC6H_SFLOAT: return CQ_VK_FORMAT_BC6H_SFLOAT_BLOCK;
+	case CqFormat_DXBC7_UNORM: return CQ_VK_FORMAT_BC7_UNORM_BLOCK;
+	case CqFormat_DXBC7_SRGB: return CQ_VK_FORMAT_BC7_SRGB_BLOCK;
+	case CqFormat_PVRTC1_2BPP_UNORM: return CQ_VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG;
+	case CqFormat_PVRTC1_4BPP_UNORM: return CQ_VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG;
+	case CqFormat_PVRTC1_2BPP_SRGB: return CQ_VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG;
+	case CqFormat_PVRTC1_4BPP_SRGB: return CQ_VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG;
+	case CqFormat_ETC2_R8G8B8_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK;
+	case CqFormat_ETC2_R8G8B8A1_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8A1_UNORM_BLOCK;
+	case CqFormat_ETC2_R8G8B8A8_UNORM: return CQ_VK_FORMAT_ETC2_R8G8B8A8_UNORM_BLOCK;
+	case CqFormat_ETC2_R8G8B8_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK;
+	case CqFormat_ETC2_R8G8B8A1_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8A1_SRGB_BLOCK;
+	case CqFormat_ETC2_R8G8B8A8_SRGB: return CQ_VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK;
+	case CqFormat_ETC2_EAC_R11_UNORM: return CQ_VK_FORMAT_EAC_R11_UNORM_BLOCK;
+	case CqFormat_ETC2_EAC_R11G11_UNORM: return CQ_VK_FORMAT_EAC_R11G11_UNORM_BLOCK;
+	case CqFormat_ETC2_EAC_R11_SNORM: return CQ_VK_FORMAT_EAC_R11_SNORM_BLOCK;
+	case CqFormat_ETC2_EAC_R11G11_SNORM: return CQ_VK_FORMAT_EAC_R11G11_SNORM_BLOCK;
+	case CqFormat_ASTC_4x4_UNORM: return CQ_VK_FORMAT_ASTC_4x4_UNORM_BLOCK;
+	case CqFormat_ASTC_4x4_SRGB: return CQ_VK_FORMAT_ASTC_4x4_SRGB_BLOCK;
+	case CqFormat_ASTC_5x4_UNORM: return CQ_VK_FORMAT_ASTC_5x4_UNORM_BLOCK;
+	case CqFormat_ASTC_5x4_SRGB: return CQ_VK_FORMAT_ASTC_5x4_SRGB_BLOCK;
+	case CqFormat_ASTC_5x5_UNORM: return CQ_VK_FORMAT_ASTC_5x5_UNORM_BLOCK;
+	case CqFormat_ASTC_5x5_SRGB: return CQ_VK_FORMAT_ASTC_5x5_SRGB_BLOCK;
+	case CqFormat_ASTC_6x5_UNORM: return CQ_VK_FORMAT_ASTC_6x5_UNORM_BLOCK;
+	case CqFormat_ASTC_6x5_SRGB: return CQ_VK_FORMAT_ASTC_6x5_SRGB_BLOCK;
+	case CqFormat_ASTC_6x6_UNORM: return CQ_VK_FORMAT_ASTC_6x6_UNORM_BLOCK;
+	case CqFormat_ASTC_6x6_SRGB: return CQ_VK_FORMAT_ASTC_6x6_SRGB_BLOCK;
+	case CqFormat_ASTC_8x5_UNORM: return CQ_VK_FORMAT_ASTC_8x5_UNORM_BLOCK;
+	case CqFormat_ASTC_8x5_SRGB: return CQ_VK_FORMAT_ASTC_8x5_SRGB_BLOCK;
+	case CqFormat_ASTC_8x6_UNORM: return CQ_VK_FORMAT_ASTC_8x6_UNORM_BLOCK;
+	case CqFormat_ASTC_8x6_SRGB: return CQ_VK_FORMAT_ASTC_8x6_SRGB_BLOCK;
+	case CqFormat_ASTC_8x8_UNORM: return CQ_VK_FORMAT_ASTC_8x8_UNORM_BLOCK;
+	case CqFormat_ASTC_8x8_SRGB: return CQ_VK_FORMAT_ASTC_8x8_SRGB_BLOCK;
+	case CqFormat_ASTC_10x5_UNORM: return CQ_VK_FORMAT_ASTC_10x5_UNORM_BLOCK;
+	case CqFormat_ASTC_10x5_SRGB: return CQ_VK_FORMAT_ASTC_10x5_SRGB_BLOCK;
+	case CqFormat_ASTC_10x6_UNORM: return CQ_VK_FORMAT_ASTC_10x6_UNORM_BLOCK;
+	case CqFormat_ASTC_10x6_SRGB: return CQ_VK_FORMAT_ASTC_10x6_SRGB_BLOCK;
+	case CqFormat_ASTC_10x8_UNORM: return CQ_VK_FORMAT_ASTC_10x8_UNORM_BLOCK;
+	case CqFormat_ASTC_10x8_SRGB: return CQ_VK_FORMAT_ASTC_10x8_SRGB_BLOCK;
+	case CqFormat_ASTC_10x10_UNORM: return CQ_VK_FORMAT_ASTC_10x10_UNORM_BLOCK;
+	case CqFormat_ASTC_10x10_SRGB: return CQ_VK_FORMAT_ASTC_10x10_SRGB_BLOCK;
+	case CqFormat_ASTC_12x10_UNORM: return CQ_VK_FORMAT_ASTC_12x10_UNORM_BLOCK;
+	case CqFormat_ASTC_12x10_SRGB: return CQ_VK_FORMAT_ASTC_12x10_SRGB_BLOCK;
+	case CqFormat_ASTC_12x12_UNORM: return CQ_VK_FORMAT_ASTC_12x12_UNORM_BLOCK;
+	case CqFormat_ASTC_12x12_SRGB: return CQ_VK_FORMAT_ASTC_12x12_SRGB_BLOCK;
+	case CqFormat_PVRTC2_2BPP_UNORM: return CQ_VK_FORMAT_PVRTC2_2BPP_UNORM_BLOCK_IMG;
+	case CqFormat_PVRTC2_4BPP_UNORM: return CQ_VK_FORMAT_PVRTC2_4BPP_UNORM_BLOCK_IMG;
+	case CqFormat_PVRTC2_2BPP_SRGB: return CQ_VK_FORMAT_PVRTC2_2BPP_SRGB_BLOCK_IMG;
+	case CqFormat_PVRTC2_4BPP_SRGB: return CQ_VK_FORMAT_PVRTC2_4BPP_SRGB_BLOCK_IMG;
 
 	default: return CQ_VK_FORMAT_UNDEFINED;
 	}
@@ -10729,7 +10729,7 @@ inline TinyImageFormat_VkFormat TinyImageFormat_ToVkFormat(TinyImageFormat fmt) 
 #ifndef TINYIMAGEFORMAT_DXGIFORMAT
 #define TINYIMAGEFORMAT_DXGIFORMAT
 
-typedef enum TinyImageFormat_DXGI_FORMAT {
+typedef enum CqFormat_DXGI_FORMAT {
 
 	CQ_DXGI_FORMAT_UNKNOWN = 0,
 	CQ_DXGI_FORMAT_R32G32B32A32_TYPELESS = 1,
@@ -10863,86 +10863,86 @@ typedef enum TinyImageFormat_DXGI_FORMAT {
 	CQ_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM = 189,
 	CQ_DXGI_FORMAT_R4G4_UNORM = 190,
 
-} TinyImageFormat_DXGI_FORMAT;
+} CqFormat_DXGI_FORMAT;
 #endif
 
 
-inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORMAT fmt) {
+inline CqFormat CqFormat_FromDXGI_FORMAT(CqFormat_DXGI_FORMAT fmt) {
 	switch (fmt) {
-	case CQ_DXGI_FORMAT_UNKNOWN: return TinyImageFormat_UNDEFINED;
-	case CQ_DXGI_FORMAT_R32G32B32A32_FLOAT: return TinyImageFormat_R32G32B32A32_SFLOAT;
-	case CQ_DXGI_FORMAT_R32G32B32A32_UINT: return TinyImageFormat_R32G32B32A32_UINT;
-	case CQ_DXGI_FORMAT_R32G32B32A32_SINT: return TinyImageFormat_R32G32B32A32_SINT;
-	case CQ_DXGI_FORMAT_R32G32B32_FLOAT: return TinyImageFormat_R32G32B32_SFLOAT;
-	case CQ_DXGI_FORMAT_R32G32B32_UINT: return TinyImageFormat_R32G32B32_UINT;
-	case CQ_DXGI_FORMAT_R32G32B32_SINT: return TinyImageFormat_R32G32B32_SINT;
-	case CQ_DXGI_FORMAT_R16G16B16A16_FLOAT: return TinyImageFormat_R16G16B16A16_SFLOAT;
-	case CQ_DXGI_FORMAT_R16G16B16A16_UNORM: return TinyImageFormat_R16G16B16A16_UNORM;
-	case CQ_DXGI_FORMAT_R16G16B16A16_UINT: return TinyImageFormat_R16G16B16A16_UINT;
-	case CQ_DXGI_FORMAT_R16G16B16A16_SNORM: return TinyImageFormat_R16G16B16A16_SNORM;
-	case CQ_DXGI_FORMAT_R16G16B16A16_SINT: return TinyImageFormat_R16G16B16A16_SINT;
-	case CQ_DXGI_FORMAT_R32G32_FLOAT: return TinyImageFormat_R32G32_SFLOAT;
-	case CQ_DXGI_FORMAT_R32G32_UINT: return TinyImageFormat_R32G32_UINT;
-	case CQ_DXGI_FORMAT_R32G32_SINT: return TinyImageFormat_R32G32_SINT;
-	case CQ_DXGI_FORMAT_D32_FLOAT_S8X24_UINT: return TinyImageFormat_D32_SFLOAT_S8_UINT;
-	case CQ_DXGI_FORMAT_R10G10B10A2_UNORM: return TinyImageFormat_R10G10B10A2_UNORM;
-	case CQ_DXGI_FORMAT_R10G10B10A2_UINT: return TinyImageFormat_R10G10B10A2_UINT;
-	case CQ_DXGI_FORMAT_R11G11B10_FLOAT: return TinyImageFormat_B10G11R11_UFLOAT; // WRONG!
-	case CQ_DXGI_FORMAT_R8G8B8A8_UNORM: return TinyImageFormat_R8G8B8A8_UNORM;
-	case CQ_DXGI_FORMAT_R16G16_FLOAT: return TinyImageFormat_R16G16_SFLOAT;
-	case CQ_DXGI_FORMAT_R16G16_UNORM: return TinyImageFormat_R16G16_UNORM;
-	case CQ_DXGI_FORMAT_R16G16_UINT: return TinyImageFormat_R16G16_UINT;
-	case CQ_DXGI_FORMAT_R16G16_SNORM: return TinyImageFormat_R16G16_SNORM;
-	case CQ_DXGI_FORMAT_R16G16_SINT: return TinyImageFormat_R16G16_SINT;
-	case CQ_DXGI_FORMAT_D32_FLOAT: return TinyImageFormat_D32_SFLOAT;
-	case CQ_DXGI_FORMAT_R32_FLOAT: return TinyImageFormat_R32_SFLOAT;
-	case CQ_DXGI_FORMAT_R32_UINT: return TinyImageFormat_R32_UINT;
-	case CQ_DXGI_FORMAT_R32_SINT: return TinyImageFormat_R32_SINT;
-	case CQ_DXGI_FORMAT_D24_UNORM_S8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
-	case CQ_DXGI_FORMAT_X24_TYPELESS_G8_UINT: return TinyImageFormat_D24_UNORM_S8_UINT;
-	case CQ_DXGI_FORMAT_R8G8_UNORM: return TinyImageFormat_R8G8_UNORM;
-	case CQ_DXGI_FORMAT_R8G8_UINT: return TinyImageFormat_R8G8_UINT;
-	case CQ_DXGI_FORMAT_R8G8_SNORM: return TinyImageFormat_R8G8_SNORM;
-	case CQ_DXGI_FORMAT_R8G8_SINT: return TinyImageFormat_R8G8_SINT;
-	case CQ_DXGI_FORMAT_R16_FLOAT: return TinyImageFormat_R16_SFLOAT;
-	case CQ_DXGI_FORMAT_D16_UNORM: return TinyImageFormat_D16_UNORM;
-	case CQ_DXGI_FORMAT_R16_UNORM: return TinyImageFormat_R16_UNORM;
-	case CQ_DXGI_FORMAT_R16_UINT: return TinyImageFormat_R16_UINT;
-	case CQ_DXGI_FORMAT_R16_SNORM: return TinyImageFormat_R16_SNORM;
-	case CQ_DXGI_FORMAT_R16_SINT: return TinyImageFormat_R16_SINT;
-	case CQ_DXGI_FORMAT_R8_UNORM: return TinyImageFormat_R8_UNORM;
-	case CQ_DXGI_FORMAT_R8_UINT: return TinyImageFormat_R8_UINT;
-	case CQ_DXGI_FORMAT_R8_SNORM: return TinyImageFormat_R8_SNORM;
-	case CQ_DXGI_FORMAT_R8_SINT: return TinyImageFormat_R8_SINT;
-	case CQ_DXGI_FORMAT_A8_UNORM: return TinyImageFormat_A8_UNORM;
-	case CQ_DXGI_FORMAT_R9G9B9E5_SHAREDEXP: return TinyImageFormat_E5B9G9R9_UFLOAT;
-	case CQ_DXGI_FORMAT_BC1_UNORM: return TinyImageFormat_DXBC1_RGBA_UNORM;
-	case CQ_DXGI_FORMAT_BC1_UNORM_SRGB: return TinyImageFormat_DXBC1_RGBA_SRGB;
-	case CQ_DXGI_FORMAT_BC2_UNORM: return TinyImageFormat_DXBC2_UNORM;
-	case CQ_DXGI_FORMAT_BC2_UNORM_SRGB: return TinyImageFormat_DXBC2_SRGB;
-	case CQ_DXGI_FORMAT_BC3_UNORM: return TinyImageFormat_DXBC3_UNORM;
-	case CQ_DXGI_FORMAT_BC3_UNORM_SRGB: return TinyImageFormat_DXBC3_SRGB;
-	case CQ_DXGI_FORMAT_BC4_UNORM: return TinyImageFormat_DXBC4_UNORM;
-	case CQ_DXGI_FORMAT_BC4_SNORM: return TinyImageFormat_DXBC4_SNORM;
-	case CQ_DXGI_FORMAT_BC5_UNORM: return TinyImageFormat_DXBC5_UNORM;
-	case CQ_DXGI_FORMAT_BC5_SNORM: return TinyImageFormat_DXBC5_SNORM;
-	case CQ_DXGI_FORMAT_B5G6R5_UNORM: return TinyImageFormat_R5G6B5_UNORM;
-	case CQ_DXGI_FORMAT_B5G5R5A1_UNORM: return TinyImageFormat_R5G5B5A1_UNORM;
-	case CQ_DXGI_FORMAT_B8G8R8A8_UNORM: return TinyImageFormat_B8G8R8A8_UNORM;
-	case CQ_DXGI_FORMAT_B8G8R8X8_UNORM: return TinyImageFormat_B8G8R8X8_UNORM;
-	case CQ_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB;
-	case CQ_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return TinyImageFormat_B8G8R8A8_SRGB; // WRONG should be X8
-	case CQ_DXGI_FORMAT_BC6H_UF16: return TinyImageFormat_DXBC6H_UFLOAT;
-	case CQ_DXGI_FORMAT_BC6H_SF16: return TinyImageFormat_DXBC6H_SFLOAT;
-	case CQ_DXGI_FORMAT_BC7_UNORM: return TinyImageFormat_DXBC7_UNORM;
-	case CQ_DXGI_FORMAT_BC7_UNORM_SRGB: return TinyImageFormat_DXBC7_SRGB;
-	case CQ_DXGI_FORMAT_B4G4R4A4_UNORM: return TinyImageFormat_B4G4R4A4_UNORM;
-	case CQ_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB: return TinyImageFormat_R8G8B8A8_SRGB;
-	case CQ_DXGI_FORMAT_R8G8B8A8_UINT: return TinyImageFormat_R8G8B8A8_UINT;
-	case CQ_DXGI_FORMAT_R8G8B8A8_SNORM: return TinyImageFormat_R8G8B8A8_SNORM;
-	case CQ_DXGI_FORMAT_R8G8B8A8_SINT: return TinyImageFormat_R8G8B8A8_SINT;
-	case CQ_DXGI_FORMAT_R4G4_UNORM: return TinyImageFormat_R4G4_UNORM;
-	case CQ_DXGI_FORMAT_R1_UNORM: return TinyImageFormat_R1_UNORM;
+	case CQ_DXGI_FORMAT_UNKNOWN: return CqFormat_UNDEFINED;
+	case CQ_DXGI_FORMAT_R32G32B32A32_FLOAT: return CqFormat_R32G32B32A32_SFLOAT;
+	case CQ_DXGI_FORMAT_R32G32B32A32_UINT: return CqFormat_R32G32B32A32_UINT;
+	case CQ_DXGI_FORMAT_R32G32B32A32_SINT: return CqFormat_R32G32B32A32_SINT;
+	case CQ_DXGI_FORMAT_R32G32B32_FLOAT: return CqFormat_R32G32B32_SFLOAT;
+	case CQ_DXGI_FORMAT_R32G32B32_UINT: return CqFormat_R32G32B32_UINT;
+	case CQ_DXGI_FORMAT_R32G32B32_SINT: return CqFormat_R32G32B32_SINT;
+	case CQ_DXGI_FORMAT_R16G16B16A16_FLOAT: return CqFormat_R16G16B16A16_SFLOAT;
+	case CQ_DXGI_FORMAT_R16G16B16A16_UNORM: return CqFormat_R16G16B16A16_UNORM;
+	case CQ_DXGI_FORMAT_R16G16B16A16_UINT: return CqFormat_R16G16B16A16_UINT;
+	case CQ_DXGI_FORMAT_R16G16B16A16_SNORM: return CqFormat_R16G16B16A16_SNORM;
+	case CQ_DXGI_FORMAT_R16G16B16A16_SINT: return CqFormat_R16G16B16A16_SINT;
+	case CQ_DXGI_FORMAT_R32G32_FLOAT: return CqFormat_R32G32_SFLOAT;
+	case CQ_DXGI_FORMAT_R32G32_UINT: return CqFormat_R32G32_UINT;
+	case CQ_DXGI_FORMAT_R32G32_SINT: return CqFormat_R32G32_SINT;
+	case CQ_DXGI_FORMAT_D32_FLOAT_S8X24_UINT: return CqFormat_D32_SFLOAT_S8_UINT;
+	case CQ_DXGI_FORMAT_R10G10B10A2_UNORM: return CqFormat_R10G10B10A2_UNORM;
+	case CQ_DXGI_FORMAT_R10G10B10A2_UINT: return CqFormat_R10G10B10A2_UINT;
+	case CQ_DXGI_FORMAT_R11G11B10_FLOAT: return CqFormat_B10G11R11_UFLOAT; // WRONG!
+	case CQ_DXGI_FORMAT_R8G8B8A8_UNORM: return CqFormat_R8G8B8A8_UNORM;
+	case CQ_DXGI_FORMAT_R16G16_FLOAT: return CqFormat_R16G16_SFLOAT;
+	case CQ_DXGI_FORMAT_R16G16_UNORM: return CqFormat_R16G16_UNORM;
+	case CQ_DXGI_FORMAT_R16G16_UINT: return CqFormat_R16G16_UINT;
+	case CQ_DXGI_FORMAT_R16G16_SNORM: return CqFormat_R16G16_SNORM;
+	case CQ_DXGI_FORMAT_R16G16_SINT: return CqFormat_R16G16_SINT;
+	case CQ_DXGI_FORMAT_D32_FLOAT: return CqFormat_D32_SFLOAT;
+	case CQ_DXGI_FORMAT_R32_FLOAT: return CqFormat_R32_SFLOAT;
+	case CQ_DXGI_FORMAT_R32_UINT: return CqFormat_R32_UINT;
+	case CQ_DXGI_FORMAT_R32_SINT: return CqFormat_R32_SINT;
+	case CQ_DXGI_FORMAT_D24_UNORM_S8_UINT: return CqFormat_D24_UNORM_S8_UINT;
+	case CQ_DXGI_FORMAT_X24_TYPELESS_G8_UINT: return CqFormat_D24_UNORM_S8_UINT;
+	case CQ_DXGI_FORMAT_R8G8_UNORM: return CqFormat_R8G8_UNORM;
+	case CQ_DXGI_FORMAT_R8G8_UINT: return CqFormat_R8G8_UINT;
+	case CQ_DXGI_FORMAT_R8G8_SNORM: return CqFormat_R8G8_SNORM;
+	case CQ_DXGI_FORMAT_R8G8_SINT: return CqFormat_R8G8_SINT;
+	case CQ_DXGI_FORMAT_R16_FLOAT: return CqFormat_R16_SFLOAT;
+	case CQ_DXGI_FORMAT_D16_UNORM: return CqFormat_D16_UNORM;
+	case CQ_DXGI_FORMAT_R16_UNORM: return CqFormat_R16_UNORM;
+	case CQ_DXGI_FORMAT_R16_UINT: return CqFormat_R16_UINT;
+	case CQ_DXGI_FORMAT_R16_SNORM: return CqFormat_R16_SNORM;
+	case CQ_DXGI_FORMAT_R16_SINT: return CqFormat_R16_SINT;
+	case CQ_DXGI_FORMAT_R8_UNORM: return CqFormat_R8_UNORM;
+	case CQ_DXGI_FORMAT_R8_UINT: return CqFormat_R8_UINT;
+	case CQ_DXGI_FORMAT_R8_SNORM: return CqFormat_R8_SNORM;
+	case CQ_DXGI_FORMAT_R8_SINT: return CqFormat_R8_SINT;
+	case CQ_DXGI_FORMAT_A8_UNORM: return CqFormat_A8_UNORM;
+	case CQ_DXGI_FORMAT_R9G9B9E5_SHAREDEXP: return CqFormat_E5B9G9R9_UFLOAT;
+	case CQ_DXGI_FORMAT_BC1_UNORM: return CqFormat_DXBC1_RGBA_UNORM;
+	case CQ_DXGI_FORMAT_BC1_UNORM_SRGB: return CqFormat_DXBC1_RGBA_SRGB;
+	case CQ_DXGI_FORMAT_BC2_UNORM: return CqFormat_DXBC2_UNORM;
+	case CQ_DXGI_FORMAT_BC2_UNORM_SRGB: return CqFormat_DXBC2_SRGB;
+	case CQ_DXGI_FORMAT_BC3_UNORM: return CqFormat_DXBC3_UNORM;
+	case CQ_DXGI_FORMAT_BC3_UNORM_SRGB: return CqFormat_DXBC3_SRGB;
+	case CQ_DXGI_FORMAT_BC4_UNORM: return CqFormat_DXBC4_UNORM;
+	case CQ_DXGI_FORMAT_BC4_SNORM: return CqFormat_DXBC4_SNORM;
+	case CQ_DXGI_FORMAT_BC5_UNORM: return CqFormat_DXBC5_UNORM;
+	case CQ_DXGI_FORMAT_BC5_SNORM: return CqFormat_DXBC5_SNORM;
+	case CQ_DXGI_FORMAT_B5G6R5_UNORM: return CqFormat_R5G6B5_UNORM;
+	case CQ_DXGI_FORMAT_B5G5R5A1_UNORM: return CqFormat_R5G5B5A1_UNORM;
+	case CQ_DXGI_FORMAT_B8G8R8A8_UNORM: return CqFormat_B8G8R8A8_UNORM;
+	case CQ_DXGI_FORMAT_B8G8R8X8_UNORM: return CqFormat_B8G8R8X8_UNORM;
+	case CQ_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return CqFormat_B8G8R8A8_SRGB;
+	case CQ_DXGI_FORMAT_B8G8R8X8_UNORM_SRGB: return CqFormat_B8G8R8A8_SRGB; // WRONG should be X8
+	case CQ_DXGI_FORMAT_BC6H_UF16: return CqFormat_DXBC6H_UFLOAT;
+	case CQ_DXGI_FORMAT_BC6H_SF16: return CqFormat_DXBC6H_SFLOAT;
+	case CQ_DXGI_FORMAT_BC7_UNORM: return CqFormat_DXBC7_UNORM;
+	case CQ_DXGI_FORMAT_BC7_UNORM_SRGB: return CqFormat_DXBC7_SRGB;
+	case CQ_DXGI_FORMAT_B4G4R4A4_UNORM: return CqFormat_B4G4R4A4_UNORM;
+	case CQ_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB: return CqFormat_R8G8B8A8_SRGB;
+	case CQ_DXGI_FORMAT_R8G8B8A8_UINT: return CqFormat_R8G8B8A8_UINT;
+	case CQ_DXGI_FORMAT_R8G8B8A8_SNORM: return CqFormat_R8G8B8A8_SNORM;
+	case CQ_DXGI_FORMAT_R8G8B8A8_SINT: return CqFormat_R8G8B8A8_SINT;
+	case CQ_DXGI_FORMAT_R4G4_UNORM: return CqFormat_R4G4_UNORM;
+	case CQ_DXGI_FORMAT_R1_UNORM: return CqFormat_R1_UNORM;
 
 	case CQ_DXGI_FORMAT_R32G32B32A32_TYPELESS:
 	case CQ_DXGI_FORMAT_R32G32B32_TYPELESS:
@@ -10996,99 +10996,99 @@ inline TinyImageFormat TinyImageFormat_FromDXGI_FORMAT(TinyImageFormat_DXGI_FORM
 	case CQ_DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
 	case CQ_DXGI_FORMAT_X16_TYPELESS_G8_UINT:
 	case CQ_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
-		return TinyImageFormat_UNDEFINED;
+		return CqFormat_UNDEFINED;
 	}
-	return TinyImageFormat_UNDEFINED;
+	return CqFormat_UNDEFINED;
 }
 
-inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_ToDXGI_FORMAT(TinyImageFormat fmt) {
+inline CqFormat_DXGI_FORMAT CqFormat_ToDXGI_FORMAT(CqFormat fmt) {
 	switch (fmt) {
-	case TinyImageFormat_R1_UNORM: return CQ_DXGI_FORMAT_R1_UNORM;
-	case TinyImageFormat_R4G4_UNORM: return CQ_DXGI_FORMAT_R4G4_UNORM;
-	case TinyImageFormat_R5G6B5_UNORM: return CQ_DXGI_FORMAT_B5G6R5_UNORM;
-	case TinyImageFormat_B5G6R5_UNORM: return CQ_DXGI_FORMAT_B5G6R5_UNORM;
-	case TinyImageFormat_B5G5R5A1_UNORM: return CQ_DXGI_FORMAT_B5G5R5A1_UNORM;
-	case TinyImageFormat_R8_UNORM: return CQ_DXGI_FORMAT_R8_UNORM;
-	case TinyImageFormat_R8_SNORM: return CQ_DXGI_FORMAT_R8_SNORM;
-	case TinyImageFormat_R8_UINT: return CQ_DXGI_FORMAT_R8_UINT;
-	case TinyImageFormat_R8_SINT: return CQ_DXGI_FORMAT_R8_SINT;
-	case TinyImageFormat_R8G8_UNORM: return CQ_DXGI_FORMAT_R8G8_UNORM;
-	case TinyImageFormat_R8G8_SNORM: return CQ_DXGI_FORMAT_R8G8_SNORM;
-	case TinyImageFormat_R8G8_UINT: return CQ_DXGI_FORMAT_R8G8_UINT;
-	case TinyImageFormat_R8G8_SINT: return CQ_DXGI_FORMAT_R8G8_SINT;
-	case TinyImageFormat_B4G4R4A4_UNORM: return CQ_DXGI_FORMAT_B4G4R4A4_UNORM;
+	case CqFormat_R1_UNORM: return CQ_DXGI_FORMAT_R1_UNORM;
+	case CqFormat_R4G4_UNORM: return CQ_DXGI_FORMAT_R4G4_UNORM;
+	case CqFormat_R5G6B5_UNORM: return CQ_DXGI_FORMAT_B5G6R5_UNORM;
+	case CqFormat_B5G6R5_UNORM: return CQ_DXGI_FORMAT_B5G6R5_UNORM;
+	case CqFormat_B5G5R5A1_UNORM: return CQ_DXGI_FORMAT_B5G5R5A1_UNORM;
+	case CqFormat_R8_UNORM: return CQ_DXGI_FORMAT_R8_UNORM;
+	case CqFormat_R8_SNORM: return CQ_DXGI_FORMAT_R8_SNORM;
+	case CqFormat_R8_UINT: return CQ_DXGI_FORMAT_R8_UINT;
+	case CqFormat_R8_SINT: return CQ_DXGI_FORMAT_R8_SINT;
+	case CqFormat_R8G8_UNORM: return CQ_DXGI_FORMAT_R8G8_UNORM;
+	case CqFormat_R8G8_SNORM: return CQ_DXGI_FORMAT_R8G8_SNORM;
+	case CqFormat_R8G8_UINT: return CQ_DXGI_FORMAT_R8G8_UINT;
+	case CqFormat_R8G8_SINT: return CQ_DXGI_FORMAT_R8G8_SINT;
+	case CqFormat_B4G4R4A4_UNORM: return CQ_DXGI_FORMAT_B4G4R4A4_UNORM;
 
-	case TinyImageFormat_R8G8B8A8_UNORM: return CQ_DXGI_FORMAT_R8G8B8A8_UNORM;
-	case TinyImageFormat_R8G8B8A8_SNORM: return CQ_DXGI_FORMAT_R8G8B8A8_SNORM;
-	case TinyImageFormat_R8G8B8A8_UINT: return CQ_DXGI_FORMAT_R8G8B8A8_UINT;
-	case TinyImageFormat_R8G8B8A8_SINT: return CQ_DXGI_FORMAT_R8G8B8A8_SINT;
-	case TinyImageFormat_R8G8B8A8_SRGB: return CQ_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	case CqFormat_R8G8B8A8_UNORM: return CQ_DXGI_FORMAT_R8G8B8A8_UNORM;
+	case CqFormat_R8G8B8A8_SNORM: return CQ_DXGI_FORMAT_R8G8B8A8_SNORM;
+	case CqFormat_R8G8B8A8_UINT: return CQ_DXGI_FORMAT_R8G8B8A8_UINT;
+	case CqFormat_R8G8B8A8_SINT: return CQ_DXGI_FORMAT_R8G8B8A8_SINT;
+	case CqFormat_R8G8B8A8_SRGB: return CQ_DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
-	case TinyImageFormat_B8G8R8A8_UNORM: return CQ_DXGI_FORMAT_B8G8R8A8_UNORM;
-	case TinyImageFormat_B8G8R8X8_UNORM: return CQ_DXGI_FORMAT_B8G8R8X8_UNORM;
-	case TinyImageFormat_B8G8R8A8_SRGB: return CQ_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
+	case CqFormat_B8G8R8A8_UNORM: return CQ_DXGI_FORMAT_B8G8R8A8_UNORM;
+	case CqFormat_B8G8R8X8_UNORM: return CQ_DXGI_FORMAT_B8G8R8X8_UNORM;
+	case CqFormat_B8G8R8A8_SRGB: return CQ_DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
 
-	case TinyImageFormat_R10G10B10A2_UNORM: return CQ_DXGI_FORMAT_R10G10B10A2_UNORM;
-	case TinyImageFormat_R10G10B10A2_UINT: return CQ_DXGI_FORMAT_R10G10B10A2_UINT;
+	case CqFormat_R10G10B10A2_UNORM: return CQ_DXGI_FORMAT_R10G10B10A2_UNORM;
+	case CqFormat_R10G10B10A2_UINT: return CQ_DXGI_FORMAT_R10G10B10A2_UINT;
 
-	case TinyImageFormat_R16_UNORM: return CQ_DXGI_FORMAT_R16_UNORM;
-	case TinyImageFormat_R16_SNORM: return CQ_DXGI_FORMAT_R16_SNORM;
-	case TinyImageFormat_R16_UINT: return CQ_DXGI_FORMAT_R16_UINT;
-	case TinyImageFormat_R16_SINT: return CQ_DXGI_FORMAT_R16_SINT;
-	case TinyImageFormat_R16_SFLOAT: return CQ_DXGI_FORMAT_R16_FLOAT;
-	case TinyImageFormat_R16G16_UNORM: return CQ_DXGI_FORMAT_R16G16_UNORM;
-	case TinyImageFormat_R16G16_SNORM: return CQ_DXGI_FORMAT_R16G16_SNORM;
-	case TinyImageFormat_R16G16_UINT: return CQ_DXGI_FORMAT_R16G16_UINT;
-	case TinyImageFormat_R16G16_SINT: return CQ_DXGI_FORMAT_R16G16_SINT;
-	case TinyImageFormat_R16G16_SFLOAT: return CQ_DXGI_FORMAT_R16G16_FLOAT;
-	case TinyImageFormat_R16G16B16A16_UNORM: return CQ_DXGI_FORMAT_R16G16B16A16_UNORM;
-	case TinyImageFormat_R16G16B16A16_SNORM: return CQ_DXGI_FORMAT_R16G16B16A16_SNORM;
-	case TinyImageFormat_R16G16B16A16_UINT: return CQ_DXGI_FORMAT_R16G16B16A16_UINT;
-	case TinyImageFormat_R16G16B16A16_SINT: return CQ_DXGI_FORMAT_R16G16B16A16_SINT;
-	case TinyImageFormat_R16G16B16A16_SFLOAT: return CQ_DXGI_FORMAT_R16G16B16A16_FLOAT;
-	case TinyImageFormat_R32_UINT: return CQ_DXGI_FORMAT_R32_UINT;
-	case TinyImageFormat_R32_SINT: return CQ_DXGI_FORMAT_R32_SINT;
-	case TinyImageFormat_R32_SFLOAT: return CQ_DXGI_FORMAT_R32_FLOAT;
-	case TinyImageFormat_R32G32_UINT: return CQ_DXGI_FORMAT_R32G32_UINT;
-	case TinyImageFormat_R32G32_SINT: return CQ_DXGI_FORMAT_R32G32_SINT;
-	case TinyImageFormat_R32G32_SFLOAT: return CQ_DXGI_FORMAT_R32G32_FLOAT;
-	case TinyImageFormat_R32G32B32_UINT: return CQ_DXGI_FORMAT_R32G32B32_UINT;
-	case TinyImageFormat_R32G32B32_SINT: return CQ_DXGI_FORMAT_R32G32B32_SINT;
-	case TinyImageFormat_R32G32B32_SFLOAT: return CQ_DXGI_FORMAT_R32G32B32_FLOAT;
-	case TinyImageFormat_R32G32B32A32_UINT: return CQ_DXGI_FORMAT_R32G32B32A32_UINT;
-	case TinyImageFormat_R32G32B32A32_SINT: return CQ_DXGI_FORMAT_R32G32B32A32_SINT;
-	case TinyImageFormat_R32G32B32A32_SFLOAT: return CQ_DXGI_FORMAT_R32G32B32A32_FLOAT;
-	case TinyImageFormat_B10G11R11_UFLOAT: return CQ_DXGI_FORMAT_R11G11B10_FLOAT;
-	case TinyImageFormat_E5B9G9R9_UFLOAT: return CQ_DXGI_FORMAT_R9G9B9E5_SHAREDEXP;
-	case TinyImageFormat_D16_UNORM: return CQ_DXGI_FORMAT_D16_UNORM;
-	case TinyImageFormat_X8_D24_UNORM: return CQ_DXGI_FORMAT_D24_UNORM_S8_UINT;
-	case TinyImageFormat_D32_SFLOAT: return CQ_DXGI_FORMAT_D32_FLOAT;
-	case TinyImageFormat_D24_UNORM_S8_UINT: return CQ_DXGI_FORMAT_D24_UNORM_S8_UINT;
-	case TinyImageFormat_D32_SFLOAT_S8_UINT: return CQ_DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
-	case TinyImageFormat_DXBC1_RGB_UNORM: return CQ_DXGI_FORMAT_BC1_UNORM;
-	case TinyImageFormat_DXBC1_RGB_SRGB: return CQ_DXGI_FORMAT_BC1_UNORM_SRGB;
-	case TinyImageFormat_DXBC1_RGBA_UNORM: return CQ_DXGI_FORMAT_BC1_UNORM;
-	case TinyImageFormat_DXBC1_RGBA_SRGB: return CQ_DXGI_FORMAT_BC1_UNORM_SRGB;
-	case TinyImageFormat_DXBC2_UNORM: return CQ_DXGI_FORMAT_BC2_UNORM;
-	case TinyImageFormat_DXBC2_SRGB: return CQ_DXGI_FORMAT_BC2_UNORM_SRGB;
-	case TinyImageFormat_DXBC3_UNORM: return CQ_DXGI_FORMAT_BC3_UNORM;
-	case TinyImageFormat_DXBC3_SRGB: return CQ_DXGI_FORMAT_BC3_UNORM_SRGB;
-	case TinyImageFormat_DXBC4_UNORM: return CQ_DXGI_FORMAT_BC4_UNORM;
-	case TinyImageFormat_DXBC4_SNORM: return CQ_DXGI_FORMAT_BC4_SNORM;
-	case TinyImageFormat_DXBC5_UNORM: return CQ_DXGI_FORMAT_BC5_UNORM;
-	case TinyImageFormat_DXBC5_SNORM: return CQ_DXGI_FORMAT_BC5_SNORM;
-	case TinyImageFormat_DXBC6H_UFLOAT: return CQ_DXGI_FORMAT_BC6H_UF16;
-	case TinyImageFormat_DXBC6H_SFLOAT: return CQ_DXGI_FORMAT_BC6H_SF16;
-	case TinyImageFormat_DXBC7_UNORM: return CQ_DXGI_FORMAT_BC7_UNORM;
-	case TinyImageFormat_DXBC7_SRGB: return CQ_DXGI_FORMAT_BC7_UNORM_SRGB;
-	case TinyImageFormat_D16_UNORM_S8_UINT: return CQ_DXGI_FORMAT_D16_UNORM_S8_UINT;
+	case CqFormat_R16_UNORM: return CQ_DXGI_FORMAT_R16_UNORM;
+	case CqFormat_R16_SNORM: return CQ_DXGI_FORMAT_R16_SNORM;
+	case CqFormat_R16_UINT: return CQ_DXGI_FORMAT_R16_UINT;
+	case CqFormat_R16_SINT: return CQ_DXGI_FORMAT_R16_SINT;
+	case CqFormat_R16_SFLOAT: return CQ_DXGI_FORMAT_R16_FLOAT;
+	case CqFormat_R16G16_UNORM: return CQ_DXGI_FORMAT_R16G16_UNORM;
+	case CqFormat_R16G16_SNORM: return CQ_DXGI_FORMAT_R16G16_SNORM;
+	case CqFormat_R16G16_UINT: return CQ_DXGI_FORMAT_R16G16_UINT;
+	case CqFormat_R16G16_SINT: return CQ_DXGI_FORMAT_R16G16_SINT;
+	case CqFormat_R16G16_SFLOAT: return CQ_DXGI_FORMAT_R16G16_FLOAT;
+	case CqFormat_R16G16B16A16_UNORM: return CQ_DXGI_FORMAT_R16G16B16A16_UNORM;
+	case CqFormat_R16G16B16A16_SNORM: return CQ_DXGI_FORMAT_R16G16B16A16_SNORM;
+	case CqFormat_R16G16B16A16_UINT: return CQ_DXGI_FORMAT_R16G16B16A16_UINT;
+	case CqFormat_R16G16B16A16_SINT: return CQ_DXGI_FORMAT_R16G16B16A16_SINT;
+	case CqFormat_R16G16B16A16_SFLOAT: return CQ_DXGI_FORMAT_R16G16B16A16_FLOAT;
+	case CqFormat_R32_UINT: return CQ_DXGI_FORMAT_R32_UINT;
+	case CqFormat_R32_SINT: return CQ_DXGI_FORMAT_R32_SINT;
+	case CqFormat_R32_SFLOAT: return CQ_DXGI_FORMAT_R32_FLOAT;
+	case CqFormat_R32G32_UINT: return CQ_DXGI_FORMAT_R32G32_UINT;
+	case CqFormat_R32G32_SINT: return CQ_DXGI_FORMAT_R32G32_SINT;
+	case CqFormat_R32G32_SFLOAT: return CQ_DXGI_FORMAT_R32G32_FLOAT;
+	case CqFormat_R32G32B32_UINT: return CQ_DXGI_FORMAT_R32G32B32_UINT;
+	case CqFormat_R32G32B32_SINT: return CQ_DXGI_FORMAT_R32G32B32_SINT;
+	case CqFormat_R32G32B32_SFLOAT: return CQ_DXGI_FORMAT_R32G32B32_FLOAT;
+	case CqFormat_R32G32B32A32_UINT: return CQ_DXGI_FORMAT_R32G32B32A32_UINT;
+	case CqFormat_R32G32B32A32_SINT: return CQ_DXGI_FORMAT_R32G32B32A32_SINT;
+	case CqFormat_R32G32B32A32_SFLOAT: return CQ_DXGI_FORMAT_R32G32B32A32_FLOAT;
+	case CqFormat_B10G11R11_UFLOAT: return CQ_DXGI_FORMAT_R11G11B10_FLOAT;
+	case CqFormat_E5B9G9R9_UFLOAT: return CQ_DXGI_FORMAT_R9G9B9E5_SHAREDEXP;
+	case CqFormat_D16_UNORM: return CQ_DXGI_FORMAT_D16_UNORM;
+	case CqFormat_X8_D24_UNORM: return CQ_DXGI_FORMAT_D24_UNORM_S8_UINT;
+	case CqFormat_D32_SFLOAT: return CQ_DXGI_FORMAT_D32_FLOAT;
+	case CqFormat_D24_UNORM_S8_UINT: return CQ_DXGI_FORMAT_D24_UNORM_S8_UINT;
+	case CqFormat_D32_SFLOAT_S8_UINT: return CQ_DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+	case CqFormat_DXBC1_RGB_UNORM: return CQ_DXGI_FORMAT_BC1_UNORM;
+	case CqFormat_DXBC1_RGB_SRGB: return CQ_DXGI_FORMAT_BC1_UNORM_SRGB;
+	case CqFormat_DXBC1_RGBA_UNORM: return CQ_DXGI_FORMAT_BC1_UNORM;
+	case CqFormat_DXBC1_RGBA_SRGB: return CQ_DXGI_FORMAT_BC1_UNORM_SRGB;
+	case CqFormat_DXBC2_UNORM: return CQ_DXGI_FORMAT_BC2_UNORM;
+	case CqFormat_DXBC2_SRGB: return CQ_DXGI_FORMAT_BC2_UNORM_SRGB;
+	case CqFormat_DXBC3_UNORM: return CQ_DXGI_FORMAT_BC3_UNORM;
+	case CqFormat_DXBC3_SRGB: return CQ_DXGI_FORMAT_BC3_UNORM_SRGB;
+	case CqFormat_DXBC4_UNORM: return CQ_DXGI_FORMAT_BC4_UNORM;
+	case CqFormat_DXBC4_SNORM: return CQ_DXGI_FORMAT_BC4_SNORM;
+	case CqFormat_DXBC5_UNORM: return CQ_DXGI_FORMAT_BC5_UNORM;
+	case CqFormat_DXBC5_SNORM: return CQ_DXGI_FORMAT_BC5_SNORM;
+	case CqFormat_DXBC6H_UFLOAT: return CQ_DXGI_FORMAT_BC6H_UF16;
+	case CqFormat_DXBC6H_SFLOAT: return CQ_DXGI_FORMAT_BC6H_SF16;
+	case CqFormat_DXBC7_UNORM: return CQ_DXGI_FORMAT_BC7_UNORM;
+	case CqFormat_DXBC7_SRGB: return CQ_DXGI_FORMAT_BC7_UNORM_SRGB;
+	case CqFormat_D16_UNORM_S8_UINT: return CQ_DXGI_FORMAT_D16_UNORM_S8_UINT;
 
 	default: return CQ_DXGI_FORMAT_UNKNOWN;
 	}
 	return CQ_DXGI_FORMAT_UNKNOWN;
 }
 
-inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless(TinyImageFormat_DXGI_FORMAT fmt) {
+inline CqFormat_DXGI_FORMAT CqFormat_DXGI_FORMATToTypeless(CqFormat_DXGI_FORMAT fmt) {
 	switch (fmt) {
 	case CQ_DXGI_FORMAT_R32G32B32A32_FLOAT:
 	case CQ_DXGI_FORMAT_R32G32B32A32_UINT:
@@ -11239,7 +11239,7 @@ inline TinyImageFormat_DXGI_FORMAT TinyImageFormat_DXGI_FORMATToTypeless(TinyIma
 #ifndef TINYIMAGEFORMAT_MTLPIXEL_FORMAT
 #define TINYIMAGEFORMAT_MTLPIXEL_FORMAT
 
-typedef enum TinyImageFormat_MTLPixelFormat {
+typedef enum CqFormat_MTLPixelFormat {
 	CQ_MTLPixelFormatInvalid = 0,
 	CQ_MTLPixelFormatA8Unorm = 1,
 	CQ_MTLPixelFormatR8Unorm = 10,
@@ -11365,126 +11365,126 @@ typedef enum TinyImageFormat_MTLPixelFormat {
 	CQ_MTLPixelFormatDepth32Float_Stencil8 = 260,
 	CQ_MTLPixelFormatX32_Stencil8 = 261,
 	CQ_MTLPixelFormatX24_Stencil8 = 262,
-} TinyImageFormat_MTLPixelFormat;
+} CqFormat_MTLPixelFormat;
 #endif
 
-inline TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(TinyImageFormat fmt) {
+inline CqFormat_MTLPixelFormat CqFormat_ToMTLPixelFormat(CqFormat fmt) {
 	switch (fmt) {
-	case TinyImageFormat_A8_UNORM: 									return CQ_MTLPixelFormatA8Unorm;
-	case TinyImageFormat_R8_UNORM: 		return CQ_MTLPixelFormatR8Unorm;
-	case TinyImageFormat_R8_SNORM: 		return CQ_MTLPixelFormatR8Snorm;
-	case TinyImageFormat_R8_UINT: 		return CQ_MTLPixelFormatR8Uint;
-	case TinyImageFormat_R8_SINT: 		return CQ_MTLPixelFormatR8Sint;
-	case TinyImageFormat_R8_SRGB: 		return CQ_MTLPixelFormatR8Unorm_sRGB;
-	case TinyImageFormat_UNDEFINED: return CQ_MTLPixelFormatInvalid;
-	case TinyImageFormat_R4G4B4A4_UNORM: return CQ_MTLPixelFormatABGR4Unorm;
-	case TinyImageFormat_R5G6B5_UNORM: return CQ_MTLPixelFormatB5G6R5Unorm;;
-	case TinyImageFormat_R5G5B5A1_UNORM: return CQ_MTLPixelFormatA1BGR5Unorm;
-	case TinyImageFormat_R8G8_UNORM:		return CQ_MTLPixelFormatRG8Unorm;
-	case TinyImageFormat_R8G8_SNORM:		return CQ_MTLPixelFormatRG8Snorm;
-	case TinyImageFormat_R8G8_UINT:			return CQ_MTLPixelFormatRG8Uint;
-	case TinyImageFormat_R8G8_SINT:			return CQ_MTLPixelFormatRG8Sint;
-	case TinyImageFormat_R8G8_SRGB:			return CQ_MTLPixelFormatRG8Unorm_sRGB;
-	case TinyImageFormat_R8G8B8A8_UNORM:		return CQ_MTLPixelFormatRGBA8Unorm;
-	case TinyImageFormat_R8G8B8A8_SNORM:		return CQ_MTLPixelFormatRGBA8Snorm;
-	case TinyImageFormat_R8G8B8A8_UINT:			return CQ_MTLPixelFormatRGBA8Uint;
-	case TinyImageFormat_R8G8B8A8_SINT:			return CQ_MTLPixelFormatRGBA8Sint;
-	case TinyImageFormat_R8G8B8A8_SRGB:			return CQ_MTLPixelFormatRGBA8Unorm_sRGB;
-	case TinyImageFormat_B8G8R8A8_UNORM: 							return CQ_MTLPixelFormatBGRA8Unorm;
-	case TinyImageFormat_B8G8R8A8_SRGB:								return CQ_MTLPixelFormatBGRA8Unorm_sRGB;
-	case TinyImageFormat_B10G10R10A2_UNORM:		return CQ_MTLPixelFormatBGR10A2Unorm;
-	case TinyImageFormat_R10G10B10A2_UNORM:		return CQ_MTLPixelFormatRGB10A2Unorm;
-	case TinyImageFormat_R10G10B10A2_UINT:			return CQ_MTLPixelFormatRGB10A2Uint;
-	case TinyImageFormat_R16_UNORM:			return CQ_MTLPixelFormatR16Unorm;
-	case TinyImageFormat_R16_SNORM:			return CQ_MTLPixelFormatR16Snorm;
-	case TinyImageFormat_R16_UINT:			return CQ_MTLPixelFormatR16Uint;
-	case TinyImageFormat_R16_SINT:			return CQ_MTLPixelFormatR16Sint;
-	case TinyImageFormat_R16_SFLOAT:		return CQ_MTLPixelFormatR16Float;
-	case TinyImageFormat_R16G16_UNORM:	return CQ_MTLPixelFormatRG16Unorm;
-	case TinyImageFormat_R16G16_SNORM:	return CQ_MTLPixelFormatRG16Snorm;
-	case TinyImageFormat_R16G16_UINT:		return CQ_MTLPixelFormatRG16Uint;
-	case TinyImageFormat_R16G16_SINT:		return CQ_MTLPixelFormatRG16Sint;
-	case TinyImageFormat_R16G16_SFLOAT:	return CQ_MTLPixelFormatRG16Float;
-	case TinyImageFormat_R16G16B16A16_UNORM:	return CQ_MTLPixelFormatRGBA16Unorm;
-	case TinyImageFormat_R16G16B16A16_SNORM:	return CQ_MTLPixelFormatRGBA16Snorm;
-	case TinyImageFormat_R16G16B16A16_UINT:		return CQ_MTLPixelFormatRGBA16Uint;
-	case TinyImageFormat_R16G16B16A16_SINT:		return CQ_MTLPixelFormatRGBA16Sint;
-	case TinyImageFormat_R16G16B16A16_SFLOAT:	return CQ_MTLPixelFormatRGBA16Float;
-	case TinyImageFormat_R32_UINT:						return CQ_MTLPixelFormatR32Uint;
-	case TinyImageFormat_R32_SINT:						return CQ_MTLPixelFormatR32Sint;
-	case TinyImageFormat_R32_SFLOAT:					return CQ_MTLPixelFormatR32Float;
-	case TinyImageFormat_R32G32_UINT:					return CQ_MTLPixelFormatRG32Uint;
-	case TinyImageFormat_R32G32_SINT:					return CQ_MTLPixelFormatRG32Sint;
-	case TinyImageFormat_R32G32_SFLOAT:				return CQ_MTLPixelFormatRG32Float;
-	case TinyImageFormat_R32G32B32A32_UINT:		return CQ_MTLPixelFormatRGBA32Uint;
-	case TinyImageFormat_R32G32B32A32_SINT:		return CQ_MTLPixelFormatRGBA32Sint;
-	case TinyImageFormat_R32G32B32A32_SFLOAT:	return CQ_MTLPixelFormatRGBA32Float;
-	case TinyImageFormat_B10G11R11_UFLOAT: return CQ_MTLPixelFormatRG11B10Float;
-	case TinyImageFormat_E5B9G9R9_UFLOAT:	return CQ_MTLPixelFormatRGB9E5Float;
-	case TinyImageFormat_D16_UNORM:								return CQ_MTLPixelFormatDepth16Unorm;
-	case TinyImageFormat_X8_D24_UNORM:			return CQ_MTLPixelFormatDepth24Unorm_Stencil8;
-	case TinyImageFormat_D32_SFLOAT:							return CQ_MTLPixelFormatDepth32Float;
-	case TinyImageFormat_S8_UINT:									return CQ_MTLPixelFormatStencil8;
-	case TinyImageFormat_D24_UNORM_S8_UINT:				return CQ_MTLPixelFormatDepth24Unorm_Stencil8;
-	case TinyImageFormat_D32_SFLOAT_S8_UINT:			return CQ_MTLPixelFormatDepth32Float_Stencil8;
-	case TinyImageFormat_DXBC1_RGB_UNORM:			return CQ_MTLPixelFormatBC1_RGBA;
-	case TinyImageFormat_DXBC1_RGB_SRGB:			return CQ_MTLPixelFormatBC1_RGBA_sRGB;
-	case TinyImageFormat_DXBC1_RGBA_UNORM:		return CQ_MTLPixelFormatBC1_RGBA;
-	case TinyImageFormat_DXBC1_RGBA_SRGB:			return CQ_MTLPixelFormatBC1_RGBA_sRGB;
-	case TinyImageFormat_DXBC2_UNORM:					return CQ_MTLPixelFormatBC2_RGBA;
-	case TinyImageFormat_DXBC2_SRGB:					return CQ_MTLPixelFormatBC2_RGBA_sRGB;
-	case TinyImageFormat_DXBC3_UNORM:					return CQ_MTLPixelFormatBC3_RGBA;
-	case TinyImageFormat_DXBC3_SRGB:					return CQ_MTLPixelFormatBC3_RGBA_sRGB;
-	case TinyImageFormat_DXBC4_UNORM:					return CQ_MTLPixelFormatBC4_RUnorm;
-	case TinyImageFormat_DXBC4_SNORM:					return CQ_MTLPixelFormatBC4_RSnorm;
-	case TinyImageFormat_DXBC5_UNORM:					return CQ_MTLPixelFormatBC5_RGUnorm;
-	case TinyImageFormat_DXBC5_SNORM:					return CQ_MTLPixelFormatBC5_RGSnorm;
-	case TinyImageFormat_DXBC6H_UFLOAT:				return CQ_MTLPixelFormatBC6H_RGBUfloat;
-	case TinyImageFormat_DXBC6H_SFLOAT:				return CQ_MTLPixelFormatBC6H_RGBFloat;
-	case TinyImageFormat_DXBC7_UNORM:					return CQ_MTLPixelFormatBC7_RGBAUnorm;
-	case TinyImageFormat_DXBC7_SRGB:					return CQ_MTLPixelFormatBC7_RGBAUnorm_sRGB;
-	case TinyImageFormat_PVRTC1_2BPP_UNORM:		return CQ_MTLPixelFormatPVRTC_RGBA_2BPP;
-	case TinyImageFormat_PVRTC1_4BPP_UNORM:		return CQ_MTLPixelFormatPVRTC_RGBA_4BPP;
-	case TinyImageFormat_PVRTC1_2BPP_SRGB:		return CQ_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB;
-	case TinyImageFormat_PVRTC1_4BPP_SRGB:		return CQ_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB;
-	case TinyImageFormat_ETC2_R8G8B8_UNORM:	return CQ_MTLPixelFormatETC2_RGB8;
-	case TinyImageFormat_ETC2_R8G8B8A1_UNORM:return CQ_MTLPixelFormatETC2_RGB8A1;
-	case TinyImageFormat_ETC2_R8G8B8A8_UNORM: return CQ_MTLPixelFormatEAC_RGBA8;
-	case TinyImageFormat_ETC2_R8G8B8_SRGB:		return CQ_MTLPixelFormatETC2_RGB8_sRGB;
-	case TinyImageFormat_ETC2_R8G8B8A1_SRGB:	return CQ_MTLPixelFormatETC2_RGB8A1_sRGB;
-	case TinyImageFormat_ETC2_R8G8B8A8_SRGB:	return CQ_MTLPixelFormatEAC_RGBA8_sRGB;
-	case TinyImageFormat_ETC2_EAC_R11_UNORM:				return CQ_MTLPixelFormatEAC_R11Unorm;
-	case TinyImageFormat_ETC2_EAC_R11G11_UNORM:		return CQ_MTLPixelFormatEAC_RG11Unorm;
-	case TinyImageFormat_ETC2_EAC_R11_SNORM:				return CQ_MTLPixelFormatEAC_R11Snorm;
-	case TinyImageFormat_ETC2_EAC_R11G11_SNORM:		return CQ_MTLPixelFormatEAC_RG11Snorm;
-	case TinyImageFormat_ASTC_4x4_UNORM:			return CQ_MTLPixelFormatASTC_4x4_LDR;
-	case TinyImageFormat_ASTC_4x4_SRGB:				return CQ_MTLPixelFormatASTC_4x4_sRGB;
-	case TinyImageFormat_ASTC_5x4_UNORM:			return CQ_MTLPixelFormatASTC_5x4_LDR;
-	case TinyImageFormat_ASTC_5x4_SRGB:				return CQ_MTLPixelFormatASTC_5x4_sRGB;
-	case TinyImageFormat_ASTC_5x5_UNORM:			return CQ_MTLPixelFormatASTC_5x5_LDR;
-	case TinyImageFormat_ASTC_5x5_SRGB:				return CQ_MTLPixelFormatASTC_5x5_sRGB;
-	case TinyImageFormat_ASTC_6x5_UNORM:			return CQ_MTLPixelFormatASTC_6x5_LDR;
-	case TinyImageFormat_ASTC_6x5_SRGB:				return CQ_MTLPixelFormatASTC_6x5_sRGB;
-	case TinyImageFormat_ASTC_6x6_UNORM:			return CQ_MTLPixelFormatASTC_6x6_LDR;
-	case TinyImageFormat_ASTC_6x6_SRGB:				return CQ_MTLPixelFormatASTC_6x6_sRGB;
-	case TinyImageFormat_ASTC_8x5_UNORM:			return CQ_MTLPixelFormatASTC_8x5_LDR;
-	case TinyImageFormat_ASTC_8x5_SRGB:				return CQ_MTLPixelFormatASTC_8x5_sRGB;
-	case TinyImageFormat_ASTC_8x6_UNORM:			return CQ_MTLPixelFormatASTC_8x6_LDR;
-	case TinyImageFormat_ASTC_8x6_SRGB:				return CQ_MTLPixelFormatASTC_8x6_sRGB;
-	case TinyImageFormat_ASTC_8x8_UNORM:			return CQ_MTLPixelFormatASTC_8x8_LDR;
-	case TinyImageFormat_ASTC_8x8_SRGB:				return CQ_MTLPixelFormatASTC_8x8_sRGB;
-	case TinyImageFormat_ASTC_10x5_UNORM:			return CQ_MTLPixelFormatASTC_10x5_LDR;
-	case TinyImageFormat_ASTC_10x5_SRGB:			return CQ_MTLPixelFormatASTC_10x5_sRGB;
-	case TinyImageFormat_ASTC_10x6_UNORM:			return CQ_MTLPixelFormatASTC_10x6_LDR;
-	case TinyImageFormat_ASTC_10x6_SRGB:			return CQ_MTLPixelFormatASTC_10x6_sRGB;
-	case TinyImageFormat_ASTC_10x8_UNORM:			return CQ_MTLPixelFormatASTC_10x8_LDR;
-	case TinyImageFormat_ASTC_10x8_SRGB:			return CQ_MTLPixelFormatASTC_10x8_sRGB;
-	case TinyImageFormat_ASTC_10x10_UNORM:		return CQ_MTLPixelFormatASTC_10x10_LDR;
-	case TinyImageFormat_ASTC_10x10_SRGB:			return CQ_MTLPixelFormatASTC_10x10_sRGB;
-	case TinyImageFormat_ASTC_12x10_UNORM:		return CQ_MTLPixelFormatASTC_12x10_LDR;
-	case TinyImageFormat_ASTC_12x10_SRGB:			return CQ_MTLPixelFormatASTC_12x10_sRGB;
-	case TinyImageFormat_ASTC_12x12_UNORM:		return CQ_MTLPixelFormatASTC_12x12_LDR;
-	case TinyImageFormat_ASTC_12x12_SRGB:			return CQ_MTLPixelFormatASTC_12x12_sRGB;
+	case CqFormat_A8_UNORM: 									return CQ_MTLPixelFormatA8Unorm;
+	case CqFormat_R8_UNORM: 		return CQ_MTLPixelFormatR8Unorm;
+	case CqFormat_R8_SNORM: 		return CQ_MTLPixelFormatR8Snorm;
+	case CqFormat_R8_UINT: 		return CQ_MTLPixelFormatR8Uint;
+	case CqFormat_R8_SINT: 		return CQ_MTLPixelFormatR8Sint;
+	case CqFormat_R8_SRGB: 		return CQ_MTLPixelFormatR8Unorm_sRGB;
+	case CqFormat_UNDEFINED: return CQ_MTLPixelFormatInvalid;
+	case CqFormat_R4G4B4A4_UNORM: return CQ_MTLPixelFormatABGR4Unorm;
+	case CqFormat_R5G6B5_UNORM: return CQ_MTLPixelFormatB5G6R5Unorm;;
+	case CqFormat_R5G5B5A1_UNORM: return CQ_MTLPixelFormatA1BGR5Unorm;
+	case CqFormat_R8G8_UNORM:		return CQ_MTLPixelFormatRG8Unorm;
+	case CqFormat_R8G8_SNORM:		return CQ_MTLPixelFormatRG8Snorm;
+	case CqFormat_R8G8_UINT:			return CQ_MTLPixelFormatRG8Uint;
+	case CqFormat_R8G8_SINT:			return CQ_MTLPixelFormatRG8Sint;
+	case CqFormat_R8G8_SRGB:			return CQ_MTLPixelFormatRG8Unorm_sRGB;
+	case CqFormat_R8G8B8A8_UNORM:		return CQ_MTLPixelFormatRGBA8Unorm;
+	case CqFormat_R8G8B8A8_SNORM:		return CQ_MTLPixelFormatRGBA8Snorm;
+	case CqFormat_R8G8B8A8_UINT:			return CQ_MTLPixelFormatRGBA8Uint;
+	case CqFormat_R8G8B8A8_SINT:			return CQ_MTLPixelFormatRGBA8Sint;
+	case CqFormat_R8G8B8A8_SRGB:			return CQ_MTLPixelFormatRGBA8Unorm_sRGB;
+	case CqFormat_B8G8R8A8_UNORM: 							return CQ_MTLPixelFormatBGRA8Unorm;
+	case CqFormat_B8G8R8A8_SRGB:								return CQ_MTLPixelFormatBGRA8Unorm_sRGB;
+	case CqFormat_B10G10R10A2_UNORM:		return CQ_MTLPixelFormatBGR10A2Unorm;
+	case CqFormat_R10G10B10A2_UNORM:		return CQ_MTLPixelFormatRGB10A2Unorm;
+	case CqFormat_R10G10B10A2_UINT:			return CQ_MTLPixelFormatRGB10A2Uint;
+	case CqFormat_R16_UNORM:			return CQ_MTLPixelFormatR16Unorm;
+	case CqFormat_R16_SNORM:			return CQ_MTLPixelFormatR16Snorm;
+	case CqFormat_R16_UINT:			return CQ_MTLPixelFormatR16Uint;
+	case CqFormat_R16_SINT:			return CQ_MTLPixelFormatR16Sint;
+	case CqFormat_R16_SFLOAT:		return CQ_MTLPixelFormatR16Float;
+	case CqFormat_R16G16_UNORM:	return CQ_MTLPixelFormatRG16Unorm;
+	case CqFormat_R16G16_SNORM:	return CQ_MTLPixelFormatRG16Snorm;
+	case CqFormat_R16G16_UINT:		return CQ_MTLPixelFormatRG16Uint;
+	case CqFormat_R16G16_SINT:		return CQ_MTLPixelFormatRG16Sint;
+	case CqFormat_R16G16_SFLOAT:	return CQ_MTLPixelFormatRG16Float;
+	case CqFormat_R16G16B16A16_UNORM:	return CQ_MTLPixelFormatRGBA16Unorm;
+	case CqFormat_R16G16B16A16_SNORM:	return CQ_MTLPixelFormatRGBA16Snorm;
+	case CqFormat_R16G16B16A16_UINT:		return CQ_MTLPixelFormatRGBA16Uint;
+	case CqFormat_R16G16B16A16_SINT:		return CQ_MTLPixelFormatRGBA16Sint;
+	case CqFormat_R16G16B16A16_SFLOAT:	return CQ_MTLPixelFormatRGBA16Float;
+	case CqFormat_R32_UINT:						return CQ_MTLPixelFormatR32Uint;
+	case CqFormat_R32_SINT:						return CQ_MTLPixelFormatR32Sint;
+	case CqFormat_R32_SFLOAT:					return CQ_MTLPixelFormatR32Float;
+	case CqFormat_R32G32_UINT:					return CQ_MTLPixelFormatRG32Uint;
+	case CqFormat_R32G32_SINT:					return CQ_MTLPixelFormatRG32Sint;
+	case CqFormat_R32G32_SFLOAT:				return CQ_MTLPixelFormatRG32Float;
+	case CqFormat_R32G32B32A32_UINT:		return CQ_MTLPixelFormatRGBA32Uint;
+	case CqFormat_R32G32B32A32_SINT:		return CQ_MTLPixelFormatRGBA32Sint;
+	case CqFormat_R32G32B32A32_SFLOAT:	return CQ_MTLPixelFormatRGBA32Float;
+	case CqFormat_B10G11R11_UFLOAT: return CQ_MTLPixelFormatRG11B10Float;
+	case CqFormat_E5B9G9R9_UFLOAT:	return CQ_MTLPixelFormatRGB9E5Float;
+	case CqFormat_D16_UNORM:								return CQ_MTLPixelFormatDepth16Unorm;
+	case CqFormat_X8_D24_UNORM:			return CQ_MTLPixelFormatDepth24Unorm_Stencil8;
+	case CqFormat_D32_SFLOAT:							return CQ_MTLPixelFormatDepth32Float;
+	case CqFormat_S8_UINT:									return CQ_MTLPixelFormatStencil8;
+	case CqFormat_D24_UNORM_S8_UINT:				return CQ_MTLPixelFormatDepth24Unorm_Stencil8;
+	case CqFormat_D32_SFLOAT_S8_UINT:			return CQ_MTLPixelFormatDepth32Float_Stencil8;
+	case CqFormat_DXBC1_RGB_UNORM:			return CQ_MTLPixelFormatBC1_RGBA;
+	case CqFormat_DXBC1_RGB_SRGB:			return CQ_MTLPixelFormatBC1_RGBA_sRGB;
+	case CqFormat_DXBC1_RGBA_UNORM:		return CQ_MTLPixelFormatBC1_RGBA;
+	case CqFormat_DXBC1_RGBA_SRGB:			return CQ_MTLPixelFormatBC1_RGBA_sRGB;
+	case CqFormat_DXBC2_UNORM:					return CQ_MTLPixelFormatBC2_RGBA;
+	case CqFormat_DXBC2_SRGB:					return CQ_MTLPixelFormatBC2_RGBA_sRGB;
+	case CqFormat_DXBC3_UNORM:					return CQ_MTLPixelFormatBC3_RGBA;
+	case CqFormat_DXBC3_SRGB:					return CQ_MTLPixelFormatBC3_RGBA_sRGB;
+	case CqFormat_DXBC4_UNORM:					return CQ_MTLPixelFormatBC4_RUnorm;
+	case CqFormat_DXBC4_SNORM:					return CQ_MTLPixelFormatBC4_RSnorm;
+	case CqFormat_DXBC5_UNORM:					return CQ_MTLPixelFormatBC5_RGUnorm;
+	case CqFormat_DXBC5_SNORM:					return CQ_MTLPixelFormatBC5_RGSnorm;
+	case CqFormat_DXBC6H_UFLOAT:				return CQ_MTLPixelFormatBC6H_RGBUfloat;
+	case CqFormat_DXBC6H_SFLOAT:				return CQ_MTLPixelFormatBC6H_RGBFloat;
+	case CqFormat_DXBC7_UNORM:					return CQ_MTLPixelFormatBC7_RGBAUnorm;
+	case CqFormat_DXBC7_SRGB:					return CQ_MTLPixelFormatBC7_RGBAUnorm_sRGB;
+	case CqFormat_PVRTC1_2BPP_UNORM:		return CQ_MTLPixelFormatPVRTC_RGBA_2BPP;
+	case CqFormat_PVRTC1_4BPP_UNORM:		return CQ_MTLPixelFormatPVRTC_RGBA_4BPP;
+	case CqFormat_PVRTC1_2BPP_SRGB:		return CQ_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB;
+	case CqFormat_PVRTC1_4BPP_SRGB:		return CQ_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB;
+	case CqFormat_ETC2_R8G8B8_UNORM:	return CQ_MTLPixelFormatETC2_RGB8;
+	case CqFormat_ETC2_R8G8B8A1_UNORM:return CQ_MTLPixelFormatETC2_RGB8A1;
+	case CqFormat_ETC2_R8G8B8A8_UNORM: return CQ_MTLPixelFormatEAC_RGBA8;
+	case CqFormat_ETC2_R8G8B8_SRGB:		return CQ_MTLPixelFormatETC2_RGB8_sRGB;
+	case CqFormat_ETC2_R8G8B8A1_SRGB:	return CQ_MTLPixelFormatETC2_RGB8A1_sRGB;
+	case CqFormat_ETC2_R8G8B8A8_SRGB:	return CQ_MTLPixelFormatEAC_RGBA8_sRGB;
+	case CqFormat_ETC2_EAC_R11_UNORM:				return CQ_MTLPixelFormatEAC_R11Unorm;
+	case CqFormat_ETC2_EAC_R11G11_UNORM:		return CQ_MTLPixelFormatEAC_RG11Unorm;
+	case CqFormat_ETC2_EAC_R11_SNORM:				return CQ_MTLPixelFormatEAC_R11Snorm;
+	case CqFormat_ETC2_EAC_R11G11_SNORM:		return CQ_MTLPixelFormatEAC_RG11Snorm;
+	case CqFormat_ASTC_4x4_UNORM:			return CQ_MTLPixelFormatASTC_4x4_LDR;
+	case CqFormat_ASTC_4x4_SRGB:				return CQ_MTLPixelFormatASTC_4x4_sRGB;
+	case CqFormat_ASTC_5x4_UNORM:			return CQ_MTLPixelFormatASTC_5x4_LDR;
+	case CqFormat_ASTC_5x4_SRGB:				return CQ_MTLPixelFormatASTC_5x4_sRGB;
+	case CqFormat_ASTC_5x5_UNORM:			return CQ_MTLPixelFormatASTC_5x5_LDR;
+	case CqFormat_ASTC_5x5_SRGB:				return CQ_MTLPixelFormatASTC_5x5_sRGB;
+	case CqFormat_ASTC_6x5_UNORM:			return CQ_MTLPixelFormatASTC_6x5_LDR;
+	case CqFormat_ASTC_6x5_SRGB:				return CQ_MTLPixelFormatASTC_6x5_sRGB;
+	case CqFormat_ASTC_6x6_UNORM:			return CQ_MTLPixelFormatASTC_6x6_LDR;
+	case CqFormat_ASTC_6x6_SRGB:				return CQ_MTLPixelFormatASTC_6x6_sRGB;
+	case CqFormat_ASTC_8x5_UNORM:			return CQ_MTLPixelFormatASTC_8x5_LDR;
+	case CqFormat_ASTC_8x5_SRGB:				return CQ_MTLPixelFormatASTC_8x5_sRGB;
+	case CqFormat_ASTC_8x6_UNORM:			return CQ_MTLPixelFormatASTC_8x6_LDR;
+	case CqFormat_ASTC_8x6_SRGB:				return CQ_MTLPixelFormatASTC_8x6_sRGB;
+	case CqFormat_ASTC_8x8_UNORM:			return CQ_MTLPixelFormatASTC_8x8_LDR;
+	case CqFormat_ASTC_8x8_SRGB:				return CQ_MTLPixelFormatASTC_8x8_sRGB;
+	case CqFormat_ASTC_10x5_UNORM:			return CQ_MTLPixelFormatASTC_10x5_LDR;
+	case CqFormat_ASTC_10x5_SRGB:			return CQ_MTLPixelFormatASTC_10x5_sRGB;
+	case CqFormat_ASTC_10x6_UNORM:			return CQ_MTLPixelFormatASTC_10x6_LDR;
+	case CqFormat_ASTC_10x6_SRGB:			return CQ_MTLPixelFormatASTC_10x6_sRGB;
+	case CqFormat_ASTC_10x8_UNORM:			return CQ_MTLPixelFormatASTC_10x8_LDR;
+	case CqFormat_ASTC_10x8_SRGB:			return CQ_MTLPixelFormatASTC_10x8_sRGB;
+	case CqFormat_ASTC_10x10_UNORM:		return CQ_MTLPixelFormatASTC_10x10_LDR;
+	case CqFormat_ASTC_10x10_SRGB:			return CQ_MTLPixelFormatASTC_10x10_sRGB;
+	case CqFormat_ASTC_12x10_UNORM:		return CQ_MTLPixelFormatASTC_12x10_LDR;
+	case CqFormat_ASTC_12x10_SRGB:			return CQ_MTLPixelFormatASTC_12x10_sRGB;
+	case CqFormat_ASTC_12x12_UNORM:		return CQ_MTLPixelFormatASTC_12x12_LDR;
+	case CqFormat_ASTC_12x12_SRGB:			return CQ_MTLPixelFormatASTC_12x12_sRGB;
 
 	default: return CQ_MTLPixelFormatInvalid;
 	}
@@ -11492,140 +11492,140 @@ inline TinyImageFormat_MTLPixelFormat TinyImageFormat_ToMTLPixelFormat(TinyImage
 	return CQ_MTLPixelFormatInvalid;
 }
 
-inline TinyImageFormat TinyImageFormat_FromMTLPixelFormat(TinyImageFormat_MTLPixelFormat fmt) {
+inline CqFormat CqFormat_FromMTLPixelFormat(CqFormat_MTLPixelFormat fmt) {
 	switch (fmt) {
-	case CQ_MTLPixelFormatInvalid: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatA8Unorm: return TinyImageFormat_A8_UNORM;
-	case CQ_MTLPixelFormatR8Unorm: return TinyImageFormat_R8_UNORM;
-	case CQ_MTLPixelFormatR8Unorm_sRGB: return TinyImageFormat_R8_SRGB;
-	case CQ_MTLPixelFormatR8Snorm: return TinyImageFormat_R8_SNORM;
-	case CQ_MTLPixelFormatR8Uint: return TinyImageFormat_R8_UINT;
-	case CQ_MTLPixelFormatR8Sint: return TinyImageFormat_R8_SINT;
-	case CQ_MTLPixelFormatR16Unorm: return TinyImageFormat_R16_UNORM;
-	case CQ_MTLPixelFormatR16Snorm: return TinyImageFormat_R16_SNORM;
-	case CQ_MTLPixelFormatR16Uint: return TinyImageFormat_R16_UINT;
-	case CQ_MTLPixelFormatR16Sint: return TinyImageFormat_R16_SINT;
-	case CQ_MTLPixelFormatR16Float: return TinyImageFormat_R16_SFLOAT;
-	case CQ_MTLPixelFormatRG8Unorm: return TinyImageFormat_R8G8B8_UNORM;
-	case CQ_MTLPixelFormatRG8Unorm_sRGB: return TinyImageFormat_R8G8_SRGB;
-	case CQ_MTLPixelFormatRG8Snorm: return TinyImageFormat_R8G8_SNORM;
-	case CQ_MTLPixelFormatRG8Uint: return TinyImageFormat_R8G8_UINT;
-	case CQ_MTLPixelFormatRG8Sint: return TinyImageFormat_R8G8_SINT;
-	case CQ_MTLPixelFormatB5G6R5Unorm: return TinyImageFormat_R5G6B5_UNORM;
-	case CQ_MTLPixelFormatA1BGR5Unorm: return TinyImageFormat_R5G5B5A1_UNORM;
-	case CQ_MTLPixelFormatABGR4Unorm: return TinyImageFormat_R4G4B4A4_UNORM;
-	case CQ_MTLPixelFormatBGR5A1Unorm: return TinyImageFormat_A1R5G5B5_UNORM;
-	case CQ_MTLPixelFormatR32Uint: return TinyImageFormat_R32_UINT;
-	case CQ_MTLPixelFormatR32Sint: return TinyImageFormat_R32_SINT;
-	case CQ_MTLPixelFormatR32Float: return TinyImageFormat_R32_SFLOAT;
-	case CQ_MTLPixelFormatRG16Unorm: return TinyImageFormat_R16G16_UNORM;
-	case CQ_MTLPixelFormatRG16Snorm: return TinyImageFormat_R16G16_SNORM;
-	case CQ_MTLPixelFormatRG16Uint: return TinyImageFormat_R16G16B16_UINT;
-	case CQ_MTLPixelFormatRG16Sint: return TinyImageFormat_R16G16_SINT;
-	case CQ_MTLPixelFormatRG16Float: return TinyImageFormat_R16G16_SFLOAT;
-	case CQ_MTLPixelFormatRGBA8Unorm: return TinyImageFormat_R8G8B8A8_UNORM;
-	case CQ_MTLPixelFormatRGBA8Unorm_sRGB: return TinyImageFormat_R8G8B8A8_SRGB;
-	case CQ_MTLPixelFormatRGBA8Snorm: return TinyImageFormat_R8G8B8A8_SNORM;
-	case CQ_MTLPixelFormatRGBA8Uint: return TinyImageFormat_R8G8B8A8_UINT;
-	case CQ_MTLPixelFormatRGBA8Sint: return TinyImageFormat_R8G8B8A8_SINT;
-	case CQ_MTLPixelFormatBGRA8Unorm: return TinyImageFormat_B8G8R8A8_UNORM;
-	case CQ_MTLPixelFormatRGB10A2Unorm: return TinyImageFormat_R10G10B10A2_UNORM;
-	case CQ_MTLPixelFormatRGB10A2Uint: return TinyImageFormat_R10G10B10A2_UNORM;
-	case CQ_MTLPixelFormatRG11B10Float: return TinyImageFormat_B10G11R11_UFLOAT;
-	case CQ_MTLPixelFormatRGB9E5Float: return TinyImageFormat_E5B9G9R9_UFLOAT;
-	case CQ_MTLPixelFormatBGR10A2Unorm: return TinyImageFormat_B10G10R10A2_UNORM;
-	case CQ_MTLPixelFormatRG32Uint: return TinyImageFormat_R32G32_UINT;
-	case CQ_MTLPixelFormatRG32Sint: return TinyImageFormat_R32G32_SINT;
-	case CQ_MTLPixelFormatRG32Float: return TinyImageFormat_R32G32_SFLOAT;
-	case CQ_MTLPixelFormatRGBA16Unorm: return TinyImageFormat_R16G16B16A16_UNORM;
-	case CQ_MTLPixelFormatRGBA16Snorm: return TinyImageFormat_R16G16B16A16_SNORM;
-	case CQ_MTLPixelFormatRGBA16Uint: return TinyImageFormat_R16G16B16A16_UINT;
-	case CQ_MTLPixelFormatRGBA16Sint: return TinyImageFormat_R16G16B16A16_SINT;
-	case CQ_MTLPixelFormatRGBA16Float: return TinyImageFormat_R16G16B16A16_SFLOAT;
-	case CQ_MTLPixelFormatRGBA32Uint: return TinyImageFormat_R32G32B32A32_UINT;
-	case CQ_MTLPixelFormatRGBA32Sint: return TinyImageFormat_R32G32B32A32_SINT;
-	case CQ_MTLPixelFormatRGBA32Float: return TinyImageFormat_R32G32B32A32_SFLOAT;
-	case CQ_MTLPixelFormatBC1_RGBA: return TinyImageFormat_DXBC1_RGBA_SRGB;
-	case CQ_MTLPixelFormatBC1_RGBA_sRGB: return TinyImageFormat_DXBC1_RGBA_SRGB;
-	case CQ_MTLPixelFormatBC2_RGBA: return TinyImageFormat_DXBC2_UNORM;
-	case CQ_MTLPixelFormatBC2_RGBA_sRGB: return TinyImageFormat_DXBC2_SRGB;
-	case CQ_MTLPixelFormatBC3_RGBA: return TinyImageFormat_DXBC3_UNORM;
-	case CQ_MTLPixelFormatBC3_RGBA_sRGB: return TinyImageFormat_DXBC2_SRGB;
-	case CQ_MTLPixelFormatBC4_RUnorm: return TinyImageFormat_DXBC4_UNORM;
-	case CQ_MTLPixelFormatBC4_RSnorm: return TinyImageFormat_DXBC4_SNORM;
-	case CQ_MTLPixelFormatBC5_RGUnorm: return TinyImageFormat_DXBC5_UNORM;
-	case CQ_MTLPixelFormatBC5_RGSnorm: return TinyImageFormat_DXBC5_SNORM;
-	case CQ_MTLPixelFormatBC6H_RGBFloat: return TinyImageFormat_DXBC6H_SFLOAT;
-	case CQ_MTLPixelFormatBC6H_RGBUfloat: return TinyImageFormat_DXBC6H_UFLOAT;
-	case CQ_MTLPixelFormatBC7_RGBAUnorm: return TinyImageFormat_DXBC7_UNORM;
-	case CQ_MTLPixelFormatBC7_RGBAUnorm_sRGB: return TinyImageFormat_DXBC7_SRGB;
-	case CQ_MTLPixelFormatPVRTC_RGB_2BPP: return TinyImageFormat_PVRTC1_2BPP_UNORM;
-	case CQ_MTLPixelFormatPVRTC_RGB_2BPP_sRGB: return TinyImageFormat_PVRTC1_2BPP_SRGB;
-	case CQ_MTLPixelFormatPVRTC_RGB_4BPP: return TinyImageFormat_PVRTC1_4BPP_UNORM;
-	case CQ_MTLPixelFormatPVRTC_RGB_4BPP_sRGB: return TinyImageFormat_PVRTC1_4BPP_SRGB;
-	case CQ_MTLPixelFormatPVRTC_RGBA_2BPP: return TinyImageFormat_PVRTC1_2BPP_UNORM;
-	case CQ_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB: return TinyImageFormat_PVRTC1_2BPP_SRGB;
-	case CQ_MTLPixelFormatPVRTC_RGBA_4BPP: return TinyImageFormat_PVRTC1_4BPP_UNORM;
-	case CQ_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB: return TinyImageFormat_PVRTC1_4BPP_SRGB;
-	case CQ_MTLPixelFormatEAC_R11Unorm: return TinyImageFormat_ETC2_EAC_R11_UNORM;
-	case CQ_MTLPixelFormatEAC_R11Snorm: return TinyImageFormat_ETC2_EAC_R11_SNORM;
-	case CQ_MTLPixelFormatEAC_RG11Unorm: return TinyImageFormat_ETC2_EAC_R11G11_UNORM;
-	case CQ_MTLPixelFormatEAC_RG11Snorm: return TinyImageFormat_ETC2_EAC_R11G11_SNORM;
-	case CQ_MTLPixelFormatEAC_RGBA8: return TinyImageFormat_ETC2_R8G8B8A8_UNORM;
-	case CQ_MTLPixelFormatEAC_RGBA8_sRGB: return TinyImageFormat_ETC2_R8G8B8A8_SRGB;
-	case CQ_MTLPixelFormatETC2_RGB8: return TinyImageFormat_ETC2_R8G8B8_UNORM;
-	case CQ_MTLPixelFormatETC2_RGB8_sRGB: return TinyImageFormat_ETC2_R8G8B8_SRGB;
-	case CQ_MTLPixelFormatETC2_RGB8A1: return TinyImageFormat_ETC2_R8G8B8A1_UNORM;
-	case CQ_MTLPixelFormatETC2_RGB8A1_sRGB: return TinyImageFormat_ETC2_R8G8B8A1_SRGB;
-	case CQ_MTLPixelFormatASTC_4x4_sRGB:			return TinyImageFormat_ASTC_4x4_SRGB;
-	case CQ_MTLPixelFormatASTC_5x4_sRGB:			return TinyImageFormat_ASTC_5x4_SRGB;
-	case CQ_MTLPixelFormatASTC_5x5_sRGB:			return TinyImageFormat_ASTC_5x4_SRGB;
-	case CQ_MTLPixelFormatASTC_6x5_sRGB:			return TinyImageFormat_ASTC_6x5_SRGB;
-	case CQ_MTLPixelFormatASTC_6x6_sRGB:			return TinyImageFormat_ASTC_6x6_SRGB;
-	case CQ_MTLPixelFormatASTC_8x5_sRGB:			return TinyImageFormat_ASTC_8x5_SRGB;
-	case CQ_MTLPixelFormatASTC_8x6_sRGB:			return TinyImageFormat_ASTC_8x6_SRGB;
-	case CQ_MTLPixelFormatASTC_8x8_sRGB:			return TinyImageFormat_ASTC_8x8_SRGB;
-	case CQ_MTLPixelFormatASTC_10x5_sRGB:		return TinyImageFormat_ASTC_10x5_SRGB;
-	case CQ_MTLPixelFormatASTC_10x6_sRGB:		return TinyImageFormat_ASTC_10x6_SRGB;
-	case CQ_MTLPixelFormatASTC_10x8_sRGB:		return TinyImageFormat_ASTC_10x8_SRGB;
-	case CQ_MTLPixelFormatASTC_10x10_sRGB: 	return TinyImageFormat_ASTC_10x10_SRGB;
-	case CQ_MTLPixelFormatASTC_12x10_sRGB: 	return TinyImageFormat_ASTC_12x10_SRGB;
-	case CQ_MTLPixelFormatASTC_12x12_sRGB: 	return TinyImageFormat_ASTC_12x12_SRGB;
-	case CQ_MTLPixelFormatASTC_4x4_LDR: 		return TinyImageFormat_ASTC_4x4_UNORM;
-	case CQ_MTLPixelFormatASTC_5x4_LDR: 		return TinyImageFormat_ASTC_5x4_UNORM;
-	case CQ_MTLPixelFormatASTC_5x5_LDR: 		return TinyImageFormat_ASTC_5x4_UNORM;
-	case CQ_MTLPixelFormatASTC_6x5_LDR: 		return TinyImageFormat_ASTC_6x5_UNORM;
-	case CQ_MTLPixelFormatASTC_6x6_LDR: 		return TinyImageFormat_ASTC_6x6_UNORM;
-	case CQ_MTLPixelFormatASTC_8x5_LDR: 		return TinyImageFormat_ASTC_8x5_UNORM;
-	case CQ_MTLPixelFormatASTC_8x6_LDR: 		return TinyImageFormat_ASTC_8x6_UNORM;
-	case CQ_MTLPixelFormatASTC_8x8_LDR: 		return TinyImageFormat_ASTC_8x8_UNORM;
-	case CQ_MTLPixelFormatASTC_10x5_LDR:		return TinyImageFormat_ASTC_10x5_UNORM;
-	case CQ_MTLPixelFormatASTC_10x6_LDR:		return TinyImageFormat_ASTC_10x6_UNORM;
-	case CQ_MTLPixelFormatASTC_10x8_LDR:		return TinyImageFormat_ASTC_10x8_UNORM;
-	case CQ_MTLPixelFormatASTC_10x10_LDR: 	return TinyImageFormat_ASTC_10x10_UNORM;
-	case CQ_MTLPixelFormatASTC_12x10_LDR: 	return TinyImageFormat_ASTC_12x10_UNORM;
-	case CQ_MTLPixelFormatASTC_12x12_LDR: 	return TinyImageFormat_ASTC_12x12_UNORM;
-	case CQ_MTLPixelFormatDepth16Unorm: return TinyImageFormat_D16_UNORM;
-	case CQ_MTLPixelFormatDepth32Float: return TinyImageFormat_D32_SFLOAT;
-	case CQ_MTLPixelFormatStencil8: return TinyImageFormat_S8_UINT;
-	case CQ_MTLPixelFormatDepth24Unorm_Stencil8: return TinyImageFormat_D24_UNORM_S8_UINT;
-	case CQ_MTLPixelFormatDepth32Float_Stencil8: return TinyImageFormat_D32_SFLOAT_S8_UINT;
-	case CQ_MTLPixelFormatX32_Stencil8: return TinyImageFormat_D32_SFLOAT_S8_UINT;
-	case CQ_MTLPixelFormatX24_Stencil8: return TinyImageFormat_D24_UNORM_S8_UINT;
+	case CQ_MTLPixelFormatInvalid: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatA8Unorm: return CqFormat_A8_UNORM;
+	case CQ_MTLPixelFormatR8Unorm: return CqFormat_R8_UNORM;
+	case CQ_MTLPixelFormatR8Unorm_sRGB: return CqFormat_R8_SRGB;
+	case CQ_MTLPixelFormatR8Snorm: return CqFormat_R8_SNORM;
+	case CQ_MTLPixelFormatR8Uint: return CqFormat_R8_UINT;
+	case CQ_MTLPixelFormatR8Sint: return CqFormat_R8_SINT;
+	case CQ_MTLPixelFormatR16Unorm: return CqFormat_R16_UNORM;
+	case CQ_MTLPixelFormatR16Snorm: return CqFormat_R16_SNORM;
+	case CQ_MTLPixelFormatR16Uint: return CqFormat_R16_UINT;
+	case CQ_MTLPixelFormatR16Sint: return CqFormat_R16_SINT;
+	case CQ_MTLPixelFormatR16Float: return CqFormat_R16_SFLOAT;
+	case CQ_MTLPixelFormatRG8Unorm: return CqFormat_R8G8B8_UNORM;
+	case CQ_MTLPixelFormatRG8Unorm_sRGB: return CqFormat_R8G8_SRGB;
+	case CQ_MTLPixelFormatRG8Snorm: return CqFormat_R8G8_SNORM;
+	case CQ_MTLPixelFormatRG8Uint: return CqFormat_R8G8_UINT;
+	case CQ_MTLPixelFormatRG8Sint: return CqFormat_R8G8_SINT;
+	case CQ_MTLPixelFormatB5G6R5Unorm: return CqFormat_R5G6B5_UNORM;
+	case CQ_MTLPixelFormatA1BGR5Unorm: return CqFormat_R5G5B5A1_UNORM;
+	case CQ_MTLPixelFormatABGR4Unorm: return CqFormat_R4G4B4A4_UNORM;
+	case CQ_MTLPixelFormatBGR5A1Unorm: return CqFormat_A1R5G5B5_UNORM;
+	case CQ_MTLPixelFormatR32Uint: return CqFormat_R32_UINT;
+	case CQ_MTLPixelFormatR32Sint: return CqFormat_R32_SINT;
+	case CQ_MTLPixelFormatR32Float: return CqFormat_R32_SFLOAT;
+	case CQ_MTLPixelFormatRG16Unorm: return CqFormat_R16G16_UNORM;
+	case CQ_MTLPixelFormatRG16Snorm: return CqFormat_R16G16_SNORM;
+	case CQ_MTLPixelFormatRG16Uint: return CqFormat_R16G16B16_UINT;
+	case CQ_MTLPixelFormatRG16Sint: return CqFormat_R16G16_SINT;
+	case CQ_MTLPixelFormatRG16Float: return CqFormat_R16G16_SFLOAT;
+	case CQ_MTLPixelFormatRGBA8Unorm: return CqFormat_R8G8B8A8_UNORM;
+	case CQ_MTLPixelFormatRGBA8Unorm_sRGB: return CqFormat_R8G8B8A8_SRGB;
+	case CQ_MTLPixelFormatRGBA8Snorm: return CqFormat_R8G8B8A8_SNORM;
+	case CQ_MTLPixelFormatRGBA8Uint: return CqFormat_R8G8B8A8_UINT;
+	case CQ_MTLPixelFormatRGBA8Sint: return CqFormat_R8G8B8A8_SINT;
+	case CQ_MTLPixelFormatBGRA8Unorm: return CqFormat_B8G8R8A8_UNORM;
+	case CQ_MTLPixelFormatRGB10A2Unorm: return CqFormat_R10G10B10A2_UNORM;
+	case CQ_MTLPixelFormatRGB10A2Uint: return CqFormat_R10G10B10A2_UNORM;
+	case CQ_MTLPixelFormatRG11B10Float: return CqFormat_B10G11R11_UFLOAT;
+	case CQ_MTLPixelFormatRGB9E5Float: return CqFormat_E5B9G9R9_UFLOAT;
+	case CQ_MTLPixelFormatBGR10A2Unorm: return CqFormat_B10G10R10A2_UNORM;
+	case CQ_MTLPixelFormatRG32Uint: return CqFormat_R32G32_UINT;
+	case CQ_MTLPixelFormatRG32Sint: return CqFormat_R32G32_SINT;
+	case CQ_MTLPixelFormatRG32Float: return CqFormat_R32G32_SFLOAT;
+	case CQ_MTLPixelFormatRGBA16Unorm: return CqFormat_R16G16B16A16_UNORM;
+	case CQ_MTLPixelFormatRGBA16Snorm: return CqFormat_R16G16B16A16_SNORM;
+	case CQ_MTLPixelFormatRGBA16Uint: return CqFormat_R16G16B16A16_UINT;
+	case CQ_MTLPixelFormatRGBA16Sint: return CqFormat_R16G16B16A16_SINT;
+	case CQ_MTLPixelFormatRGBA16Float: return CqFormat_R16G16B16A16_SFLOAT;
+	case CQ_MTLPixelFormatRGBA32Uint: return CqFormat_R32G32B32A32_UINT;
+	case CQ_MTLPixelFormatRGBA32Sint: return CqFormat_R32G32B32A32_SINT;
+	case CQ_MTLPixelFormatRGBA32Float: return CqFormat_R32G32B32A32_SFLOAT;
+	case CQ_MTLPixelFormatBC1_RGBA: return CqFormat_DXBC1_RGBA_SRGB;
+	case CQ_MTLPixelFormatBC1_RGBA_sRGB: return CqFormat_DXBC1_RGBA_SRGB;
+	case CQ_MTLPixelFormatBC2_RGBA: return CqFormat_DXBC2_UNORM;
+	case CQ_MTLPixelFormatBC2_RGBA_sRGB: return CqFormat_DXBC2_SRGB;
+	case CQ_MTLPixelFormatBC3_RGBA: return CqFormat_DXBC3_UNORM;
+	case CQ_MTLPixelFormatBC3_RGBA_sRGB: return CqFormat_DXBC2_SRGB;
+	case CQ_MTLPixelFormatBC4_RUnorm: return CqFormat_DXBC4_UNORM;
+	case CQ_MTLPixelFormatBC4_RSnorm: return CqFormat_DXBC4_SNORM;
+	case CQ_MTLPixelFormatBC5_RGUnorm: return CqFormat_DXBC5_UNORM;
+	case CQ_MTLPixelFormatBC5_RGSnorm: return CqFormat_DXBC5_SNORM;
+	case CQ_MTLPixelFormatBC6H_RGBFloat: return CqFormat_DXBC6H_SFLOAT;
+	case CQ_MTLPixelFormatBC6H_RGBUfloat: return CqFormat_DXBC6H_UFLOAT;
+	case CQ_MTLPixelFormatBC7_RGBAUnorm: return CqFormat_DXBC7_UNORM;
+	case CQ_MTLPixelFormatBC7_RGBAUnorm_sRGB: return CqFormat_DXBC7_SRGB;
+	case CQ_MTLPixelFormatPVRTC_RGB_2BPP: return CqFormat_PVRTC1_2BPP_UNORM;
+	case CQ_MTLPixelFormatPVRTC_RGB_2BPP_sRGB: return CqFormat_PVRTC1_2BPP_SRGB;
+	case CQ_MTLPixelFormatPVRTC_RGB_4BPP: return CqFormat_PVRTC1_4BPP_UNORM;
+	case CQ_MTLPixelFormatPVRTC_RGB_4BPP_sRGB: return CqFormat_PVRTC1_4BPP_SRGB;
+	case CQ_MTLPixelFormatPVRTC_RGBA_2BPP: return CqFormat_PVRTC1_2BPP_UNORM;
+	case CQ_MTLPixelFormatPVRTC_RGBA_2BPP_sRGB: return CqFormat_PVRTC1_2BPP_SRGB;
+	case CQ_MTLPixelFormatPVRTC_RGBA_4BPP: return CqFormat_PVRTC1_4BPP_UNORM;
+	case CQ_MTLPixelFormatPVRTC_RGBA_4BPP_sRGB: return CqFormat_PVRTC1_4BPP_SRGB;
+	case CQ_MTLPixelFormatEAC_R11Unorm: return CqFormat_ETC2_EAC_R11_UNORM;
+	case CQ_MTLPixelFormatEAC_R11Snorm: return CqFormat_ETC2_EAC_R11_SNORM;
+	case CQ_MTLPixelFormatEAC_RG11Unorm: return CqFormat_ETC2_EAC_R11G11_UNORM;
+	case CQ_MTLPixelFormatEAC_RG11Snorm: return CqFormat_ETC2_EAC_R11G11_SNORM;
+	case CQ_MTLPixelFormatEAC_RGBA8: return CqFormat_ETC2_R8G8B8A8_UNORM;
+	case CQ_MTLPixelFormatEAC_RGBA8_sRGB: return CqFormat_ETC2_R8G8B8A8_SRGB;
+	case CQ_MTLPixelFormatETC2_RGB8: return CqFormat_ETC2_R8G8B8_UNORM;
+	case CQ_MTLPixelFormatETC2_RGB8_sRGB: return CqFormat_ETC2_R8G8B8_SRGB;
+	case CQ_MTLPixelFormatETC2_RGB8A1: return CqFormat_ETC2_R8G8B8A1_UNORM;
+	case CQ_MTLPixelFormatETC2_RGB8A1_sRGB: return CqFormat_ETC2_R8G8B8A1_SRGB;
+	case CQ_MTLPixelFormatASTC_4x4_sRGB:			return CqFormat_ASTC_4x4_SRGB;
+	case CQ_MTLPixelFormatASTC_5x4_sRGB:			return CqFormat_ASTC_5x4_SRGB;
+	case CQ_MTLPixelFormatASTC_5x5_sRGB:			return CqFormat_ASTC_5x4_SRGB;
+	case CQ_MTLPixelFormatASTC_6x5_sRGB:			return CqFormat_ASTC_6x5_SRGB;
+	case CQ_MTLPixelFormatASTC_6x6_sRGB:			return CqFormat_ASTC_6x6_SRGB;
+	case CQ_MTLPixelFormatASTC_8x5_sRGB:			return CqFormat_ASTC_8x5_SRGB;
+	case CQ_MTLPixelFormatASTC_8x6_sRGB:			return CqFormat_ASTC_8x6_SRGB;
+	case CQ_MTLPixelFormatASTC_8x8_sRGB:			return CqFormat_ASTC_8x8_SRGB;
+	case CQ_MTLPixelFormatASTC_10x5_sRGB:		return CqFormat_ASTC_10x5_SRGB;
+	case CQ_MTLPixelFormatASTC_10x6_sRGB:		return CqFormat_ASTC_10x6_SRGB;
+	case CQ_MTLPixelFormatASTC_10x8_sRGB:		return CqFormat_ASTC_10x8_SRGB;
+	case CQ_MTLPixelFormatASTC_10x10_sRGB: 	return CqFormat_ASTC_10x10_SRGB;
+	case CQ_MTLPixelFormatASTC_12x10_sRGB: 	return CqFormat_ASTC_12x10_SRGB;
+	case CQ_MTLPixelFormatASTC_12x12_sRGB: 	return CqFormat_ASTC_12x12_SRGB;
+	case CQ_MTLPixelFormatASTC_4x4_LDR: 		return CqFormat_ASTC_4x4_UNORM;
+	case CQ_MTLPixelFormatASTC_5x4_LDR: 		return CqFormat_ASTC_5x4_UNORM;
+	case CQ_MTLPixelFormatASTC_5x5_LDR: 		return CqFormat_ASTC_5x4_UNORM;
+	case CQ_MTLPixelFormatASTC_6x5_LDR: 		return CqFormat_ASTC_6x5_UNORM;
+	case CQ_MTLPixelFormatASTC_6x6_LDR: 		return CqFormat_ASTC_6x6_UNORM;
+	case CQ_MTLPixelFormatASTC_8x5_LDR: 		return CqFormat_ASTC_8x5_UNORM;
+	case CQ_MTLPixelFormatASTC_8x6_LDR: 		return CqFormat_ASTC_8x6_UNORM;
+	case CQ_MTLPixelFormatASTC_8x8_LDR: 		return CqFormat_ASTC_8x8_UNORM;
+	case CQ_MTLPixelFormatASTC_10x5_LDR:		return CqFormat_ASTC_10x5_UNORM;
+	case CQ_MTLPixelFormatASTC_10x6_LDR:		return CqFormat_ASTC_10x6_UNORM;
+	case CQ_MTLPixelFormatASTC_10x8_LDR:		return CqFormat_ASTC_10x8_UNORM;
+	case CQ_MTLPixelFormatASTC_10x10_LDR: 	return CqFormat_ASTC_10x10_UNORM;
+	case CQ_MTLPixelFormatASTC_12x10_LDR: 	return CqFormat_ASTC_12x10_UNORM;
+	case CQ_MTLPixelFormatASTC_12x12_LDR: 	return CqFormat_ASTC_12x12_UNORM;
+	case CQ_MTLPixelFormatDepth16Unorm: return CqFormat_D16_UNORM;
+	case CQ_MTLPixelFormatDepth32Float: return CqFormat_D32_SFLOAT;
+	case CQ_MTLPixelFormatStencil8: return CqFormat_S8_UINT;
+	case CQ_MTLPixelFormatDepth24Unorm_Stencil8: return CqFormat_D24_UNORM_S8_UINT;
+	case CQ_MTLPixelFormatDepth32Float_Stencil8: return CqFormat_D32_SFLOAT_S8_UINT;
+	case CQ_MTLPixelFormatX32_Stencil8: return CqFormat_D32_SFLOAT_S8_UINT;
+	case CQ_MTLPixelFormatX24_Stencil8: return CqFormat_D24_UNORM_S8_UINT;
 
-	case CQ_MTLPixelFormatBGRA8Unorm_sRGB: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatBGR10_XR: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatBGR10_XR_sRGB: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatBGRA10_XR: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatBGRA10_XR_sRGB: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatGBGR422: return TinyImageFormat_UNDEFINED;
-	case CQ_MTLPixelFormatBGRG422: return TinyImageFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGRA8Unorm_sRGB: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGR10_XR: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGR10_XR_sRGB: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGRA10_XR: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGRA10_XR_sRGB: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatGBGR422: return CqFormat_UNDEFINED;
+	case CQ_MTLPixelFormatBGRG422: return CqFormat_UNDEFINED;
 	}
-	return TinyImageFormat_UNDEFINED;
+	return CqFormat_UNDEFINED;
 }
 
 
-inline bool TinyImageFormat_MTLPixelFormatOnMac(TinyImageFormat_MTLPixelFormat fmt) {
+inline bool CqFormat_MTLPixelFormatOnMac(CqFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case CQ_MTLPixelFormatA8Unorm:
 	case CQ_MTLPixelFormatR8Unorm:
@@ -11758,7 +11758,7 @@ inline bool TinyImageFormat_MTLPixelFormatOnMac(TinyImageFormat_MTLPixelFormat f
 }
 
 	
-inline bool TinyImageFormat_MTLPixelFormatOnIOs(TinyImageFormat_MTLPixelFormat fmt) {
+inline bool CqFormat_MTLPixelFormatOnIOs(CqFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case CQ_MTLPixelFormatA8Unorm:
 	case CQ_MTLPixelFormatR8Unorm:

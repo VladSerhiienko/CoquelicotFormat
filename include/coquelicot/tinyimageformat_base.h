@@ -3,7 +3,7 @@
 #if !defined(TINYIMAGEFORMAT_BASE_H_) && !defined(TINYIMAGEFORMAT_IMAGEFORMAT_H)
 #define TINYIMAGEFORMAT_BASE_H_ 1
 
-/* TinyImageFormat is a library about the encodings of pixels typically
+/* CqFormat is a library about the encodings of pixels typically
  * encountered in real time graphics.
  *
  * Like modern graphics API it is enumeration based but it also provides an API
@@ -67,12 +67,12 @@
  * Its may not be addressable directly but as blocks of related pixels.
  * When decode/encoding pixels are presented to the API as 4 floats or doubles.
  *
- * Logical Channels (TinyImageFormat_LogicalChannel)
+ * Logical Channels (CqFormat_LogicalChannel)
  * Logical channel are the usual way you would ask for a particular channel,
  * so asking about LC_Red while get you data for the red channel, however its
  * actually physically encoded in the data.
  *
- * Physical Channels (TinyImageFormat_PhysicalChannel)
+ * Physical Channels (CqFormat_PhysicalChannel)
  * Physical channels are the inverse of logical channels, that have no meaning
  * beyond the position in the data itself.
  *
@@ -90,21 +90,21 @@
  *
  * API
  * ---
- * The primary enumeration is simply TinyImageFormat, everything else supports
+ * The primary enumeration is simply CqFormat, everything else supports
  * this enum.
- * All functions, enums etc. are prefixed with TinyImageFormat_, All functions
+ * All functions, enums etc. are prefixed with CqFormat_, All functions
  * also take the format as first parameter. These are often removed in the api
  * docs to save space.
  *
  * Defines
  * -------
- * TinyImageFormat_Count - how many formats in total
- * TinyImageFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
+ * CqFormat_Count - how many formats in total
+ * CqFormat_MaxPixelCountOfBlock - maximum number of pixels in a block
  * 									- for any format (for static decode buffer allocation)
  *
  * Enums
  * -----
- * TinyImageFormat - Count entries, one for each format supported
+ * CqFormat - Count entries, one for each format supported
  * LogicalChannel - values for logical channel or constants
  * 						- LC_Red - Red channel is specified
  * 						- LC_Green - Green channel is specified
@@ -124,11 +124,11 @@
  *
  * Structs
  * -------
- * TinyImageFormat_DecodeInput
+ * CqFormat_DecodeInput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *   - lut or pixelPlane1 - Look Up Table ptr for CLUT formats or pixel plane 1
  *	 - pixelPlane2 to pixelPlane 9 - 7 more planes ptrs
- * TinyImageFormat_EncodeOutput
+ * CqFormat_EncodeOutput
  *   - pixel or pixelPlane0 - pixel data ptr or pixel data ptr for plane 0
  *	 - pixelPlane2 to pixelPlane 9 - 8 more planes ptrs
 
@@ -229,230 +229,230 @@
  *
  *
  */
-typedef enum TinyImageFormat {
-	TinyImageFormat_UNDEFINED = 0,
-	TinyImageFormat_R1_UNORM = 1,
-	TinyImageFormat_R2_UNORM = 2,
-	TinyImageFormat_R4_UNORM = 3,
-	TinyImageFormat_R4G4_UNORM = 4,
-	TinyImageFormat_G4R4_UNORM = 5,
-	TinyImageFormat_A8_UNORM = 6,
-	TinyImageFormat_R8_UNORM = 7,
-	TinyImageFormat_R8_SNORM = 8,
-	TinyImageFormat_R8_UINT = 9,
-	TinyImageFormat_R8_SINT = 10,
-	TinyImageFormat_R8_SRGB = 11,
-	TinyImageFormat_B2G3R3_UNORM = 12,
-	TinyImageFormat_R4G4B4A4_UNORM = 13,
-	TinyImageFormat_R4G4B4X4_UNORM = 14,
-	TinyImageFormat_B4G4R4A4_UNORM = 15,
-	TinyImageFormat_B4G4R4X4_UNORM = 16,
-	TinyImageFormat_A4R4G4B4_UNORM = 17,
-	TinyImageFormat_X4R4G4B4_UNORM = 18,
-	TinyImageFormat_A4B4G4R4_UNORM = 19,
-	TinyImageFormat_X4B4G4R4_UNORM = 20,
-	TinyImageFormat_R5G6B5_UNORM = 21,
-	TinyImageFormat_B5G6R5_UNORM = 22,
-	TinyImageFormat_R5G5B5A1_UNORM = 23,
-	TinyImageFormat_B5G5R5A1_UNORM = 24,
-	TinyImageFormat_A1B5G5R5_UNORM = 25,
-	TinyImageFormat_A1R5G5B5_UNORM = 26,
-	TinyImageFormat_R5G5B5X1_UNORM = 27,
-	TinyImageFormat_B5G5R5X1_UNORM = 28,
-	TinyImageFormat_X1R5G5B5_UNORM = 29,
-	TinyImageFormat_X1B5G5R5_UNORM = 30,
-	TinyImageFormat_B2G3R3A8_UNORM = 31,
-	TinyImageFormat_R8G8_UNORM = 32,
-	TinyImageFormat_R8G8_SNORM = 33,
-	TinyImageFormat_G8R8_UNORM = 34,
-	TinyImageFormat_G8R8_SNORM = 35,
-	TinyImageFormat_R8G8_UINT = 36,
-	TinyImageFormat_R8G8_SINT = 37,
-	TinyImageFormat_R8G8_SRGB = 38,
-	TinyImageFormat_R16_UNORM = 39,
-	TinyImageFormat_R16_SNORM = 40,
-	TinyImageFormat_R16_UINT = 41,
-	TinyImageFormat_R16_SINT = 42,
-	TinyImageFormat_R16_SFLOAT = 43,
-	TinyImageFormat_R16_SBFLOAT = 44,
-	TinyImageFormat_R8G8B8_UNORM = 45,
-	TinyImageFormat_R8G8B8_SNORM = 46,
-	TinyImageFormat_R8G8B8_UINT = 47,
-	TinyImageFormat_R8G8B8_SINT = 48,
-	TinyImageFormat_R8G8B8_SRGB = 49,
-	TinyImageFormat_B8G8R8_UNORM = 50,
-	TinyImageFormat_B8G8R8_SNORM = 51,
-	TinyImageFormat_B8G8R8_UINT = 52,
-	TinyImageFormat_B8G8R8_SINT = 53,
-	TinyImageFormat_B8G8R8_SRGB = 54,
-	TinyImageFormat_R8G8B8A8_UNORM = 55,
-	TinyImageFormat_R8G8B8A8_SNORM = 56,
-	TinyImageFormat_R8G8B8A8_UINT = 57,
-	TinyImageFormat_R8G8B8A8_SINT = 58,
-	TinyImageFormat_R8G8B8A8_SRGB = 59,
-	TinyImageFormat_B8G8R8A8_UNORM = 60,
-	TinyImageFormat_B8G8R8A8_SNORM = 61,
-	TinyImageFormat_B8G8R8A8_UINT = 62,
-	TinyImageFormat_B8G8R8A8_SINT = 63,
-	TinyImageFormat_B8G8R8A8_SRGB = 64,
-	TinyImageFormat_R8G8B8X8_UNORM = 65,
-	TinyImageFormat_B8G8R8X8_UNORM = 66,
-	TinyImageFormat_R16G16_UNORM = 67,
-	TinyImageFormat_G16R16_UNORM = 68,
-	TinyImageFormat_R16G16_SNORM = 69,
-	TinyImageFormat_G16R16_SNORM = 70,
-	TinyImageFormat_R16G16_UINT = 71,
-	TinyImageFormat_R16G16_SINT = 72,
-	TinyImageFormat_R16G16_SFLOAT = 73,
-	TinyImageFormat_R16G16_SBFLOAT = 74,
-	TinyImageFormat_R32_UINT = 75,
-	TinyImageFormat_R32_SINT = 76,
-	TinyImageFormat_R32_SFLOAT = 77,
-	TinyImageFormat_A2R10G10B10_UNORM = 78,
-	TinyImageFormat_A2R10G10B10_UINT = 79,
-	TinyImageFormat_A2R10G10B10_SNORM = 80,
-	TinyImageFormat_A2R10G10B10_SINT = 81,
-	TinyImageFormat_A2B10G10R10_UNORM = 82,
-	TinyImageFormat_A2B10G10R10_UINT = 83,
-	TinyImageFormat_A2B10G10R10_SNORM = 84,
-	TinyImageFormat_A2B10G10R10_SINT = 85,
-	TinyImageFormat_R10G10B10A2_UNORM = 86,
-	TinyImageFormat_R10G10B10A2_UINT = 87,
-	TinyImageFormat_R10G10B10A2_SNORM = 88,
-	TinyImageFormat_R10G10B10A2_SINT = 89,
-	TinyImageFormat_B10G10R10A2_UNORM = 90,
-	TinyImageFormat_B10G10R10A2_UINT = 91,
-	TinyImageFormat_B10G10R10A2_SNORM = 92,
-	TinyImageFormat_B10G10R10A2_SINT = 93,
-	TinyImageFormat_B10G11R11_UFLOAT = 94,
-	TinyImageFormat_E5B9G9R9_UFLOAT = 95,
-	TinyImageFormat_R16G16B16_UNORM = 96,
-	TinyImageFormat_R16G16B16_SNORM = 97,
-	TinyImageFormat_R16G16B16_UINT = 98,
-	TinyImageFormat_R16G16B16_SINT = 99,
-	TinyImageFormat_R16G16B16_SFLOAT = 100,
-	TinyImageFormat_R16G16B16_SBFLOAT = 101,
-	TinyImageFormat_R16G16B16A16_UNORM = 102,
-	TinyImageFormat_R16G16B16A16_SNORM = 103,
-	TinyImageFormat_R16G16B16A16_UINT = 104,
-	TinyImageFormat_R16G16B16A16_SINT = 105,
-	TinyImageFormat_R16G16B16A16_SFLOAT = 106,
-	TinyImageFormat_R16G16B16A16_SBFLOAT = 107,
-	TinyImageFormat_R32G32_UINT = 108,
-	TinyImageFormat_R32G32_SINT = 109,
-	TinyImageFormat_R32G32_SFLOAT = 110,
-	TinyImageFormat_R32G32B32_UINT = 111,
-	TinyImageFormat_R32G32B32_SINT = 112,
-	TinyImageFormat_R32G32B32_SFLOAT = 113,
-	TinyImageFormat_R32G32B32A32_UINT = 114,
-	TinyImageFormat_R32G32B32A32_SINT = 115,
-	TinyImageFormat_R32G32B32A32_SFLOAT = 116,
-	TinyImageFormat_R64_UINT = 117,
-	TinyImageFormat_R64_SINT = 118,
-	TinyImageFormat_R64_SFLOAT = 119,
-	TinyImageFormat_R64G64_UINT = 120,
-	TinyImageFormat_R64G64_SINT = 121,
-	TinyImageFormat_R64G64_SFLOAT = 122,
-	TinyImageFormat_R64G64B64_UINT = 123,
-	TinyImageFormat_R64G64B64_SINT = 124,
-	TinyImageFormat_R64G64B64_SFLOAT = 125,
-	TinyImageFormat_R64G64B64A64_UINT = 126,
-	TinyImageFormat_R64G64B64A64_SINT = 127,
-	TinyImageFormat_R64G64B64A64_SFLOAT = 128,
-	TinyImageFormat_D16_UNORM = 129,
-	TinyImageFormat_X8_D24_UNORM = 130,
-	TinyImageFormat_D32_SFLOAT = 131,
-	TinyImageFormat_S8_UINT = 132,
-	TinyImageFormat_D16_UNORM_S8_UINT = 133,
-	TinyImageFormat_D24_UNORM_S8_UINT = 134,
-	TinyImageFormat_D32_SFLOAT_S8_UINT = 135,
-	TinyImageFormat_DXBC1_RGB_UNORM = 136,
-	TinyImageFormat_DXBC1_RGB_SRGB = 137,
-	TinyImageFormat_DXBC1_RGBA_UNORM = 138,
-	TinyImageFormat_DXBC1_RGBA_SRGB = 139,
-	TinyImageFormat_DXBC2_UNORM = 140,
-	TinyImageFormat_DXBC2_SRGB = 141,
-	TinyImageFormat_DXBC3_UNORM = 142,
-	TinyImageFormat_DXBC3_SRGB = 143,
-	TinyImageFormat_DXBC4_UNORM = 144,
-	TinyImageFormat_DXBC4_SNORM = 145,
-	TinyImageFormat_DXBC5_UNORM = 146,
-	TinyImageFormat_DXBC5_SNORM = 147,
-	TinyImageFormat_DXBC6H_UFLOAT = 148,
-	TinyImageFormat_DXBC6H_SFLOAT = 149,
-	TinyImageFormat_DXBC7_UNORM = 150,
-	TinyImageFormat_DXBC7_SRGB = 151,
-	TinyImageFormat_PVRTC1_2BPP_UNORM = 152,
-	TinyImageFormat_PVRTC1_4BPP_UNORM = 153,
-	TinyImageFormat_PVRTC2_2BPP_UNORM = 154,
-	TinyImageFormat_PVRTC2_4BPP_UNORM = 155,
-	TinyImageFormat_PVRTC1_2BPP_SRGB = 156,
-	TinyImageFormat_PVRTC1_4BPP_SRGB = 157,
-	TinyImageFormat_PVRTC2_2BPP_SRGB = 158,
-	TinyImageFormat_PVRTC2_4BPP_SRGB = 159,
-	TinyImageFormat_ETC2_R8G8B8_UNORM = 160,
-	TinyImageFormat_ETC2_R8G8B8_SRGB = 161,
-	TinyImageFormat_ETC2_R8G8B8A1_UNORM = 162,
-	TinyImageFormat_ETC2_R8G8B8A1_SRGB = 163,
-	TinyImageFormat_ETC2_R8G8B8A8_UNORM = 164,
-	TinyImageFormat_ETC2_R8G8B8A8_SRGB = 165,
-	TinyImageFormat_ETC2_EAC_R11_UNORM = 166,
-	TinyImageFormat_ETC2_EAC_R11_SNORM = 167,
-	TinyImageFormat_ETC2_EAC_R11G11_UNORM = 168,
-	TinyImageFormat_ETC2_EAC_R11G11_SNORM = 169,
-	TinyImageFormat_ASTC_4x4_UNORM = 170,
-	TinyImageFormat_ASTC_4x4_SRGB = 171,
-	TinyImageFormat_ASTC_5x4_UNORM = 172,
-	TinyImageFormat_ASTC_5x4_SRGB = 173,
-	TinyImageFormat_ASTC_5x5_UNORM = 174,
-	TinyImageFormat_ASTC_5x5_SRGB = 175,
-	TinyImageFormat_ASTC_6x5_UNORM = 176,
-	TinyImageFormat_ASTC_6x5_SRGB = 177,
-	TinyImageFormat_ASTC_6x6_UNORM = 178,
-	TinyImageFormat_ASTC_6x6_SRGB = 179,
-	TinyImageFormat_ASTC_8x5_UNORM = 180,
-	TinyImageFormat_ASTC_8x5_SRGB = 181,
-	TinyImageFormat_ASTC_8x6_UNORM = 182,
-	TinyImageFormat_ASTC_8x6_SRGB = 183,
-	TinyImageFormat_ASTC_8x8_UNORM = 184,
-	TinyImageFormat_ASTC_8x8_SRGB = 185,
-	TinyImageFormat_ASTC_10x5_UNORM = 186,
-	TinyImageFormat_ASTC_10x5_SRGB = 187,
-	TinyImageFormat_ASTC_10x6_UNORM = 188,
-	TinyImageFormat_ASTC_10x6_SRGB = 189,
-	TinyImageFormat_ASTC_10x8_UNORM = 190,
-	TinyImageFormat_ASTC_10x8_SRGB = 191,
-	TinyImageFormat_ASTC_10x10_UNORM = 192,
-	TinyImageFormat_ASTC_10x10_SRGB = 193,
-	TinyImageFormat_ASTC_12x10_UNORM = 194,
-	TinyImageFormat_ASTC_12x10_SRGB = 195,
-	TinyImageFormat_ASTC_12x12_UNORM = 196,
-	TinyImageFormat_ASTC_12x12_SRGB = 197,
-	TinyImageFormat_CLUT_P4 = 198,
-	TinyImageFormat_CLUT_P4A4 = 199,
-	TinyImageFormat_CLUT_P8 = 200,
-	TinyImageFormat_CLUT_P8A8 = 201,
-} TinyImageFormat;
+typedef enum CqFormat {
+	CqFormat_UNDEFINED = 0,
+	CqFormat_R1_UNORM = 1,
+	CqFormat_R2_UNORM = 2,
+	CqFormat_R4_UNORM = 3,
+	CqFormat_R4G4_UNORM = 4,
+	CqFormat_G4R4_UNORM = 5,
+	CqFormat_A8_UNORM = 6,
+	CqFormat_R8_UNORM = 7,
+	CqFormat_R8_SNORM = 8,
+	CqFormat_R8_UINT = 9,
+	CqFormat_R8_SINT = 10,
+	CqFormat_R8_SRGB = 11,
+	CqFormat_B2G3R3_UNORM = 12,
+	CqFormat_R4G4B4A4_UNORM = 13,
+	CqFormat_R4G4B4X4_UNORM = 14,
+	CqFormat_B4G4R4A4_UNORM = 15,
+	CqFormat_B4G4R4X4_UNORM = 16,
+	CqFormat_A4R4G4B4_UNORM = 17,
+	CqFormat_X4R4G4B4_UNORM = 18,
+	CqFormat_A4B4G4R4_UNORM = 19,
+	CqFormat_X4B4G4R4_UNORM = 20,
+	CqFormat_R5G6B5_UNORM = 21,
+	CqFormat_B5G6R5_UNORM = 22,
+	CqFormat_R5G5B5A1_UNORM = 23,
+	CqFormat_B5G5R5A1_UNORM = 24,
+	CqFormat_A1B5G5R5_UNORM = 25,
+	CqFormat_A1R5G5B5_UNORM = 26,
+	CqFormat_R5G5B5X1_UNORM = 27,
+	CqFormat_B5G5R5X1_UNORM = 28,
+	CqFormat_X1R5G5B5_UNORM = 29,
+	CqFormat_X1B5G5R5_UNORM = 30,
+	CqFormat_B2G3R3A8_UNORM = 31,
+	CqFormat_R8G8_UNORM = 32,
+	CqFormat_R8G8_SNORM = 33,
+	CqFormat_G8R8_UNORM = 34,
+	CqFormat_G8R8_SNORM = 35,
+	CqFormat_R8G8_UINT = 36,
+	CqFormat_R8G8_SINT = 37,
+	CqFormat_R8G8_SRGB = 38,
+	CqFormat_R16_UNORM = 39,
+	CqFormat_R16_SNORM = 40,
+	CqFormat_R16_UINT = 41,
+	CqFormat_R16_SINT = 42,
+	CqFormat_R16_SFLOAT = 43,
+	CqFormat_R16_SBFLOAT = 44,
+	CqFormat_R8G8B8_UNORM = 45,
+	CqFormat_R8G8B8_SNORM = 46,
+	CqFormat_R8G8B8_UINT = 47,
+	CqFormat_R8G8B8_SINT = 48,
+	CqFormat_R8G8B8_SRGB = 49,
+	CqFormat_B8G8R8_UNORM = 50,
+	CqFormat_B8G8R8_SNORM = 51,
+	CqFormat_B8G8R8_UINT = 52,
+	CqFormat_B8G8R8_SINT = 53,
+	CqFormat_B8G8R8_SRGB = 54,
+	CqFormat_R8G8B8A8_UNORM = 55,
+	CqFormat_R8G8B8A8_SNORM = 56,
+	CqFormat_R8G8B8A8_UINT = 57,
+	CqFormat_R8G8B8A8_SINT = 58,
+	CqFormat_R8G8B8A8_SRGB = 59,
+	CqFormat_B8G8R8A8_UNORM = 60,
+	CqFormat_B8G8R8A8_SNORM = 61,
+	CqFormat_B8G8R8A8_UINT = 62,
+	CqFormat_B8G8R8A8_SINT = 63,
+	CqFormat_B8G8R8A8_SRGB = 64,
+	CqFormat_R8G8B8X8_UNORM = 65,
+	CqFormat_B8G8R8X8_UNORM = 66,
+	CqFormat_R16G16_UNORM = 67,
+	CqFormat_G16R16_UNORM = 68,
+	CqFormat_R16G16_SNORM = 69,
+	CqFormat_G16R16_SNORM = 70,
+	CqFormat_R16G16_UINT = 71,
+	CqFormat_R16G16_SINT = 72,
+	CqFormat_R16G16_SFLOAT = 73,
+	CqFormat_R16G16_SBFLOAT = 74,
+	CqFormat_R32_UINT = 75,
+	CqFormat_R32_SINT = 76,
+	CqFormat_R32_SFLOAT = 77,
+	CqFormat_A2R10G10B10_UNORM = 78,
+	CqFormat_A2R10G10B10_UINT = 79,
+	CqFormat_A2R10G10B10_SNORM = 80,
+	CqFormat_A2R10G10B10_SINT = 81,
+	CqFormat_A2B10G10R10_UNORM = 82,
+	CqFormat_A2B10G10R10_UINT = 83,
+	CqFormat_A2B10G10R10_SNORM = 84,
+	CqFormat_A2B10G10R10_SINT = 85,
+	CqFormat_R10G10B10A2_UNORM = 86,
+	CqFormat_R10G10B10A2_UINT = 87,
+	CqFormat_R10G10B10A2_SNORM = 88,
+	CqFormat_R10G10B10A2_SINT = 89,
+	CqFormat_B10G10R10A2_UNORM = 90,
+	CqFormat_B10G10R10A2_UINT = 91,
+	CqFormat_B10G10R10A2_SNORM = 92,
+	CqFormat_B10G10R10A2_SINT = 93,
+	CqFormat_B10G11R11_UFLOAT = 94,
+	CqFormat_E5B9G9R9_UFLOAT = 95,
+	CqFormat_R16G16B16_UNORM = 96,
+	CqFormat_R16G16B16_SNORM = 97,
+	CqFormat_R16G16B16_UINT = 98,
+	CqFormat_R16G16B16_SINT = 99,
+	CqFormat_R16G16B16_SFLOAT = 100,
+	CqFormat_R16G16B16_SBFLOAT = 101,
+	CqFormat_R16G16B16A16_UNORM = 102,
+	CqFormat_R16G16B16A16_SNORM = 103,
+	CqFormat_R16G16B16A16_UINT = 104,
+	CqFormat_R16G16B16A16_SINT = 105,
+	CqFormat_R16G16B16A16_SFLOAT = 106,
+	CqFormat_R16G16B16A16_SBFLOAT = 107,
+	CqFormat_R32G32_UINT = 108,
+	CqFormat_R32G32_SINT = 109,
+	CqFormat_R32G32_SFLOAT = 110,
+	CqFormat_R32G32B32_UINT = 111,
+	CqFormat_R32G32B32_SINT = 112,
+	CqFormat_R32G32B32_SFLOAT = 113,
+	CqFormat_R32G32B32A32_UINT = 114,
+	CqFormat_R32G32B32A32_SINT = 115,
+	CqFormat_R32G32B32A32_SFLOAT = 116,
+	CqFormat_R64_UINT = 117,
+	CqFormat_R64_SINT = 118,
+	CqFormat_R64_SFLOAT = 119,
+	CqFormat_R64G64_UINT = 120,
+	CqFormat_R64G64_SINT = 121,
+	CqFormat_R64G64_SFLOAT = 122,
+	CqFormat_R64G64B64_UINT = 123,
+	CqFormat_R64G64B64_SINT = 124,
+	CqFormat_R64G64B64_SFLOAT = 125,
+	CqFormat_R64G64B64A64_UINT = 126,
+	CqFormat_R64G64B64A64_SINT = 127,
+	CqFormat_R64G64B64A64_SFLOAT = 128,
+	CqFormat_D16_UNORM = 129,
+	CqFormat_X8_D24_UNORM = 130,
+	CqFormat_D32_SFLOAT = 131,
+	CqFormat_S8_UINT = 132,
+	CqFormat_D16_UNORM_S8_UINT = 133,
+	CqFormat_D24_UNORM_S8_UINT = 134,
+	CqFormat_D32_SFLOAT_S8_UINT = 135,
+	CqFormat_DXBC1_RGB_UNORM = 136,
+	CqFormat_DXBC1_RGB_SRGB = 137,
+	CqFormat_DXBC1_RGBA_UNORM = 138,
+	CqFormat_DXBC1_RGBA_SRGB = 139,
+	CqFormat_DXBC2_UNORM = 140,
+	CqFormat_DXBC2_SRGB = 141,
+	CqFormat_DXBC3_UNORM = 142,
+	CqFormat_DXBC3_SRGB = 143,
+	CqFormat_DXBC4_UNORM = 144,
+	CqFormat_DXBC4_SNORM = 145,
+	CqFormat_DXBC5_UNORM = 146,
+	CqFormat_DXBC5_SNORM = 147,
+	CqFormat_DXBC6H_UFLOAT = 148,
+	CqFormat_DXBC6H_SFLOAT = 149,
+	CqFormat_DXBC7_UNORM = 150,
+	CqFormat_DXBC7_SRGB = 151,
+	CqFormat_PVRTC1_2BPP_UNORM = 152,
+	CqFormat_PVRTC1_4BPP_UNORM = 153,
+	CqFormat_PVRTC2_2BPP_UNORM = 154,
+	CqFormat_PVRTC2_4BPP_UNORM = 155,
+	CqFormat_PVRTC1_2BPP_SRGB = 156,
+	CqFormat_PVRTC1_4BPP_SRGB = 157,
+	CqFormat_PVRTC2_2BPP_SRGB = 158,
+	CqFormat_PVRTC2_4BPP_SRGB = 159,
+	CqFormat_ETC2_R8G8B8_UNORM = 160,
+	CqFormat_ETC2_R8G8B8_SRGB = 161,
+	CqFormat_ETC2_R8G8B8A1_UNORM = 162,
+	CqFormat_ETC2_R8G8B8A1_SRGB = 163,
+	CqFormat_ETC2_R8G8B8A8_UNORM = 164,
+	CqFormat_ETC2_R8G8B8A8_SRGB = 165,
+	CqFormat_ETC2_EAC_R11_UNORM = 166,
+	CqFormat_ETC2_EAC_R11_SNORM = 167,
+	CqFormat_ETC2_EAC_R11G11_UNORM = 168,
+	CqFormat_ETC2_EAC_R11G11_SNORM = 169,
+	CqFormat_ASTC_4x4_UNORM = 170,
+	CqFormat_ASTC_4x4_SRGB = 171,
+	CqFormat_ASTC_5x4_UNORM = 172,
+	CqFormat_ASTC_5x4_SRGB = 173,
+	CqFormat_ASTC_5x5_UNORM = 174,
+	CqFormat_ASTC_5x5_SRGB = 175,
+	CqFormat_ASTC_6x5_UNORM = 176,
+	CqFormat_ASTC_6x5_SRGB = 177,
+	CqFormat_ASTC_6x6_UNORM = 178,
+	CqFormat_ASTC_6x6_SRGB = 179,
+	CqFormat_ASTC_8x5_UNORM = 180,
+	CqFormat_ASTC_8x5_SRGB = 181,
+	CqFormat_ASTC_8x6_UNORM = 182,
+	CqFormat_ASTC_8x6_SRGB = 183,
+	CqFormat_ASTC_8x8_UNORM = 184,
+	CqFormat_ASTC_8x8_SRGB = 185,
+	CqFormat_ASTC_10x5_UNORM = 186,
+	CqFormat_ASTC_10x5_SRGB = 187,
+	CqFormat_ASTC_10x6_UNORM = 188,
+	CqFormat_ASTC_10x6_SRGB = 189,
+	CqFormat_ASTC_10x8_UNORM = 190,
+	CqFormat_ASTC_10x8_SRGB = 191,
+	CqFormat_ASTC_10x10_UNORM = 192,
+	CqFormat_ASTC_10x10_SRGB = 193,
+	CqFormat_ASTC_12x10_UNORM = 194,
+	CqFormat_ASTC_12x10_SRGB = 195,
+	CqFormat_ASTC_12x12_UNORM = 196,
+	CqFormat_ASTC_12x12_SRGB = 197,
+	CqFormat_CLUT_P4 = 198,
+	CqFormat_CLUT_P4A4 = 199,
+	CqFormat_CLUT_P8 = 200,
+	CqFormat_CLUT_P8A8 = 201,
+} CqFormat;
 
-typedef enum TinyImageFormat_LogicalChannel {
-	TinyImageFormat_LC_Red = 0,
-	TinyImageFormat_LC_Green = 1,
-	TinyImageFormat_LC_Blue = 2,
-	TinyImageFormat_LC_Alpha = 3,
-	TinyImageFormat_LC_Depth = 0,
-	TinyImageFormat_LC_Stencil = 1,
-	TinyImageFormat_LC_0 = -1,
-	TinyImageFormat_LC_1 = -2,
-} TinyImageFormat_LogicalChannel;
+typedef enum CqFormat_LogicalChannel {
+	CqFormat_LC_Red = 0,
+	CqFormat_LC_Green = 1,
+	CqFormat_LC_Blue = 2,
+	CqFormat_LC_Alpha = 3,
+	CqFormat_LC_Depth = 0,
+	CqFormat_LC_Stencil = 1,
+	CqFormat_LC_0 = -1,
+	CqFormat_LC_1 = -2,
+} CqFormat_LogicalChannel;
 
-typedef enum TinyImageFormat_PhysicalChannel {
-	TinyImageFormat_PC_0 = 0,
-	TinyImageFormat_PC_1 = 1,
-	TinyImageFormat_PC_2 = 2,
-	TinyImageFormat_PC_3 = 3,
-	TinyImageFormat_PC_CONST_0 = -1,
-	TinyImageFormat_PC_CONST_1 = -2,
-} TinyImageFormat_PhysicalChannel;
+typedef enum CqFormat_PhysicalChannel {
+	CqFormat_PC_0 = 0,
+	CqFormat_PC_1 = 1,
+	CqFormat_PC_2 = 2,
+	CqFormat_PC_3 = 3,
+	CqFormat_PC_CONST_0 = -1,
+	CqFormat_PC_CONST_1 = -2,
+} CqFormat_PhysicalChannel;
 
 #ifdef __cplusplus
 namespace coquelicot {
@@ -685,9 +685,9 @@ enum PhysicalChannel {
 
 #endif
 
-#define TinyImageFormat_Count 202U 
+#define CqFormat_Count 202U 
 
-typedef struct TinyImageFormat_DecodeInput {
+typedef struct CqFormat_DecodeInput {
 	union { void const* pixel; void const* pixelPlane0; };
 	union { void const* lut; void const* pixelPlane1; };
 	void const* pixelPlane2;
@@ -698,9 +698,9 @@ typedef struct TinyImageFormat_DecodeInput {
 	void const* pixelPlane7;
 	void const* pixelPlane8;
 	void const* pixelPlane9;
-} TinyImageFormat_FetchInput;
+} CqFormat_FetchInput;
 
-typedef struct TinyImageFormat_EncodeOutput {
+typedef struct CqFormat_EncodeOutput {
 	union { void * pixel; void * pixelPlane0; };
 	void * pixelPlane1;
 	void * pixelPlane2;
@@ -711,7 +711,7 @@ typedef struct TinyImageFormat_EncodeOutput {
 	void * pixelPlane7;
 	void * pixelPlane8;
 	void * pixelPlane9;
-} TinyImageFormat_EncodeOutput;
+} CqFormat_EncodeOutput;
 
 #endif // TINYIMAGEFORMAT_BASE_H_
 

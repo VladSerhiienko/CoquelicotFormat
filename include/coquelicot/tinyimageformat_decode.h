@@ -10,24 +10,24 @@
 #else
 #define CQ_FMT_CONSTEXPR
 #endif
-#ifndef  TinyImageFormat_HAVE_UINTXX_T
+#ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
 #endif
-#ifndef  TinyImageFormat_HAVE_BOOL
+#ifndef  CqFormat_HAVE_BOOL
 #include <stdbool.h>	// for bool
 #endif
-#ifndef  TinyImageFormat_HAVE_POWF
+#ifndef  CqFormat_HAVE_POWF
 #include <math.h>	// for powf
 #endif
-//TinyImageFormat_ASSERT needs to be constexpr on some platforms
-#ifndef  TinyImageFormat_ASSERT
-#define  TinyImageFormat_ASSERT(x)
+//CqFormat_ASSERT needs to be constexpr on some platforms
+#ifndef  CqFormat_ASSERT
+#define  CqFormat_ASSERT(x)
 #endif
 
 
 
 
-inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
+inline void CqFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4]) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union
 	{
@@ -56,7 +56,7 @@ inline void TinyImageFormat_SharedE5B9G9R9UFloatToFloats(uint32_t v, float out[4
 }
 
 //HalfToFloat from Rygorous public domain code
-inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
+inline float CqFormat_HalfAsUintToFloat(uint16_t h_) {
 
 	const uint32_t shifted_exp = 0x7c00 << 13; // exponent mask after shift
 	union {
@@ -103,7 +103,7 @@ inline float TinyImageFormat_HalfAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
+inline float CqFormat_BFloatAsUintToFloat(uint16_t h_) {
 	union {
 		struct {
 			uint16_t x;
@@ -118,7 +118,7 @@ inline float TinyImageFormat_BFloatAsUintToFloat(uint16_t h_) {
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat6AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -160,7 +160,7 @@ inline float TinyImageFormat_UFloat6AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
+inline float CqFormat_UFloat7AsUintToFloat(uint16_t Value)
 {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 
@@ -202,7 +202,7 @@ inline float TinyImageFormat_UFloat7AsUintToFloat(uint16_t Value)
 	return o.f;
 }
 
-inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat10AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -248,7 +248,7 @@ inline float TinyImageFormat_UFloat10AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
+inline float CqFormat_UFloat11AsUintToFloat(uint16_t v) {
 	// https://github.com/microsoft/DirectXMath/blob/ecfb4754400dac581c2eeb6e849617cf5d210426/Inc/DirectXPackedVector.h
 	union {
 		struct {
@@ -293,7 +293,7 @@ inline float TinyImageFormat_UFloat11AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
+CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {
 	switch(lookup) {
 		case 0: return 0.00000000f;
 		case 1: return 0.00030353f;
@@ -555,135 +555,135 @@ CQ_FMT_CONSTEXPR inline float TinyImageFormat_LookupSRGB(uint8_t lookup) {
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsF(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM: return true;
-		case TinyImageFormat_R2_UNORM: return true;
-		case TinyImageFormat_R4_UNORM: return true;
-		case TinyImageFormat_R4G4_UNORM: return true;
-		case TinyImageFormat_G4R4_UNORM: return true;
-		case TinyImageFormat_A8_UNORM: return true;
-		case TinyImageFormat_R8_UNORM: return true;
-		case TinyImageFormat_R8_SNORM: return true;
-		case TinyImageFormat_R8_UINT: return true;
-		case TinyImageFormat_R8_SINT: return true;
-		case TinyImageFormat_R8_SRGB: return true;
-		case TinyImageFormat_B2G3R3_UNORM: return true;
-		case TinyImageFormat_R4G4B4A4_UNORM: return true;
-		case TinyImageFormat_R4G4B4X4_UNORM: return true;
-		case TinyImageFormat_B4G4R4A4_UNORM: return true;
-		case TinyImageFormat_B4G4R4X4_UNORM: return true;
-		case TinyImageFormat_A4R4G4B4_UNORM: return true;
-		case TinyImageFormat_X4R4G4B4_UNORM: return true;
-		case TinyImageFormat_A4B4G4R4_UNORM: return true;
-		case TinyImageFormat_X4B4G4R4_UNORM: return true;
-		case TinyImageFormat_R5G6B5_UNORM: return true;
-		case TinyImageFormat_B5G6R5_UNORM: return true;
-		case TinyImageFormat_R5G5B5A1_UNORM: return true;
-		case TinyImageFormat_B5G5R5A1_UNORM: return true;
-		case TinyImageFormat_A1B5G5R5_UNORM: return true;
-		case TinyImageFormat_A1R5G5B5_UNORM: return true;
-		case TinyImageFormat_R5G5B5X1_UNORM: return true;
-		case TinyImageFormat_B5G5R5X1_UNORM: return true;
-		case TinyImageFormat_X1R5G5B5_UNORM: return true;
-		case TinyImageFormat_X1B5G5R5_UNORM: return true;
-		case TinyImageFormat_B2G3R3A8_UNORM: return true;
-		case TinyImageFormat_R8G8_UNORM: return true;
-		case TinyImageFormat_R8G8_SNORM: return true;
-		case TinyImageFormat_G8R8_UNORM: return true;
-		case TinyImageFormat_G8R8_SNORM: return true;
-		case TinyImageFormat_R8G8_UINT: return true;
-		case TinyImageFormat_R8G8_SINT: return true;
-		case TinyImageFormat_R8G8_SRGB: return true;
-		case TinyImageFormat_R16_UNORM: return true;
-		case TinyImageFormat_R16_SNORM: return true;
-		case TinyImageFormat_R16_UINT: return true;
-		case TinyImageFormat_R16_SINT: return true;
-		case TinyImageFormat_R16_SFLOAT: return true;
-		case TinyImageFormat_R16_SBFLOAT: return true;
-		case TinyImageFormat_R8G8B8_UNORM: return true;
-		case TinyImageFormat_R8G8B8_SNORM: return true;
-		case TinyImageFormat_R8G8B8_UINT: return true;
-		case TinyImageFormat_R8G8B8_SINT: return true;
-		case TinyImageFormat_R8G8B8_SRGB: return true;
-		case TinyImageFormat_B8G8R8_UNORM: return true;
-		case TinyImageFormat_B8G8R8_SNORM: return true;
-		case TinyImageFormat_B8G8R8_UINT: return true;
-		case TinyImageFormat_B8G8R8_SINT: return true;
-		case TinyImageFormat_B8G8R8_SRGB: return true;
-		case TinyImageFormat_R8G8B8A8_UNORM: return true;
-		case TinyImageFormat_R8G8B8A8_SNORM: return true;
-		case TinyImageFormat_R8G8B8A8_UINT: return true;
-		case TinyImageFormat_R8G8B8A8_SINT: return true;
-		case TinyImageFormat_R8G8B8A8_SRGB: return true;
-		case TinyImageFormat_B8G8R8A8_UNORM: return true;
-		case TinyImageFormat_B8G8R8A8_SNORM: return true;
-		case TinyImageFormat_B8G8R8A8_UINT: return true;
-		case TinyImageFormat_B8G8R8A8_SINT: return true;
-		case TinyImageFormat_B8G8R8A8_SRGB: return true;
-		case TinyImageFormat_R8G8B8X8_UNORM: return true;
-		case TinyImageFormat_B8G8R8X8_UNORM: return true;
-		case TinyImageFormat_R16G16_UNORM: return true;
-		case TinyImageFormat_G16R16_UNORM: return true;
-		case TinyImageFormat_R16G16_SNORM: return true;
-		case TinyImageFormat_G16R16_SNORM: return true;
-		case TinyImageFormat_R16G16_UINT: return true;
-		case TinyImageFormat_R16G16_SINT: return true;
-		case TinyImageFormat_R16G16_SFLOAT: return true;
-		case TinyImageFormat_R16G16_SBFLOAT: return true;
-		case TinyImageFormat_R32_UINT: return true;
-		case TinyImageFormat_R32_SINT: return true;
-		case TinyImageFormat_R32_SFLOAT: return true;
-		case TinyImageFormat_A2R10G10B10_UNORM: return true;
-		case TinyImageFormat_A2R10G10B10_UINT: return true;
-		case TinyImageFormat_A2R10G10B10_SNORM: return true;
-		case TinyImageFormat_A2R10G10B10_SINT: return true;
-		case TinyImageFormat_A2B10G10R10_UNORM: return true;
-		case TinyImageFormat_A2B10G10R10_UINT: return true;
-		case TinyImageFormat_A2B10G10R10_SNORM: return true;
-		case TinyImageFormat_A2B10G10R10_SINT: return true;
-		case TinyImageFormat_R10G10B10A2_UNORM: return true;
-		case TinyImageFormat_R10G10B10A2_UINT: return true;
-		case TinyImageFormat_R10G10B10A2_SNORM: return true;
-		case TinyImageFormat_R10G10B10A2_SINT: return true;
-		case TinyImageFormat_B10G10R10A2_UNORM: return true;
-		case TinyImageFormat_B10G10R10A2_UINT: return true;
-		case TinyImageFormat_B10G10R10A2_SNORM: return true;
-		case TinyImageFormat_B10G10R10A2_SINT: return true;
-		case TinyImageFormat_B10G11R11_UFLOAT: return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT: return true;
-		case TinyImageFormat_R16G16B16_UNORM: return true;
-		case TinyImageFormat_R16G16B16_SNORM: return true;
-		case TinyImageFormat_R16G16B16_UINT: return true;
-		case TinyImageFormat_R16G16B16_SINT: return true;
-		case TinyImageFormat_R16G16B16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_UNORM: return true;
-		case TinyImageFormat_R16G16B16A16_SNORM: return true;
-		case TinyImageFormat_R16G16B16A16_UINT: return true;
-		case TinyImageFormat_R16G16B16A16_SINT: return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT: return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT: return true;
-		case TinyImageFormat_R32G32_UINT: return true;
-		case TinyImageFormat_R32G32_SINT: return true;
-		case TinyImageFormat_R32G32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32_UINT: return true;
-		case TinyImageFormat_R32G32B32_SINT: return true;
-		case TinyImageFormat_R32G32B32_SFLOAT: return true;
-		case TinyImageFormat_R32G32B32A32_UINT: return true;
-		case TinyImageFormat_R32G32B32A32_SINT: return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT: return true;
-		case TinyImageFormat_CLUT_P4: return true;
-		case TinyImageFormat_CLUT_P4A4: return true;
-		case TinyImageFormat_CLUT_P8: return true;
-		case TinyImageFormat_CLUT_P8A8: return true;
+		case CqFormat_R1_UNORM: return true;
+		case CqFormat_R2_UNORM: return true;
+		case CqFormat_R4_UNORM: return true;
+		case CqFormat_R4G4_UNORM: return true;
+		case CqFormat_G4R4_UNORM: return true;
+		case CqFormat_A8_UNORM: return true;
+		case CqFormat_R8_UNORM: return true;
+		case CqFormat_R8_SNORM: return true;
+		case CqFormat_R8_UINT: return true;
+		case CqFormat_R8_SINT: return true;
+		case CqFormat_R8_SRGB: return true;
+		case CqFormat_B2G3R3_UNORM: return true;
+		case CqFormat_R4G4B4A4_UNORM: return true;
+		case CqFormat_R4G4B4X4_UNORM: return true;
+		case CqFormat_B4G4R4A4_UNORM: return true;
+		case CqFormat_B4G4R4X4_UNORM: return true;
+		case CqFormat_A4R4G4B4_UNORM: return true;
+		case CqFormat_X4R4G4B4_UNORM: return true;
+		case CqFormat_A4B4G4R4_UNORM: return true;
+		case CqFormat_X4B4G4R4_UNORM: return true;
+		case CqFormat_R5G6B5_UNORM: return true;
+		case CqFormat_B5G6R5_UNORM: return true;
+		case CqFormat_R5G5B5A1_UNORM: return true;
+		case CqFormat_B5G5R5A1_UNORM: return true;
+		case CqFormat_A1B5G5R5_UNORM: return true;
+		case CqFormat_A1R5G5B5_UNORM: return true;
+		case CqFormat_R5G5B5X1_UNORM: return true;
+		case CqFormat_B5G5R5X1_UNORM: return true;
+		case CqFormat_X1R5G5B5_UNORM: return true;
+		case CqFormat_X1B5G5R5_UNORM: return true;
+		case CqFormat_B2G3R3A8_UNORM: return true;
+		case CqFormat_R8G8_UNORM: return true;
+		case CqFormat_R8G8_SNORM: return true;
+		case CqFormat_G8R8_UNORM: return true;
+		case CqFormat_G8R8_SNORM: return true;
+		case CqFormat_R8G8_UINT: return true;
+		case CqFormat_R8G8_SINT: return true;
+		case CqFormat_R8G8_SRGB: return true;
+		case CqFormat_R16_UNORM: return true;
+		case CqFormat_R16_SNORM: return true;
+		case CqFormat_R16_UINT: return true;
+		case CqFormat_R16_SINT: return true;
+		case CqFormat_R16_SFLOAT: return true;
+		case CqFormat_R16_SBFLOAT: return true;
+		case CqFormat_R8G8B8_UNORM: return true;
+		case CqFormat_R8G8B8_SNORM: return true;
+		case CqFormat_R8G8B8_UINT: return true;
+		case CqFormat_R8G8B8_SINT: return true;
+		case CqFormat_R8G8B8_SRGB: return true;
+		case CqFormat_B8G8R8_UNORM: return true;
+		case CqFormat_B8G8R8_SNORM: return true;
+		case CqFormat_B8G8R8_UINT: return true;
+		case CqFormat_B8G8R8_SINT: return true;
+		case CqFormat_B8G8R8_SRGB: return true;
+		case CqFormat_R8G8B8A8_UNORM: return true;
+		case CqFormat_R8G8B8A8_SNORM: return true;
+		case CqFormat_R8G8B8A8_UINT: return true;
+		case CqFormat_R8G8B8A8_SINT: return true;
+		case CqFormat_R8G8B8A8_SRGB: return true;
+		case CqFormat_B8G8R8A8_UNORM: return true;
+		case CqFormat_B8G8R8A8_SNORM: return true;
+		case CqFormat_B8G8R8A8_UINT: return true;
+		case CqFormat_B8G8R8A8_SINT: return true;
+		case CqFormat_B8G8R8A8_SRGB: return true;
+		case CqFormat_R8G8B8X8_UNORM: return true;
+		case CqFormat_B8G8R8X8_UNORM: return true;
+		case CqFormat_R16G16_UNORM: return true;
+		case CqFormat_G16R16_UNORM: return true;
+		case CqFormat_R16G16_SNORM: return true;
+		case CqFormat_G16R16_SNORM: return true;
+		case CqFormat_R16G16_UINT: return true;
+		case CqFormat_R16G16_SINT: return true;
+		case CqFormat_R16G16_SFLOAT: return true;
+		case CqFormat_R16G16_SBFLOAT: return true;
+		case CqFormat_R32_UINT: return true;
+		case CqFormat_R32_SINT: return true;
+		case CqFormat_R32_SFLOAT: return true;
+		case CqFormat_A2R10G10B10_UNORM: return true;
+		case CqFormat_A2R10G10B10_UINT: return true;
+		case CqFormat_A2R10G10B10_SNORM: return true;
+		case CqFormat_A2R10G10B10_SINT: return true;
+		case CqFormat_A2B10G10R10_UNORM: return true;
+		case CqFormat_A2B10G10R10_UINT: return true;
+		case CqFormat_A2B10G10R10_SNORM: return true;
+		case CqFormat_A2B10G10R10_SINT: return true;
+		case CqFormat_R10G10B10A2_UNORM: return true;
+		case CqFormat_R10G10B10A2_UINT: return true;
+		case CqFormat_R10G10B10A2_SNORM: return true;
+		case CqFormat_R10G10B10A2_SINT: return true;
+		case CqFormat_B10G10R10A2_UNORM: return true;
+		case CqFormat_B10G10R10A2_UINT: return true;
+		case CqFormat_B10G10R10A2_SNORM: return true;
+		case CqFormat_B10G10R10A2_SINT: return true;
+		case CqFormat_B10G11R11_UFLOAT: return true;
+		case CqFormat_E5B9G9R9_UFLOAT: return true;
+		case CqFormat_R16G16B16_UNORM: return true;
+		case CqFormat_R16G16B16_SNORM: return true;
+		case CqFormat_R16G16B16_UINT: return true;
+		case CqFormat_R16G16B16_SINT: return true;
+		case CqFormat_R16G16B16_SFLOAT: return true;
+		case CqFormat_R16G16B16_SBFLOAT: return true;
+		case CqFormat_R16G16B16A16_UNORM: return true;
+		case CqFormat_R16G16B16A16_SNORM: return true;
+		case CqFormat_R16G16B16A16_UINT: return true;
+		case CqFormat_R16G16B16A16_SINT: return true;
+		case CqFormat_R16G16B16A16_SFLOAT: return true;
+		case CqFormat_R16G16B16A16_SBFLOAT: return true;
+		case CqFormat_R32G32_UINT: return true;
+		case CqFormat_R32G32_SINT: return true;
+		case CqFormat_R32G32_SFLOAT: return true;
+		case CqFormat_R32G32B32_UINT: return true;
+		case CqFormat_R32G32B32_SINT: return true;
+		case CqFormat_R32G32B32_SFLOAT: return true;
+		case CqFormat_R32G32B32A32_UINT: return true;
+		case CqFormat_R32G32B32A32_SINT: return true;
+		case CqFormat_R32G32B32A32_SFLOAT: return true;
+		case CqFormat_CLUT_P4: return true;
+		case CqFormat_CLUT_P4A4: return true;
+		case CqFormat_CLUT_P8: return true;
+		case CqFormat_CLUT_P8A8: return true;
 		default: return false;
 		}
 	}
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, float* out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {
 	switch(fmt) {
-		case TinyImageFormat_R1_UNORM:
+		case CqFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x1);
@@ -722,7 +722,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=32;
 			}
 			return true;
-		case TinyImageFormat_R2_UNORM:
+		case CqFormat_R2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -745,7 +745,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=16;
 			}
 			return true;
-		case TinyImageFormat_R4_UNORM:
+		case CqFormat_R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -760,7 +760,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=8;
 			}
 			return true;
-		case TinyImageFormat_R4G4_UNORM:
+		case CqFormat_R4G4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -771,7 +771,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_G4R4_UNORM:
+		case CqFormat_G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[1] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -782,7 +782,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A8_UNORM:
+		case CqFormat_A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[3] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[0] = (float)0.00000000;
@@ -792,7 +792,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_UNORM:
+		case CqFormat_R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = (float)0.00000000;
@@ -802,7 +802,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SNORM:
+		case CqFormat_R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = (float)0.00000000;
@@ -812,7 +812,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_UINT:
+		case CqFormat_R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -822,7 +822,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SINT:
+		case CqFormat_R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -832,9 +832,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8_SRGB:
+		case CqFormat_R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -842,7 +842,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_B2G3R3_UNORM:
+		case CqFormat_B2G3R3_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -853,7 +853,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4A4_UNORM:
+		case CqFormat_R4G4B4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -864,7 +864,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R4G4B4X4_UNORM:
+		case CqFormat_R4G4B4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -875,7 +875,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4A4_UNORM:
+		case CqFormat_B4G4R4A4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -886,7 +886,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B4G4R4X4_UNORM:
+		case CqFormat_B4G4R4X4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -897,7 +897,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A4R4G4B4_UNORM:
+		case CqFormat_A4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -908,7 +908,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X4R4G4B4_UNORM:
+		case CqFormat_X4R4G4B4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
@@ -919,7 +919,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A4B4G4R4_UNORM:
+		case CqFormat_A4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0xf)) * ((float)0.06666667);
@@ -930,7 +930,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X4B4G4R4_UNORM:
+		case CqFormat_X4B4G4R4_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 4) & 0xf)) * ((float)0.06666667);
@@ -941,7 +941,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G6B5_UNORM:
+		case CqFormat_R5G6B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -952,7 +952,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G6R5_UNORM:
+		case CqFormat_B5G6R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -963,7 +963,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5A1_UNORM:
+		case CqFormat_R5G5B5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -974,7 +974,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5A1_UNORM:
+		case CqFormat_B5G5R5A1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -985,7 +985,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A1B5G5R5_UNORM:
+		case CqFormat_A1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
@@ -996,7 +996,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A1R5G5B5_UNORM:
+		case CqFormat_A1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x1);
@@ -1007,7 +1007,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R5G5B5X1_UNORM:
+		case CqFormat_R5G5B5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -1018,7 +1018,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B5G5R5X1_UNORM:
+		case CqFormat_B5G5R5X1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x1f)) * ((float)0.03225806);
@@ -1029,7 +1029,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X1R5G5B5_UNORM:
+		case CqFormat_X1R5G5B5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[0] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
@@ -1040,7 +1040,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_X1B5G5R5_UNORM:
+		case CqFormat_X1B5G5R5_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 1) & 0x1f)) * ((float)0.03225806);
@@ -1051,7 +1051,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B2G3R3A8_UNORM:
+		case CqFormat_B2G3R3A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -1062,7 +1062,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R8G8_UNORM:
+		case CqFormat_R8G8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1072,7 +1072,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SNORM:
+		case CqFormat_R8G8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1082,7 +1082,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G8R8_UNORM:
+		case CqFormat_G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[0] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1092,7 +1092,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G8R8_SNORM:
+		case CqFormat_G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[0] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1102,7 +1102,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_UINT:
+		case CqFormat_R8G8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -1112,7 +1112,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SINT:
+		case CqFormat_R8G8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -1122,17 +1122,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R8G8_SRGB:
+		case CqFormat_R8G8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16_UNORM:
+		case CqFormat_R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = (float)0.00000000;
@@ -1142,7 +1142,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SNORM:
+		case CqFormat_R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = (float)0.00000000;
@@ -1152,7 +1152,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_UINT:
+		case CqFormat_R16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -1162,7 +1162,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SINT:
+		case CqFormat_R16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -1172,9 +1172,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SFLOAT:
+		case CqFormat_R16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -1182,9 +1182,9 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R16_SBFLOAT:
+		case CqFormat_R16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
 				out[1] = (float)0.00000000;
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
@@ -1192,7 +1192,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UNORM:
+		case CqFormat_R8G8B8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1202,7 +1202,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SNORM:
+		case CqFormat_R8G8B8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1212,7 +1212,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_UINT:
+		case CqFormat_R8G8B8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -1222,7 +1222,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SINT:
+		case CqFormat_R8G8B8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -1232,17 +1232,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8_SRGB:
+		case CqFormat_R8G8B8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UNORM:
+		case CqFormat_B8G8R8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1252,7 +1252,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SNORM:
+		case CqFormat_B8G8R8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1262,7 +1262,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_UINT:
+		case CqFormat_B8G8R8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -1272,7 +1272,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SINT:
+		case CqFormat_B8G8R8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -1282,17 +1282,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8_SRGB:
+		case CqFormat_B8G8R8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UNORM:
+		case CqFormat_R8G8B8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1302,7 +1302,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SNORM:
+		case CqFormat_R8G8B8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1312,7 +1312,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_UINT:
+		case CqFormat_R8G8B8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -1322,7 +1322,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SINT:
+		case CqFormat_R8G8B8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -1332,17 +1332,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8A8_SRGB:
+		case CqFormat_R8G8B8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = ((float)((uint8_t const *)in->pixel)[3]) * (float)0.00392157;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UNORM:
+		case CqFormat_B8G8R8A8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1352,7 +1352,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SNORM:
+		case CqFormat_B8G8R8A8_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((int8_t const *)in->pixel)[0]) * (float)0.00787402;
 				out[1] = ((float)((int8_t const *)in->pixel)[1]) * (float)0.00787402;
@@ -1362,7 +1362,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_UINT:
+		case CqFormat_B8G8R8A8_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((uint8_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint8_t const *)in->pixel)[1]);
@@ -1372,7 +1372,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SINT:
+		case CqFormat_B8G8R8A8_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = (float)(((int8_t const *)in->pixel)[0]);
 				out[1] = (float)(((int8_t const *)in->pixel)[1]);
@@ -1382,17 +1382,17 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8A8_SRGB:
+		case CqFormat_B8G8R8A8_SRGB:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[2] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
-				out[1] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
-				out[0] = (float)TinyImageFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
+				out[2] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[0]);
+				out[1] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[1]);
+				out[0] = (float)CqFormat_LookupSRGB(((uint8_t const *)in->pixel)[2]);
 				out[3] = ((float)((uint8_t const *)in->pixel)[3]) * (float)0.00392157;
 				out += 4;
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R8G8B8X8_UNORM:
+		case CqFormat_R8G8B8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1402,7 +1402,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_B8G8R8X8_UNORM:
+		case CqFormat_B8G8R8X8_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[2] = ((float)((uint8_t const *)in->pixel)[0]) * (float)0.00392157;
 				out[1] = ((float)((uint8_t const *)in->pixel)[1]) * (float)0.00392157;
@@ -1412,7 +1412,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16_UNORM:
+		case CqFormat_R16G16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -1422,7 +1422,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G16R16_UNORM:
+		case CqFormat_G16R16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[0] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -1432,7 +1432,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SNORM:
+		case CqFormat_R16G16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -1442,7 +1442,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_G16R16_SNORM:
+		case CqFormat_G16R16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[1] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[0] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -1452,7 +1452,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_UINT:
+		case CqFormat_R16G16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -1462,7 +1462,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SINT:
+		case CqFormat_R16G16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -1472,27 +1472,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SFLOAT:
+		case CqFormat_R16G16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R16G16_SBFLOAT:
+		case CqFormat_R16G16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
 				out[2] = (float)0.00000000;
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32_UINT:
+		case CqFormat_R32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -1502,7 +1502,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R32_SINT:
+		case CqFormat_R32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -1512,7 +1512,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R32_SFLOAT:
+		case CqFormat_R32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float)0.00000000;
@@ -1522,7 +1522,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UNORM:
+		case CqFormat_A2R10G10B10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -1533,7 +1533,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_UINT:
+		case CqFormat_A2R10G10B10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -1544,7 +1544,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SNORM:
+		case CqFormat_A2R10G10B10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)1.00000000);
@@ -1555,7 +1555,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2R10G10B10_SINT:
+		case CqFormat_A2R10G10B10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -1566,7 +1566,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UNORM:
+		case CqFormat_A2B10G10R10_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)0.33333333);
@@ -1577,7 +1577,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_UINT:
+		case CqFormat_A2B10G10R10_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -1588,7 +1588,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SNORM:
+		case CqFormat_A2B10G10R10_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = ((float)((val >> 0) & 0x3)) * ((float)1.00000000);
@@ -1599,7 +1599,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_A2B10G10R10_SINT:
+		case CqFormat_A2B10G10R10_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[3] = (float)((val >> 0) & 0x3);
@@ -1610,7 +1610,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UNORM:
+		case CqFormat_R10G10B10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
@@ -1621,7 +1621,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_UINT:
+		case CqFormat_R10G10B10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x3ff);
@@ -1632,7 +1632,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SNORM:
+		case CqFormat_R10G10B10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00195695);
@@ -1643,7 +1643,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_R10G10B10A2_SINT:
+		case CqFormat_R10G10B10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[0] = (float)((val >> 0) & 0x3ff);
@@ -1654,7 +1654,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UNORM:
+		case CqFormat_B10G10R10A2_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00097752);
@@ -1665,7 +1665,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_UINT:
+		case CqFormat_B10G10R10A2_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = (float)((val >> 0) & 0x3ff);
@@ -1676,7 +1676,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SNORM:
+		case CqFormat_B10G10R10A2_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = ((float)((val >> 0) & 0x3ff)) * ((float)0.00195695);
@@ -1687,7 +1687,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G10R10A2_SINT:
+		case CqFormat_B10G10R10A2_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
 				out[2] = (float)((val >> 0) & 0x3ff);
@@ -1698,25 +1698,25 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_B10G11R11_UFLOAT:
+		case CqFormat_B10G11R11_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint32_t val = *((uint32_t const*)in->pixel);
-				out[2] = (float)TinyImageFormat_UFloat10AsUintToFloat((val >> 0) & 0x3ff);
-				out[1] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 10) & 0x7ff);
-				out[0] = (float)TinyImageFormat_UFloat11AsUintToFloat((val >> 21) & 0x7ff);
+				out[2] = (float)CqFormat_UFloat10AsUintToFloat((val >> 0) & 0x3ff);
+				out[1] = (float)CqFormat_UFloat11AsUintToFloat((val >> 10) & 0x7ff);
+				out[0] = (float)CqFormat_UFloat11AsUintToFloat((val >> 21) & 0x7ff);
 				out[3] = (float)1.00000000;
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out+=4;
 			}
 			return true;
-		case TinyImageFormat_E5B9G9R9_UFLOAT:
+		case CqFormat_E5B9G9R9_UFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				TinyImageFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);
+				CqFormat_SharedE5B9G9R9UFloatToFloats(*(uint32_t*)in->pixel, out);
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 1);
 				out += 4;
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UNORM:
+		case CqFormat_R16G16B16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -1726,7 +1726,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SNORM:
+		case CqFormat_R16G16B16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -1736,7 +1736,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_UINT:
+		case CqFormat_R16G16B16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -1746,7 +1746,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SINT:
+		case CqFormat_R16G16B16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -1756,27 +1756,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SFLOAT:
+		case CqFormat_R16G16B16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16_SBFLOAT:
+		case CqFormat_R16G16B16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
 				out[3] = (float)1.00000000;
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UNORM:
+		case CqFormat_R16G16B16A16_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((uint16_t const *)in->pixel)[0]) * (float)0.00001526;
 				out[1] = ((float)((uint16_t const *)in->pixel)[1]) * (float)0.00001526;
@@ -1786,7 +1786,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SNORM:
+		case CqFormat_R16G16B16A16_SNORM:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = ((float)((int16_t const *)in->pixel)[0]) * (float)0.00003052;
 				out[1] = ((float)((int16_t const *)in->pixel)[1]) * (float)0.00003052;
@@ -1796,7 +1796,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_UINT:
+		case CqFormat_R16G16B16A16_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint16_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint16_t const *)in->pixel)[1]);
@@ -1806,7 +1806,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SINT:
+		case CqFormat_R16G16B16A16_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int16_t const *)in->pixel)[0]);
 				out[1] = (float)(((int16_t const *)in->pixel)[1]);
@@ -1816,27 +1816,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SFLOAT:
+		case CqFormat_R16G16B16A16_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
-				out[3] = (float)TinyImageFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[3]);
+				out[0] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[3] = (float)CqFormat_HalfAsUintToFloat((((uint16_t const *)in->pixel))[3]);
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R16G16B16A16_SBFLOAT:
+		case CqFormat_R16G16B16A16_SBFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
-				out[0] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
-				out[1] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
-				out[2] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
-				out[3] = (float)TinyImageFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[3]);
+				out[0] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[0]);
+				out[1] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[1]);
+				out[2] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[2]);
+				out[3] = (float)CqFormat_BFloatAsUintToFloat((((uint16_t const *)in->pixel))[3]);
 				out += 4;
 				in->pixel = (void const*)(((uint16_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32_UINT:
+		case CqFormat_R32G32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -1846,7 +1846,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32_SINT:
+		case CqFormat_R32G32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -1856,7 +1856,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32_SFLOAT:
+		case CqFormat_R32G32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -1866,7 +1866,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_UINT:
+		case CqFormat_R32G32B32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -1876,7 +1876,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SINT:
+		case CqFormat_R32G32B32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -1886,7 +1886,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32_SFLOAT:
+		case CqFormat_R32G32B32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -1896,7 +1896,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_UINT:
+		case CqFormat_R32G32B32A32_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((uint32_t const *)in->pixel)[0]);
 				out[1] = (float)(((uint32_t const *)in->pixel)[1]);
@@ -1906,7 +1906,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint32_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SINT:
+		case CqFormat_R32G32B32A32_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float)(((int32_t const *)in->pixel)[0]);
 				out[1] = (float)(((int32_t const *)in->pixel)[1]);
@@ -1916,7 +1916,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((int32_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R32G32B32A32_SFLOAT:
+		case CqFormat_R32G32B32A32_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (float) (((float const *)in->pixel)[0]);
 				out[1] = (float) (((float const *)in->pixel)[1]);
@@ -1926,7 +1926,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((float const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P4:
+		case CqFormat_CLUT_P4:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -1943,7 +1943,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P4A4:
+		case CqFormat_CLUT_P4A4:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -1955,7 +1955,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P8:
+		case CqFormat_CLUT_P8:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint8_t val = *((uint8_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -1967,7 +1967,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 				in->pixel = (void const*)(((uint8_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_CLUT_P8A8:
+		case CqFormat_CLUT_P8A8:
 			for(uint32_t w = 0; w < width; ++w) {
 				uint16_t val = *((uint16_t const*)in->pixel);
 				uint32_t const* lut = (uint32_t const*)in->lut;
@@ -1983,27 +1983,27 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsF(TinyImageForma
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_CanDecodeLogicalPixelsD(TinyImageFormat const fmt) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT: return true;
-		case TinyImageFormat_R64_SINT: return true;
-		case TinyImageFormat_R64_SFLOAT: return true;
-		case TinyImageFormat_R64G64_UINT: return true;
-		case TinyImageFormat_R64G64_SINT: return true;
-		case TinyImageFormat_R64G64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64_UINT: return true;
-		case TinyImageFormat_R64G64B64_SINT: return true;
-		case TinyImageFormat_R64G64B64_SFLOAT: return true;
-		case TinyImageFormat_R64G64B64A64_UINT: return true;
-		case TinyImageFormat_R64G64B64A64_SINT: return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT: return true;
-		default: return TinyImageFormat_CanDecodeLogicalPixelsF(fmt);
+		case CqFormat_R64_UINT: return true;
+		case CqFormat_R64_SINT: return true;
+		case CqFormat_R64_SFLOAT: return true;
+		case CqFormat_R64G64_UINT: return true;
+		case CqFormat_R64G64_SINT: return true;
+		case CqFormat_R64G64_SFLOAT: return true;
+		case CqFormat_R64G64B64_UINT: return true;
+		case CqFormat_R64G64B64_SINT: return true;
+		case CqFormat_R64G64B64_SFLOAT: return true;
+		case CqFormat_R64G64B64A64_UINT: return true;
+		case CqFormat_R64G64B64A64_SINT: return true;
+		case CqFormat_R64G64B64A64_SFLOAT: return true;
+		default: return CqFormat_CanDecodeLogicalPixelsF(fmt);
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageFormat const fmt, TinyImageFormat_DecodeInput * in, uint32_t const width, double* out) {
+CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {
 	switch(fmt) {
-		case TinyImageFormat_R64_UINT:
+		case CqFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -2013,7 +2013,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64_SINT:
+		case CqFormat_R64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -2023,7 +2023,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64_SFLOAT:
+		case CqFormat_R64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double)0.00000000;
@@ -2033,7 +2033,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 1);
 			}
 			return true;
-		case TinyImageFormat_R64G64_UINT:
+		case CqFormat_R64G64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -2043,7 +2043,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64_SINT:
+		case CqFormat_R64G64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -2053,7 +2053,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64_SFLOAT:
+		case CqFormat_R64G64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -2063,7 +2063,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 2);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_UINT:
+		case CqFormat_R64G64B64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -2073,7 +2073,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SINT:
+		case CqFormat_R64G64B64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -2083,7 +2083,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64_SFLOAT:
+		case CqFormat_R64G64B64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -2093,7 +2093,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((double const*)in->pixel) + 3);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_UINT:
+		case CqFormat_R64G64B64A64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((uint64_t const *)in->pixel)[0]);
 				out[1] = (double)(((uint64_t const *)in->pixel)[1]);
@@ -2103,7 +2103,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((uint64_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SINT:
+		case CqFormat_R64G64B64A64_SINT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double)(((int64_t const *)in->pixel)[0]);
 				out[1] = (double)(((int64_t const *)in->pixel)[1]);
@@ -2113,7 +2113,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 				in->pixel = (void const*)(((int64_t const*)in->pixel) + 4);
 			}
 			return true;
-		case TinyImageFormat_R64G64B64A64_SFLOAT:
+		case CqFormat_R64G64B64A64_SFLOAT:
 			for(uint32_t w = 0; w < width; ++w) {
 				out[0] = (double) (((double const *)in->pixel)[0]);
 				out[1] = (double) (((double const *)in->pixel)[1]);
@@ -2127,7 +2127,7 @@ CQ_FMT_CONSTEXPR inline bool TinyImageFormat_DecodeLogicalPixelsD(TinyImageForma
 		{
 			float outF[4] = {0, 0, 0, 0}; bool ret = true;
 			for(uint32_t w = 0; w < width && ret; ++w) {
-				ret = TinyImageFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);
+				ret = CqFormat_DecodeLogicalPixelsF(fmt, in, 1, outF);
 				out[0] = outF[0]; out[1] = outF[1]; out[2] = outF[2]; out[3] = outF[3]; out += 4;
 				}
 			return ret;

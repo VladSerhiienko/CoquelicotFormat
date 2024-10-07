@@ -1,7 +1,7 @@
 RAW_INCLUDE_START( R"=====( )
 
 // from D3DX_DXGIFormatConvert.inl
-inline uint8_t TinyImageFormat_FloatToSRGB(float v) {
+inline uint8_t CqFormat_FloatToSRGB(float v) {
 	if (v < 0.0031308f) {
 		v *= 12.92f;
 	} else {
@@ -11,7 +11,7 @@ inline uint8_t TinyImageFormat_FloatToSRGB(float v) {
 }
 
 //Float2Half from Rygorous public domain code
-inline uint16_t TinyImageFormat_FloatToHalfAsUint(float f_) {
+inline uint16_t CqFormat_FloatToHalfAsUint(float f_) {
 	union {
 		uint16_t u;
 		struct {
@@ -78,7 +78,7 @@ inline uint16_t TinyImageFormat_FloatToHalfAsUint(float f_) {
 	return o.u;
 }
 
-inline uint16_t TinyImageFormat_FloatToBFloatAsUint(float v) {
+inline uint16_t CqFormat_FloatToBFloatAsUint(float v) {
 	union {
 		struct {
 			uint16_t x;
@@ -93,7 +93,7 @@ inline uint16_t TinyImageFormat_FloatToBFloatAsUint(float v) {
 	return o.u;
 }
 
-inline void TinyImageFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* out) {
+inline void CqFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* out) {
 	float const r = in[0];
 	float const g = in[1];
 	float const b = in[2];
@@ -132,7 +132,7 @@ inline void TinyImageFormat_FloatRGBToRGB9E5AsUint32(float const* in, uint32_t* 
 	}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat6AsUint(float Value)
+inline uint16_t CqFormat_FloatToUFloat6AsUint(float Value)
 {
 		uint32_t IValue = *((uint32_t *)&Value);
 
@@ -167,7 +167,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat6AsUint(float Value)
 		}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat7AsUint(float Value)
+inline uint16_t CqFormat_FloatToUFloat7AsUint(float Value)
 {
 		uint32_t IValue = *((uint32_t *)&Value);
 
@@ -202,7 +202,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat7AsUint(float Value)
 		}
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat10AsUint(float v) {
+inline uint16_t CqFormat_FloatToUFloat10AsUint(float v) {
 	union {
 		uint32_t u;
 		float f;
@@ -254,7 +254,7 @@ inline uint16_t TinyImageFormat_FloatToUFloat10AsUint(float v) {
 	return ei.v;
 }
 
-inline uint16_t TinyImageFormat_FloatToUFloat11AsUint(float v) {
+inline uint16_t CqFormat_FloatToUFloat11AsUint(float v) {
     union {
         uint32_t u;
         float f;
