@@ -13,7 +13,7 @@ Write-Output $currentDir
 Write-Output $includeDir
 
 # Find all files that match the pattern "format*.h" in the current directory
-Get-ChildItem -Path $currentDir -Filter "tinyimageformat*.h" | ForEach-Object {
+Get-ChildItem -Path $currentDir -Filter "coquelicot_format*.h" | ForEach-Object {
     Write-Output $_.FullName
     Copy-Item -Path $_.FullName -Destination $includeDir -Force
 }

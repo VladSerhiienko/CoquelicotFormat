@@ -1,5 +1,5 @@
-#include "coquelicot/tinyimageformat_base.h"
-#include "coquelicot/tinyimageformat_query.h"
+#include "coquelicot/coquelicot_format_base.h"
+#include "coquelicot/coquelicot_format_query.h"
 #include "utils.h"
 
 #include <catch2/catch_test_macros.hpp>

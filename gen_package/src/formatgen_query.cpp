@@ -6,7 +6,7 @@
 #include <cfloat>
 #include <cmath>
 #include "utils.h"
-#include "tinyimageformat_bits.h"
+#include "coquelicot_format_bits.h"
 #include "formatgen.h"
 
 void GenCode(VFile_Handle file) {

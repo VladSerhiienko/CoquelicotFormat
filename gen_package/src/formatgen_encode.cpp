@@ -4,7 +4,7 @@
 #define __STDC_FORMAT_MACROS
 #include <cmath>
 #include "utils.h"
-#include "tinyimageformat_bits.h"
+#include "coquelicot_format_bits.h"
 #include "formatgen.h"
 
 int8_t PhysicalChannelToLogical(char const *name, uint64_t const v, uint32_t chan);

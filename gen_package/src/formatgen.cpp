@@ -95,12 +95,12 @@ int main(int argc, char const *argv[]) {
 			"#pragma once\n";
 
 	char const splitguard[] =
-			"#if !defined(%s) && !defined(TINYIMAGEFORMAT_IMAGEFORMAT_H)\n"
+			"#if !defined(%s) && !defined(CQ_FORMAT_IMAGEFORMAT_H)\n"
 			"#define %s 1\n";
 
 	char const singleguard[] =
-			"#if !defined(TINYIMAGEFORMAT_IMAGEFORMAT_H)\n"
-			"#define TINYIMAGEFORMAT_IMAGEFORMAT_H 1\n";
+			"#if !defined(CQ_FORMAT_IMAGEFORMAT_H)\n"
+			"#define CQ_FORMAT_IMAGEFORMAT_H 1\n";
 
 	char const subguard[] =
 			"#if !defined(%s)\n"
@@ -138,7 +138,7 @@ int main(int argc, char const *argv[]) {
 	// generate single header
 	{
 
-		VFile_Handle file = VFile_FromFile("tinyimageformat.h", Os_FM_Write);
+		VFile_Handle file = VFile_FromFile("coquelicot_format.h", Os_FM_Write);
 		VFile_Write(file, header, strlen(header));
 		VFile_Write(file, singleguard, strlen(singleguard));
 		IncludeDocs(file);
@@ -146,43 +146,43 @@ int main(int argc, char const *argv[]) {
 
 		char headerBuffer[2048];
 		char guardCloseBuffer[2048];
-		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_BASE_H_", "TINYIMAGEFORMAT_BASE_H_");
+		sprintf(headerBuffer, subguard, "CQ_FORMAT_BASE_H_", "CQ_FORMAT_BASE_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenEnums(file);
 		GenEnumClasses(file);
 		GenCount(file);
 		GenStructs(file);
-		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_BASE_H_");
+		sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_BASE_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
 
-		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_QUERY_H_", "TINYIMAGEFORMAT_QUERY_H_");
+		sprintf(headerBuffer, subguard, "CQ_FORMAT_QUERY_H_", "CQ_FORMAT_QUERY_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenQuerys(file);
 		sprintf(guardCloseBuffer, guardclose, "TINYIMAGE_QUERY_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
-		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_DECODE_H_", "TINYIMAGEFORMAT_DECODE_H_");
+		sprintf(headerBuffer, subguard, "CQ_FORMAT_DECODE_H_", "CQ_FORMAT_DECODE_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenDecode(file);
-		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_DECODE_H_");
+		sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_DECODE_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
-		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_ENCODE_H_", "TINYIMAGEFORMAT_ENCODE_H_");
+		sprintf(headerBuffer, subguard, "CQ_FORMAT_ENCODE_H_", "CQ_FORMAT_ENCODE_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenEncode(file);
-		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_ENCODE_H_");
+		sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_ENCODE_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
-		sprintf(headerBuffer, subguard, "TINYIMAGEFORMAT_APIS_H_", "TINYIMAGEFORMAT_APIS_H_");
+		sprintf(headerBuffer, subguard, "CQ_FORMAT_APIS_H_", "CQ_FORMAT_APIS_H_");
 		VFile_Write(file, headerBuffer, strlen(headerBuffer));
 		GenAPIsEnums(file);
-		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_APIS_H_");
+		sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_APIS_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
 		VFile_Write(file, suffix2, strlen(suffix2));
 
-		sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_H_");
+		sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_H_");
 		VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
 		VFile_Close(file);
@@ -190,10 +190,10 @@ int main(int argc, char const *argv[]) {
 	// generate multi headers
 	{
 		{
-			VFile_Handle file = VFile_FromFile("tinyimageformat_base.h", Os_FM_Write);
+			VFile_Handle file = VFile_FromFile("coquelicot_format_base.h", Os_FM_Write);
 			VFile_Write(file, header, strlen(header));
 			char headerBuffer[2048];
-			sprintf(headerBuffer, splitguard, "TINYIMAGEFORMAT_BASE_H_", "TINYIMAGEFORMAT_BASE_H_");
+			sprintf(headerBuffer, splitguard, "CQ_FORMAT_BASE_H_", "CQ_FORMAT_BASE_H_");
 			VFile_Write(file, headerBuffer, strlen(headerBuffer));
 			IncludeDocs(file);
 
@@ -203,17 +203,17 @@ int main(int argc, char const *argv[]) {
 			GenStructs(file);
 
 			char guardCloseBuffer[2048];
-			sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_BASE_H_");
+			sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_BASE_H_");
 			VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
 			VFile_Close(file);
 		}
-		char const multiheader2[] = "\n#include \"tinyimageformat_base.h\"\n";
+		char const multiheader2[] = "\n#include \"coquelicot_format_base.h\"\n";
 		{
-			VFile_Handle file = VFile_FromFile("tinyimageformat_query.h", Os_FM_Write);
+			VFile_Handle file = VFile_FromFile("coquelicot_format_query.h", Os_FM_Write);
 			VFile_Write(file, header, strlen(header));
 			char headerBuffer[2048];
-			sprintf(headerBuffer, splitguard, "TINYIMAGEFORMAT_QUERY_H_", "TINYIMAGEFORMAT_QUERY_H_");
+			sprintf(headerBuffer, splitguard, "CQ_FORMAT_QUERY_H_", "CQ_FORMAT_QUERY_H_");
 			VFile_Write(file, headerBuffer, strlen(headerBuffer));
 			VFile_Write(file, multiheader2, strlen(multiheader2));
 			VFile_Write(file, header2, strlen(header2));
@@ -222,16 +222,16 @@ int main(int argc, char const *argv[]) {
 
 			VFile_Write(file, suffix2, strlen(suffix2));
 			char guardCloseBuffer[2048];
-			sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_QUERY_H_");
+			sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_QUERY_H_");
 			VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 
 			VFile_Close(file);
 		}
 		{
-			VFile_Handle file = VFile_FromFile("tinyimageformat_decode.h", Os_FM_Write);
+			VFile_Handle file = VFile_FromFile("coquelicot_format_decode.h", Os_FM_Write);
 			VFile_Write(file, header, strlen(header));
 			char headerBuffer[2048];
-			sprintf(headerBuffer, splitguard, "TINYIMAGEFORMAT_DECODE_H_", "TINYIMAGEFORMAT_DECODE_H_");
+			sprintf(headerBuffer, splitguard, "CQ_FORMAT_DECODE_H_", "CQ_FORMAT_DECODE_H_");
 			VFile_Write(file, headerBuffer, strlen(headerBuffer));
 			VFile_Write(file, multiheader2, strlen(multiheader2));
 			VFile_Write(file, header2, strlen(header2));
@@ -240,16 +240,16 @@ int main(int argc, char const *argv[]) {
 
 			VFile_Write(file, suffix2, strlen(suffix2));
 			char guardCloseBuffer[2048];
-			sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_DECODE_H_");
+			sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_DECODE_H_");
 			VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 			VFile_Close(file);
 		}
 
 		{
-			VFile_Handle file = VFile_FromFile("tinyimageformat_encode.h", Os_FM_Write);
+			VFile_Handle file = VFile_FromFile("coquelicot_format_encode.h", Os_FM_Write);
 			VFile_Write(file, header, strlen(header));
 			char headerBuffer[2048];
-			sprintf(headerBuffer, splitguard, "TINYIMAGEFORMAT_ENCODE_H_", "TINYIMAGEFORMAT_ENCODE_H_");
+			sprintf(headerBuffer, splitguard, "CQ_FORMAT_ENCODE_H_", "CQ_FORMAT_ENCODE_H_");
 			VFile_Write(file, headerBuffer, strlen(headerBuffer));
 			VFile_Write(file, multiheader2, strlen(multiheader2));
 			VFile_Write(file, header2, strlen(header2));
@@ -258,22 +258,22 @@ int main(int argc, char const *argv[]) {
 
 			VFile_Write(file, suffix2, strlen(suffix2));
 			char guardCloseBuffer[2048];
-			sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_ENCODE_H_");
+			sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_ENCODE_H_");
 			VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 			VFile_Close(file);
 		}
 		{
-			VFile_Handle file = VFile_FromFile("tinyimageformat_apis.h", Os_FM_Write);
+			VFile_Handle file = VFile_FromFile("coquelicot_format_apis.h", Os_FM_Write);
 			VFile_Write(file, header, strlen(header));
 			char headerBuffer[2048];
-			sprintf(headerBuffer, splitguard, "TINYIMAGEFORMAT_APIS_H_", "TINYIMAGEFORMAT_APIS_H_");
+			sprintf(headerBuffer, splitguard, "CQ_FORMAT_APIS_H_", "CQ_FORMAT_APIS_H_");
 			VFile_Write(file, headerBuffer, strlen(headerBuffer));
 			VFile_Write(file, multiheader2, strlen(multiheader2));
 
 			GenAPIsEnums(file);
 			VFile_Write(file, suffix2, strlen(suffix2));
 			char guardCloseBuffer[2048];
-			sprintf(guardCloseBuffer, guardclose, "TINYIMAGEFORMAT_APIS_H_");
+			sprintf(guardCloseBuffer, guardclose, "CQ_FORMAT_APIS_H_");
 			VFile_Write(file, guardCloseBuffer, strlen(guardCloseBuffer));
 			VFile_Close(file);
 		}
