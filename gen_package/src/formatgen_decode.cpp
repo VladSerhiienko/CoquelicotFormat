@@ -661,7 +661,7 @@ static void GenCanDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s: return true;\n";
@@ -679,7 +679,7 @@ static void GenCanDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const switchPostfixF[] = "\t\tdefault: return CqFormat_CanDecodeLogicalPixelsF(fmt);\n"
@@ -697,7 +697,7 @@ void GenDecodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {\n"
 			"\tswitch(fmt) {\n";
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
 													 "%s"
@@ -716,7 +716,7 @@ void GenDecodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
@@ -739,7 +739,7 @@ void GenDecodeLogicalPixelsD(VFile_Handle file) {
 
 static void GetSRGBTableFuncton(VFile_Handle file) {
 	char const *const prefix =
-			"CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {\n"
+			"CQ_FORMAT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {\n"
 			"\tswitch(lookup) {\n";
 	char const *const body = "\t\tcase %d: return %1.8ff;\n";
 	char const *const postfix = "\t\tdefault: return 1.0;\n\t}\n}\n\n";

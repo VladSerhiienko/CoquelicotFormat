@@ -6,9 +6,9 @@
 #include "coquelicot_format_base.h"
 
 #if __cplusplus > 201402L
-#define CQ_FMT_CONSTEXPR constexpr extern "C"
+#define CQ_FORMAT_CONSTEXPR constexpr extern "C"
 #else
-#define CQ_FMT_CONSTEXPR
+#define CQ_FORMAT_CONSTEXPR
 #endif
 #ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
@@ -293,7 +293,7 @@ inline float CqFormat_UFloat11AsUintToFloat(uint16_t v) {
 	return t.f;
 }
 
-CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {
+CQ_FORMAT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {
 	switch(lookup) {
 		case 0: return 0.00000000f;
 		case 1: return 0.00030353f;
@@ -555,7 +555,7 @@ CQ_FMT_CONSTEXPR inline float CqFormat_LookupSRGB(uint8_t lookup) {
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {
+CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R1_UNORM: return true;
 		case CqFormat_R2_UNORM: return true;
@@ -681,7 +681,7 @@ CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsF(CqFormat const fmt
 		}
 	}
 
-CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {
+CQ_FORMAT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, float* out) {
 	switch(fmt) {
 		case CqFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -1983,7 +1983,7 @@ CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsF(CqFormat const fmt, C
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {
+CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R64_UINT: return true;
 		case CqFormat_R64_SINT: return true;
@@ -2001,7 +2001,7 @@ CQ_FMT_CONSTEXPR inline bool CqFormat_CanDecodeLogicalPixelsD(CqFormat const fmt
 	}
 }
 
-CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {
+CQ_FORMAT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, CqFormat_DecodeInput * in, uint32_t const width, double* out) {
 	switch(fmt) {
 		case CqFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -2135,6 +2135,6 @@ CQ_FMT_CONSTEXPR inline bool CqFormat_DecodeLogicalPixelsD(CqFormat const fmt, C
 	}
 }
 
-#undef CQ_FMT_CONSTEXPR
+#undef CQ_FORMAT_CONSTEXPR
 #endif // CQ_FORMAT_DECODE_H_
 

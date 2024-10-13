@@ -110,9 +110,9 @@ int main(int argc, char const *argv[]) {
 	char const header2[] =
 			"\n"
 			"#if __cplusplus > 201402L\n"
-	 		"#define CQ_FMT_CONSTEXPR constexpr extern \"C\"\n"
+	 		"#define CQ_FORMAT_CONSTEXPR constexpr extern \"C\"\n"
 			"#else\n"
-			"#define CQ_FMT_CONSTEXPR\n"
+			"#define CQ_FORMAT_CONSTEXPR\n"
 			"#endif\n"
 			"#ifndef  CqFormat_HAVE_UINTXX_T\n"
 			"#include <stdint.h> 	// for uint32_t and int64_t\n"
@@ -129,7 +129,7 @@ int main(int argc, char const *argv[]) {
 			"#endif\n"
 			"\n";
 	char const suffix2[] =
-			"#undef CQ_FMT_CONSTEXPR\n";
+			"#undef CQ_FORMAT_CONSTEXPR\n";
 
 	char const guardclose[] =
 			"#endif // %s\n"

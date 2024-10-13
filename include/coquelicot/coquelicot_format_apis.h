@@ -1810,6 +1810,6 @@ inline bool CqFormat_MTLPixelFormatOnIOs(CqFormat_MTLPixelFormat fmt) {
 	case CQ_MTLPixelFormatInvalid: return false;
 	}
 }
-	#undef CQ_FMT_CONSTEXPR
+	#undef CQ_FORMAT_CONSTEXPR
 #endif // CQ_FORMAT_APIS_H_
 

@@ -294,7 +294,7 @@ static void GenCanEncodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const fmt) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s: return true;\n";
@@ -312,7 +312,7 @@ void GenEncodeLogicalPixelsF(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt, float const *in, uint32_t const width, CqFormat_EncodeOutput * out) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt, float const *in, uint32_t const width, CqFormat_EncodeOutput * out) {\n"
 			"\tswitch(fmt) {\n";
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
 													 "%s"
@@ -331,7 +331,7 @@ static void GenCanEncodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const fmt) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const fmt) {\n"
 			"\tswitch(fmt) {\n";
 
 	char const *const body = "\t\tcase %s: return true;\n";
@@ -350,7 +350,7 @@ void GenEncodeLogicalPixelsD(VFile_Handle file) {
 	char buffer[2048];
 
 	char const *const isPrefixF =
-			"CQ_FMT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsD(CqFormat const fmt, double const *in, uint32_t const width, CqFormat_EncodeOutput * out) {\n"
+			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsD(CqFormat const fmt, double const *in, uint32_t const width, CqFormat_EncodeOutput * out) {\n"
 			"\tswitch(fmt) {\n";
 	char const *const body = "\t\tcase %s:\n\t\t\tfor(uint32_t w = 0; w < width; ++w) {"
 													 "%s"
