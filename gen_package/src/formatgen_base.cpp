@@ -116,7 +116,7 @@ void GenStructs(VFile_Handle file) {
 			"\tvoid const* pixelPlane7;\n"
 			"\tvoid const* pixelPlane8;\n"
 			"\tvoid const* pixelPlane9;\n"
-			"} CqFormat_FetchInput;\n\n";
+			"} CqFormat_DecodeInput;\n\n";
 	VFile_Write(file, fetchInput, strlen(fetchInput));
 
 	char const putOutput[] =

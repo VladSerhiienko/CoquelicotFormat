@@ -698,7 +698,7 @@ typedef struct CqFormat_DecodeInput {
 	void const* pixelPlane7;
 	void const* pixelPlane8;
 	void const* pixelPlane9;
-} CqFormat_FetchInput;
+} CqFormat_DecodeInput;
 
 typedef struct CqFormat_EncodeOutput {
 	union { void * pixel; void * pixelPlane0; };

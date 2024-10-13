@@ -1630,10 +1630,12 @@ void IncludeQueryHelpers(VFile_Handle file) {
 #define GEN_DBLPERCHAN_FUNC2(f, d, t) GenDoublePerChanFunc2(f, #t, d, &t)
 
 void GenQuerys(VFile_Handle file) {
+    char const cppstart[] = "#ifdef __cplusplus\n";
+    char const cppend[] = "#endif\n\n";
 
 	GenCode(file);
-
 	GenMaxPixelCountOfBlock(file);
+
 	GEN_BOOL_FUNC(file, false, IsDepthOnly);
 	GEN_BOOL_FUNC(file, false, IsStencilOnly);
 	GEN_BOOL_FUNC(file, false, IsDepthAndStencil);
@@ -1644,6 +1646,24 @@ void GenQuerys(VFile_Handle file) {
 	GEN_BOOL_FUNC(file, false, IsSRGB);
 	GEN_BOOL_FUNC(file, false, IsCompressed);
 	GEN_BOOL_FUNC(file, true,  IsHomogenous);
+
+	GEN_U32_FUNC(file, 1, WidthOfBlock);
+	GEN_U32_FUNC(file, 1, HeightOfBlock);
+	GEN_U32_FUNC(file, 1, DepthOfBlock);
+	GEN_U32_FUNC(file, 32, BitSizeOfBlock);
+	GEN_U32_FUNC(file, 4, ChannelCount);
+
+	GEN_U32PERCHAN_FUNC(file, 8, ChannelBitWidth);
+	GEN_DBLPERCHAN_FUNC(file, 0.0, Min);
+	GEN_DBLPERCHAN_FUNC(file, 1.0, Max);
+
+	GenPhysicalChannelToLogicalPerChanFunc(file);
+	GenLogicalToPhysicalChannelPerChanFunc(file);
+	GenNames(file);
+	GenNameLookup(file);
+	IncludeQueryHelpers(file);
+
+	VFile_Write(file, cppstart, strlen(cppstart));
 
 	GEN_BOOL_FUNC2(file, false, IsDepthOnly);
 	GEN_BOOL_FUNC2(file, false, IsStencilOnly);
@@ -1656,31 +1676,15 @@ void GenQuerys(VFile_Handle file) {
 	GEN_BOOL_FUNC2(file, false, IsCompressed);
 	GEN_BOOL_FUNC2(file, true, IsHomogenous);
 
-	GEN_U32_FUNC(file, 1, WidthOfBlock);
-	GEN_U32_FUNC(file, 1, HeightOfBlock);
-	GEN_U32_FUNC(file, 1, DepthOfBlock);
-	GEN_U32_FUNC(file, 32, BitSizeOfBlock);
-	GEN_U32_FUNC(file, 4, ChannelCount);
-
 	GEN_U32_FUNC2(file, 1, WidthOfBlock);
 	GEN_U32_FUNC2(file, 1, HeightOfBlock);
 	GEN_U32_FUNC2(file, 1, DepthOfBlock);
 	GEN_U32_FUNC2(file, 32, BitSizeOfBlock);
 	GEN_U32_FUNC2(file, 4, ChannelCount);
 
-	GEN_U32PERCHAN_FUNC(file, 8, ChannelBitWidth);
 	GEN_U32PERCHAN_FUNC2(file, 8, ChannelBitWidth);
-
-	GEN_DBLPERCHAN_FUNC(file, 0.0, Min);
-	GEN_DBLPERCHAN_FUNC(file, 1.0, Max);
-
 	GEN_DBLPERCHAN_FUNC2(file, 0.0, Min);
 	GEN_DBLPERCHAN_FUNC2(file, 1.0, Max);
 
-	GenPhysicalChannelToLogicalPerChanFunc(file);
-	GenLogicalToPhysicalChannelPerChanFunc(file);
-	GenNames(file);
-	GenNameLookup(file);
-
-	IncludeQueryHelpers(file);
+	VFile_Write(file, cppend, strlen(cppend));
 }

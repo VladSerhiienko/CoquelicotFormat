@@ -53,3 +53,4 @@ dkms.conf
 gen_ackage/build/
 test_ackage/build/
 build/
+gen_package/coquelicot_format*.h
