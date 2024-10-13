@@ -5,7 +5,7 @@ class CoquelicotFormatGen(ConanFile):
     name = "coquelicot_format_gen"
     version = "1.0"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "CMakeToolchain", "CMakeDeps", "AutotoolsToolchain", "PkgConfigDeps", "XcodeDeps"
+    generators = "CMakeToolchain", "CMakeDeps", "AutotoolsToolchain", "PkgConfigDeps", "XcodeToolchain", "XcodeDeps"
 
     def build_requirements(self):
         self.tool_requires("cmake/3.29.3")
