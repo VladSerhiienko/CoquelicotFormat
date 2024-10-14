@@ -11376,7 +11376,7 @@ typedef enum CqFormat_MTLPixelFormat {
 } CqFormat_MTLPixelFormat;
 #endif
 
-inline CqFormat_MTLPixelFormat CqFormat_ToMTLPixelFormat(CqFormat fmt) {
+CQ_FORMAT_CALL CqFormat_MTLPixelFormat CqFormat_ToMTLPixelFormat(CqFormat fmt) {
 	switch (fmt) {
 	case CqFormat_A8_UNORM: 									return CQ_MTLPixelFormatA8Unorm;
 	case CqFormat_R8_UNORM: 		return CQ_MTLPixelFormatR8Unorm;
@@ -11500,7 +11500,7 @@ inline CqFormat_MTLPixelFormat CqFormat_ToMTLPixelFormat(CqFormat fmt) {
 	return CQ_MTLPixelFormatInvalid;
 }
 
-inline CqFormat CqFormat_FromMTLPixelFormat(CqFormat_MTLPixelFormat fmt) {
+CQ_FORMAT_CALL CqFormat CqFormat_FromMTLPixelFormat(CqFormat_MTLPixelFormat fmt) {
 	switch (fmt) {
 	case CQ_MTLPixelFormatInvalid: return CqFormat_UNDEFINED;
 	case CQ_MTLPixelFormatA8Unorm: return CqFormat_A8_UNORM;
@@ -11633,7 +11633,7 @@ inline CqFormat CqFormat_FromMTLPixelFormat(CqFormat_MTLPixelFormat fmt) {
 }
 
 
-inline bool CqFormat_MTLPixelFormatOnMac(CqFormat_MTLPixelFormat fmt) {
+CQ_FORMAT_CALL bool CqFormat_MTLPixelFormatOnMac(CqFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case CQ_MTLPixelFormatA8Unorm:
 	case CQ_MTLPixelFormatR8Unorm:
@@ -11766,7 +11766,7 @@ inline bool CqFormat_MTLPixelFormatOnMac(CqFormat_MTLPixelFormat fmt) {
 }
 
 	
-inline bool CqFormat_MTLPixelFormatOnIOs(CqFormat_MTLPixelFormat fmt) {
+CQ_FORMAT_CALL bool CqFormat_MTLPixelFormatOnIOs(CqFormat_MTLPixelFormat fmt) {
 	switch(fmt) {
 	case CQ_MTLPixelFormatA8Unorm:
 	case CQ_MTLPixelFormatR8Unorm:
