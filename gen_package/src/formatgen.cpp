@@ -120,7 +120,7 @@ int main(int argc, char const *argv[]) {
 			"    #define CQ_FORMAT_EXTERN_C\n"
 			"#endif\n"
 			"#ifndef CQ_FORMAT_CALL\n"
-			"    #define CQ_FORMAT_CALL CQ_FORMAT_EXTERN_C CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline\n"
+			"    #define CQ_FORMAT_CALL CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline\n"
 			"#endif\n"
 
 			// "#if __cplusplus > 201402L\n"

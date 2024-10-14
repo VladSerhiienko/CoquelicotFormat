@@ -15,7 +15,7 @@
     #define CQ_FORMAT_EXTERN_C
 #endif
 #ifndef CQ_FORMAT_CALL
-    #define CQ_FORMAT_CALL CQ_FORMAT_EXTERN_C CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline
+    #define CQ_FORMAT_CALL CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline
 #endif
 #ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
