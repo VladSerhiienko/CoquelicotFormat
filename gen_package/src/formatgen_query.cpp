@@ -11,7 +11,7 @@
 
 void GenCode(VFile_Handle file) {
 	char const isPrefixF[] =
-		"CQ_FORMAT_CONSTEXPR inline uint64_t CqFormat_Code(CqFormat const fmt) {\n"
+		"CQ_FORMAT_CALL uint64_t CqFormat_Code(CqFormat const fmt) {\n"
 		"\tswitch(fmt) {\n";
 	char const switchPostfixF[] = "\t\tdefault: return 0ULL;\n\t}\n}\n\n";
 
@@ -1179,7 +1179,7 @@ void GenBoolFunc(VFile_Handle file,
 												bool (*func)(char const *, uint64_t)) {
 	char buffer[2048];
 	char const isPrefixF[] =
-			"CQ_FORMAT_CONSTEXPR inline bool CqFormat_%s(CqFormat const fmt) {\n\tswitch(fmt) {\n";
+			"CQ_FORMAT_CALL bool CqFormat_%s(CqFormat const fmt) {\n\tswitch(fmt) {\n";
 	char const switchPostfixF[] = "\t\tdefault: return %s;\n\t}\n}\n\n";
 
 	char prefix[2048];
@@ -1196,7 +1196,7 @@ void GenBoolFunc2(VFile_Handle file, const char *testname, bool defaultval, bool
     char buffer[2048];
     char const isPrefixF[] =
         "namespace coquelicot {\n"
-        "CQ_FORMAT_CONSTEXPR inline bool is%s(Format const fmt) {\n\tswitch(fmt) {\n";
+        "CQ_FORMAT_CALL bool is%s(Format const fmt) {\n\tswitch(fmt) {\n";
     char const switchPostfixF[] = "\t\tdefault: return %s;\n\t}\n}\n}\n\n";
 
     char prefix[2048];
@@ -1223,7 +1223,7 @@ void GenU32Func(VFile_Handle file,
 											 uint32_t (*func)(char const *, uint64_t)) {
 	char buffer[2048];
 	char const isPrefixF[] =
-			"CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_%s(CqFormat const fmt) {\n\tswitch(fmt) {\n";
+			"CQ_FORMAT_CALL uint32_t CqFormat_%s(CqFormat const fmt) {\n\tswitch(fmt) {\n";
 	char const switchPostfixF[] = "\t\tdefault: return %d;\n\t}\n}\n\n";
 
 	char prefix[2048];
@@ -1243,7 +1243,7 @@ void GenU32Func2(VFile_Handle file,
     char buffer[2048];
     char const isPrefixF[] =
         "namespace coquelicot {\n"
-        "CQ_FORMAT_CONSTEXPR inline uint32_t get%s(Format const fmt) {\n\tswitch(fmt) {\n";
+        "CQ_FORMAT_CALL uint32_t get%s(Format const fmt) {\n\tswitch(fmt) {\n";
     char const switchPostfixF[] = "\t\tdefault: return %d;\n\t}\n}\n}\n\n";
 
     char prefix[2048];
@@ -1271,7 +1271,7 @@ void GenNames(VFile_Handle file) {
 	char buffer[2048];
 	char const
 			isPrefixF[] =
-			"CQ_FORMAT_CONSTEXPR inline char const * const CqFormat_Name(CqFormat const fmt) {\n\tswitch(fmt) {\n";
+			"CQ_FORMAT_CALL char const * const CqFormat_Name(CqFormat const fmt) {\n\tswitch(fmt) {\n";
 	char const switchPostfixF[] = "\t\tdefault: return \"The_Format_With_No_Name\";\n\t}\n}\n\n";
 
 #define  CqFormat_START_MACRO VFile_Write(file, isPrefixF, strlen(isPrefixF));
@@ -1313,7 +1313,7 @@ void GenU32PerChanFunc(VFile_Handle file,
 															uint32_t (*func)(char const *, uint64_t, uint32_t)) {
 	char buffer[2048];
 	char const *const isPrefixF[] = {
-			"CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_%sAtPhysical(CqFormat const fmt, uint32_t const channel) {\n"
+			"CQ_FORMAT_CALL uint32_t CqFormat_%sAtPhysical(CqFormat const fmt, uint32_t const channel) {\n"
 			"\tif(CqFormat_IsHomogenous(fmt) || channel == 0) {\n\t\tswitch(fmt) {\n",
 			"\telse if(channel == %d) {\n\t\tswitch(fmt) { \n"
 	};
@@ -1345,7 +1345,7 @@ void GenU32PerChanFunc2(VFile_Handle file,
 
     char const *const isPrefixF[] = {
         "namespace coquelicot {\n"
-        "CQ_FORMAT_CONSTEXPR inline uint32_t get%sAtPhysical(Format const fmt, PhysicalChannel const channel) {\n"
+        "CQ_FORMAT_CALL uint32_t get%sAtPhysical(Format const fmt, PhysicalChannel const channel) {\n"
         "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
         "\telse if(channel == PhysicalChannel::_%d) {\n\t\tswitch(fmt) { \n"};
 
@@ -1393,7 +1393,7 @@ void GenPhysicalChannelToLogicalPerChanFunc(VFile_Handle file) {
 			"CqFormat_PC_3"
 	};
 	static char const *const isPrefixF[2] = {
-			"CQ_FORMAT_CONSTEXPR inline CqFormat_LogicalChannel CqFormat_PhysicalChannelToLogical(CqFormat const fmt, int8_t const channel) {\n"
+			"CQ_FORMAT_CALL CqFormat_LogicalChannel CqFormat_PhysicalChannelToLogical(CqFormat const fmt, int8_t const channel) {\n"
 			"\t CqFormat_ASSERT(channel != CqFormat_PC_CONST_0);\n\t CqFormat_ASSERT(channel != CqFormat_PC_CONST_1);\n"
 			"\tif(channel == %s) {\n\t\tswitch(fmt) {\n",
 			"\telse if(channel == %s) {\n\t\tswitch(fmt) {\n"
@@ -1502,7 +1502,7 @@ void GenLogicalToPhysicalChannelPerChanFunc(VFile_Handle file) {
 			"CqFormat_PC_3"
 	};
 	static char const *const isPrefixF[2] = {
-			"CQ_FORMAT_CONSTEXPR inline int8_t CqFormat_LogicalChannelToPhysical(CqFormat const fmt, CqFormat_LogicalChannel const channel) {\n"
+			"CQ_FORMAT_CALL int8_t CqFormat_LogicalChannelToPhysical(CqFormat const fmt, CqFormat_LogicalChannel const channel) {\n"
 			"\t CqFormat_ASSERT(channel != CqFormat_LC_0);\n\t CqFormat_ASSERT(channel != CqFormat_LC_1);\n"
 			"\tif(channel == CqFormat_LC_Red) {\n\t\tswitch(fmt) {\n",
 			"\telse if(channel == %s) {\n\t\tswitch(fmt) {\n"
@@ -1535,7 +1535,7 @@ void GenDoublePerChanFunc(VFile_Handle file,
 																 double (*func)(char const *, uint64_t, uint32_t)) {
 	char buffer[2048];
 	char const *const isPrefixF[] = {
-			"CQ_FORMAT_CONSTEXPR inline double CqFormat_%sAtPhysical(CqFormat const fmt, uint32_t const channel) {\n"
+			"CQ_FORMAT_CALL double CqFormat_%sAtPhysical(CqFormat const fmt, uint32_t const channel) {\n"
 			"\tif(CqFormat_IsHomogenous(fmt) || channel == 0) {\n\t\tswitch(fmt) {\n",
 			"\telse if(channel == %d) {\n\t\tswitch(fmt) { \n"
 	};
@@ -1566,7 +1566,7 @@ void GenDoublePerChanFunc2(VFile_Handle file,
     char buffer[2048];
     char const *const isPrefixF[] = {
 				"namespace coquelicot {\n"
-				"CQ_FORMAT_CONSTEXPR inline double get%sAtPhysical(Format const fmt, PhysicalChannel const channel) "
+				"CQ_FORMAT_CALL double get%sAtPhysical(Format const fmt, PhysicalChannel const channel) "
         "{\n"
         "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
         "\telse if(channel == PhysicalChannel::_%d) {\n\t\tswitch(fmt) { \n"};

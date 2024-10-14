@@ -5,10 +5,15 @@
 
 #include "coquelicot_format_base.h"
 
-#if __cplusplus > 201402L
-#define CQ_FORMAT_CONSTEXPR constexpr extern "C"
+#ifdef __cplusplus
+    #define CQ_FORMAT_NODISCARD [[nodiscard]]
+    #define CQ_FORMAT_CONSTEXPR constexpr
 #else
-#define CQ_FORMAT_CONSTEXPR
+    #define CQ_FORMAT_NODISCARD
+    #define CQ_FORMAT_CONSTEXPR
+#endif
+#ifndef CQ_FORMAT_CALL
+    #define CQ_FORMAT_CALL CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline
 #endif
 #ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
@@ -24,7 +29,7 @@
 #define  CqFormat_ASSERT(x)
 #endif
 
-CQ_FORMAT_CONSTEXPR inline uint64_t CqFormat_Code(CqFormat const fmt) {
+CQ_FORMAT_CALL uint64_t CqFormat_Code(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0x0000000000000000;
 		case CqFormat_R1_UNORM: return 0x0000D9000000C000;
@@ -234,7 +239,7 @@ CQ_FORMAT_CONSTEXPR inline uint64_t CqFormat_Code(CqFormat const fmt) {
 
 #define CqFormat_MaxPixelCountOfBlock 144U 
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsDepthOnly(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsDepthOnly(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_D16_UNORM: return true;
 		case CqFormat_X8_D24_UNORM: return true;
@@ -243,14 +248,14 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsDepthOnly(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsStencilOnly(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsStencilOnly(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_S8_UINT: return true;
 		default: return false;
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsDepthAndStencil(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsDepthAndStencil(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_D16_UNORM_S8_UINT: return true;
 		case CqFormat_D24_UNORM_S8_UINT: return true;
@@ -259,7 +264,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsDepthAndStencil(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsCLUT(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsCLUT(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_CLUT_P4: return true;
 		case CqFormat_CLUT_P4A4: return true;
@@ -269,7 +274,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsCLUT(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsFloat(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsFloat(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R16_SFLOAT: return true;
 		case CqFormat_R16_SBFLOAT: return true;
@@ -297,7 +302,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsFloat(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsNormalised(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsNormalised(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R1_UNORM: return true;
 		case CqFormat_R2_UNORM: return true;
@@ -433,7 +438,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsNormalised(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsSigned(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsSigned(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R8_SNORM: return true;
 		case CqFormat_R8_SINT: return true;
@@ -500,7 +505,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsSigned(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsSRGB(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsSRGB(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R8_SRGB: return true;
 		case CqFormat_R8G8_SRGB: return true;
@@ -538,7 +543,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsSRGB(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsCompressed(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsCompressed(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_DXBC1_RGB_UNORM: return true;
 		case CqFormat_DXBC1_RGB_SRGB: return true;
@@ -606,7 +611,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsCompressed(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsHomogenous(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_IsHomogenous(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return false;
 		case CqFormat_B2G3R3_UNORM: return false;
@@ -717,7 +722,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_IsHomogenous(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_WidthOfBlock(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_WidthOfBlock(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0;
 		case CqFormat_R1_UNORM: return 8;
@@ -790,7 +795,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_WidthOfBlock(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_HeightOfBlock(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_HeightOfBlock(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0;
 		case CqFormat_DXBC1_RGB_UNORM: return 4;
@@ -859,14 +864,14 @@ CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_HeightOfBlock(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_DepthOfBlock(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_DepthOfBlock(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0;
 		default: return 1;
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_BitSizeOfBlock(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_BitSizeOfBlock(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0;
 		case CqFormat_R1_UNORM: return 8;
@@ -1029,7 +1034,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_BitSizeOfBlock(CqFormat const fmt) 
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_ChannelCount(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_ChannelCount(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return 0;
 		case CqFormat_R1_UNORM: return 1;
@@ -1131,7 +1136,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_ChannelCount(CqFormat const fmt) {
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_ChannelBitWidthAtPhysical(CqFormat const fmt, uint32_t const channel) {
+CQ_FORMAT_CALL uint32_t CqFormat_ChannelBitWidthAtPhysical(CqFormat const fmt, uint32_t const channel) {
 	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case CqFormat_UNDEFINED: return 0;
@@ -1664,7 +1669,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_ChannelBitWidthAtPhysical(CqFormat 
 	return 0;
 }
 
-CQ_FORMAT_CONSTEXPR inline double CqFormat_MinAtPhysical(CqFormat const fmt, uint32_t const channel) {
+CQ_FORMAT_CALL double CqFormat_MinAtPhysical(CqFormat const fmt, uint32_t const channel) {
 	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case CqFormat_R8_SNORM: return -1.000000;
@@ -1848,7 +1853,7 @@ CQ_FORMAT_CONSTEXPR inline double CqFormat_MinAtPhysical(CqFormat const fmt, uin
 	return 0.0;
 }
 
-CQ_FORMAT_CONSTEXPR inline double CqFormat_MaxAtPhysical(CqFormat const fmt, uint32_t const channel) {
+CQ_FORMAT_CALL double CqFormat_MaxAtPhysical(CqFormat const fmt, uint32_t const channel) {
 	if(CqFormat_IsHomogenous(fmt) || channel == 0) {
 		switch(fmt) {
 			case CqFormat_UNDEFINED: return 0.000000;
@@ -2212,7 +2217,7 @@ CQ_FORMAT_CONSTEXPR inline double CqFormat_MaxAtPhysical(CqFormat const fmt, uin
 	return 0.0;
 }
 
-CQ_FORMAT_CONSTEXPR inline CqFormat_LogicalChannel CqFormat_PhysicalChannelToLogical(CqFormat const fmt, int8_t const channel) {
+CQ_FORMAT_CALL CqFormat_LogicalChannel CqFormat_PhysicalChannelToLogical(CqFormat const fmt, int8_t const channel) {
 	 CqFormat_ASSERT(channel != CqFormat_PC_CONST_0);
 	 CqFormat_ASSERT(channel != CqFormat_PC_CONST_1);
 	if(channel == CqFormat_PC_0) {
@@ -2564,7 +2569,7 @@ CQ_FORMAT_CONSTEXPR inline CqFormat_LogicalChannel CqFormat_PhysicalChannelToLog
 	return CqFormat_LC_0;
 }
 
-CQ_FORMAT_CONSTEXPR inline int8_t CqFormat_LogicalChannelToPhysical(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+CQ_FORMAT_CALL int8_t CqFormat_LogicalChannelToPhysical(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
 	 CqFormat_ASSERT(channel != CqFormat_LC_0);
 	 CqFormat_ASSERT(channel != CqFormat_LC_1);
 	if(channel == CqFormat_LC_Red) {
@@ -2916,7 +2921,7 @@ CQ_FORMAT_CONSTEXPR inline int8_t CqFormat_LogicalChannelToPhysical(CqFormat con
 	return CqFormat_PC_CONST_0;
 }
 
-CQ_FORMAT_CONSTEXPR inline char const * const CqFormat_Name(CqFormat const fmt) {
+CQ_FORMAT_CALL char const * const CqFormat_Name(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_UNDEFINED: return "UNDEFINED";
 		case CqFormat_R1_UNORM: return "R1_UNORM";
@@ -3338,25 +3343,25 @@ inline CqFormat CqFormat_FromName(char const* p) {
 
 
 // Helpers
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_PixelCountOfBlock(CqFormat const fmt) {
+CQ_FORMAT_CALL uint32_t CqFormat_PixelCountOfBlock(CqFormat const fmt) {
 	return CqFormat_WidthOfBlock(fmt) * CqFormat_HeightOfBlock(fmt) * CqFormat_DepthOfBlock(fmt);
 }
 
-CQ_FORMAT_CONSTEXPR inline double CqFormat_Min(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+CQ_FORMAT_CALL double CqFormat_Min(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
 	return CqFormat_MinAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-CQ_FORMAT_CONSTEXPR inline double CqFormat_Max(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+CQ_FORMAT_CALL double CqFormat_Max(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
 	return CqFormat_MaxAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
-CQ_FORMAT_CONSTEXPR inline uint32_t CqFormat_ChannelBitWidth(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
+CQ_FORMAT_CALL uint32_t CqFormat_ChannelBitWidth(CqFormat const fmt, CqFormat_LogicalChannel const channel) {
 	return CqFormat_ChannelBitWidthAtPhysical(fmt, CqFormat_LogicalChannelToPhysical(fmt, channel));
 }
 
 #ifdef __cplusplus
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isDepthOnly(Format const fmt) {
+CQ_FORMAT_CALL bool isDepthOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM: return true;
 		case Format::X8_D24_UNORM: return true;
@@ -3367,7 +3372,7 @@ CQ_FORMAT_CONSTEXPR inline bool isDepthOnly(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isStencilOnly(Format const fmt) {
+CQ_FORMAT_CALL bool isStencilOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::S8_UINT: return true;
 		default: return false;
@@ -3376,7 +3381,7 @@ CQ_FORMAT_CONSTEXPR inline bool isStencilOnly(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isDepthAndStencil(Format const fmt) {
+CQ_FORMAT_CALL bool isDepthAndStencil(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM_S8_UINT: return true;
 		case Format::D24_UNORM_S8_UINT: return true;
@@ -3387,7 +3392,7 @@ CQ_FORMAT_CONSTEXPR inline bool isDepthAndStencil(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isCLUT(Format const fmt) {
+CQ_FORMAT_CALL bool isCLUT(Format const fmt) {
 	switch(fmt) {
 		case Format::CLUT_P4: return true;
 		case Format::CLUT_P4A4: return true;
@@ -3399,7 +3404,7 @@ CQ_FORMAT_CONSTEXPR inline bool isCLUT(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isFloat(Format const fmt) {
+CQ_FORMAT_CALL bool isFloat(Format const fmt) {
 	switch(fmt) {
 		case Format::R16_SFLOAT: return true;
 		case Format::R16_SBFLOAT: return true;
@@ -3429,7 +3434,7 @@ CQ_FORMAT_CONSTEXPR inline bool isFloat(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isNormalised(Format const fmt) {
+CQ_FORMAT_CALL bool isNormalised(Format const fmt) {
 	switch(fmt) {
 		case Format::R1_UNORM: return true;
 		case Format::R2_UNORM: return true;
@@ -3567,7 +3572,7 @@ CQ_FORMAT_CONSTEXPR inline bool isNormalised(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isSigned(Format const fmt) {
+CQ_FORMAT_CALL bool isSigned(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SNORM: return true;
 		case Format::R8_SINT: return true;
@@ -3636,7 +3641,7 @@ CQ_FORMAT_CONSTEXPR inline bool isSigned(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isSRGB(Format const fmt) {
+CQ_FORMAT_CALL bool isSRGB(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SRGB: return true;
 		case Format::R8G8_SRGB: return true;
@@ -3676,7 +3681,7 @@ CQ_FORMAT_CONSTEXPR inline bool isSRGB(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isCompressed(Format const fmt) {
+CQ_FORMAT_CALL bool isCompressed(Format const fmt) {
 	switch(fmt) {
 		case Format::DXBC1_RGB_UNORM: return true;
 		case Format::DXBC1_RGB_SRGB: return true;
@@ -3746,7 +3751,7 @@ CQ_FORMAT_CONSTEXPR inline bool isCompressed(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline bool isHomogenous(Format const fmt) {
+CQ_FORMAT_CALL bool isHomogenous(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return false;
 		case Format::B2G3R3_UNORM: return false;
@@ -3859,7 +3864,7 @@ CQ_FORMAT_CONSTEXPR inline bool isHomogenous(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getWidthOfBlock(Format const fmt) {
+CQ_FORMAT_CALL uint32_t getWidthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 8;
@@ -3934,7 +3939,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getWidthOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getHeightOfBlock(Format const fmt) {
+CQ_FORMAT_CALL uint32_t getHeightOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::DXBC1_RGB_UNORM: return 4;
@@ -4005,7 +4010,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getHeightOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getDepthOfBlock(Format const fmt) {
+CQ_FORMAT_CALL uint32_t getDepthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		default: return 1;
@@ -4014,7 +4019,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getDepthOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getBitSizeOfBlock(Format const fmt) {
+CQ_FORMAT_CALL uint32_t getBitSizeOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 8;
@@ -4179,7 +4184,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getBitSizeOfBlock(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
+CQ_FORMAT_CALL uint32_t getChannelCount(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
 		case Format::R1_UNORM: return 1;
@@ -4283,7 +4288,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getChannelCount(Format const fmt) {
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FORMAT_CALL uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::UNDEFINED: return 0;
@@ -4818,7 +4823,7 @@ CQ_FORMAT_CONSTEXPR inline uint32_t getChannelBitWidthAtPhysical(Format const fm
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FORMAT_CALL double getMinAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::R8_SNORM: return -1.000000;
@@ -5004,7 +5009,7 @@ CQ_FORMAT_CONSTEXPR inline double getMinAtPhysical(Format const fmt, PhysicalCha
 }
 
 namespace coquelicot {
-CQ_FORMAT_CONSTEXPR inline double getMaxAtPhysical(Format const fmt, PhysicalChannel const channel) {
+CQ_FORMAT_CALL double getMaxAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
 			case Format::UNDEFINED: return 0.000000;

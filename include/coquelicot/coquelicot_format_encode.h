@@ -5,10 +5,15 @@
 
 #include "coquelicot_format_base.h"
 
-#if __cplusplus > 201402L
-#define CQ_FORMAT_CONSTEXPR constexpr extern "C"
+#ifdef __cplusplus
+    #define CQ_FORMAT_NODISCARD [[nodiscard]]
+    #define CQ_FORMAT_CONSTEXPR constexpr
 #else
-#define CQ_FORMAT_CONSTEXPR
+    #define CQ_FORMAT_NODISCARD
+    #define CQ_FORMAT_CONSTEXPR
+#endif
+#ifndef CQ_FORMAT_CALL
+    #define CQ_FORMAT_CALL CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline
 #endif
 #ifndef  CqFormat_HAVE_UINTXX_T
 #include <stdint.h> 	// for uint32_t and int64_t
@@ -332,7 +337,7 @@ inline uint16_t CqFormat_FloatToUFloat11AsUint(float v) {
 	return ei.v;
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R1_UNORM: return true;
 		case CqFormat_R2_UNORM: return true;
@@ -454,7 +459,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsF(CqFormat const 
 		}
 	}
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt, float const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
+CQ_FORMAT_CALL bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt, float const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case CqFormat_R1_UNORM:
 			for(uint32_t w = 0; w < width; ++w) {
@@ -1708,7 +1713,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsF(CqFormat const fmt
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const fmt) {
+CQ_FORMAT_CALL bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const fmt) {
 	switch(fmt) {
 		case CqFormat_R64_UINT: return true;
 		case CqFormat_R64_SINT: return true;
@@ -1726,7 +1731,7 @@ CQ_FORMAT_CONSTEXPR inline bool CqFormat_CanEncodeLogicalPixelsD(CqFormat const 
 	}
 }
 
-CQ_FORMAT_CONSTEXPR inline bool CqFormat_EncodeLogicalPixelsD(CqFormat const fmt, double const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
+CQ_FORMAT_CALL bool CqFormat_EncodeLogicalPixelsD(CqFormat const fmt, double const *in, uint32_t const width, CqFormat_EncodeOutput * out) {
 	switch(fmt) {
 		case CqFormat_R64_UINT:
 			for(uint32_t w = 0; w < width; ++w) {

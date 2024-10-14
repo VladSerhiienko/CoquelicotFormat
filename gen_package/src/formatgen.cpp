@@ -109,11 +109,24 @@ int main(int argc, char const *argv[]) {
 
 	char const header2[] =
 			"\n"
-			"#if __cplusplus > 201402L\n"
-	 		"#define CQ_FORMAT_CONSTEXPR constexpr extern \"C\"\n"
+
+			"#ifdef __cplusplus\n"
+			"    #define CQ_FORMAT_NODISCARD [[nodiscard]]\n"
+	 		"    #define CQ_FORMAT_CONSTEXPR constexpr\n"
 			"#else\n"
-			"#define CQ_FORMAT_CONSTEXPR\n"
+			"    #define CQ_FORMAT_NODISCARD\n"
+			"    #define CQ_FORMAT_CONSTEXPR\n"
 			"#endif\n"
+			"#ifndef CQ_FORMAT_CALL\n"
+			"    #define CQ_FORMAT_CALL CQ_FORMAT_NODISCARD CQ_FORMAT_CONSTEXPR static inline\n"
+			"#endif\n"
+
+			// "#if __cplusplus > 201402L\n"
+	 		// "#define CQ_FORMAT_CONSTEXPR constexpr extern \"C\"\n"
+			// "#else\n"
+			// "#define CQ_FORMAT_CONSTEXPR\n"
+			// "#endif\n"
+
 			"#ifndef  CqFormat_HAVE_UINTXX_T\n"
 			"#include <stdint.h> 	// for uint32_t and int64_t\n"
 			"#endif\n"
