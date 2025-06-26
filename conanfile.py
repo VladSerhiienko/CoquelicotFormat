@@ -25,7 +25,7 @@ class CoquelicotFormat(ConanFile):
         self.cpp_info.libdirs = []
     
     def build_requirements(self):
-        self.tool_requires("cmake/3.29.3")
+        self.tool_requires("cmake/4.0.1")
 
     ''' https://github.com/conan-io/examples2/blob/main/tutorial/consuming_packages/conanfile_py/complete_conanfile.py '''
     def layout(self):
