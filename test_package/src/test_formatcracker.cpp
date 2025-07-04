@@ -17,8 +17,8 @@ TEST_CASE("Format Cracker IsDepthOnly (C/Cpp)", "[Image]") {
         shouldBe |= strstr(name, "D32") != nullptr;
         shouldBe &= (strstr(name, "S8") == nullptr);
 
-        if (coquelicot::isDepthOnly(fmt) != shouldBe) { LOGERROR("CqFormat_IsDepthOnly failed %s", name); }
-        CHECK(coquelicot::isDepthOnly(fmt) == shouldBe);
+        if (coquelicot::fmt::isDepthOnly(fmt) != shouldBe) { LOGERROR("CqFormat_IsDepthOnly failed %s", name); }
+        CHECK(coquelicot::fmt::isDepthOnly(fmt) == shouldBe);
     }
 }
 
