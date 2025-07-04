@@ -10,7 +10,7 @@ using Catch::Approx;
 
 TEST_CASE("Format Cracker IsDepthOnly (C/Cpp)", "[Image]") {
     for (uint32_t i = 0; i < CqFormat_Count; ++i) {
-        coquelicot::Format fmt = (coquelicot::Format)i;
+        coquelicot::fmt::Format fmt = (coquelicot::fmt::Format)i;
         char const *name = CqFormat_Name(CqFormat(i));
         bool shouldBe = strstr(name, "D16") != nullptr;
         shouldBe |= strstr(name, "D24") != nullptr;
