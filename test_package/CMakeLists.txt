@@ -13,6 +13,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(Catch2 REQUIRED)
 find_package(coquelicot_format REQUIRED)
 
+set(CMAKE_CXX_STANDARD 17)
+
 file(GLOB_RECURSE CoquelicotFormatTestSrc src/*)
 add_executable(CoquelicotFormatTest ${CoquelicotFormatTestSrc})
 target_include_directories(CoquelicotFormatTest PUBLIC src)
