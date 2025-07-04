@@ -484,7 +484,7 @@ typedef enum CqFormat_PhysicalChannel {
 } CqFormat_PhysicalChannel;
 
 #ifdef __cplusplus
-namespace coquelicot {
+namespace coquelicot::fmt {
 enum class Format {
 	UNDEFINED = 0,
 	R1_UNORM = 1,
@@ -4077,7 +4077,7 @@ CQ_FORMAT_CALL uint32_t CqFormat_ChannelBitWidth(CqFormat const fmt, CqFormat_Lo
 }
 
 #ifdef __cplusplus
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isDepthOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM: return true;
@@ -4088,7 +4088,7 @@ CQ_FORMAT_CALL bool isDepthOnly(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isStencilOnly(Format const fmt) {
 	switch(fmt) {
 		case Format::S8_UINT: return true;
@@ -4097,7 +4097,7 @@ CQ_FORMAT_CALL bool isStencilOnly(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isDepthAndStencil(Format const fmt) {
 	switch(fmt) {
 		case Format::D16_UNORM_S8_UINT: return true;
@@ -4108,7 +4108,7 @@ CQ_FORMAT_CALL bool isDepthAndStencil(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isCLUT(Format const fmt) {
 	switch(fmt) {
 		case Format::CLUT_P4: return true;
@@ -4120,7 +4120,7 @@ CQ_FORMAT_CALL bool isCLUT(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isFloat(Format const fmt) {
 	switch(fmt) {
 		case Format::R16_SFLOAT: return true;
@@ -4150,7 +4150,7 @@ CQ_FORMAT_CALL bool isFloat(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isNormalised(Format const fmt) {
 	switch(fmt) {
 		case Format::R1_UNORM: return true;
@@ -4288,7 +4288,7 @@ CQ_FORMAT_CALL bool isNormalised(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isSigned(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SNORM: return true;
@@ -4357,7 +4357,7 @@ CQ_FORMAT_CALL bool isSigned(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isSRGB(Format const fmt) {
 	switch(fmt) {
 		case Format::R8_SRGB: return true;
@@ -4397,7 +4397,7 @@ CQ_FORMAT_CALL bool isSRGB(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isCompressed(Format const fmt) {
 	switch(fmt) {
 		case Format::DXBC1_RGB_UNORM: return true;
@@ -4467,7 +4467,7 @@ CQ_FORMAT_CALL bool isCompressed(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL bool isHomogenous(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return false;
@@ -4580,7 +4580,7 @@ CQ_FORMAT_CALL bool isHomogenous(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getWidthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
@@ -4655,7 +4655,7 @@ CQ_FORMAT_CALL uint32_t getWidthOfBlock(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getHeightOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
@@ -4726,7 +4726,7 @@ CQ_FORMAT_CALL uint32_t getHeightOfBlock(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getDepthOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
@@ -4735,7 +4735,7 @@ CQ_FORMAT_CALL uint32_t getDepthOfBlock(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getBitSizeOfBlock(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
@@ -4900,7 +4900,7 @@ CQ_FORMAT_CALL uint32_t getBitSizeOfBlock(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getChannelCount(Format const fmt) {
 	switch(fmt) {
 		case Format::UNDEFINED: return 0;
@@ -5004,7 +5004,7 @@ CQ_FORMAT_CALL uint32_t getChannelCount(Format const fmt) {
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
@@ -5539,7 +5539,7 @@ CQ_FORMAT_CALL uint32_t getChannelBitWidthAtPhysical(Format const fmt, PhysicalC
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL double getMinAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {
@@ -5725,7 +5725,7 @@ CQ_FORMAT_CALL double getMinAtPhysical(Format const fmt, PhysicalChannel const c
 }
 }
 
-namespace coquelicot {
+namespace coquelicot::fmt {
 CQ_FORMAT_CALL double getMaxAtPhysical(Format const fmt, PhysicalChannel const channel) {
 	if(isHomogenous(fmt) || channel == PhysicalChannel::_0) {
 		switch(fmt) {

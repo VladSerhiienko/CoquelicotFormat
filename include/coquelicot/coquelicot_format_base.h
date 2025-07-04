@@ -455,7 +455,7 @@ typedef enum CqFormat_PhysicalChannel {
 } CqFormat_PhysicalChannel;
 
 #ifdef __cplusplus
-namespace coquelicot {
+namespace coquelicot::fmt {
 enum class Format {
 	UNDEFINED = 0,
 	R1_UNORM = 1,

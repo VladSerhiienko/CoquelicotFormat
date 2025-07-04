@@ -11,7 +11,7 @@
 
 void GenEnumClasses(VFile_Handle file) {
     char const cppstart[] = "#ifdef __cplusplus\n";
-    char const nsstart[] = "namespace coquelicot {\n";
+    char const nsstart[] = "namespace coquelicot::fmt {\n";
     char const ifstartmacro[] = "enum class Format {\n";
     char const ifmodmacro[] = "\t%s = %d,\n";
     char const ifendmacro[] = "};\n\n";

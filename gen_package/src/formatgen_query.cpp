@@ -1195,7 +1195,7 @@ void GenBoolFunc(VFile_Handle file,
 void GenBoolFunc2(VFile_Handle file, const char *testname, bool defaultval, bool (*func)(char const *, uint64_t)) {
     char buffer[2048];
     char const isPrefixF[] =
-        "namespace coquelicot {\n"
+        "namespace coquelicot::fmt {\n"
         "CQ_FORMAT_CALL bool is%s(Format const fmt) {\n\tswitch(fmt) {\n";
     char const switchPostfixF[] = "\t\tdefault: return %s;\n\t}\n}\n}\n\n";
 
@@ -1242,7 +1242,7 @@ void GenU32Func2(VFile_Handle file,
                  uint32_t (*func)(char const *, uint64_t)) {
     char buffer[2048];
     char const isPrefixF[] =
-        "namespace coquelicot {\n"
+        "namespace coquelicot::fmt {\n"
         "CQ_FORMAT_CALL uint32_t get%s(Format const fmt) {\n\tswitch(fmt) {\n";
     char const switchPostfixF[] = "\t\tdefault: return %d;\n\t}\n}\n}\n\n";
 
@@ -1344,7 +1344,7 @@ void GenU32PerChanFunc2(VFile_Handle file,
     char buffer[2048];
 
     char const *const isPrefixF[] = {
-        "namespace coquelicot {\n"
+        "namespace coquelicot::fmt {\n"
         "CQ_FORMAT_CALL uint32_t get%sAtPhysical(Format const fmt, PhysicalChannel const channel) {\n"
         "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
         "\telse if(channel == PhysicalChannel::_%d) {\n\t\tswitch(fmt) { \n"};
@@ -1565,7 +1565,7 @@ void GenDoublePerChanFunc2(VFile_Handle file,
                            double (*func)(char const *, uint64_t, uint32_t)) {
     char buffer[2048];
     char const *const isPrefixF[] = {
-				"namespace coquelicot {\n"
+				"namespace coquelicot::fmt {\n"
 				"CQ_FORMAT_CALL double get%sAtPhysical(Format const fmt, PhysicalChannel const channel) "
         "{\n"
         "\tif(isHomogenous(fmt) || channel == PhysicalChannel::_0) {\n\t\tswitch(fmt) {\n",
