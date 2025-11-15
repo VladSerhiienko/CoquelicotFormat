@@ -12,7 +12,7 @@ class CoquelicotFormatTest(ConanFile):
         self.requires("catch2/3.8.1")
 
     def build_requirements(self):
-        self.tool_requires("cmake/4.0.3")
+        self.tool_requires("cmake/4.1.2")
 
     def build(self):
         cmake = CMake(self)

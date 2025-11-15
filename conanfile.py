@@ -13,7 +13,7 @@ class CoquelicotFormat(ConanFile):
     no_copy_source = True
 
     def build_requirements(self):
-        self.tool_requires("cmake/4.0.3")
+        self.tool_requires("cmake/4.1.2")
 
     def layout(self):
         cmake_layout(self)
