@@ -6,6 +6,7 @@ import os
 class CoquelicotFormat(ConanFile):
     name = "coquelicot_format"
     version = "1.0"
+    revision_mode = "scm"
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeToolchain", "CMakeDeps", "AutotoolsToolchain", "PkgConfigDeps", "XcodeDeps"
 
